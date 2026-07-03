@@ -157,10 +157,10 @@ export function Footer({ scrollToSection }: FooterProps) {
                       aria-pressed={selectedRefDoc === item.id}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center border text-[10px] font-mono font-bold ${
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center border text-[10px] font-kufi font-bold ${
                           selectedRefDoc === item.id ? 'bg-brass text-ink border-brass' : 'bg-ink border-brass/10 text-brass-lt'
                         }`}>
-                          DOC
+                          وث
                         </div>
                         <div>
                           <h4 className="font-serif text-sm font-semibold">{item.name}</h4>
@@ -185,7 +185,7 @@ export function Footer({ scrollToSection }: FooterProps) {
                     <div className="flex justify-between items-center border-b border-amber-950/20 pb-4 mb-4 text-xs font-mono">
                       <div className="flex items-center gap-1.5 text-amber-900/80 font-bold bg-amber-950/5 px-2 py-1 rounded border border-amber-950/10">
                         <span className="w-2 h-2 rounded-full bg-red-700 animate-pulse" />
-                        <span>REG No. {currentDoc.code}</span>
+                        <span>رقم القيد: {currentDoc.code}</span>
                       </div>
                       <span className="text-amber-900/60 font-semibold">{currentDoc.pages}</span>
                     </div>
@@ -193,7 +193,7 @@ export function Footer({ scrollToSection }: FooterProps) {
                     {/* Vintage Heading */}
                     <div className="text-right space-y-1 mb-4">
                       <h4 className="font-serif text-lg font-bold text-amber-900">{currentDoc.author}</h4>
-                      <p className="text-[11px] text-amber-800/80 font-serif leading-none italic">{currentDoc.authorEn} — Official Translation</p>
+                      <p className="text-[11px] text-amber-800/80 font-serif leading-none italic">{currentDoc.authorEn} — ترجمة عربية توضيحية</p>
                       <p className="text-xs text-amber-950/80 font-serif font-semibold mt-1">كتاب: <span className="underline decoration-amber-950/30 underline-offset-4">{currentDoc.bookTitle}</span> ({currentDoc.publishInfo})</p>
                     </div>
 
@@ -212,7 +212,7 @@ export function Footer({ scrollToSection }: FooterProps) {
 
                     {/* Original English Quote Section */}
                     <div className="text-left mt-2 border-t border-amber-950/10 pt-3">
-                      <span className="text-[10px] text-amber-900/50 font-mono block text-left uppercase tracking-wider">Original English Text Reference:</span>
+                      <span className="text-[10px] text-amber-900/50 font-kufi block text-left tracking-wider">النص الإنجليزي المرجعي:</span>
                       <p className="font-serif text-xs leading-relaxed text-amber-900/80 italic text-left font-semibold mt-1">
                         {currentDoc.quoteEn}
                       </p>
@@ -251,7 +251,7 @@ export function Footer({ scrollToSection }: FooterProps) {
                     <span className="absolute top-3.5 right-4 w-6 h-6 rounded-lg bg-brass/15 text-brass-lt border border-brass/20 flex items-center justify-center font-kufi text-xs">٣</span>
                     موقع «عتيبة الهيلا» — منتدى ومصادر قبيلة عتيبة لتوثيق النسب والفروع والمعارك.
                     <span className="block text-sand-dim text-xs mt-1">
-                      <a href="https://www.otaibah.net" target="_blank" rel="noopener noreferrer" className="text-brass-lt underline underline-offset-4 focus-visible:ring-1 focus-visible:ring-brass focus-visible:outline-none rounded">otaibah.net</a> — ومجالس السياحين الرسمية.
+                      <a href="https://www.otaibah.net" target="_blank" rel="noopener noreferrer" className="text-brass-lt underline underline-offset-4 focus-visible:ring-1 focus-visible:ring-brass focus-visible:outline-none rounded">الموقع الرسمي لعتيبة الهيلا</a> — ومجالس السياحين الرسمية.
                     </span>
                   </li>
                 </ol>
@@ -298,7 +298,7 @@ export function Footer({ scrollToSection }: FooterProps) {
             {/* Vintage Header Watermark */}
             <div className="absolute top-4 left-4 flex gap-2">
               <div className="px-3 py-1 bg-amber-950/10 border border-amber-950/20 text-amber-900/95 rounded font-mono text-[10px] font-bold">
-                ILLUSTRATIVE BIBLIOGRAPHIC RECORD
+                سجل ببليوغرافي توضيحي
               </div>
             </div>
 
@@ -314,7 +314,7 @@ export function Footer({ scrollToSection }: FooterProps) {
             <div className="text-center space-y-2 border-b border-amber-950/20 pb-6 pt-4">
               <span className="font-kufi text-[11px] text-amber-800 tracking-[3px] font-bold">أرشيف توضيحي للمستشرقين (محاكاة ببليوغرافية)</span>
               <h4 id="modal-doc-title" className="text-2xl md:text-3xl font-serif font-extrabold text-amber-900 leading-tight">مراجعة بيبليوغرافيّة توضيحيّة</h4>
-              <p className="font-mono text-xs text-amber-800/70">BIBLIOGRAPHIC MODEL FILE: #{currentDoc.code}-1922/HA</p>
+              <p className="font-kufi text-xs text-amber-800/70">ملف ببليوغرافي توضيحي: #{currentDoc.code}-1922/HA</p>
             </div>
 
             {/* Font Size Selector Control Bar */}
@@ -372,7 +372,7 @@ export function Footer({ scrollToSection }: FooterProps) {
                 <div className="bg-[#fffdf9] border-r-6 border-red-800 p-6 rounded-xl shadow-md relative">
                   {/* Big vintage wax seal background watermark */}
                   <div className="absolute bottom-4 left-4 w-20 h-20 rounded-full bg-red-800/10 border border-red-800/20 flex items-center justify-center rotate-45 select-none pointer-events-none">
-                    <span className="text-[10px] text-red-950 font-mono font-extrabold tracking-wider text-center">APPROVED<br/>COPY</span>
+                    <span className="text-[10px] text-red-950 font-kufi font-extrabold tracking-wider text-center">نسخة<br/>أرشيفية</span>
                   </div>
                   <p className={`font-serif leading-relaxed text-amber-950 font-bold italic ${
                     modalFontSize === 'normal' ? 'text-base md:text-lg' :
@@ -384,7 +384,7 @@ export function Footer({ scrollToSection }: FooterProps) {
               </div>
 
               <div className="space-y-2 pt-2 border-t border-amber-950/10">
-                <span className="text-[10px] text-amber-900/60 font-mono font-bold block uppercase">Original English Text Reference:</span>
+                <span className="text-[10px] text-amber-900/60 font-kufi font-bold block">النص الإنجليزي المرجعي:</span>
                 <div className="bg-amber-950/5 p-4 rounded-xl">
                   <p className={`font-serif leading-relaxed text-amber-900 font-semibold italic text-left ${
                     modalFontSize === 'normal' ? 'text-xs md:text-sm' :

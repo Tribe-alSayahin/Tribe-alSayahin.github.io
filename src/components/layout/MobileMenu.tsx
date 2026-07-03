@@ -23,17 +23,16 @@ export function MobileMenu({ isOpen, onClose, onNavigate, activeSection }: Mobil
 
   const navLinks = [
     { id: 'home', label: 'الرئيسية' },
-    { id: 'about', label: 'عن القبيلة' },
     { id: 'lineage', label: 'النسب' },
-    { id: 'constellation', label: 'الأنساب السبعة' },
-    { id: 'map', label: 'الديار والهجرات' },
-    { id: 'gallery', label: 'الشاهد البصري' },
-    { id: 'compass', label: 'اللوحة الفلكية' },
-    { id: 'wasm', label: 'علامات الوسم' },
-    { id: 'poetry', label: 'مجلس الشعراء' },
-    { id: 'archive', label: 'الأرشيف والمصادر' },
-    { id: 'timeline', label: 'التاريخ والمآثر' },
-    { id: 'supporters', label: 'داعمو الإرث' },
+    { id: 'constellation', label: 'الأنساب' },
+    { id: 'map', label: 'الديار' },
+    { id: 'gallery', label: 'التراث' },
+    { id: 'compass', label: 'الفلك' },
+    { id: 'wasm', label: 'الوسم' },
+    { id: 'poetry', label: 'الشعر' },
+    { id: 'archive', label: 'الأرشيف' },
+    { id: 'timeline', label: 'التاريخ' },
+    { id: 'supporters', label: 'الداعمين' },
     { id: 'contact', label: 'تواصل' },
   ];
 
@@ -41,7 +40,7 @@ export function MobileMenu({ isOpen, onClose, onNavigate, activeSection }: Mobil
     <div
       ref={menuRef}
       id="mobile-navigation-menu"
-      className={`md:hidden absolute top-[76px] inset-x-0 bg-ink/98 border-b border-brass/20 flex flex-col items-center gap-1 p-5 transition-all duration-400 z-40 ${
+      className={`lg:hidden absolute top-[76px] inset-x-0 bg-ink/98 border-b border-brass/20 flex flex-col items-center gap-1 p-5 transition-all duration-400 z-40 ${
         isOpen ? 'translate-y-0 opacity-100' : '-translate-y-[150%] opacity-0 pointer-events-none'
       }`}
       role="dialog"
