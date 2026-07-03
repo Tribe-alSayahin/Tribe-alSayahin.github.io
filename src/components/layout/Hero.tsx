@@ -84,11 +84,11 @@ export function Hero({ scrollToSection }: HeroProps) {
         <div className="lg:col-span-7 text-right flex flex-col justify-center order-2 lg:order-1">
           <div className="w-fit flex items-center gap-2.5 bg-indigo/25 border border-indigo/40 px-4 py-1.5 rounded-full text-xs font-semibold text-brass-lt font-kufi mb-6">
             <Sparkles className="w-4 h-4 text-brass-lt animate-pulse" />
-            <span>المنصة التراثية والتوثيق المرجعي المعتمد</span>
+            <span>الموقع الرسمي لقبيلة السياحين</span>
           </div>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-extrabold leading-[1.3] text-sand mb-4 text-right">
-            إرثٌ تالدٌ صاغتهُ ورسختهُ الديار
+            إرثٌ تالدٌ <span className="text-gold-gradient">صاغتهُ ورسختهُ الديار</span>
           </h1>
 
           <div className="font-kufi font-medium text-sm md:text-base text-brass-lt mb-5 flex flex-wrap items-center justify-start gap-x-3 gap-y-1.5 w-full text-right">

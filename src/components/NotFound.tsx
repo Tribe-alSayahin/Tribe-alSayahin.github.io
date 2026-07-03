@@ -144,7 +144,7 @@ export const NotFound: React.FC<NotFoundProps> = ({ onBackToHome }) => {
       {/* Sadu Bottom Accent & Footer */}
       <div className="flex flex-col items-center w-full z-10 relative">
         <div className="text-[10px] font-kufi text-brass-lt/50 mb-3 tracking-widest uppercase">
-          ديوان قبيلة السياحين التراثي الرقمي
+          الموقع الرسمي لقبيلة السياحين
         </div>
         <div className="sadu-band w-full opacity-60 h-[26px]" aria-hidden="true" />
       </div>
