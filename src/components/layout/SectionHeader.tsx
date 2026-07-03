@@ -27,9 +27,13 @@ export function SectionHeader({
         transition={{ duration: 0.6 }}
         className="flex flex-col items-center"
       >
-        <span className="font-kufi text-xs text-brass-lt font-semibold tracking-wider bg-brass/5 px-4 py-1.5 rounded-full border border-brass/10 mb-3">
-          {badgeText}
-        </span>
+        <div className="flex items-center gap-3 mb-3">
+          <span className="gold-hairline w-10 md:w-16" aria-hidden="true" />
+          <span className="font-kufi text-xs text-brass-lt font-semibold tracking-wider bg-brass/5 px-4 py-1.5 rounded-full border border-brass/10">
+            {badgeText}
+          </span>
+          <span className="gold-hairline w-10 md:w-16" aria-hidden="true" />
+        </div>
         <h2 className="text-3xl md:text-5xl font-serif text-sand mt-1 tracking-tight">
           {title}
         </h2>

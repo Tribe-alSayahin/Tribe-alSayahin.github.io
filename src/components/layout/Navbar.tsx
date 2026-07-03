@@ -70,7 +70,12 @@ export function Navbar({
               <path d="M55,170 L55,50 L145,50 L145,170" />
             </svg>
           </div>
-          <span className="font-kufi">ديوان قبيلة السياحين</span>
+          <span className="flex flex-col items-start gap-1 leading-none">
+            <span className="font-kufi text-[10px] font-semibold tracking-[0.22em] text-brass-lt/85">
+              الموقع الرسمي
+            </span>
+            <span className="font-kufi text-lg leading-none">قبيلة السياحين</span>
+          </span>
         </a>
 
         {/* Desktop Links */}
@@ -113,6 +118,9 @@ export function Navbar({
           </button>
         </div>
       </div>
+
+      {/* Gold hairline under the header */}
+      <div className="gold-hairline absolute bottom-0 inset-x-0" aria-hidden="true" />
 
       {/* Mobile Navigation Links */}
       <MobileMenu

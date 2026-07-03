@@ -91,6 +91,42 @@ h1, h2, h3 {
   line-height: 1.5;
 }
 
+/* Brass text selection */
+::selection {
+  background: var(--brass);
+  color: var(--ink);
+}
+
+/* Refined brass scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--ink-2);
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--brass) 45%, transparent);
+  border-radius: 8px;
+  border: 2px solid var(--ink-2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brass);
+}
+
+/* Gradient gold display text for headline accents */
+.text-gold-gradient {
+  background: linear-gradient(120deg, var(--brass) 0%, var(--brass-lt) 45%, var(--brass) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Gold hairline divider (fades at both ends) */
+.gold-hairline {
+  height: 1px;
+  background: linear-gradient(to left, transparent, color-mix(in srgb, var(--brass) 55%, transparent), transparent);
+}
+
 /* Sadu background styling */
 .sadu-band {
   height: 26px;

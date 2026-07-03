@@ -274,7 +274,12 @@ export function Footer({ scrollToSection }: FooterProps) {
               <path d="M55,170 L55,50 L145,50 L145,170" />
             </svg>
           </div>
-          قبيلة السياحين
+          <span className="flex flex-col items-start gap-1 leading-none text-right">
+            <span className="font-kufi text-[10px] font-semibold tracking-[0.22em] text-brass-lt/85">
+              الموقع الرسمي
+            </span>
+            <span className="font-kufi text-lg leading-none">قبيلة السياحين</span>
+          </span>
         </a>
         <p className="text-sand-dim text-sm">
           © {new Date().getFullYear()} الموقع الرسمي لقبيلة السياحين — جميع الحقوق محفوظة
