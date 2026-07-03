@@ -10,11 +10,34 @@ interface MobileMenuProps {
 export function MobileMenu({ isOpen, onClose, onNavigate, activeSection }: MobileMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Close on ESC key press
+  // Close on ESC key press + focus trap
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (!isOpen) return;
+      if (e.key === 'Escape') {
         onClose();
+        return;
+      }
+      if (e.key === 'Tab' && menuRef.current) {
+        const focusable = Array.from(
+          menuRef.current.querySelectorAll<HTMLElement>(
+            'a[href], button, [tabindex]:not([tabindex="-1"])'
+          )
+        ).filter((el): el is HTMLElement => el instanceof HTMLElement);
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -60,8 +83,7 @@ export function MobileMenu({ isOpen, onClose, onNavigate, activeSection }: Mobil
               ? 'text-brass-lt bg-brass/10'
               : 'text-sand hover:text-brass-lt hover:bg-brass/10'
           }`}
-          role="button"
-          tabIndex={0}
+          tabIndex={isOpen ? 0 : -1}
         >
           {link.label}
         </a>

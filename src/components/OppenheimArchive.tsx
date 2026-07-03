@@ -401,7 +401,7 @@ export default function OppenheimArchive() {
                       {/* LEFT PAGE: European Original Documentation metadata */}
                       <div className="w-1/2 h-full p-4 pl-6 pr-4 flex flex-col justify-between border-r border-[#dfd4bd] text-left relative overflow-hidden select-none">
                         {/* Parchment background effects */}
-                        <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,1),transparent)] bg-[url('https://picsum.photos/seed/leather/500/500')]" />
+                        <div className="absolute inset-0 opacity-[0.06] pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.5),transparent)]" />
                         
                         {/* Watermark Crest Emblem */}
                         <div className="absolute top-[35%] left-[25%] w-32 h-32 border-2 border-[#bfae8f]/20 rounded-full flex items-center justify-center pointer-events-none">
@@ -444,7 +444,7 @@ export default function OppenheimArchive() {
                       {/* RIGHT PAGE: Arabic Translated Document Section */}
                       <div className="w-1/2 h-full p-4 pr-6 pl-4 flex flex-col justify-between text-right relative overflow-hidden select-none">
                         {/* Parchment background effects */}
-                        <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,1),transparent)] bg-[url('https://picsum.photos/seed/leather/500/500')]" />
+                        <div className="absolute inset-0 opacity-[0.06] pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.5),transparent)]" />
 
                         {/* Geometric design watermark */}
                         <div className="absolute bottom-[20%] right-[25%] w-32 h-32 border border-[#bfae8f]/10 rounded-full flex items-center justify-center pointer-events-none transform rotate-45">

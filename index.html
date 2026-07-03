@@ -222,6 +222,55 @@
         margin-bottom: 8px;
       }
     </style>
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://tribe-alsayahin.github.io/#website",
+          "url": "https://tribe-alsayahin.github.io/",
+          "name": "الموقع الرسمي لقبيلة السياحين",
+          "description": "الموقع الرسمي لقبيلة السياحين من المزاحمة من الروقة من عتيبة — يوثّق نسب القبيلة وديارها وشعرها وأرشيفها الاستشراقي.",
+          "inLanguage": "ar",
+          "publisher": {
+            "@id": "https://tribe-alsayahin.github.io/#organization"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://tribe-alsayahin.github.io/#organization",
+          "name": "قبيلة السياحين",
+          "alternateName": "Al-Siyahin Tribe",
+          "url": "https://tribe-alsayahin.github.io/",
+          "description": "فخذ السياحين من المزاحمة من الروقة من عتيبة الهيلا — قبيلة عربية أصيلة في نجد وما حولها.",
+          "areaServed": {
+            "@type": "Place",
+            "name": "نجد، المملكة العربية السعودية"
+          }
+        },
+        {
+          "@type": "CollectionPage",
+          "@id": "https://tribe-alsayahin.github.io/#page",
+          "url": "https://tribe-alsayahin.github.io/",
+          "name": "الموقع الرسمي لقبيلة السياحين",
+          "isPartOf": { "@id": "https://tribe-alsayahin.github.io/#website" },
+          "about": { "@id": "https://tribe-alsayahin.github.io/#organization" },
+          "inLanguage": "ar",
+          "description": "توثيق شامل لنسب قبيلة السياحين وديارها وشعرها والأرشيف الاستشراقي المتعلق بها.",
+          "hasPart": [
+            { "@type": "WebPageElement", "name": "شجرة النسب", "url": "https://tribe-alsayahin.github.io/#lineage" },
+            { "@type": "WebPageElement", "name": "الديار والخريطة", "url": "https://tribe-alsayahin.github.io/#map" },
+            { "@type": "WebPageElement", "name": "ديوان الشعر", "url": "https://tribe-alsayahin.github.io/#poetry" },
+            { "@type": "WebPageElement", "name": "الأرشيف الاستشراقي", "url": "https://tribe-alsayahin.github.io/#archive" },
+            { "@type": "WebPageElement", "name": "الخط الزمني", "url": "https://tribe-alsayahin.github.io/#timeline" }
+          ]
+        }
+      ]
+    }
+    </script>
   </head>
   <body class="bg-[#070503] text-sand antialiased">
     <noscript>

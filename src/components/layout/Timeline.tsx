@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { SectionHeader } from './SectionHeader';
+import { LOCAL_REFS } from '../../lib/references';
 
 interface TimelineEvent {
   title: string;
@@ -20,7 +21,7 @@ export function Timeline() {
     {
       title: 'المشاركة التاريخية في توحيد البلاد وضمّ القصيم',
       description: 'شارك السياحين — ومنهم جماعة وربع ابن مسيلم — ضمن جيش الملك عبد العزيز آل سعود (طيب الله ثراه) في حملات ضمّ منطقة القصيم المباركة سنة ١٣٢١–١٣٢٢هـ، وشهدوا وقائع حاسمة منها غزوة الشنانة الشهيرة، مساهمين بدمائهم وأرواحهم في تأسيس وتوحيد المملكة العربية السعودية العظمى.',
-      reference: 'د. محمد بن عبد الله آل زلفة، «التجهيزات العسكرية والاقتصادية أثناء ضمّ منطقة القصيم لحكم الملك عبد العزيز في عام ١٣٢١–١٣٢٢هـ»، دار بلاد العرب للنشر والتوزيع، الرياض، الطبعة الأولى ٢٠١٤م، ص ٧٥–٧٦.',
+      reference: `${LOCAL_REFS[0].author}، ${LOCAL_REFS[0].bookTitle}، ${LOCAL_REFS[0].publisher}، ${LOCAL_REFS[0].year}، ${LOCAL_REFS[0].pages}.`,
     },
     {
       title: 'الحاضر المشرق والعهد الزاهر',

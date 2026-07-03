@@ -138,6 +138,14 @@ export default function App() {
         <div className="absolute top-[20%] left-[10%] w-[500px] h-[500px] rounded-full bg-radial from-olive-2/10 to-transparent blur-3xl" />
       </div>
 
+      {/* Skip to main content - for keyboard/screen-reader users */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:right-4 focus:z-[9999] focus:bg-brass focus:text-ink focus:px-4 focus:py-2 focus:rounded focus:font-sans focus:font-bold"
+      >
+        انتقل إلى المحتوى الرئيسي
+      </a>
+
       {/* HEADER & NAVBAR */}
       <Navbar
         isScrolled={isScrolled}
@@ -153,6 +161,7 @@ export default function App() {
       {/* TRANSITIONAL SCROLL FILM */}
       <ScrollFilmCanvas />
 
+      <main id="main-content">
       {/* SECTION 1: LINEAGE TREE */}
       <section id="lineage" className="section bg-ink-2 px-6 relative z-10 py-16">
         <div className="max-w-[1160px] mx-auto">
@@ -281,6 +290,7 @@ export default function App() {
 
       {/* CONTACT SECTION */}
       <Contact />
+      </main>
 
       {/* FOOTER */}
       <Footer scrollToSection={scrollToSection} />
