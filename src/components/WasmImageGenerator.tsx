@@ -117,7 +117,18 @@ export function WasmImageGenerator() {
         })
       });
 
-      const data = await response.json();
+      // On static hosting (GitHub Pages) there is no backend: the request returns
+      // an HTML 404 page instead of JSON, so parse defensively.
+      let data: any = null;
+      try {
+        data = await response.json();
+      } catch {
+        setErrorType("STATIC_HOSTING");
+        setErrorMessage("توليد الصور بالذكاء الاصطناعي غير متاح في هذه النسخة من الموقع لأنها استضافة ثابتة بدون خادم. يمكنكم استخدام «الاستعراض الرقمي المتجهي الفوري» أعلاه فهو يعمل بالكامل داخل المتصفح وبدون قيود.");
+        setViewMode("vector");
+        setIsLoading(false);
+        return;
+      }
 
       if (!response.ok) {
         setErrorType(data.error);
