@@ -17,7 +17,6 @@ import InteractiveMap from './components/InteractiveMap';
 import HeritageGallery from './components/HeritageGallery';
 import CelestialCompass from './components/CelestialCompass';
 import { WasmGallery } from './components/WasmGallery';
-import { WasmImageGenerator } from './components/WasmImageGenerator';
 import PoetryCouncil from './components/PoetryCouncil/index';
 import OppenheimArchive from './components/OppenheimArchive';
 import { ScrollFilmCanvas } from './components/ScrollFilmCanvas';
@@ -41,7 +40,7 @@ export default function App() {
       const isGitHubPages = hostname.endsWith('github.io');
       
       if (isGitHubPages) {
-        const isRootUserPage = hostname === 'al-sayahin-tribe.github.io' || hostname === 'alotaibiaziz322.github.io';
+        const isRootUserPage = hostname === 'tribe-alsayahin.github.io';
         
         if (isRootUserPage) {
           return segments.length > 0;
@@ -59,7 +58,7 @@ export default function App() {
     if (typeof window !== 'undefined') {
       const hostname = window.location.hostname;
       const isGitHubPages = hostname.endsWith('github.io');
-      const isRootUserPage = hostname === 'al-sayahin-tribe.github.io' || hostname === 'alotaibiaziz322.github.io';
+      const isRootUserPage = hostname === 'tribe-alsayahin.github.io';
       
       let homePath = '/';
       if (isGitHubPages && !isRootUserPage) {
@@ -229,7 +228,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* SECTION 6: WASM GALLERY & GENERATOR */}
+      {/* SECTION 6: WASM GALLERY */}
       <section id="wasm" className="section bg-ink px-6 relative z-10 py-16">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
@@ -238,13 +237,8 @@ export default function App() {
             title="وسم الإبل وعلامة الباب"
             description="وسم «الباب» الشهير للسياحين على الرقبة من الجهة اليسرى، رمز الهوية والأصالة في البادية."
           />
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            <div className="lg:col-span-6 reveal-el opacity-0 translate-y-10 transition-all duration-800">
-              <WasmGallery />
-            </div>
-            <div className="lg:col-span-6 reveal-el opacity-0 translate-y-10 transition-all duration-800 delay-100">
-              <WasmImageGenerator />
-            </div>
+          <div className="max-w-[720px] mx-auto reveal-el opacity-0 translate-y-10 transition-all duration-800">
+            <WasmGallery />
           </div>
         </div>
       </section>

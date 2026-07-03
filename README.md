@@ -9,7 +9,6 @@
 - React 19 + TypeScript + Vite
 - Tailwind CSS 4
 - Motion (Framer Motion) للحركة
-- خادم Express اختياري لتوليد صور الوسوم بالذكاء الاصطناعي (Gemini)
 
 ## التشغيل محلياً
 
@@ -18,12 +17,6 @@
 ```bash
 npm install
 npm run dev        # خادم التطوير على http://localhost:3000
-```
-
-لتفعيل توليد الصور بالذكاء الاصطناعي (اختياري — يعمل فقط مع الخادم المحلي، وليس على GitHub Pages):
-
-```bash
-cp .env.example .env.local   # ثم ضع مفتاح GEMINI_API_KEY الخاص بك
 ```
 
 ## الأوامر
@@ -37,7 +30,7 @@ cp .env.example .env.local   # ثم ضع مفتاح GEMINI_API_KEY الخاص ب
 
 ## النشر
 
-يُنشر الموقع تلقائياً إلى GitHub Pages عبر GitHub Actions عند كل دفع إلى الفرع `main` (انظر `.github/workflows/deploy.yml`). النسخة المنشورة ثابتة بالكامل؛ ميزة توليد الصور بالذكاء الاصطناعي تعمل فقط عند التشغيل محلياً مع مفتاح Gemini.
+يُنشر الموقع تلقائياً إلى GitHub Pages عبر GitHub Actions عند كل دفع إلى الفرع `main` (انظر `.github/workflows/deploy.yml`). النسخة المنشورة ثابتة بالكامل.
 
 ## بنية المشروع
 
@@ -52,7 +45,7 @@ src/
 │   ├── InteractiveMap.tsx     # خريطة الديار
 │   ├── OppenheimArchive.tsx   # الأرشيف الاستشراقي
 │   ├── CelestialCompass.tsx   # البوصلة السماوية
-│   └── WasmImageGenerator.tsx # محاكي الوسوم (متجهي + ذكاء اصطناعي)
+│   └── WasmGallery.tsx        # معرض الوسوم المتجهي
 ├── hooks/                     # useTheme, useScrollState
 └── styles/                    # رموز التصميم
 ```
