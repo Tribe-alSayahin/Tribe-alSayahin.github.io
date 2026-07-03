@@ -44,7 +44,7 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
   const [scrollProgress, setScrollProgress] = useState(0);
   const [images, setImages] = useState<HTMLImageElement[]>([]);
   const [loadProgress, setLoadProgress] = useState(0);
-  const [isReady, setIsReady] = useState(false);
+  const [isReady, setIsReady] = useState(() => !framePathPattern);
   const [useFallback, setUseFallback] = useState(true);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const lastDrawnFrameRef = useRef<number>(-1);
@@ -54,22 +54,43 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
     // If no pattern is provided, we default to procedural fallback canvas (which is beautiful and custom styled)
     if (!framePathPattern) {
       setUseFallback(true);
+      setLoadProgress(100);
       setIsReady(true);
       return;
     }
 
-    let loadedCount = 0;
+    let completedCount = 0;
+    let successfulCount = 0;
+    const readyThreshold = Math.ceil(framesCount * 0.6);
+    const fallbackThreshold = Math.ceil(framesCount * 0.3);
+    let didPromoteReady = false;
+
+    const promoteReady = () => {
+      if (didPromoteReady) return;
+      didPromoteReady = true;
+      if (successfulCount < fallbackThreshold) {
+        setUseFallback(true);
+      }
+      setIsReady(true);
+    };
+
+    const markFrameCompleted = () => {
+      completedCount++;
+      const percent = Math.round((completedCount / framesCount) * 100);
+      setLoadProgress(percent);
+
+      // Exit loading state once enough frames are usable, or once all requests resolved.
+      if (successfulCount >= readyThreshold || completedCount === framesCount) {
+        promoteReady();
+      }
+    };
+
     const loadedImages: HTMLImageElement[] = [];
     const timeoutId = setTimeout(() => {
       // Safety timeout: If loading takes more than 9s, promote to ready with whatever we loaded, or fallback
       console.log("Scroll Film: Preload safety timeout reached.");
-      if (loadedCount < framesCount * 0.3) {
-        setUseFallback(true);
-      }
-      setIsReady(true);
+      promoteReady();
     }, 9000);
-
-    let hasError = false;
 
     for (let i = 0; i < framesCount; i++) {
       const img = new Image();
@@ -79,22 +100,12 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
       img.referrerPolicy = "no-referrer";
       
       img.onload = () => {
-        loadedCount++;
-        const percent = Math.round((loadedCount / framesCount) * 100);
-        setLoadProgress(percent);
-        
-        if (percent >= 60) {
-          setIsReady(true);
-        }
+        successfulCount++;
+        markFrameCompleted();
       };
 
       img.onerror = () => {
-        hasError = true;
-        // If frames fail to load, gracefully transition to beautiful vector canvas fallback
-        if (loadedCount === 0 && i === framesCount - 1) {
-          setUseFallback(true);
-          setIsReady(true);
-        }
+        markFrameCompleted();
       };
 
       loadedImages.push(img);
