@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;600;700;800&family=Reem+Kufi:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+@import "./styles/design-tokens.css";
+
+:root {
+  --ink: #070503;
+  --ink-2: #0f0b07;
+  --coffee: #1c130a;
+  --sand: #fcf8f0;
+  --sand-dim: #bba989;
+  --brass: #d4af37;
+  --brass-lt: #ebd481;
+  --olive: #242c1e;
+  --olive-2: #34402a;
+  --indigo: #162435;
+  --parchment: #f0e6cf;
+}
+
+:root.light {
+  --ink: #fcfbf7;
+  --ink-2: #f4f0e6;
+  --coffee: #e8dfc9;
+  --sand: #241a10;
+  --sand-dim: #6b5d47;
+  --brass: #b8892a;
+  --brass-lt: #8a661f;
+  --olive: #d8dcc9;
+  --olive-2: #c3c9ac;
+  --indigo: #d6dde6;
+  --parchment: #2a2318;
+  --overlay: rgba(252,251,247,0.85);
+}
+
+@theme {
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-coffee: var(--coffee);
+  --color-sand: var(--sand);
+  --color-sand-dim: var(--sand-dim);
+  --color-brass: var(--brass);
+  --color-brass-lt: var(--brass-lt);
+  --color-olive: var(--olive);
+  --color-olive-2: var(--olive-2);
+  --color-indigo: var(--indigo);
+  --color-parchment: var(--parchment);
+
+  --font-serif: "Aref Ruqaa", serif;
+  --font-sans: "Cairo", sans-serif;
+  --font-kufi: "Reem Kufi", sans-serif;
+
+  /* Spacing Scale Mapping */
+  --spacing-space-1: var(--space-1);
+  --spacing-space-2: var(--space-2);
+  --spacing-space-3: var(--space-3);
+  --spacing-space-4: var(--space-4);
+  --spacing-space-5: var(--space-5);
+  --spacing-space-6: var(--space-6);
+  --spacing-space-7: var(--space-7);
+  --spacing-space-8: var(--space-8);
+  --spacing-space-9: var(--space-9);
+  --spacing-space-10: var(--space-10);
+  --spacing-space-11: var(--space-11);
+  --spacing-space-12: var(--space-12);
+  --spacing-space-13: var(--space-13);
+  --spacing-space-14: var(--space-14);
+  --spacing-space-15: var(--space-15);
+  --spacing-space-16: var(--space-16);
+
+  /* Glow Shadows Mapping */
+  --shadow-glow-sm: var(--glow-brass-sm);
+  --shadow-glow-md: var(--glow-brass-md);
+  --shadow-glow-lg: var(--glow-brass-lg);
+
+  /* Durations Mapping */
+  --transition-duration-fast: var(--duration-fast);
+  --transition-duration-base: var(--duration-base);
+  --transition-duration-slow: var(--duration-slow);
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-ink);
+  color: var(--color-sand);
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+/* Sadu background styling */
+.sadu-band {
+  height: 26px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='26' viewBox='0 0 44 26'%3E%3Cg fill='none' stroke='%23c9a227' stroke-width='1.1'%3E%3Cpath d='M0 13 11 2 22 13 11 24Z'/%3E%3Cpath d='M22 13 33 2 44 13 33 24Z'/%3E%3C/g%3E%3Cg fill='%23c9a227'%3E%3Ccircle cx='11' cy='13' r='1.7'/%3E%3Ccircle cx='33' cy='13' r='1.7'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: center;
+  opacity: 0.5;
+}
+
+/* Custom grid pattern for the vector map background */
+.bg-grid-pattern {
+  background-image: radial-gradient(rgba(201, 162, 39, 0.15) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Leaflet style overrides */
+.leaflet-container {
+  background: #100c07 !important;
+  font-family: inherit !important;
+}
+.custom-leaflet-tooltip {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.custom-leaflet-tooltip::before {
+  display: none !important;
+}
+
+/* scaleIn animation keyframes */
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes drawmark {
+  from {
+    stroke-dashoffset: 340;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
