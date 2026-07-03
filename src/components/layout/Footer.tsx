@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Scroll, BookOpen, Eye, Shield, X, Type } from 'lucide-react';
+import { ORIENTALIST_REFS, LOCAL_REFS } from '../../lib/references';
 
 interface FooterProps {
   scrollToSection: (id: string) => void;
@@ -11,85 +12,9 @@ export function Footer({ scrollToSection }: FooterProps) {
   const [isRefDocZoomed, setIsRefDocZoomed] = useState<boolean>(false);
   const [modalFontSize, setModalFontSize] = useState<'normal' | 'large' | 'huge'>('normal');
 
-  const DOCS_DATA = [
-    {
-      id: 'philby',
-      author: 'هاري سانت جون فيلبي (عبدالله فيلبي)',
-      authorEn: 'Harry St. John Philby',
-      bookTitle: 'مرتفعات الجزيرة العربية (The Heart of Arabia)',
-      publishInfo: 'لتدك / أكسفورد، (١٩٢٢م - ١٩٤٨م)',
-      code: 'UK-HSJP-HA',
-      stamp: 'أرشيف الجمعية الجغرافية الملكية - لندن',
-      pages: 'ص ١٩٢ - ٢٠٤ / ص ٢١٥',
-      detailsAr: 'تأسيس هجرة الجثوم للسياحين (ص ١٩٢ - ٢٠٤)، الدور القيادي والسياسي في نجد (ص ٢١٥)، لتدك/ أكسفورد (١٩٢٢م- ١٩٤٨م)، مرتفعات الجزيرة العربية وكتابه التاريخي (The Heart of Arabia).',
-      quoteAr: '«تعتبر الجثوم هجرة تاريخية شهيرة استقر فيها فخذ السياحين من الروقة (عتيبة)، والذين عرفوا بشجاعتهم وولائهم وإسهامهم الكبير في استقرار المنطقة وتأمين مسالك القوافل التجارية وموارد نجد الحيوية.»',
-      quoteEn: '“The settlement of Al-Jathum is a historical stronghold where the Siyahin clan of the Ruqah division (Otaibah) established their permanent presence, famed for their bravery, loyalty, and vital role in maintaining the security of Central Najd.”',
-      year: '١٩٢٢م',
-      name: 'هاري سانت جون فيلبي'
-    },
-    {
-      id: 'oppenheim',
-      author: 'ماكس فون أوبنهايم',
-      authorEn: 'Max von Oppenheim',
-      bookTitle: 'موسوعة البدو (Die Beduinen)',
-      publishInfo: 'لايبزيغ / برلين، ١٩٣٩م - ١٩٥٢م',
-      code: 'GER-MVO-B3',
-      stamp: 'أرشيف المعهد الألماني للدراسات الشرقية - برلين',
-      pages: 'المجلد الثالث - ص ٢٦٢ / ص ٢٧٨',
-      detailsAr: 'توثيق شجرة نسب قبيلة عتيبة وتفصيل الفروع العشائرية لبلاد نجد والحجاز والتقسيمات المزحمية بالتفصيل، ورصد شجرة النسب والأنساب لعشائر الروقة والمزاحمة ومكانة فخذ السياحين.',
-      quoteAr: '«تتألف عتيبة من قسمين كبيرين: الروقة وبرقا... وينقسم الروقة إلى المزاحمة وطلحة، حيث نجد بين أفخاذ المزاحمة الرئيسية: السياحين ككيان بدوي مستقل وقوي له وزنه وتقاليده الأصيلة.»',
-      quoteEn: '“The Otaibah are divided into two great branches: Ruqah and Barqa... The Ruqah includes Muzahima and Talha. Among the primary clans of Muzahima, the Siyahin stand out as an independent and powerful nomadic entity with deep traditions.”',
-      year: '١٩٣٩م',
-      name: 'ماكس فون أوبنهايم'
-    },
-    {
-      id: 'doughty',
-      author: 'تشارلز دوتي',
-      authorEn: 'Charles M. Doughty',
-      bookTitle: 'ترحال في الصحراء العربية (Travels in Arabia Deserta)',
-      publishInfo: 'كامبريدج / لندن، ١٨٨٨م',
-      code: 'UK-CMD-AD',
-      stamp: 'أرشيف جامعة كامبريدج - المملكة المتحدة',
-      pages: 'ص ٣٤٢ / ص ٣٥٩',
-      detailsAr: 'توصيف مسالك ووديان نجد، فروسية قبائل المزاحمة والروقة، وحسن وفادة الضيف وعزة البدو الأباة، ومعايشة مباشرة تصف فروسية المزاحمة والروقة ونظام كرم الوفادة والمجالس البدوية.',
-      quoteAr: '«إن عتيبة هم ملوك هذه الفيافي المترامية، ورجال الروقة يبهرونك بشجاعتهم الصادقة وأنفتهم البدوية المعهودة، وتماسك أفخاذهم وعشائرهم في حماية مراعيهم الحرة بكل حزم وسخاء.»',
-      quoteEn: '“The Otaibah are indeed the lords of these endless wildernesses. The Ruqah men strike one with their honest courage and desert pride, and their clans stand united in guarding their open pastures with hospitality and resolve.”',
-      year: '١٨٨٨م',
-      name: 'تشارلز دوتي'
-    },
-    {
-      id: 'burckhardt',
-      author: 'جون لويس بوركهارت',
-      authorEn: 'John Lewis Burckhardt',
-      bookTitle: 'ملاحظات عن البدو والوهابيين (Notes on Bedouins)',
-      publishInfo: 'لندن، ١٨٣٠م',
-      code: 'SUI-JLB-NW',
-      stamp: 'قسم المخطوطات بالمتحف البريطاني - لندن',
-      pages: 'ص ١١٨ / ص ١٣٥',
-      detailsAr: 'توثيق ثروة قبيلة عتيبة والروقة من الإبل الأصيلة وخيل السباق وموارد المياه ومناعتهم الحربية في نجد، ودراسة وتحليل القوى الحربية ومناهل المياه والإبل لعتيبة وعشائر المزاحمة والروقة بنجد.',
-      quoteAr: '«تعتبر عتيبة من أقوى وأمنع قبائل نجد على الإطلاق، ويمتاز فرسان المزاحمة والروقة بفروسية عالية لا تُشق لها غبار، وامتلاكهم لأجود أنواع خيل نجد ومراعيها الممتدة التي يذودون عنها بجرأة عظيمة.»',
-      quoteEn: '“The Otaibah are considered one of the strongest and most impregnable tribes of Najd. The horsemen of Muzahima possess superb horsemanship and own the finest steeds of Najd, defending their wells and pastures with great valor.”',
-      year: '١٨٣٠م',
-      name: 'جون لويس بوركهارت'
-    },
-    {
-      id: 'ladyblunt',
-      author: 'الليدي آن بلنت',
-      authorEn: 'Lady Anne Blunt',
-      bookTitle: 'قبائل الفرات البدويّة ورحلة إلى نجد',
-      publishInfo: 'لندن، ١٨٧٩م - ١٨٨١م',
-      code: 'UK-LAB-NEJD',
-      stamp: 'مجموعة الأرشيف الشرقي بمكتبة لندن الكبرى',
-      pages: 'ص ٢٠٩ / ص ٢٢٥',
-      detailsAr: 'تدوين مباشر ليوميات الرحلة لوسط الجزيرة العربية، ووصف لأصالة سلالات خيل عتيبة وأخلاق فرسانها النبلاء، ورحلة استكشافية توثق عاديات مرابط الخيل الأصايل والقيم الأخلاقية وعهد الوفاء.',
-      quoteAr: '«فرسان عتيبة في نجد يمثلون النبالة البدوية بأبهى صورها؛ خيولهم الأصيلة تنبض بالقوة والرشاقة، وعشائر الروقة تضرب أروع الأمثلة في الذود عن حمى ديارهم وحسن وفادة المستجير ونقاء مرابط العاديات لديهم.»',
-      quoteEn: '“The horsemen of Otaibah in Najd embody Bedouin nobility. Their purebred steeds pulse with agility, and the Ruqah clans show outstanding examples of defending their domains, protecting refugees, and preserving horse bloodlines.”',
-      year: '١٨٧٩م',
-      name: 'آن بلنت'
-    }
-  ];
-
-  const currentDoc = DOCS_DATA.find((d) => d.id === selectedRefDoc) || DOCS_DATA[0];
+  // استخدام السجل الموحد — المرجع الوحيد للحقيقة
+  const DOCS_DATA = ORIENTALIST_REFS;
+  const currentDoc = DOCS_DATA.find((d) => d.id === selectedRefDoc) ?? DOCS_DATA[0];
 
   return (
     <footer className="bg-[#0a0705] border-t border-brass/15 py-12 px-6 relative z-10 text-center">
@@ -163,7 +88,7 @@ export function Footer({ scrollToSection }: FooterProps) {
                           وث
                         </div>
                         <div>
-                          <h4 className="font-serif text-sm font-semibold">{item.name}</h4>
+                          <h4 className="font-serif text-sm font-semibold">{item.shortName}</h4>
                           <span className="text-[10px] text-sand-dim/60 font-mono block mt-0.5">{item.code}</span>
                         </div>
                       </div>
@@ -221,7 +146,7 @@ export function Footer({ scrollToSection }: FooterProps) {
                     {/* Action controllers */}
                     <div className="mt-6 pt-4 border-t border-amber-950/10 flex justify-between items-center text-xs">
                       <div className="flex items-center gap-1 text-amber-900/70">
-                        <span className="font-semibold text-[10px] font-mono">{currentDoc.stamp}</span>
+                        <span className="font-semibold text-[10px] font-mono">{currentDoc.archive}</span>
                       </div>
                       <button
                         onClick={() => setIsRefDocZoomed(true)}
@@ -237,11 +162,15 @@ export function Footer({ scrollToSection }: FooterProps) {
             ) : (
               <div id="traditional-panel" role="tabpanel">
                 <ol className="space-y-4 text-right">
-                  <li className="relative pr-12 pl-4 py-3 bg-ink-2 border border-brass/15 rounded-xl text-sand text-sm leading-relaxed">
-                    <span className="absolute top-3.5 right-4 w-6 h-6 rounded-lg bg-brass/15 text-brass-lt border border-brass/20 flex items-center justify-center font-kufi text-xs">١</span>
-                    محمد بن عبد الله آل زلفة، «التجهيزات العسكرية والاقتصادية أثناء ضمّ منطقة القصيم لحكم الملك عبد العزيز في عام 1321–1322هـ».
-                    <span className="block text-sand-dim text-xs mt-1">دار بلاد العرب للنشر والتوزيع، الرياض، الطبعة الأولى 2014م.</span>
-                  </li>
+                  {LOCAL_REFS.map((ref, i) => (
+                    <li key={ref.id} className="relative pr-12 pl-4 py-3 bg-ink-2 border border-brass/15 rounded-xl text-sand text-sm leading-relaxed">
+                      <span className="absolute top-3.5 right-4 w-6 h-6 rounded-lg bg-brass/15 text-brass-lt border border-brass/20 flex items-center justify-center font-kufi text-xs">
+                        {['١','٢','٣','٤','٥'][i] ?? i + 1}
+                      </span>
+                      {ref.author}، {ref.bookTitle}، الصفحات: {ref.pages}.
+                      <span className="block text-sand-dim text-xs mt-1">{ref.publisher}، الطبعة الأولى {ref.year}.</span>
+                    </li>
+                  ))}
                   <li className="relative pr-12 pl-4 py-3 bg-ink-2 border border-brass/15 rounded-xl text-sand text-sm leading-relaxed">
                     <span className="absolute top-3.5 right-4 w-6 h-6 rounded-lg bg-brass/15 text-brass-lt border border-brass/20 flex items-center justify-center font-kufi text-xs">٢</span>
                     ماكس فون أوبنهايم، «البدو» (شمال ووسط الجزيرة العربية والعراق الجنوبي).
@@ -412,7 +341,7 @@ export function Footer({ scrollToSection }: FooterProps) {
               </div>
               <div>
                 <span className="text-amber-800/60 font-kufi block">جهة الحفظ والتوثيق:</span>
-                <span className="font-bold text-amber-900 font-serif text-[11px] leading-tight">{currentDoc.stamp}</span>
+                <span className="font-bold text-amber-900 font-serif text-[11px] leading-tight">{currentDoc.archive}</span>
               </div>
             </div>
 

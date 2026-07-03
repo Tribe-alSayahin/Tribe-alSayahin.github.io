@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;600;700;800&family=Reem+Kufi:wght@400;500;600;700&display=swap');
+/* الخطوط محمّلة مسبقاً في index.html عبر Google Fonts — لا داعي لإعادة تحميلها هنا */
 @import "tailwindcss";
 @import "./styles/design-tokens.css";
 
