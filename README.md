@@ -30,7 +30,13 @@ npm run dev        # خادم التطوير على http://localhost:3000
 
 ## النشر
 
-يُنشر الموقع تلقائياً إلى GitHub Pages عبر GitHub Actions عند كل دفع إلى الفرع `main` (انظر `.github/workflows/deploy.yml`). النسخة المنشورة ثابتة بالكامل.
+إعداد GitHub Pages الحالي ينشر محتوى مجلد `docs/` من الفرع `main` مباشرة، لذا يجب إعادة البناء وتحديث المجلد عند كل تعديل:
+
+```bash
+npm run build:pages && rm -rf docs && cp -r dist docs && touch docs/.nojekyll
+```
+
+**الأفضل:** تحويل مصدر النشر إلى GitHub Actions من إعدادات المستودع (Settings ← Pages ← Source ← GitHub Actions)؛ عندها يبني الموقع تلقائياً عند كل دفع عبر `.github/workflows/deploy.yml` ويمكن حذف مجلد `docs/` نهائياً.
 
 ## بنية المشروع
 
