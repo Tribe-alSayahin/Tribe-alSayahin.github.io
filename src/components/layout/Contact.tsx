@@ -73,7 +73,7 @@ export function Contact() {
               <input
                 id="contact-email"
                 type="email"
-                placeholder="example@email.com"
+                placeholder="أدخل بريدك الإلكتروني"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3.5 rounded-xl border border-brass/20 bg-ink text-sand placeholder-[#7d7259] focus:outline-none focus:border-brass focus:ring-2 focus:ring-brass/15 transition-all text-base ltr focus-visible:ring-2 focus-visible:ring-brass"

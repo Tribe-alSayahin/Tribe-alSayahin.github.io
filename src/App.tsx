@@ -99,7 +99,7 @@ export default function App() {
 
   // Track active section on scroll
   useEffect(() => {
-    const sections = ['home', 'lineage', 'constellation', 'map', 'gallery', 'compass', 'wasm', 'poetry', 'archive', 'timeline', 'supporters'];
+    const sections = ['home', 'lineage', 'constellation', 'map', 'gallery', 'compass', 'wasm', 'poetry', 'archive', 'timeline', 'supporters', 'contact'];
     const handleScroll = () => {
       const scrollPos = window.scrollY + 120;
       for (const sectionId of sections) {

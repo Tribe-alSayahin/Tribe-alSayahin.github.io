@@ -1,4 +1,4 @@
-import { Sparkles, Hammer } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import DuneSilhouette from '../DuneSilhouette';
 
 interface HeroProps {
@@ -17,14 +17,6 @@ export function Hero({ scrollToSection }: HeroProps) {
         style={{ backgroundImage: 'var(--sadu)', backgroundSize: '88px 52px' }}
         aria-hidden="true"
       />
-
-      {/* Under-construction notice */}
-      <div className="absolute top-[84px] inset-x-0 z-30 flex justify-center px-4">
-        <div className="flex items-center gap-2 bg-brass/10 border border-brass/30 backdrop-blur-sm rounded-full px-4 py-1.5 text-xs font-kufi font-semibold text-brass-lt shadow-glow-sm">
-          <Hammer className="w-3.5 h-3.5 animate-pulse" aria-hidden="true" />
-          <span>الموقع تحت الإنشاء — نعمل على استكمال المحتوى والتوثيق</span>
-        </div>
-      </div>
 
       {/* Ghost Background Folio Number Motif */}
       <div className="absolute right-4 md:right-12 top-[120px] text-[10rem] md:text-[18rem] font-serif font-extrabold text-brass/[0.03] select-none pointer-events-none leading-none">

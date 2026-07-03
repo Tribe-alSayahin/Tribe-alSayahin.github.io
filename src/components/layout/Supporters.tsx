@@ -124,8 +124,8 @@ export function Supporters() {
                   <span className="inline-block px-3 py-0.5 rounded-full text-brass-lt font-kufi text-[10px] font-bold tracking-wider border border-brass/20 bg-brass/5">
                     إدارة وبناء المنصة الموثقة
                   </span>
-                  <span className="block text-[10px] text-sand-dim/60 font-mono mt-0.5 uppercase tracking-wider">
-                    General Supervisor / المشرف العام
+                  <span className="block text-[10px] text-sand-dim/60 font-kufi mt-0.5 tracking-wider">
+                    المشرف العام
                   </span>
                 </div>
               </div>
@@ -165,8 +165,8 @@ export function Supporters() {
                   <span className="inline-block px-3 py-0.5 rounded-full text-brass-lt font-kufi text-[10px] font-bold tracking-wider border border-brass/20 bg-brass/5">
                     تصميم وتطوير البوابة الرقمية
                   </span>
-                  <span className="block text-[10px] text-sand-dim/60 font-mono mt-0.5 uppercase tracking-wider">
-                    Creative Director / المشرف الفني
+                  <span className="block text-[10px] text-sand-dim/60 font-kufi mt-0.5 tracking-wider">
+                    المشرف الفني
                   </span>
                 </div>
               </div>
@@ -206,7 +206,7 @@ export function Supporters() {
               <p className="text-xs text-sand-dim/90 leading-relaxed font-sans flex gap-2 items-start">
                 <HeartHandshake className="w-4 h-4 text-brass-lt shrink-0 mt-0.5" />
                 <span>
-                  <strong className="text-brass-lt font-kufi">ملاحظة تنظيمية:</strong> تم إدراج أسماء ونماذج مؤقتة للداعمين أعلاه كخطوة تنظيمية أولى. نرحب بتزويدنا بالقائمة المعتمدة وصور الداعمين والجهات الكريمة لتحديثها في الألواح مباشرة، مع إمكانية تصنيف الرعاية لمستويات ذهبية وفضية تليق بكرم الداعمين.
+                  <strong className="text-brass-lt font-kufi">ملاحظة تنظيمية:</strong> يرجى تزويد إدارة الموقع بالقائمة المعتمدة للداعمين وصور الجهات الكريمة لاعتمادها رسمياً ضمن لوحة التكريم.
                 </span>
               </p>
             </div>

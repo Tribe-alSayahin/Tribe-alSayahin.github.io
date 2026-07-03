@@ -32,6 +32,7 @@ export function Navbar({
     { id: 'archive', label: 'الأرشيف' },
     { id: 'timeline', label: 'التاريخ' },
     { id: 'supporters', label: 'الداعمين' },
+    { id: 'contact', label: 'تواصل' },
   ];
 
   const handleNavigate = (id: string) => {
