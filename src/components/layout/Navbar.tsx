@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { MobileMenu } from './MobileMenu';
@@ -90,13 +91,20 @@ export function Navbar({
                 e.preventDefault();
                 handleNavigate(link.id);
               }}
-              className={`px-3 py-1.5 rounded-full font-semibold text-xs md:text-sm transition-all focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none ${
+              className={`relative px-3 py-1.5 rounded-full font-semibold text-xs md:text-sm transition-colors focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none ${
                 activeSection === link.id
-                  ? 'text-brass-lt bg-brass/15'
+                  ? 'text-brass-lt'
                   : 'text-sand-dim hover:text-brass-lt hover:bg-brass/10'
               }`}
             >
-              {link.label}
+              {activeSection === link.id && (
+                <motion.span
+                  layoutId="nav-active-pill"
+                  className="absolute inset-0 bg-brass/15 rounded-full -z-10"
+                  transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                />
+              )}
+              <span className="relative">{link.label}</span>
             </a>
           ))}
         </nav>

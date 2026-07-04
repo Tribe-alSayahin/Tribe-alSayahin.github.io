@@ -1,6 +1,7 @@
-import { Sparkles } from 'lucide-react';
+import { Sparkles, ScrollText, Compass } from 'lucide-react';
 import DuneSilhouette from '../DuneSilhouette';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { Button } from '../ui/Button';
 
 interface HeroProps {
   scrollToSection: (id: string) => void;
@@ -108,18 +109,22 @@ export function Hero({ scrollToSection }: HeroProps) {
           </p>
 
           <div className="flex gap-4 flex-wrap">
-            <button
+            <Button
+              variant="primary"
+              size="lg"
               onClick={() => scrollToSection('lineage')}
-              className="px-8 py-3.5 rounded-full font-bold text-base bg-gradient-to-r from-brass to-brass-lt text-ink hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(212,175,55,0.35)] active:scale-95 transition-all duration-300 cursor-pointer focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
             >
+              <ScrollText className="w-4 h-4" aria-hidden="true" />
               ديوان نسب القبيلة
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="secondary"
+              size="lg"
               onClick={() => scrollToSection('map')}
-              className="px-8 py-3.5 rounded-full font-bold text-base border-2 border-brass/35 text-brass-lt hover:bg-brass/10 hover:-translate-y-1 active:scale-95 transition-all duration-300 cursor-pointer focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
             >
+              <Compass className="w-4 h-4" aria-hidden="true" />
               استكشاف ديار القبيلة
-            </button>
+            </Button>
           </div>
         </div>
       </div>
