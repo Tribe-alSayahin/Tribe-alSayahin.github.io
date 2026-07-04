@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { NAV_LINKS } from '../../lib/navigation';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -44,22 +45,6 @@ export function MobileMenu({ isOpen, onClose, onNavigate, activeSection }: Mobil
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  const navLinks = [
-    { id: 'home', label: 'الرئيسية' },
-    { id: 'jathum', label: 'هجرة الجثوم' },
-    { id: 'lineage', label: 'النسب' },
-    { id: 'constellation', label: 'الأنساب' },
-    { id: 'map', label: 'الديار' },
-    { id: 'gallery', label: 'التراث' },
-    { id: 'compass', label: 'الفلك' },
-    { id: 'wasm', label: 'الوسم' },
-    { id: 'poetry', label: 'الشعر' },
-    { id: 'archive', label: 'الأرشيف' },
-    { id: 'timeline', label: 'التاريخ' },
-    { id: 'supporters', label: 'الداعمين' },
-    { id: 'contact', label: 'تواصل' },
-  ];
-
   return (
     <div
       ref={menuRef}
@@ -69,9 +54,12 @@ export function MobileMenu({ isOpen, onClose, onNavigate, activeSection }: Mobil
       }`}
       role="dialog"
       aria-modal="true"
-      aria-label="قائمة التنقل للهواتف"
+      aria-labelledby="mobile-navigation-title"
     >
-      {navLinks.map((link) => (
+      <h2 id="mobile-navigation-title" className="w-full text-center text-xs font-kufi text-brass-lt/90 pb-2 border-b border-brass/10 mb-2">
+        التنقل السريع
+      </h2>
+      {NAV_LINKS.map((link) => (
         <a
           key={link.id}
           href={`#${link.id}`}

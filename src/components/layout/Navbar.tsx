@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { MobileMenu } from './MobileMenu';
+import { NAV_LINKS } from '../../lib/navigation';
 
 interface NavbarProps {
   isScrolled: boolean;
@@ -20,22 +21,6 @@ export function Navbar({
   activeSection,
 }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const navLinks = [
-    { id: 'home', label: 'الرئيسية' },
-    { id: 'jathum', label: 'الجثوم' },
-    { id: 'lineage', label: 'النسب' },
-    { id: 'constellation', label: 'الأنساب' },
-    { id: 'map', label: 'الديار' },
-    { id: 'gallery', label: 'التراث' },
-    { id: 'compass', label: 'الفلك' },
-    { id: 'wasm', label: 'الوسم' },
-    { id: 'poetry', label: 'الشعر' },
-    { id: 'archive', label: 'الأرشيف' },
-    { id: 'timeline', label: 'التاريخ' },
-    { id: 'supporters', label: 'الداعمين' },
-    { id: 'contact', label: 'تواصل' },
-  ];
 
   const handleNavigate = (id: string) => {
     setIsMenuOpen(false);
@@ -83,7 +68,7 @@ export function Navbar({
 
         {/* Desktop Links */}
         <nav className="hidden lg:flex items-center gap-1" aria-label="التنقل الرئيسي">
-          {navLinks.map((link) => (
+          {NAV_LINKS.map((link) => (
             <a
               key={link.id}
               href={`#${link.id}`}
@@ -117,8 +102,9 @@ export function Navbar({
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 text-brass-lt bg-transparent border-0 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-full cursor-pointer"
-            aria-label="افتتاح القائمة"
+            aria-label={isMenuOpen ? 'إغلاق القائمة' : 'فتح القائمة'}
             aria-expanded={isMenuOpen}
+            aria-controls="mobile-navigation-menu"
           >
             {isMenuOpen ? (
               <X className="w-6 h-6 text-brass-lt" />

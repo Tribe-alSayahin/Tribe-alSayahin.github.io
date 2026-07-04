@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { useTheme } from './hooks/useTheme';
 import { useScrollState } from './hooks/useScrollState';
 import { Navbar } from './components/layout/Navbar';
@@ -14,16 +14,20 @@ import { Contact } from './components/layout/Contact';
 import LineageTree from './components/LineageTree';
 import JathumMonument from './components/JathumMonument';
 import ConstellationDiagram from './components/ConstellationDiagram';
-import InteractiveMap from './components/InteractiveMap';
-import HeritageGallery from './components/HeritageGallery';
 import CelestialCompass from './components/CelestialCompass';
 import { WasmGallery } from './components/WasmGallery';
-import PoetryCouncil from './components/PoetryCouncil/index';
-import OppenheimArchive from './components/OppenheimArchive';
 import { ScrollFilmCanvas } from './components/ScrollFilmCanvas';
 import { NotFound } from './components/NotFound';
 import { Timeline } from './components/layout/Timeline';
 import { Supporters } from './components/layout/Supporters';
+import { NAV_LINKS } from './lib/navigation';
+
+const InteractiveMap = lazy(() => import('./components/InteractiveMap'));
+const HeritageGallery = lazy(() => import('./components/HeritageGallery'));
+const PoetryCouncil = lazy(() => import('./components/PoetryCouncil/index'));
+const OppenheimArchive = lazy(() => import('./components/OppenheimArchive'));
+
+const SECTION_IDS = NAV_LINKS.map((link) => link.id);
 
 export default function App() {
   const { theme, toggleTheme } = useTheme();
@@ -100,10 +104,9 @@ export default function App() {
 
   // Track active section on scroll
   useEffect(() => {
-    const sections = ['home', 'jathum', 'lineage', 'constellation', 'map', 'gallery', 'compass', 'wasm', 'poetry', 'archive', 'timeline', 'supporters', 'contact'];
     const handleScroll = () => {
       const scrollPos = window.scrollY + 120;
-      for (const sectionId of sections) {
+      for (const sectionId of SECTION_IDS) {
         const el = document.getElementById(sectionId);
         if (el) {
           const top = el.offsetTop;
@@ -116,6 +119,7 @@ export default function App() {
       }
     };
     window.addEventListener('scroll', handleScroll);
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -218,7 +222,9 @@ export default function App() {
             description="استكشف التوزيع الجغرافي لديار السياحين التاريخية، من منازلهم في نجد العذية وهجرهم المعتمدة ومناهل المياه القديمة."
           />
           <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <InteractiveMap />
+            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل قسم الديار...</div>}>
+              <InteractiveMap />
+            </Suspense>
           </div>
         </div>
       </section>
@@ -233,7 +239,9 @@ export default function App() {
             description="شواهد بصرية ومقتنيات تراثية تعكس تاريخ القبيلة العريق وصوراً من ذاكرة الصحراء والديار المأهولة."
           />
           <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <HeritageGallery />
+            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل معرض التراث...</div>}>
+              <HeritageGallery />
+            </Suspense>
           </div>
         </div>
       </section>
@@ -278,7 +286,9 @@ export default function App() {
             description="أبيات وقصائد خالدة لشعراء قبيلة السياحين تصف الشجاعة، الكرم، ومآثر الديار النجدية."
           />
           <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <PoetryCouncil />
+            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الديوان التفاعلي...</div>}>
+              <PoetryCouncil />
+            </Suspense>
           </div>
         </div>
       </section>
@@ -293,7 +303,9 @@ export default function App() {
             description="شهادات وملاحظات المستشرقين والرحالة الغربيين حول نسب وقوة ومواقف السياحين في تاريخ الجزيرة العربية."
           />
           <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <OppenheimArchive />
+            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الأرشيف الاستشراقي...</div>}>
+              <OppenheimArchive />
+            </Suspense>
           </div>
         </div>
       </section>
