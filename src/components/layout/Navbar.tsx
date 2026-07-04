@@ -22,6 +22,7 @@ export function Navbar({
 
   const navLinks = [
     { id: 'home', label: 'الرئيسية' },
+    { id: 'jathum', label: 'الجثوم' },
     { id: 'lineage', label: 'النسب' },
     { id: 'constellation', label: 'الأنساب' },
     { id: 'map', label: 'الديار' },

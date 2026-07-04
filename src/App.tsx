@@ -12,6 +12,7 @@ import { SectionHeader } from './components/layout/SectionHeader';
 import { Footer } from './components/layout/Footer';
 import { Contact } from './components/layout/Contact';
 import LineageTree from './components/LineageTree';
+import JathumMonument from './components/JathumMonument';
 import ConstellationDiagram from './components/ConstellationDiagram';
 import InteractiveMap from './components/InteractiveMap';
 import HeritageGallery from './components/HeritageGallery';
@@ -99,7 +100,7 @@ export default function App() {
 
   // Track active section on scroll
   useEffect(() => {
-    const sections = ['home', 'lineage', 'constellation', 'map', 'gallery', 'compass', 'wasm', 'poetry', 'archive', 'timeline', 'supporters', 'contact'];
+    const sections = ['home', 'jathum', 'lineage', 'constellation', 'map', 'gallery', 'compass', 'wasm', 'poetry', 'archive', 'timeline', 'supporters', 'contact'];
     const handleScroll = () => {
       const scrollPos = window.scrollY + 120;
       for (const sectionId of sections) {
@@ -162,6 +163,21 @@ export default function App() {
       <ScrollFilmCanvas />
 
       <main id="main-content">
+      {/* SECTION 0: JATHUM — THE FOUNDATION */}
+      <section id="jathum" className="section bg-ink-2 px-6 relative z-10 py-16">
+        <div className="max-w-[1160px] mx-auto">
+          <SectionHeader
+            serialNumber="٠٠"
+            badgeText="الأساس والمنطلق"
+            title="هجرة الجثوم — أساس الديار"
+            description="قبل كل الأقسام تأتي الجثوم: أول هجرة رسمية أسسها السياحين في عالية نجد، ومنها انطلق الاستقرار والتحضر وامتدت بقية الديار."
+          />
+          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
+            <JathumMonument scrollToSection={scrollToSection} />
+          </div>
+        </div>
+      </section>
+
       {/* SECTION 1: LINEAGE TREE */}
       <section id="lineage" className="section bg-ink-2 px-6 relative z-10 py-16">
         <div className="max-w-[1160px] mx-auto">

@@ -46,6 +46,7 @@ export function MobileMenu({ isOpen, onClose, onNavigate, activeSection }: Mobil
 
   const navLinks = [
     { id: 'home', label: 'الرئيسية' },
+    { id: 'jathum', label: 'هجرة الجثوم' },
     { id: 'lineage', label: 'النسب' },
     { id: 'constellation', label: 'الأنساب' },
     { id: 'map', label: 'الديار' },
