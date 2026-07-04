@@ -10,11 +10,24 @@ export const Card: React.FC<CardProps> = ({
   hoverGlow = true,
   ...props
 }) => {
-  const baseClasses = 'bg-ink-2/60 border border-brass/15 rounded-2xl p-space-6 transition-all duration-base ease-brand text-right';
+  const baseClasses = 'group relative bg-ink-2/60 border border-brass/15 rounded-2xl p-space-6 transition-all duration-base ease-brand text-right';
   const glowClasses = hoverGlow ? 'shadow-glow-sm hover:shadow-glow-md hover:border-brass/40 hover:-translate-y-0.5' : '';
-  
+
   return (
     <div className={`${baseClasses} ${glowClasses} ${className}`} {...props}>
+      {hoverGlow && (
+        <>
+          {/* Decorative brass corner brackets, revealed on hover */}
+          <span
+            className="absolute top-2 right-2 w-4 h-4 border-t border-r border-brass/60 rounded-tr-md opacity-0 -translate-y-1 translate-x-1 transition-all duration-base ease-brand group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 pointer-events-none"
+            aria-hidden="true"
+          />
+          <span
+            className="absolute bottom-2 left-2 w-4 h-4 border-b border-l border-brass/60 rounded-bl-md opacity-0 translate-y-1 -translate-x-1 transition-all duration-base ease-brand group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 pointer-events-none"
+            aria-hidden="true"
+          />
+        </>
+      )}
       {children}
     </div>
   );
