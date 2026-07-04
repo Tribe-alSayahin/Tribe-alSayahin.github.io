@@ -1,7 +1,11 @@
 import { Sparkles, ScrollText, Compass } from 'lucide-react';
+import { motion } from 'motion/react';
 import DuneSilhouette from '../DuneSilhouette';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { Button } from '../ui/Button';
+
+/* مسار وسم «الباب الأصيل» المرجعي لقبيلة السياحين (متوافق مع WasmGallery) */
+const WASM_PATH = 'M55,160 L55,60 L145,60 L145,160';
 
 interface HeroProps {
   scrollToSection: (id: string) => void;
@@ -27,7 +31,7 @@ export function Hero({ scrollToSection }: HeroProps) {
       </div>
 
       <div className="max-w-[1160px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-20 flex-grow">
-        {/* Right: Elaborate Astrolabe Constellation Illustration (Renders first in RTL layout on the right) */}
+        {/* Right: Animated Tribal Wasm (Brand Mark) Illustration (Renders first in RTL layout on the right) */}
         <div className="lg:col-span-5 flex justify-center items-center relative min-h-[360px] md:min-h-[460px] order-1 lg:order-2">
           <div className="relative w-80 h-80 md:w-96 md:h-96 flex items-center justify-center">
             {/* Outer Brass Engraved Ring */}
@@ -42,30 +46,39 @@ export function Hero({ scrollToSection }: HeroProps) {
               ))}
             </div>
 
-            {/* Medium Indigo Starry Celestial Plate */}
-            <div className={`absolute w-[270px] h-[270px] md:w-[320px] md:h-[320px] rounded-full border border-indigo/40 bg-[#162435]/35 shadow-[inset_0_0_30px_rgba(58,88,114,0.4)] flex items-center justify-center ${prefersReduced ? '' : 'animate-[spin_90s_linear_infinite_reverse]'}`}>
+            {/* Medium Indigo Plate carrying the animated tribal Wasm mark */}
+            <div className="absolute w-[270px] h-[270px] md:w-[320px] md:h-[320px] rounded-full border border-indigo/40 bg-[#162435]/35 shadow-[inset_0_0_30px_rgba(58,88,114,0.4)] flex items-center justify-center">
               {/* Grid pattern overlay */}
               <div className="absolute inset-0 bg-grid-pattern opacity-15 rounded-full" />
 
-              {/* Seven Lineage Names as Stars in an Arc */}
-              <svg className="absolute inset-0 w-full h-full p-6 pointer-events-none" viewBox="0 0 100 100">
-                {/* Glowing Connection lines */}
-                <path
-                  d="M 90,80 Q 75,50 50,45 T 10,20"
-                  fill="none"
+              {/* Animated Wasm (Tribal Brand Mark) — «الباب الأصيل» */}
+              <svg
+                className="w-[62%] h-[62%] drop-shadow-[0_0_14px_rgba(212,175,55,0.55)]"
+                viewBox="0 0 200 200"
+                fill="none"
+                aria-hidden="true"
+              >
+                <motion.path
+                  d={WASM_PATH}
                   stroke="#ebd481"
-                  strokeWidth="0.75"
-                  strokeDasharray="2,2"
-                  opacity="0.6"
+                  strokeWidth="12"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  initial={prefersReduced ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0.4 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  transition={prefersReduced ? { duration: 0 } : { duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
                 />
-                {/* 7 Lineage Stars */}
-                <circle cx="90" cy="80" r="2.5" fill="#d4af37" className={prefersReduced ? '' : 'animate-pulse'} />
-                <circle cx="77" cy="65" r="2" fill="#ebd481" />
-                <circle cx="63" cy="54" r="2" fill="#ebd481" />
-                <circle cx="50" cy="45" r="3" fill="#ebd481" className={prefersReduced ? '' : 'animate-pulse'} />
-                <circle cx="36" cy="35" r="2.2" fill="#ebd481" />
-                <circle cx="22" cy="27" r="2" fill="#ebd481" />
-                <circle cx="10" cy="20" r="3" fill="#ebd481" className={prefersReduced ? '' : 'animate-pulse'} />
+                {!prefersReduced && (
+                  <motion.path
+                    d={WASM_PATH}
+                    stroke="#d4af37"
+                    strokeWidth="12"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    animate={{ opacity: [0.35, 0.85, 0.35] }}
+                    transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 2.2 }}
+                  />
+                )}
               </svg>
             </div>
 
@@ -73,9 +86,6 @@ export function Hero({ scrollToSection }: HeroProps) {
             <div className="absolute w-12 h-12 rounded-full bg-gradient-to-br from-brass to-brass-lt border-2 border-sand shadow-[0_0_20px_rgba(212,175,55,0.7)] flex items-center justify-center z-20">
               <div className={`w-2.5 h-2.5 rounded-full bg-ink ${prefersReduced ? '' : 'animate-ping'}`} />
             </div>
-
-            {/* Rotating Alidade Pointer (Brass Rule) */}
-            <div className={`absolute w-1 h-[310px] md:h-[370px] bg-gradient-to-b from-transparent via-brass/80 to-transparent rounded-full rotate-45 ${prefersReduced ? '' : 'animate-[spin_45s_linear_infinite]'}`} />
 
             {/* Surrounding constellation decorative glow */}
             <div className="absolute -inset-10 bg-radial from-brass/5 to-transparent blur-2xl rounded-full pointer-events-none" />
