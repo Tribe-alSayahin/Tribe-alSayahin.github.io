@@ -152,15 +152,6 @@ export const LINEAGE_DATA: TreeNode[] = [
     note: 'ابن الشيخ فرج بن مسيلم المذكور في المصادر الألمانية.' 
   },
   { 
-    id: 'oqab', 
-    name: 'الشيخ عقاب بن فرج بن مسيلم', 
-    parent_id: 'faraj_mosailem', 
-    level: 4, 
-    source: 'عالية نجد لابن جنيدل ص354، الجريدة الرسمية أم القرى', 
-    reliability: 1, 
-    note: 'مؤسس ورئيس مركز الجثوم الحالي مكملاً لمسيرة والده ورسول السلام.' 
-  },
-  { 
     id: 'aweishiz', 
     name: 'ذوي عويشز', 
     parent_id: 'zamayemah', 
