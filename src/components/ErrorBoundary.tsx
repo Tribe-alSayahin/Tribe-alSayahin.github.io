@@ -42,7 +42,7 @@ export class ErrorBoundary extends (Component as any)<Props, State> {
             gap: '20px',
             background: 'radial-gradient(ellipse at 50% 0%, #101824 0%, #0c0905 45%, #070503 100%)',
             color: '#fcf8f0',
-            fontFamily: "'Cairo', sans-serif",
+            fontFamily: "'Tajawal', sans-serif",
             textAlign: 'center',
             padding: '24px',
           }}
@@ -52,7 +52,7 @@ export class ErrorBoundary extends (Component as any)<Props, State> {
             <path d="M55 170 V50 H145 V170" />
           </svg>
 
-          <h1 style={{ fontFamily: "'Aref Ruqaa', serif", color: '#ebd481', fontSize: '26px', fontWeight: 700 }}>
+          <h1 style={{ fontFamily: "'Amiri', serif", color: '#ebd481', fontSize: '26px', fontWeight: 700 }}>
             قبيلة السياحين
           </h1>
 
@@ -69,7 +69,7 @@ export class ErrorBoundary extends (Component as any)<Props, State> {
               border: '1px solid #d4af37',
               borderRadius: '8px',
               color: '#d4af37',
-              fontFamily: "'Cairo', sans-serif",
+              fontFamily: "'Tajawal', sans-serif",
               fontSize: '14px',
               cursor: 'pointer',
               letterSpacing: '0.5px',
