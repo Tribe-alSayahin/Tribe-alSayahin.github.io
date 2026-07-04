@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  GitMerge, Search, SlidersHorizontal, BookOpenCheck, Scale 
+  GitMerge, Search, SlidersHorizontal, BookOpenCheck 
 } from 'lucide-react';
 import { TreeNode } from './LineageTree.types';
 import { LINEAGE_DATA } from './LineageTree.data';
 import { DetailPanel } from './subcomponents/DetailPanel';
 import { ReliabilityRegister } from './subcomponents/ReliabilityRegister';
-import { ConflictDashboard } from './subcomponents/ConflictDashboard';
 import { TreeHierarchy } from './subcomponents/TreeHierarchy';
 
 export default function LineageTree() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState<'tree' | 'sources' | 'conflicts'>('tree');
+  const [activeTab, setActiveTab] = useState<'tree' | 'sources'>('tree');
   const [selectedNode, setSelectedNode] = useState<TreeNode | null>(LINEAGE_DATA[0]);
   const [reliabilityFilter, setReliabilityFilter] = useState<number | null>(null);
 
@@ -67,17 +66,6 @@ export default function LineageTree() {
           >
             <BookOpenCheck className="w-4 h-4" />
             سجل الموثوقية والمصادر
-          </button>
-          <button
-            onClick={() => setActiveTab('conflicts')}
-            className={`flex-1 md:flex-none px-4 py-2 rounded-lg text-xs transition-all flex items-center justify-center gap-2 cursor-pointer ${
-              activeTab === 'conflicts'
-                ? 'bg-brass text-ink font-bold shadow-md'
-                : 'text-sand-dim hover:text-sand'
-            }`}
-          >
-            <Scale className="w-4 h-4" />
-            كشف التعارضات والموازنة
           </button>
         </div>
       </div>
@@ -180,10 +168,6 @@ export default function LineageTree() {
 
         {activeTab === 'sources' && (
           <ReliabilityRegister lineageData={LINEAGE_DATA} />
-        )}
-
-        {activeTab === 'conflicts' && (
-          <ConflictDashboard />
         )}
       </AnimatePresence>
     </div>
