@@ -1,35 +1,40 @@
 ---
 name: deploy-pages
-description: نشر الموقع إلى GitHub Pages — إعادة بناء مجلد docs/ ودفعه، لأن Pages ينشر من main:/docs وليس من Actions
+description: نشر الموقع إلى GitHub Pages — تلقائي عبر GitHub Actions عند كل دفعة إلى main؛ خطوات التحقق بعد النشر
 ---
 
 # نشر الموقع إلى GitHub Pages
 
-إعداد Pages الحالي: "Deploy from a branch" → `main:/docs`. الـ workflow في
-`.github/workflows/deploy.yml` يعمل لكن نتيجته **تُتجاهل**؛ ما يُنشر فعلياً هو محتوى `docs/`.
+إعداد Pages الحالي (منذ 2026-07-04): **GitHub Actions**. كل دفعة إلى `main` تشغّل
+`.github/workflows/deploy.yml` الذي يفحص الأنواع (`npm run lint`) ثم يبني (`npm run build:pages`)
+وينشر مجلد `dist/` تلقائياً. لا يوجد مجلد `docs/` ولا خطوات نشر يدوية.
 
 ## خطوات النشر
 
-1. تحقق قبل البناء:
+1. تحقق قبل الدمج:
    ```bash
    npm run lint
-   ```
-2. ابنِ وحدّث `docs/`:
-   ```bash
    npm run build:pages
-   rm -rf docs && cp -r dist docs && touch docs/.nojekyll
    ```
-3. ادفع إلى `main` (أو افتح PR إن لم تكن هناك صلاحية كتابة مباشرة).
-4. تحقق بعد الدمج (قد يستغرق النشر ~دقيقة):
+2. ادمج التغييرات في `main` (عبر PR إن لم تكن هناك صلاحية كتابة مباشرة).
+3. تابع الـ workflow حتى ينجح (~دقيقة):
+   ```bash
+   gh run list -R Tribe-alSayahin/Tribe-alSayahin.github.io --limit 3
+   ```
+4. تحقق بعد النشر:
    ```bash
    curl -s -o /dev/null -w "%{http_code}" https://tribe-alsayahin.github.io/
-   curl -s https://tribe-alsayahin.github.io/ | grep -o '<title>[^<]*</title>'
+   curl -s https://tribe-alsayahin.github.io/ | grep -o 'assets/index-[^"]*\.js'
+   # ثم تأكد أن ملف الـ JS المذكور يعيد 200
    ```
 
 ## تنبيهات
 
-- `docs/.nojekyll` إلزامي — بدونه يعالج Jekyll الملفات ويكسر الموقع.
-- لا تعدّل ملفات `docs/` يدوياً؛ هي ناتج بناء يُستبدل بالكامل كل مرة.
+- **لا تُعِد مصدر Pages إلى "Deploy from a branch"** — هذا ما كسر الموقع في 2026-07-04:
+  Pages قدّم `index.html` المصدري (يطلب `/src/main.tsx` فيعيد 404) وبقيت شاشة التحميل تدور.
+  التشخيص السريع لهذه الحالة: `curl -s https://tribe-alsayahin.github.io/ | grep main.tsx` —
+  إن ظهر `src="/src/main.tsx"` فالمصدر خاطئ.
 - `build:pages` ينسخ `index.html` إلى `404.html` لدعم التوجيه على Pages — لا تحذفها.
-- إن حُوّل مصدر Pages مستقبلاً إلى "GitHub Actions" من إعدادات المستودع، احذف مجلد `docs/`
-  نهائياً وحدّث CLAUDE.md وREADME — يصبح النشر تلقائياً عبر الـ workflow.
+- إن علِق نشر Pages في حالة `building` طويلاً، دفعة جديدة إلى `main` تفكّه عادةً.
+- حساب `gh` المحلي (`AZIIZALOYIBI`) قراءة فقط: الدفع عبر remote ‏`fork2`
+  وإنشاء الـ PR بـ `gh api repos/.../pulls -F head_repo=AZIIZALOYIBI/tribe-alsayahin-fork`.
