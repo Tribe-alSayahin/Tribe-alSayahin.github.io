@@ -1,8 +1,10 @@
-import { Sparkles, ScrollText, Compass } from 'lucide-react';
+import { Sparkles, ScrollText, Compass, ChevronDown } from 'lucide-react';
 import { motion } from 'motion/react';
 import DuneSilhouette from '../DuneSilhouette';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { Button } from '../ui/Button';
+import { SIYAHIN_BRANCHES_DATA, POEMS_DATA } from '../PoetryCouncil/PoetryCouncil.data';
+import { LINEAGE_DATA } from '../LineageTree/LineageTree.data';
 
 /* مسار وسم «الباب الأصيل» المرجعي لقبيلة السياحين (متوافق مع WasmGallery) */
 const WASM_PATH = 'M55,160 L55,60 L145,60 L145,160';
@@ -10,6 +12,12 @@ const WASM_PATH = 'M55,160 L55,60 L145,60 L145,160';
 interface HeroProps {
   scrollToSection: (id: string) => void;
 }
+
+const HERO_STATS = [
+  { value: `${SIYAHIN_BRANCHES_DATA.length}+`, label: 'فخوذ موثقة' },
+  { value: `${LINEAGE_DATA.length}+`, label: 'أعلام في شجرة النسب' },
+  { value: `${POEMS_DATA.length}+`, label: 'قصائد وشواهد شعرية' }
+];
 
 export function Hero({ scrollToSection }: HeroProps) {
   const prefersReduced = useReducedMotion();
@@ -136,8 +144,33 @@ export function Hero({ scrollToSection }: HeroProps) {
               استكشاف ديار القبيلة
             </Button>
           </div>
+
+          {/* Quick Stats Strip */}
+          <div className="gold-hairline w-full max-w-[560px] mt-10 mb-6 mx-0" />
+          <div className="flex flex-wrap items-center justify-start gap-x-8 gap-y-4 max-w-[560px]">
+            {HERO_STATS.map((stat) => (
+              <div key={stat.label} className="text-right">
+                <p className="font-serif text-2xl md:text-3xl font-extrabold text-gold-gradient leading-none">
+                  {stat.value}
+                </p>
+                <p className="font-kufi text-[11px] md:text-xs text-sand-dim mt-1.5">
+                  {stat.label}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
+
+      {/* Scroll cue */}
+      <button
+        onClick={() => scrollToSection('lineage')}
+        className="hidden md:flex flex-col items-center gap-1 mx-auto mt-6 text-brass-lt/70 hover:text-brass-lt transition-colors duration-base relative z-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-2 focus-visible:ring-offset-ink rounded-full"
+        aria-label="التمرير لأسفل لاستكشاف الموقع"
+      >
+        <span className="font-kufi text-[10px]">تصفّح الديار</span>
+        <ChevronDown className={`w-4 h-4 ${prefersReduced ? '' : 'animate-bounce'}`} aria-hidden="true" />
+      </button>
 
       {/* Parallax Dune landscape embedded at the very bottom of Hero */}
       <div className="w-full mt-auto relative z-10">

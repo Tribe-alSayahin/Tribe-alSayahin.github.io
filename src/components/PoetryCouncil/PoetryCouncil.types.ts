@@ -6,7 +6,7 @@ export interface PoemVerse {
 export interface Poem {
   id: string;
   title: string;
-  category: 'ancients' | 'middle' | 'new';
+  category: 'ancients' | 'middle' | 'new' | 'jathum';
   categoryLabel: string;
   author: string;
   context: string;
