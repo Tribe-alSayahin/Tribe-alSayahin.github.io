@@ -139,8 +139,8 @@ export default function App() {
     <div className="min-h-screen bg-ink text-sand select-none relative overflow-x-hidden font-sans">
       {/* BACKGROUND GRAPHICS */}
       <div className="absolute top-0 inset-x-0 h-screen pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[680px] h-[680px] rounded-full bg-radial from-brass/15 to-transparent blur-3xl" />
-        <div className="absolute top-[20%] left-[10%] w-[500px] h-[500px] rounded-full bg-radial from-olive-2/10 to-transparent blur-3xl" />
+        <div className="absolute top-[-12%] left-1/2 -translate-x-1/2 w-[720px] h-[720px] rounded-full bg-radial from-indigo/40 to-transparent blur-3xl" />
+        <div className="absolute top-[12%] right-[6%] w-[420px] h-[420px] rounded-full bg-radial from-brass/8 to-transparent blur-3xl" />
       </div>
 
       {/* Skip to main content - for keyboard/screen-reader users */}
@@ -168,7 +168,7 @@ export default function App() {
 
       <main id="main-content">
       {/* SECTION 0: JATHUM — THE FOUNDATION */}
-      <section id="jathum" className="section bg-ink-2 px-6 relative z-10 py-16">
+      <section id="jathum" className="section bg-ink-2 px-6 relative z-10 py-20 md:py-28">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠٠"
@@ -183,7 +183,7 @@ export default function App() {
       </section>
 
       {/* SECTION 1: LINEAGE TREE */}
-      <section id="lineage" className="section bg-ink-2 px-6 relative z-10 py-16">
+      <section id="lineage" className="section bg-ink-2 px-6 relative z-10 py-20 md:py-28">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠١"
@@ -198,7 +198,7 @@ export default function App() {
       </section>
 
       {/* SECTION 2: CONSTELLATION DIAGRAM */}
-      <section id="constellation" className="section bg-ink px-6 relative z-10 py-16">
+      <section id="constellation" className="section bg-ink px-6 relative z-10 py-20 md:py-28">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠٢"
@@ -213,7 +213,7 @@ export default function App() {
       </section>
 
       {/* SECTION 3: INTERACTIVE MAP */}
-      <section id="map" className="section bg-ink-2 px-6 relative z-10 py-16">
+      <section id="map" className="section bg-ink-2 px-6 relative z-10 py-20 md:py-28">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠٣"
@@ -230,7 +230,7 @@ export default function App() {
       </section>
 
       {/* SECTION 4: HERITAGE GALLERY */}
-      <section id="gallery" className="section bg-ink px-6 relative z-10 py-16">
+      <section id="gallery" className="section bg-ink px-6 relative z-10 py-20 md:py-28">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠٤"
@@ -247,7 +247,7 @@ export default function App() {
       </section>
 
       {/* SECTION 5: CELESTIAL COMPASS */}
-      <section id="compass" className="section bg-ink-2 px-6 relative z-10 py-16">
+      <section id="compass" className="section bg-ink-2 px-6 relative z-10 py-20 md:py-28">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠٥"
@@ -262,7 +262,7 @@ export default function App() {
       </section>
 
       {/* SECTION 6: WASM GALLERY */}
-      <section id="wasm" className="section bg-ink px-6 relative z-10 py-16">
+      <section id="wasm" className="section bg-ink px-6 relative z-10 py-20 md:py-28">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠٦"
@@ -277,7 +277,7 @@ export default function App() {
       </section>
 
       {/* SECTION 7: POETRY COUNCIL */}
-      <section id="poetry" className="section bg-ink-2 px-6 relative z-10 py-16">
+      <section id="poetry" className="section bg-ink-2 px-6 relative z-10 py-20 md:py-28">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠٧"
@@ -294,7 +294,7 @@ export default function App() {
       </section>
 
       {/* SECTION 8: OPPENHEIM ARCHIVE */}
-      <section id="archive" className="section bg-ink px-6 relative z-10 py-16">
+      <section id="archive" className="section bg-ink px-6 relative z-10 py-20 md:py-28">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠٨"

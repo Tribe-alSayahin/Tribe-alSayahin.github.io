@@ -17,7 +17,9 @@ export function Footer({ scrollToSection }: FooterProps) {
   const currentDoc = DOCS_DATA.find((d) => d.id === selectedRefDoc) ?? DOCS_DATA[0];
 
   return (
-    <footer className="bg-[#0a0705] border-t border-brass/15 py-12 px-6 relative z-10 text-center">
+    <footer className="bg-ink-2 border-t border-brass/15 py-14 px-6 relative z-10 text-center">
+      {/* شريط سدو زخرفي أعلى التذييل */}
+      <div className="section-divider absolute top-0 inset-x-0 -translate-y-1/2" aria-hidden="true" />
       <div className="max-w-[1160px] mx-auto">
         {/* REFERENCES & ILLUSTRATED ARCHIVE */}
         <div className="max-w-[960px] mx-auto mb-14 pb-12 border-b border-brass/15 text-right relative">
@@ -198,7 +200,7 @@ export function Footer({ scrollToSection }: FooterProps) {
           }}
           className="logo flex items-center justify-center gap-3 text-lg font-bold font-serif text-sand hover:text-brass-lt transition-colors mb-4 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-lg p-1 w-fit mx-auto"
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brass to-brass-lt flex items-center justify-center text-ink shadow-[0_6px_18px_rgba(201,162,39,0.35)] p-2">
+          <div className="w-10 h-10 rounded-lg border border-brass/40 bg-gradient-to-br from-brass/15 to-transparent flex items-center justify-center text-brass shadow-glow-sm p-2">
             <svg viewBox="0 0 200 200" className="w-full h-full" stroke="currentColor" strokeWidth="22" strokeLinecap="round" strokeLinejoin="round" fill="none" aria-hidden="true">
               <path d="M55,170 L55,50 L145,50 L145,170" />
             </svg>

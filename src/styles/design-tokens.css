@@ -26,9 +26,9 @@
   --space-16: 64px;
 
   /* 3. مقياس التوهج الذهبي النحاسي الموحد (Brass Glow & Shadow Scale) */
-  --glow-brass-sm: 0 2px 12px rgba(212, 175, 55, 0.15);
-  --glow-brass-md: 0 4px 24px rgba(212, 175, 55, 0.3);
-  --glow-brass-lg: 0 8px 36px rgba(212, 175, 55, 0.5);
+  --glow-brass-sm: 0 2px 12px rgba(201, 162, 75, 0.14);
+  --glow-brass-md: 0 4px 24px rgba(201, 162, 75, 0.28);
+  --glow-brass-lg: 0 8px 36px rgba(201, 162, 75, 0.45);
 
   /* 4. مقياس مدد وحركات الانتقال الموحدة (Transition Durations & Easing) */
   --duration-fast: 150ms;

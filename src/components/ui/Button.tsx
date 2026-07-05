@@ -17,8 +17,8 @@ export const Button: React.FC<ButtonProps> = ({
 
   // Variants mapping
   const variantClasses = {
-    primary: 'bg-brass hover:bg-brass-lt text-ink font-bold shadow-glow-sm hover:shadow-glow-md hover:-translate-y-0.5 active:scale-95',
-    secondary: 'border border-brass/30 bg-brass/5 hover:bg-brass/10 text-brass-lt hover:border-brass/60 hover:-translate-y-0.5',
+    primary: 'bg-gradient-to-b from-brass-lt to-brass text-ink font-bold ring-1 ring-inset ring-white/25 shadow-glow-sm hover:shadow-glow-md hover:brightness-105 hover:-translate-y-0.5 active:scale-95',
+    secondary: 'border border-brass/35 bg-brass/5 hover:bg-brass/10 text-brass-lt hover:border-brass/65 hover:-translate-y-0.5',
     ghost: 'bg-transparent text-sand hover:bg-brass/10 hover:text-brass-lt',
   };
 

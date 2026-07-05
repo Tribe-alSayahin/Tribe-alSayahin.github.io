@@ -10,8 +10,8 @@ export const Card: React.FC<CardProps> = ({
   hoverGlow = true,
   ...props
 }) => {
-  const baseClasses = 'group relative bg-ink-2/60 border border-brass/15 rounded-2xl p-space-6 transition-all duration-base ease-brand text-right';
-  const glowClasses = hoverGlow ? 'shadow-glow-sm hover:shadow-glow-md hover:border-brass/40 hover:-translate-y-0.5' : '';
+  const baseClasses = 'group relative bg-gradient-to-b from-coffee/70 to-ink-2/50 border border-brass/15 rounded-2xl p-space-6 transition-all duration-base ease-brand text-right';
+  const glowClasses = hoverGlow ? 'shadow-glow-sm hover:shadow-glow-md hover:border-brass/45 hover:-translate-y-1' : '';
 
   return (
     <div className={`${baseClasses} ${glowClasses} ${className}`} {...props}>
