@@ -49,7 +49,7 @@ export function MobileMenu({ isOpen, onClose, onNavigate, activeSection }: Mobil
     <div
       ref={menuRef}
       id="mobile-navigation-menu"
-      className={`lg:hidden absolute top-[76px] inset-x-0 bg-ink/98 border-b border-brass/20 flex flex-col items-center gap-1 p-5 transition-all duration-400 z-40 ${
+      className={`lg:hidden absolute top-[92px] inset-x-3 bg-ink/97 backdrop-blur-xl border border-brass/25 rounded-2xl shadow-[0_16px_48px_rgba(0,0,0,0.45)] flex flex-col items-center gap-1 p-5 transition-all duration-400 z-40 ${
         isOpen ? 'translate-y-0 opacity-100' : '-translate-y-[150%] opacity-0 pointer-events-none'
       }`}
       role="dialog"

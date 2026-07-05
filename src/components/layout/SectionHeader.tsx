@@ -14,36 +14,42 @@ export function SectionHeader({
   description,
 }: SectionHeaderProps) {
   return (
-    <div className="text-center mb-14 relative z-10 select-none">
-      {/* Ghost Background Folio Number Motif */}
-      <div className="absolute left-1/2 -translate-x-1/2 -top-10 text-[6rem] md:text-[9rem] font-serif font-extrabold text-brass/[0.03] select-none pointer-events-none leading-none">
+    <div className="relative z-10 mb-16 select-none text-right">
+      {/* الرقم الشبحي الكبير — يجلس في الطرف الأيسر مقابل الترويسة */}
+      <div
+        className="absolute left-0 -top-8 md:-top-14 font-ruqaa text-[7rem] md:text-[11rem] leading-none text-brass/[0.06] pointer-events-none"
+        aria-hidden="true"
+      >
         {serialNumber}
       </div>
 
       <motion.div
-        initial={{ opacity: 0, y: 15 }}
+        initial={{ opacity: 0, y: 18 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6 }}
-        className="flex flex-col items-center"
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="relative"
       >
-        <div className="flex items-center gap-3 mb-3">
-          <span className="gold-hairline w-10 md:w-16" aria-hidden="true" />
-          <span className="font-kufi text-xs text-brass-lt font-semibold tracking-wider bg-brass/5 px-4 py-1.5 rounded-full border border-brass/10">
+        {/* سطر الشارة: رقم القسم + التسمية + خط يمتد حتى نهاية السطر */}
+        <div className="flex items-center gap-4 mb-4">
+          <span
+            className="font-ruqaa text-sm text-brass border border-brass/30 rounded-md w-9 h-9 flex items-center justify-center bg-brass/5 shrink-0"
+            aria-hidden="true"
+          >
+            {serialNumber}
+          </span>
+          <span className="font-kufi text-xs md:text-sm text-brass-lt font-semibold tracking-[0.18em]">
             {badgeText}
           </span>
-          <span className="gold-hairline w-10 md:w-16" aria-hidden="true" />
+          <span className="gold-hairline-start flex-1 min-w-8 mt-0.5" aria-hidden="true" />
         </div>
-        <h2 className="text-3xl md:text-5xl font-serif text-sand mt-1 tracking-tight">
+
+        <h2 className="font-ruqaa text-3xl md:text-5xl text-sand leading-[1.55] max-w-[780px]">
           {title}
         </h2>
-        <div 
-          className="w-[84px] h-[26px] mx-auto mt-4 opacity-70 bg-repeat" 
-          style={{ backgroundImage: 'var(--sadu)', backgroundSize: '28px 20px' }}
-          aria-hidden="true"
-        />
+
         {description && (
-          <p className="max-w-[620px] mx-auto mt-4 text-sand-dim text-sm md:text-base leading-relaxed font-sans">
+          <p className="max-w-[620px] mt-4 text-sand-dim text-sm md:text-base leading-loose font-sans border-r-2 border-brass/25 pr-4">
             {description}
           </p>
         )}
