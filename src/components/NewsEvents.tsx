@@ -23,7 +23,7 @@ const TYPE_STYLES: Record<NewsEntryType, { badge: string; dot: string; label: st
   },
 };
 
-export function NewsEvents() {
+export default function NewsEvents() {
   const [filter, setFilter] = useState<FilterType>('all');
 
   const filtered = filter === 'all'
