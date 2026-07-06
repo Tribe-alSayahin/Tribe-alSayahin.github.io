@@ -1,10 +1,13 @@
 import { ScrollText, Compass, ChevronDown } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
+import { lazy, Suspense } from 'react';
 import DuneSilhouette from '../DuneSilhouette';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { Button } from '../ui/Button';
 import { SIYAHIN_BRANCHES_DATA, POEMS_DATA } from '../PoetryCouncil/PoetryCouncil.data';
 import { LINEAGE_DATA } from '../LineageTree/LineageTree.data';
+
+const DesertCinematicBackground = lazy(() => import('../DesertCinematicBackground'));
 
 /* مسار وسم «الباب الأصيل» المرجعي لقبيلة السياحين (متوافق مع WasmGallery) */
 const WASM_PATH = 'M55,160 L55,60 L145,60 L145,160';
@@ -35,11 +38,19 @@ export function Hero({ scrollToSection }: HeroProps) {
       id="home"
       className="min-h-screen flex flex-col justify-between relative overflow-hidden px-6 pt-[130px] pb-0 z-10"
     >
+      {/* عنوان للوصف SEO الداخلي */}
+      <h1 className="sr-only">الموقع الرسمي لقبيلة السياحين — إرث تالد وديار أصيلة</h1>
+      <p className="sr-only">توثيق النسب والديار والشعر والأرشيف الاستشراقي والأخبار والمناسبات</p>
       {/* سماء الليل النجدية: تدرج نيلي يهبط إلى حبر الصفحة */}
       <div
         className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_120%_80%_at_50%_-10%,var(--indigo)_0%,transparent_55%),linear-gradient(to_bottom,#0b0f17_0%,var(--ink)_100%)]"
         aria-hidden="true"
       />
+
+      {/* خلفية صحراوية سينمائية */}
+      <Suspense fallback={null}>
+        <DesertCinematicBackground />
+      </Suspense>
 
       {/* نسيج السدو الخافت */}
       <div

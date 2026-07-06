@@ -173,18 +173,6 @@ export function Footer({ scrollToSection }: FooterProps) {
                       <span className="block text-sand-dim text-xs mt-1">{ref.publisher}، الطبعة الأولى {ref.year}.</span>
                     </li>
                   ))}
-                  <li className="relative pr-12 pl-4 py-3 bg-ink-2 border border-brass/15 rounded-xl text-sand text-sm leading-relaxed">
-                    <span className="absolute top-3.5 right-4 w-6 h-6 rounded-lg bg-brass/15 text-brass-lt border border-brass/20 flex items-center justify-center font-kufi text-xs">٢</span>
-                    ماكس فون أوبنهايم، «البدو» (شمال ووسط الجزيرة العربية والعراق الجنوبي).
-                    <span className="block text-sand-dim text-xs mt-1">ترجمة محمود كبيبو، تحقيق ماجد شبر، دار الورّاق، لندن.</span>
-                  </li>
-                  <li className="relative pr-12 pl-4 py-3 bg-ink-2 border border-brass/15 rounded-xl text-sand text-sm leading-relaxed">
-                    <span className="absolute top-3.5 right-4 w-6 h-6 rounded-lg bg-brass/15 text-brass-lt border border-brass/20 flex items-center justify-center font-kufi text-xs">٣</span>
-                    موقع «عتيبة الهيلا» — منتدى ومصادر قبيلة عتيبة لتوثيق النسب والفروع والمعارك.
-                    <span className="block text-sand-dim text-xs mt-1">
-                      <a href="https://www.otaibah.net" target="_blank" rel="noopener noreferrer" className="text-brass-lt underline underline-offset-4 focus-visible:ring-1 focus-visible:ring-brass focus-visible:outline-none rounded">الموقع الرسمي لعتيبة الهيلا</a> — ومجالس السياحين الرسمية.
-                    </span>
-                  </li>
                 </ol>
               </div>
             )}

@@ -188,6 +188,24 @@ export const LOCAL_REFS: LocalReferenceEntry[] = [
     pages: 'ص ٧٥–٧٦',
     reliability: 'verified',
   },
+  {
+    id: 'oppenheim-bedouins',
+    author: 'ماكس فون أوبنهايم',
+    bookTitle: '«البدو» (شمال ووسط الجزيرة العربية والعراق الجنوبي)',
+    publisher: 'ترجمة محمود كبيبو، تحقيق ماجد شبر، دار الورّاق، لندن',
+    year: '١٩٣٩م',
+    pages: 'المجلد الثالث',
+    reliability: 'needs-review',
+  },
+  {
+    id: 'otaibah-haila',
+    author: 'موقع «عتيبة الهيلا»',
+    bookTitle: 'منتدى ومصادر قبيلة عتيبة لتوثيق النسب والفروع والمعارك',
+    publisher: 'متاح على الإنترنت',
+    year: 'مستمر',
+    pages: '—',
+    reliability: 'needs-review',
+  },
 ];
 
 /**

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense, useCallback } from 'react';
 import { useTheme } from './hooks/useTheme';
 import { useScrollState } from './hooks/useScrollState';
 import { Navbar } from './components/layout/Navbar';
@@ -12,11 +12,10 @@ import { SectionHeader } from './components/layout/SectionHeader';
 import { Footer } from './components/layout/Footer';
 import { Contact } from './components/layout/Contact';
 import LineageTree from './components/LineageTree';
-import JathumMonument from './components/JathumMonument';
-import ConstellationDiagram from './components/ConstellationDiagram';
-import CelestialCompass from './components/CelestialCompass';
-import { WasmGallery } from './components/WasmGallery';
-import { ScrollFilmCanvas } from './components/ScrollFilmCanvas';
+const JathumMonument = lazy(() => import('./components/JathumMonument'));
+const ConstellationDiagram = lazy(() => import('./components/ConstellationDiagram'));
+const CelestialCompass = lazy(() => import('./components/CelestialCompass'));
+const WasmGallery = lazy(() => import('./components/WasmGallery'));
 import { NotFound } from './components/NotFound';
 import { Timeline } from './components/layout/Timeline';
 import { Supporters } from './components/layout/Supporters';
@@ -27,6 +26,7 @@ const HeritageGallery = lazy(() => import('./components/HeritageGallery'));
 const PoetryCouncil = lazy(() => import('./components/PoetryCouncil/index'));
 const OppenheimArchive = lazy(() => import('./components/OppenheimArchive'));
 const NewsEvents = lazy(() => import('./components/NewsEvents'));
+const ScrollFilmCanvas = lazy(() => import('./components/ScrollFilmCanvas'));
 
 const SECTION_IDS = NAV_LINKS.map((link) => link.id);
 
@@ -60,7 +60,7 @@ export default function App() {
     return false;
   });
 
-  const handleBackToHome = () => {
+  const handleBackToHome = useCallback(() => {
     if (typeof window !== 'undefined') {
       const hostname = window.location.hostname;
       const isGitHubPages = hostname.endsWith('github.io');
@@ -78,7 +78,14 @@ export default function App() {
       window.history.pushState({}, '', homePath);
     }
     setIsNotFound(false);
-  };
+  }, []);
+
+  const scrollToSection = useCallback((id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
 
   // Intersection Observer for scroll reveal effect
   useEffect(() => {
@@ -124,14 +131,6 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Smooth scroll helper
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   if (isNotFound) {
     return <NotFound onBackToHome={handleBackToHome} />;
   }
@@ -165,7 +164,9 @@ export default function App() {
       <Hero scrollToSection={scrollToSection} />
 
       {/* TRANSITIONAL SCROLL FILM */}
-      <ScrollFilmCanvas />
+      <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل شريط الأفلام...</div>}>
+        <ScrollFilmCanvas />
+      </Suspense>
 
       <main id="main-content">
       {/* SECTION 0: JATHUM — THE FOUNDATION */}
@@ -178,7 +179,9 @@ export default function App() {
             description="قبل كل الأقسام تأتي الجثوم: أول هجرة رسمية أسسها السياحين في عالية نجد، ومنها انطلق الاستقرار والتحضر وامتدت بقية الديار."
           />
           <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <JathumMonument scrollToSection={scrollToSection} />
+            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الجثوم...</div>}>
+              <JathumMonument scrollToSection={scrollToSection} />
+            </Suspense>
           </div>
         </div>
       </section>
@@ -193,7 +196,9 @@ export default function App() {
             description="التوثيق المتسلسل لعمود نسب فخذ السياحين من المزاحمة من الروقة من عتيبة الهيلا، وصولاً لعدنان."
           />
           <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <LineageTree />
+            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل شجرة النسب...</div>}>
+              <LineageTree />
+            </Suspense>
           </div>
         </div>
       </section>
@@ -208,7 +213,9 @@ export default function App() {
             description="تمثيل فلكي رمزي يربط الأنساب السبعة الكبرى في فضاء كوكبي مترابط يبرز التلاحم والأصل المشترك للقبيلة."
           />
           <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <ConstellationDiagram />
+            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الأنسب...</div>}>
+              <ConstellationDiagram />
+            </Suspense>
           </div>
         </div>
       </section>
@@ -257,7 +264,9 @@ export default function App() {
             description="البوصلة النجدية الفلكية التقليدية لحساب طلوع النجوم ومواسم الأمطار وحركة الأفلاك في البادية."
           />
           <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <CelestialCompass />
+            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل البوصلة الفلكية...</div>}>
+              <CelestialCompass />
+            </Suspense>
           </div>
         </div>
       </section>
@@ -272,7 +281,9 @@ export default function App() {
             description="وسم «الباب» الشهير للسياحين على الرقبة من الجهة اليسرى، رمز الهوية والأصالة في البادية."
           />
           <div className="max-w-[720px] mx-auto reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <WasmGallery />
+            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل معرض الوسوم...</div>}>
+              <WasmGallery />
+            </Suspense>
           </div>
         </div>
       </section>

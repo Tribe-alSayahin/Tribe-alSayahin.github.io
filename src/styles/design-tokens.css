@@ -34,5 +34,7 @@
   --duration-fast: 150ms;
   --duration-base: 300ms;
   --duration-slow: 500ms;
+  --duration-400: 400ms;
+  --duration-800: 800ms;
   --ease-brand: cubic-bezier(0.16, 1, 0.3, 1); /* منحنى تسارع فخم وبطيء يعكس عراقة الهوية */
 }

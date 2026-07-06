@@ -90,6 +90,8 @@
   --transition-duration-fast: var(--duration-fast);
   --transition-duration-base: var(--duration-base);
   --transition-duration-slow: var(--duration-slow);
+  --transition-duration-400: var(--duration-400);
+  --transition-duration-800: var(--duration-800);
 }
 
 @layer base {
@@ -122,6 +124,11 @@ body::after {
   opacity: 0.035;
 }
 
+/* Radial background utility */
+.bg-radial {
+  background: radial-gradient(circle at center, var(--tw-gradient-from, rgba(201,162,75,0.35)) 0%, transparent 70%);
+}
+
 /* Brass text selection */
 ::selection {
   background: var(--brass);
@@ -150,6 +157,56 @@ body::after {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* Gold hairline divider (fades at both ends) */
+.gold-hairline {
+  height: 1px;
+  background: linear-gradient(to left, transparent, color-mix(in srgb, var(--brass) 55%, transparent), transparent);
+}
+
+/* Gold hairline start */
+.gold-hairline-start {
+  height: 1px;
+  background: linear-gradient(to left, color-mix(in srgb, var(--brass) 60%, transparent), transparent);
+}
+
+/* خلفية ضبابية سينمائية */
+.fog-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(201,162,75,0.08), transparent 55%),
+    radial-gradient(circle at 80% 60%, rgba(201,162,75,0.06), transparent 55%);
+  filter: blur(40px);
+}
+
+/* زجاج فاخر */
+.glass-panel {
+  background: rgba(9,11,16,0.55);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid color-mix(in srgb, var(--brass) 18%, transparent);
+}
+
+/* إبراز ذهبي هادئ */
+.glow-ambient {
+  box-shadow: 0 0 80px rgba(201,162,75,0.12), 0 0 0 1px color-mix(in srgb, var(--brass) 8%, transparent);
+}
+
+/* تأثير حركة الرمال الخفيفة */
+@keyframes drift-dust {
+  from { transform: translateX(0); }
+  to { transform: translateX(30px); }
+}
+
+/* تحسين العرض على الهواتف */
+@media (max-width: 640px) {
+  .glass-panel {
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+  }
 }
 
 /* Gold hairline divider (fades at both ends) */
