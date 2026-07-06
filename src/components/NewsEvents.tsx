@@ -32,7 +32,6 @@ export function NewsEvents() {
 
   return (
     <div className="mt-space-12">
-      {/* Filter Tabs */}
       <div className="flex items-center gap-3 mb-space-8">
         {FILTER_OPTIONS.map(({ key, label }) => (
           <button
@@ -49,13 +48,12 @@ export function NewsEvents() {
         ))}
       </div>
 
-      {/* Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <AnimatePresence mode="popLayout">
           {filtered.map((entry) => {
             const style = TYPE_STYLES[entry.type];
             return (
-              <motion.article
+              <motion.div
                 key={entry.id}
                 layout
                 initial={{ opacity: 0, y: 24 }}
@@ -102,7 +100,7 @@ export function NewsEvents() {
 
                 {/* Decorative corner accent */}
                 <div className="absolute top-0 left-0 w-12 h-12 border-t border-l border-brass/10 rounded-tl-2xl pointer-events-none" aria-hidden="true" />
-              </motion.article>
+              </motion.div>
             );
           })}
         </AnimatePresence>
