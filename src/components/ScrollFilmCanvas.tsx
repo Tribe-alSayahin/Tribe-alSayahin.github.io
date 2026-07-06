@@ -527,3 +527,5 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
     </div>
   );
 };
+
+export default ScrollFilmCanvas;

@@ -341,3 +341,5 @@ export function WasmGallery() {
     </div>
   );
 }
+
+export default WasmGallery;
