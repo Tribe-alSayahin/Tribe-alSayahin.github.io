@@ -26,6 +26,7 @@ const InteractiveMap = lazy(() => import('./components/InteractiveMap'));
 const HeritageGallery = lazy(() => import('./components/HeritageGallery'));
 const PoetryCouncil = lazy(() => import('./components/PoetryCouncil/index'));
 const OppenheimArchive = lazy(() => import('./components/OppenheimArchive'));
+const NewsEvents = lazy(() => import('./components/NewsEvents'));
 
 const SECTION_IDS = NAV_LINKS.map((link) => link.id);
 
@@ -305,6 +306,23 @@ export default function App() {
           <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
             <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الأرشيف الاستشراقي...</div>}>
               <OppenheimArchive />
+            </Suspense>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 9: NEWS & EVENTS */}
+      <section id="news" className="section bg-ink-2 px-6 relative z-10 py-20 md:py-28">
+        <div className="max-w-[1160px] mx-auto">
+          <SectionHeader
+            serialNumber="٠٩"
+            badgeText="آخر الأخبار والمناسبات"
+            title="الأخبار والمناسبات"
+            description="آخر أخبار قبيلة السياحين ومناسباتها الحالية والتاريخية، من إطلاقات ومشاركات ومواسم تراثية."
+          />
+          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
+            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الأخبار والمناسبات...</div>}>
+              <NewsEvents />
             </Suspense>
           </div>
         </div>

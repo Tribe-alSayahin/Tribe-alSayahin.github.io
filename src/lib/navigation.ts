@@ -9,6 +9,7 @@ export const NAV_LINKS: NavLinkItem[] = [
   { id: 'map', label: 'الديار' },
   { id: 'poetry', label: 'الشعر' },
   { id: 'archive', label: 'الأرشيف' },
+  { id: 'news', label: 'الأخبار' },
   { id: 'jathum', label: 'الجثوم' },
   { id: 'constellation', label: 'الأنساب' },
   { id: 'gallery', label: 'التراث' },
