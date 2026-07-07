@@ -11,6 +11,7 @@ interface NavbarProps {
   onToggleTheme: () => void;
   scrollToSection: (id: string) => void;
   activeSection?: string;
+  onNavigateToAdmin?: () => void;
 }
 
 export function Navbar({
@@ -19,6 +20,7 @@ export function Navbar({
   onToggleTheme,
   scrollToSection,
   activeSection,
+  onNavigateToAdmin,
 }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -99,6 +101,21 @@ export function Navbar({
           {/* Theme Toggle & Mobile Navigation Control */}
           <div className="flex items-center gap-2.5">
             <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+
+            {onNavigateToAdmin && (
+              <button
+                onClick={onNavigateToAdmin}
+                className="hidden md:flex items-center gap-1.5 text-xs font-kufi font-semibold text-brass-lt/70 hover:text-brass-lt bg-transparent border border-brass/15 hover:border-brass/35 rounded-full px-3 py-1.5 transition-all focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
+                aria-label="لوحة الإدارة"
+                title="لوحة الإدارة"
+              >
+                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="3" />
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H2a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V2a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                </svg>
+                الإدارة
+              </button>
+            )}
 
             {/* Mobile menu toggle */}
             <button

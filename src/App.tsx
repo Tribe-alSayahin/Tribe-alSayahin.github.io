@@ -20,6 +20,7 @@ import { NotFound } from './components/NotFound';
 import { Timeline } from './components/layout/Timeline';
 import { Supporters } from './components/layout/Supporters';
 import { NAV_LINKS } from './lib/navigation';
+import AdminIndex from './components/admin/AdminIndex';
 
 const InteractiveMap = lazy(() => import('./components/InteractiveMap'));
 const HeritageGallery = lazy(() => import('./components/HeritageGallery'));
@@ -34,6 +35,7 @@ export default function App() {
   const { theme, toggleTheme } = useTheme();
   const isScrolled = useScrollState(40);
   const [activeSection, setActiveSection] = useState('home');
+  const [adminView, setAdminView] = useState<'site' | 'admin'>('site');
 
   // Routing state for unknown paths
   const [isNotFound, setIsNotFound] = useState(() => {
@@ -60,6 +62,16 @@ export default function App() {
     return false;
   });
 
+  const handleNavigateToAdmin = useCallback(() => {
+    setAdminView('admin');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  const handleAdminBack = useCallback(() => {
+    setAdminView('site');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const handleBackToHome = useCallback(() => {
     if (typeof window !== 'undefined') {
       const hostname = window.location.hostname;
@@ -79,6 +91,16 @@ export default function App() {
     }
     setIsNotFound(false);
   }, []);
+
+  useEffect(() => {
+    if (adminView === 'admin') {
+      const meta = document.createElement('meta');
+      meta.name = 'robots';
+      meta.content = 'noindex, nofollow';
+      document.head.appendChild(meta);
+      return () => meta.remove();
+    }
+  }, [adminView]);
 
   const scrollToSection = useCallback((id: string) => {
     const element = document.getElementById(id);
@@ -131,6 +153,10 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  if (adminView === 'admin') {
+    return <AdminIndex />;
+  }
+
   if (isNotFound) {
     return <NotFound onBackToHome={handleBackToHome} />;
   }
@@ -158,6 +184,7 @@ export default function App() {
         onToggleTheme={toggleTheme}
         scrollToSection={scrollToSection}
         activeSection={activeSection}
+        onNavigateToAdmin={handleNavigateToAdmin}
       />
 
       {/* HERO SECTION */}

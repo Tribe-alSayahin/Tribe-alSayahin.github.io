@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { NEWS_EVENTS_DATA, type NewsEntryType } from './NewsEvents.data';
+import { supabase } from '../lib/supabase';
+import { NEWS_EVENTS_DATA, type NewsEntry, type NewsEntryType, type SupabaseNewsRow } from './NewsEvents.data';
 
 type FilterType = 'all' | NewsEntryType;
 
@@ -23,12 +24,41 @@ const TYPE_STYLES: Record<NewsEntryType, { badge: string; dot: string; label: st
   },
 };
 
+const mapSupabaseToEntry = (item: SupabaseNewsRow): NewsEntry => ({
+  id: item.id,
+  type: 'news',
+  title: item.title,
+  date: item.published_at || '',
+  summary: item.summary || '',
+  details: item.content || undefined,
+});
+
 export default function NewsEvents() {
   const [filter, setFilter] = useState<FilterType>('all');
+  const [data, setData] = useState<NewsEntry[]>(NEWS_EVENTS_DATA);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const { data: supabaseData } = await supabase
+          .from('news')
+          .select('*')
+          .eq('is_published', true)
+          .order('published_at', { ascending: false });
+
+        if (supabaseData && supabaseData.length > 0) {
+          setData(supabaseData.map(mapSupabaseToEntry));
+        }
+      } catch {
+        // keep fallback data
+      }
+    };
+    load();
+  }, []);
 
   const filtered = filter === 'all'
-    ? NEWS_EVENTS_DATA
-    : NEWS_EVENTS_DATA.filter((item) => item.type === filter);
+    ? data
+    : data.filter((item) => item.type === filter);
 
   return (
     <div className="mt-space-12">

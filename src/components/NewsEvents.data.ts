@@ -10,6 +10,16 @@ export interface NewsEntry {
   tag?: string;
 }
 
+export interface SupabaseNewsRow {
+  id: string;
+  title: string;
+  summary: string;
+  content: string;
+  image_url: string | null;
+  published_at: string;
+  is_published: boolean;
+}
+
 export const NEWS_EVENTS_DATA: NewsEntry[] = [
   {
     id: 'ne-1',
