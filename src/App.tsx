@@ -14,7 +14,6 @@ import { Contact } from './components/layout/Contact';
 import LineageTree from './components/LineageTree';
 const JathumMonument = lazy(() => import('./components/JathumMonument'));
 const ConstellationDiagram = lazy(() => import('./components/ConstellationDiagram'));
-const CelestialCompass = lazy(() => import('./components/CelestialCompass'));
 const WasmGallery = lazy(() => import('./components/WasmGallery'));
 import { NotFound } from './components/NotFound';
 import { Timeline } from './components/layout/Timeline';
@@ -276,23 +275,6 @@ export default function App() {
           <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
             <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل معرض التراث...</div>}>
               <HeritageGallery />
-            </Suspense>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 5: CELESTIAL COMPASS */}
-      <section id="compass" className="section bg-ink-2 px-6 relative z-10 py-20 md:py-28">
-        <div className="max-w-[1160px] mx-auto">
-          <SectionHeader
-            serialNumber="٠٥"
-            badgeText="اللوحة الفلكية"
-            title="البوصلة الفلكية وحساب الأنواء"
-            description="البوصلة النجدية الفلكية التقليدية لحساب طلوع النجوم ومواسم الأمطار وحركة الأفلاك في البادية."
-          />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل البوصلة الفلكية...</div>}>
-              <CelestialCompass />
             </Suspense>
           </div>
         </div>

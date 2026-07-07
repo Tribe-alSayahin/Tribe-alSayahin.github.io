@@ -13,7 +13,6 @@ export const NAV_LINKS: NavLinkItem[] = [
   { id: 'jathum', label: 'الجثوم' },
   { id: 'constellation', label: 'الأنساب' },
   { id: 'gallery', label: 'التراث' },
-  { id: 'compass', label: 'الفلك' },
   { id: 'wasm', label: 'الوسم' },
   { id: 'timeline', label: 'التاريخ' },
   { id: 'supporters', label: 'الداعمين' },
