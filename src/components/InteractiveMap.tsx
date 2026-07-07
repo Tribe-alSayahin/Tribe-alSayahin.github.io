@@ -3,7 +3,9 @@ import { MapPin, Compass, Layers, Info, CheckCircle2, X, TrendingUp, Droplets, B
 import { motion, AnimatePresence } from 'motion/react';
 import { Button } from './ui/Button';
 import { Badge } from './ui/Badge';
-import { SAYAHIN_VILLAGES } from './InteractiveMap.data';
+
+// قرى وهجر السياحين — أسماء فقط دون إحداثيات
+const SAYAHIN_VILLAGES = ['الهمجة', 'العزيزية', 'الهواوية'];
 
 interface LocationInfo {
   id: string;
@@ -526,12 +528,12 @@ export default function InteractiveMap() {
           <div className="flex flex-wrap gap-space-2.5">
             {SAYAHIN_VILLAGES.map((village) => (
               <Badge
-                key={village.id}
+                key={village}
                 variant="brass"
                 showDot={true}
                 className="font-kufi text-sm px-space-4 py-space-2 bg-brass/10"
               >
-                {village.name}
+                {village}
               </Badge>
             ))}
           </div>
