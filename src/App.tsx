@@ -10,6 +10,7 @@ import { Navbar } from './components/layout/Navbar';
 import { Hero } from './components/layout/Hero';
 import { SectionHeader } from './components/layout/SectionHeader';
 import { Footer } from './components/layout/Footer';
+import { AdminSection } from './components/layout/AdminSection';
 import { Contact } from './components/layout/Contact';
 import LineageTree from './components/LineageTree';
 const JathumMonument = lazy(() => import('./components/JathumMonument'));
@@ -309,14 +310,29 @@ export default function App() {
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠٩"
-            badgeText="الإدارة - الأخبار والمناسبات"
-            title="الإدارة - الأخبار والمناسبات"
+            badgeText="الأخبار والمناسبات"
+            title="الأخبار والمناسبات"
             description="قسم القراءة العامة لعناصر الأخبار والمناسبات المنشورة من لوحة الإدارة."
           />
           <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
             <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الأخبار والمناسبات...</div>}>
               <NewsEvents />
             </Suspense>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 10: ADMIN */}
+      <section id="admin" className="section bg-ink px-6 relative z-10 py-20 md:py-28">
+        <div className="max-w-[1160px] mx-auto">
+          <SectionHeader
+            serialNumber="١٠"
+            badgeText="بوابة الإدارة"
+            title="قسم الإدارة"
+            description="مركز إدارة محتوى الموقع الرسمي لقبيلة السياحين — يتيح للمشرفين نشر الأخبار وجدولة المناسبات وإدارة المحتوى المعروض للعموم."
+          />
+          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
+            <AdminSection />
           </div>
         </div>
       </section>
