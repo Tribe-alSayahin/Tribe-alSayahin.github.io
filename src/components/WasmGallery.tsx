@@ -45,7 +45,6 @@ const WASM_VARIATIONS: WasmVariation[] = [
       <path d="M155,60 L155,160" fill="none" stroke={stroke} strokeWidth="12" strokeLinecap="round" />
     ),
     camelSpot: { x: 42, y: 31, label: 'أعلى الرقبة اليسرى' }
-  },
   }
 ];
 
