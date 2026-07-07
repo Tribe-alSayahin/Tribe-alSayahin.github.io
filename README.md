@@ -85,6 +85,8 @@ npm run dev        # خادم التطوير على http://localhost:3000
 
 ### 5) ربط المشروع بـ Supabase
 
+#### محلياً (تطوير)
+
 1. في جذر المشروع، أنشئ ملف `.env` من `.env.example`
 2. ضع القيم الحقيقية:
 
@@ -93,9 +95,20 @@ VITE_SUPABASE_URL="https://your-project-id.supabase.co"
 VITE_SUPABASE_ANON_KEY="your-anon-public-key"
 ```
 
+#### على GitHub Pages (إنتاج)
+
+لكي تعمل لوحة التحكم على الرابط المنشور، أضف الأسرار في إعدادات المستودع:
+
+1. اذهب إلى **Settings → Secrets and variables → Actions**
+2. اضغط **New repository secret**
+3. أضف Secret باسم: `VITE_SUPABASE_URL` وقيمته رابط مشروع Supabase
+4. أضف Secret باسم: `VITE_SUPABASE_ANON_KEY` وقيمته الـ anon public key
+5. بعد إضافة الأسرار، أعد تشغيل workflow **Deploy to GitHub Pages** من Actions
+
 **هام:**
 - لا تضع `service_role key` في Frontend أبداً
 - الأمان يعتمد على RLS Policies التي أنشأتها في Supabase
+- `.env` محلياً للاستخدام الشخصي فقط، ولا يرفع إلى GitHub
 
 ### 6) تشغيل الموقع محلياً
 

@@ -1,5 +1,5 @@
-import { useState, useEffect, type FormEvent } from 'react';
-import { supabase } from '../../lib/supabase';
+import { useState, type FormEvent, useEffect } from 'react';
+import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 import { Button } from '../ui/Button';
 import { Card, CardContent } from '../ui/Card';
 
@@ -12,8 +12,13 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [notConfigured, setNotConfigured] = useState(false);
 
   useEffect(() => {
+    if (!isSupabaseConfigured()) {
+      setNotConfigured(true);
+      return;
+    }
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) onLoginSuccess();
     });
@@ -34,6 +39,25 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
       onLoginSuccess();
     }
   };
+
+  if (notConfigured) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-6 py-20">
+        <Card hoverGlow={false} className="border-brass/20 bg-ink-2/60 backdrop-blur-xl max-w-md">
+          <CardContent className="p-space-8 text-center">
+            <h1 className="font-serif text-2xl font-bold text-sand mb-4">لوحة الإدارة غير مفعّلة</h1>
+            <p className="text-sm text-sand-dim font-sans mb-6">
+              لم يتم تكوين Supabase بعد. أضف <code className="text-brass-lt">VITE_SUPABASE_URL</code> و
+              <code className="text-brass-lt">VITE_SUPABASE_ANON_KEY</code> في إعدادات GitHub Secrets، ثم أعد بناء المشروع.
+            </p>
+            <Button variant="secondary" onClick={() => (window.location.href = '/')}>
+              العودة للموقع
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-20">

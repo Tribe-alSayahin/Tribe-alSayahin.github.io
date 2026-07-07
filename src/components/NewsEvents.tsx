@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { NEWS_EVENTS_DATA, type NewsEntry, type NewsEntryType, type SupabaseNewsRow } from './NewsEvents.data';
 
 type FilterType = 'all' | NewsEntryType;
@@ -39,6 +39,9 @@ export default function NewsEvents() {
 
   useEffect(() => {
     const load = async () => {
+      if (!isSupabaseConfigured()) {
+        return;
+      }
       try {
         const { data: supabaseData } = await supabase
           .from('news')
