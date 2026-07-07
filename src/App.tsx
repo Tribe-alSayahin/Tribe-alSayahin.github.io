@@ -42,7 +42,7 @@ export default function App() {
       const cleanPath = path.replace(/\/$/, '').replace(/\/index\.html$/, '');
       const segments = cleanPath.split('/').filter(Boolean);
       
-      const isGitHubPages = hostname.endsWith('github.io');
+      const isGitHubPages = /\.github\.io$/i.test(hostname);
       
       if (isGitHubPages) {
         const isRootUserPage = hostname === 'tribe-alsayahin.github.io';
@@ -62,7 +62,7 @@ export default function App() {
   const handleBackToHome = useCallback(() => {
     if (typeof window !== 'undefined') {
       const hostname = window.location.hostname;
-      const isGitHubPages = hostname.endsWith('github.io');
+      const isGitHubPages = /\.github\.io$/i.test(hostname);
       const isRootUserPage = hostname === 'tribe-alsayahin.github.io';
       
       let homePath = '/';

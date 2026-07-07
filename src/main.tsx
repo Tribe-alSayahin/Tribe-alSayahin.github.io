@@ -13,7 +13,7 @@ const resolveIsAdminRoute = () => {
   const cleanPath = window.location.pathname.replace(/\/$/, '').replace(/\/index\.html$/, '');
   const segments = cleanPath.split('/').filter(Boolean);
   const hostname = window.location.hostname;
-  const isGitHubPages = hostname.endsWith('github.io');
+  const isGitHubPages = /\.github\.io$/i.test(hostname);
 
   if (!isGitHubPages) {
     return segments.length === 1 && segments[0] === 'admin';
