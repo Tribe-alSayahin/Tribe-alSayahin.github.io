@@ -82,22 +82,38 @@ npm run dev        # خادم التطوير على http://localhost:3000
 #### محلياً
 
 1. أنشئ ملف `.env` من `.env.example`
-2. أضف:
+2. أضف مفاتيح الواجهة:
 
 ```bash
 NEXT_PUBLIC_SUPABASE_URL="https://your-project-id.supabase.co"
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="your-publishable-public-key"
 ```
 
+3. أضف مفاتيح الخادم والـ API handlers:
+
+```bash
+SUPABASE_URL="https://your-project-id.supabase.co"
+SUPABASE_PUBLISHABLE_KEY="your-publishable-public-key"
+SUPABASE_SECRET_KEY="your-secret-server-key"
+SUPABASE_JWKS_URL="https://your-project-id.supabase.co/auth/v1/.well-known/jwks.json"
+```
+
+> في Supabase Edge Functions يتم حقن هذه القيم تلقائياً، أما في Express داخل هذا المشروع فيلزم تعريفها في البيئة محلياً أو داخل أسرار النشر.
+
 #### على GitHub Actions
 
 1. اذهب إلى **Settings → Secrets and variables → Actions**
 2. أضف Secret باسم: `NEXT_PUBLIC_SUPABASE_URL`
 3. أضف Secret باسم: `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+4. أضف Secret باسم: `SUPABASE_URL`
+5. أضف Secret باسم: `SUPABASE_PUBLISHABLE_KEY`
+6. أضف Secret باسم: `SUPABASE_SECRET_KEY`
+7. أضف Secret باسم: `SUPABASE_JWKS_URL`
 
 **هام:**
 - لا تضع `service_role key` في الواجهة أبداً
 - الأمان يعتمد على Supabase Auth + RLS
+- المسار الخادمي `/api/auth/session` يتحقق من ترويسة `Authorization` عبر الحزمة `@supabase/server` ثم يجلب بيانات المستخدم من Supabase على الخادم
 
 ### 5) التشغيل المحلي
 
