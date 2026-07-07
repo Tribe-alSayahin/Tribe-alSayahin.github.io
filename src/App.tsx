@@ -42,7 +42,7 @@ export default function App() {
       const cleanPath = path.replace(/\/$/, '').replace(/\/index\.html$/, '');
       const segments = cleanPath.split('/').filter(Boolean);
       
-      const isGitHubPages = hostname.endsWith('github.io');
+      const isGitHubPages = /\.github\.io$/i.test(hostname);
       
       if (isGitHubPages) {
         const isRootUserPage = hostname === 'tribe-alsayahin.github.io';
@@ -62,7 +62,7 @@ export default function App() {
   const handleBackToHome = useCallback(() => {
     if (typeof window !== 'undefined') {
       const hostname = window.location.hostname;
-      const isGitHubPages = hostname.endsWith('github.io');
+      const isGitHubPages = /\.github\.io$/i.test(hostname);
       const isRootUserPage = hostname === 'tribe-alsayahin.github.io';
       
       let homePath = '/';
@@ -309,9 +309,9 @@ export default function App() {
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠٩"
-            badgeText="آخر الأخبار والمناسبات"
-            title="الأخبار والمناسبات"
-            description="آخر أخبار قبيلة السياحين ومناسباتها الحالية والتاريخية، من إطلاقات ومشاركات ومواسم تراثية."
+            badgeText="الإدارة - الأخبار والمناسبات"
+            title="الإدارة - الأخبار والمناسبات"
+            description="قسم القراءة العامة لعناصر الأخبار والمناسبات المنشورة من لوحة الإدارة."
           />
           <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
             <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الأخبار والمناسبات...</div>}>

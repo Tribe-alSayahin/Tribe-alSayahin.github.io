@@ -50,91 +50,64 @@ npm run dev        # خادم التطوير على http://localhost:3000
 2. افتح **Actions** في المستودع وتأكد أن workflow **Deploy to GitHub Pages** يعمل بنجاح
 3. بعد نجاح الـ workflow، تأكد أن الرابط النهائي يخدم ملفات `assets/` وليس `/src/main.tsx`
 
-## إعداد لوحة التحكم
+## إعداد لوحة الإدارة (الأخبار والمناسبات)
 
-لوحة التحكم تعتمد على **Supabase** كمصادقة وقاعدة بيانات وتخزين صور. هذه الخدمة تسمح بإدارة محتوى الموقع من واجهة إدارة حقيقية دون الحاجة إلى Backend تقليدي، ومناسبة تماماً لاستضافة GitHub Pages.
+لوحة الإدارة تعمل عبر Supabase في مسار مستقل: `/admin`.
 
 ### 1) إنشاء مشروع Supabase
 
 1. افتح https://supabase.com
 2. أنشئ حساباً جديداً
-3. أنشئ مشروعاً جديداً New Project
-4. احفظ **Project URL** و **anon public key** من Settings → API
+3. أنشئ مشروعاً جديداً
+4. احفظ **Project URL** و **Publishable key** من Settings → API
 
-### 2) إعداد قاعدة البيانات
+### 2) إعداد قاعدة البيانات وسياسات RLS
 
 1. افتح مشروعك في Supabase Dashboard
 2. اذهب إلى SQL Editor
 3. انسخ محتوى ملف `supabase-setup.sql` في هذا المستودع
 4. الصقها في SQL Editor واضغط Run
-5. هذا سينشئ الجداول والتريجرز وتفعيل RLS والسياسات
+5. سيُنشأ جدول `public.admin_posts` مع سياسات:
+   - قراءة للجميع
+   - insert / update / delete للمستخدمين `authenticated` فقط
 
-### 3) إعداد Storage
-
-1. اذهب إلى Storage في Supabase Dashboard
-2. أنشئ Bucket جديد باسم: `site-images`
-3. اجعل Bucket عاماً Public
-4. اذهب إلى Storage Policies واتبع التعليمات في `supabase-setup.sql` لإنشاء السياسات
-
-### 4) إنشاء مستخدم Admin
+### 3) إنشاء مستخدم مشرف
 
 1. اذهب إلى Authentication في Supabase Dashboard
-2. اختر Create User
-3. أدخل بريدك الإلكتروني وكلمة المرور
-4. هذا المستخدم سيكون مسؤول الدخول للوحة التحكم
+2. اختر Add user
+3. أدخل البريد الإلكتروني وكلمة المرور
 
-### 5) ربط المشروع بـ Supabase
+### 4) متغيرات البيئة
 
-#### محلياً (تطوير)
+#### محلياً
 
-1. في جذر المشروع، أنشئ ملف `.env` من `.env.example`
-2. ضع القيم الحقيقية:
+1. أنشئ ملف `.env` من `.env.example`
+2. أضف:
 
+```bash
+NEXT_PUBLIC_SUPABASE_URL="https://your-project-id.supabase.co"
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="your-publishable-public-key"
 ```
-VITE_SUPABASE_URL="https://your-project-id.supabase.co"
-VITE_SUPABASE_ANON_KEY="your-anon-public-key"
-```
 
-#### على GitHub Pages (إنتاج)
-
-لكي تعمل لوحة التحكم على الرابط المنشور، أضف الأسرار في إعدادات المستودع:
+#### على GitHub Actions
 
 1. اذهب إلى **Settings → Secrets and variables → Actions**
-2. اضغط **New repository secret**
-3. أضف Secret باسم: `VITE_SUPABASE_URL` وقيمته رابط مشروع Supabase
-4. أضف Secret باسم: `VITE_SUPABASE_ANON_KEY` وقيمته الـ anon public key
-5. بعد إضافة الأسرار، أعد تشغيل workflow **Deploy to GitHub Pages** من Actions
+2. أضف Secret باسم: `NEXT_PUBLIC_SUPABASE_URL`
+3. أضف Secret باسم: `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 
 **هام:**
-- لا تضع `service_role key` في Frontend أبداً
-- الأمان يعتمد على RLS Policies التي أنشأتها في Supabase
-- `.env` محلياً للاستخدام الشخصي فقط، ولا يرفع إلى GitHub
+- لا تضع `service_role key` في الواجهة أبداً
+- الأمان يعتمد على Supabase Auth + RLS
 
-### 6) تشغيل الموقع محلياً
+### 5) التشغيل المحلي
 
 ```bash
 npm install
 npm run dev
 ```
 
-ثم افتح:
 - الموقع العام: http://localhost:3000
-- لوحة التحكم: http://localhost:3000/#/admin
-
-### 7) الدخول للوحة التحكم
-
-استخدم البريد الإلكتروني وكلمة المرور التي أنشأتها في Supabase Authentication.
-
-### 8) طريقة النشر
-
-```bash
-git status
-git add .
-git commit -m "Add Supabase admin dashboard"
-git push
-```
-
-سيتم البناء والنشر تلقائياً عبر GitHub Actions.
+- لوحة الإدارة: http://localhost:3000/admin
 
 ## بنية المشروع
 
@@ -142,21 +115,14 @@ git push
 src/
 ├── App.tsx                        # الصفحة الرئيسية وتجميع الأقسام
 ├── lib/
-│   ├── supabase.ts               # اتصال Supabase
+│   ├── supabase.ts               # عميل Supabase قابل لإعادة الاستخدام
+│   ├── admin-posts.ts            # أنواع واستعلامات admin_posts
 │   └── navigation.ts             # روابط التنقل
 ├── components/
 │   ├── layout/                   # الترويسة، التذييل، البطل، التواصل...
 │   ├── ui/                       # مكوّنات الأزرار والبطاقات والنوافذ
-│   ├── admin/                    # لوحة التحكم
-│   │   ├── AdminShell.tsx        # حماية noindex
-│   │   ├── AdminLayout.tsx       # تخطيط لوحة التحكم مع Sidebar
-│   │   ├── AdminLogin.tsx        # تسجيل دخول بالإيميل وكلمة المرور
-│   │   ├── AdminDashboard.tsx    # الإحصائيات والوصول السريع
-│   │   ├── NewsManager.tsx       # إدارة الأخبار والمناسبات
-│   │   ├── GalleryManager.tsx    # إدارة معرض الصور
-│   │   ├── ContentManager.tsx    # إدارة محتوى الموقع
-│   │   ├── SocialManager.tsx     # إدارة روابط التواصل
-│   │   └── SettingsManager.tsx   # إعدادات الموقع العامة
+│   ├── admin/
+│   │   └── AdminPage.tsx         # صفحة /admin (دخول + إضافة/حذف)
 │   ├── LineageTree/              # شجرة النسب التفاعلية
 │   ├── PoetryCouncil/            # ديوان الشعر النبطي
 │   ├── InteractiveMap.tsx        # خريطة الديار
@@ -173,23 +139,16 @@ src/
 
 | الجدول | الوصف |
 |---|---|
-| `news` | الأخبار والمناسبات |
-| `gallery` | معرض الصور |
-| `site_content` | محتوى الأقسام النصية |
-| `social_links` | روابط التواصل |
-| `site_settings` | إعدادات الموقع العامة |
+| `admin_posts` | عناصر الأخبار والمناسبات المُدارة من لوحة الإدارة |
 
 ## الأمان
 
 - **المصادقة:** Supabase Auth بالبريد الإلكتروني وكلمة المرور
-- **الصلاحيات:** Row Level Security مفعّل على جميع الجداول
-- **الزوار:** يمكنهم قراءة البيانات المنشورة فقط
-- **المستخدمون المسجلون:** يمكنهم إضافة/تعديل/حذف البيانات
-- ** Storage:** قراءة عامة للصور، رفع/edit محصور بالمستخدمين المسجلين
+- **الصلاحيات:** Row Level Security مفعّل على `admin_posts`
+- **الزوار:** قراءة فقط
+- **المستخدمون المسجلون:** إضافة/تعديل/حذف
 
 ## ملاحظات
 
-- لوحة التحكم محمية بـ `noindex, nofollow` ولا تظهر في محركات البحث
 - لا يتم تخزين كلمات المرور أو الأسرار في الكود
 - السرية تعتمد على Supabase Auth و RLS، وليس على إخفاء الكود
-- `site-images` bucket عام لقراءة الصور من الزوار

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { supabase, isSupabaseConfigured } from '../lib/supabase';
-import { NEWS_EVENTS_DATA, type NewsEntry, type NewsEntryType, type SupabaseNewsRow } from './NewsEvents.data';
+import { NEWS_EVENTS_DATA, type NewsEntry, type NewsEntryType } from './NewsEvents.data';
+import { fetchAdminPosts, formatGregorianDateArabic, type AdminPostRecord } from '../lib/admin-posts';
+import { isSupabaseConfigured } from '../lib/supabase';
 
 type FilterType = 'all' | NewsEntryType;
 
@@ -24,13 +25,12 @@ const TYPE_STYLES: Record<NewsEntryType, { badge: string; dot: string; label: st
   },
 };
 
-const mapSupabaseToEntry = (item: SupabaseNewsRow): NewsEntry => ({
+const mapSupabaseToEntry = (item: AdminPostRecord): NewsEntry => ({
   id: item.id,
-  type: 'news',
+  type: item.kind,
   title: item.title,
-  date: item.published_at || '',
-  summary: item.summary || '',
-  details: item.content || undefined,
+  date: formatGregorianDateArabic(item.kind === 'event' ? item.event_date : item.created_at),
+  summary: item.content,
 });
 
 export default function NewsEvents() {
@@ -43,11 +43,7 @@ export default function NewsEvents() {
         return;
       }
       try {
-        const { data: supabaseData } = await supabase
-          .from('news')
-          .select('*')
-          .eq('is_published', true)
-          .order('published_at', { ascending: false });
+        const { data: supabaseData } = await fetchAdminPosts();
 
         if (supabaseData && supabaseData.length > 0) {
           setData(supabaseData.map(mapSupabaseToEntry));
@@ -138,6 +134,12 @@ export default function NewsEvents() {
           })}
         </AnimatePresence>
       </div>
+
+      {filtered.length === 0 && (
+        <div className="mt-6 rounded-xl border border-brass/15 bg-ink-2/30 px-4 py-5 text-center text-sm font-kufi text-sand-dim">
+          لا توجد عناصر منشورة حالياً في قسم الإدارة.
+        </div>
+      )}
     </div>
   );
 }

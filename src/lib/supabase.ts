@@ -1,13 +1,15 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
-const SUPABASE_URL = (import.meta as any).env?.VITE_SUPABASE_URL;
-const SUPABASE_ANON_KEY = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY;
+const env = (import.meta as any).env ?? {};
+const SUPABASE_URL = env.NEXT_PUBLIC_SUPABASE_URL || env.VITE_SUPABASE_URL;
+const SUPABASE_PUBLISHABLE_KEY =
+  env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_ANON_KEY;
 
 let client: SupabaseClient | null = null;
 
 try {
-  if (SUPABASE_URL && SUPABASE_ANON_KEY) {
-    client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  if (SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY) {
+    client = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
