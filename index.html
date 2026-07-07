@@ -26,7 +26,7 @@
     <meta property="og:title" content="الموقع الرسمي لقبيلة السياحين | الروقة من عتيبة" />
     <meta property="og:description" content="البوابة الرقمية الموثقة لقبيلة السياحين من الروقة من عتيبة — توثيق النسب والديار والشعر والأرشيف الاستشراقي والأخبار والمناسبات." />
     <meta property="og:url" content="https://tribe-alsayahin.github.io/" />
-    <meta property="og:image" content="https://tribe-alsayahin.github.io/og-image.png" />
+    <meta property="og:image" content="https://tribe-alsayahin.github.io/og-image.svg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="الموقع الرسمي لقبيلة السياحين | الروقة من عتيبة" />
     <meta name="twitter:description" content="البوابة الرقمية الموثقة لقبيلة السياحين من الروقة من عتيبة — توثيق النسب والديار والشعر والأرشيف الاستشراقي." />
@@ -223,6 +223,23 @@
         margin-bottom: 8px;
       }
     </style>
+
+    <!-- Fallback for splash screen if React fails to mount -->
+    <script>
+      (function () {
+        try {
+          setTimeout(function () {
+            var root = document.getElementById('root');
+            if (!root || !root.querySelector('#main-content') || root.children.length === 1) {
+              var notice = document.createElement('div');
+              notice.style.cssText = 'position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px;background:#090b10;color:#f4ecdd;font-family:"IBM Plex Sans Arabic",sans-serif;text-align:center;line-height:2;';
+              notice.innerHTML = '<div><strong style="color:#e9d197;font-family:"Aref Ruqaa","Amiri",serif;display:block;font-size:22px;margin-bottom:8px;">تعذر تحميل التطبيق</strong>يرجى تحديث الصفحة أو التأكد من اكتمال النشر على GitHub Pages.</div>';
+              document.body.appendChild(notice);
+            }
+          }, 10000);
+        } catch (e) {}
+      })();
+    </script>
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
