@@ -231,7 +231,7 @@
         try {
           setTimeout(function () {
             var root = document.getElementById('root');
-            if (!root || !root.querySelector('#main-content') || root.children.length === 1) {
+            if (!root || !root.querySelector('#main-content')) {
               var notice = document.createElement('div');
               notice.style.cssText = 'position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px;background:#090b10;color:#f4ecdd;font-family:"IBM Plex Sans Arabic",sans-serif;text-align:center;line-height:2;';
               notice.innerHTML = '<div><strong style="color:#e9d197;font-family:"Aref Ruqaa","Amiri",serif;display:block;font-size:22px;margin-bottom:8px;">تعذر تحميل التطبيق</strong>يرجى تحديث الصفحة أو التأكد من اكتمال النشر على GitHub Pages.</div>';
