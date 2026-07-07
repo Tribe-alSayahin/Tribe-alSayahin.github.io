@@ -1,4 +1,5 @@
 import express from "express";
+import rateLimit from "express-rate-limit";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
@@ -9,40 +10,18 @@ import {
   verifySupabaseUserRequest,
 } from "./src/lib/supabase-server";
 
-const authRouteRateLimitWindowMs = 60_000;
-const authRouteMaxRequestsPerWindow = 30;
-const authRouteHits = new Map<string, { count: number; resetAt: number }>();
-
-const getClientIdentifier = (req: express.Request): string => {
-  const forwardedFor = req.headers["x-forwarded-for"];
-  if (typeof forwardedFor === "string" && forwardedFor.trim()) {
-    return forwardedFor.split(",")[0].trim();
-  }
-
-  return req.ip || req.socket.remoteAddress || "unknown";
-};
-
-const isAuthRouteRateLimited = (req: express.Request): boolean => {
-  const now = Date.now();
-  const clientIdentifier = getClientIdentifier(req);
-  const current = authRouteHits.get(clientIdentifier);
-
-  if (!current || current.resetAt <= now) {
-    authRouteHits.set(clientIdentifier, {
-      count: 1,
-      resetAt: now + authRouteRateLimitWindowMs,
+const authRouteRateLimiter = rateLimit({
+  windowMs: 60_000,
+  limit: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (_req, res) => {
+    return res.status(429).json({
+      error: "RATE_LIMITED",
+      message: "تم تجاوز الحد المسموح لمحاولات التحقق من الجلسة. يرجى الانتظار قليلاً ثم إعادة المحاولة.",
     });
-    return false;
-  }
-
-  if (current.count >= authRouteMaxRequestsPerWindow) {
-    return true;
-  }
-
-  current.count += 1;
-  authRouteHits.set(clientIdentifier, current);
-  return false;
-};
+  },
+});
 
 async function startServer() {
   const app = express();
@@ -51,14 +30,7 @@ async function startServer() {
   // Middleware for parsing JSON with a generous limit
   app.use(express.json({ limit: "10mb" }));
 
-  app.get("/api/auth/session", async (req, res) => {
-    if (isAuthRouteRateLimited(req)) {
-      return res.status(429).json({
-        error: "RATE_LIMITED",
-        message: "تم تجاوز الحد المسموح لمحاولات التحقق من الجلسة. يرجى الانتظار قليلاً ثم إعادة المحاولة.",
-      });
-    }
-
+  app.get("/api/auth/session", authRouteRateLimiter, async (req, res) => {
     if (!isSupabaseServerConfigured()) {
       return res.status(503).json({
         error: "SUPABASE_SERVER_NOT_CONFIGURED",
