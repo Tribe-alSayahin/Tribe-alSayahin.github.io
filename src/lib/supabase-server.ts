@@ -1,4 +1,5 @@
-import { createAdminClient, createContextClient, verifyAuth, type AuthResult } from '@supabase/server/core';
+import type { AuthResult } from '@supabase/server';
+import { createAdminClient, createContextClient, verifyAuth } from '@supabase/server/core';
 import type { Request as ExpressRequest } from 'express';
 
 const requiredServerEnvKeys = [
