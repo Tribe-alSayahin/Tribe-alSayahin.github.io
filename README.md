@@ -31,9 +31,24 @@ npm run dev        # خادم التطوير على http://localhost:3000
 
 ## النشر
 
-النشر تلقائي بالكامل عبر GitHub Actions: كل دفعة إلى الفرع `main` تشغّل `.github/workflows/deploy.yml` الذي يبني الموقع (`npm run build:pages`) وينشر مجلد `dist/` إلى GitHub Pages. لا حاجة لأي خطوة يدوية — فقط ادمج التغييرات في `main`.
+### إعداد GitHub Pages (مهم جداً)
 
-(مصدر Pages في إعدادات المستودع: Settings ← Pages ← Source ← **GitHub Actions**.)
+هذا المشروع يعتمد على **GitHub Actions** للنشر، وليس على "Deploy from branch".
+
+1. افتح المستودع في GitHub
+2. اذهب إلى **Settings → Pages**
+3. تحت **Build and deployment / Source**، اختر **GitHub Actions**
+4. لا تتركه مضبوطاً على **Deploy from a branch**
+
+بعد أي push إلى الفرع `main`، سيتم بناء الموقع تلقائياً ونشره من مجلد `dist/` عبر workflow `.github/workflows/deploy.yml`.
+
+### دليل استكشاف الأخطاء
+
+إذا رأيت شاشة تحميل فقط على الموقع المنشور:
+
+1. تأكد أن GitHub Pages مضبوط على **GitHub Actions** وليس **Deploy from branch**
+2. افتح **Actions** في المستودع وتأكد أن workflow **Deploy to GitHub Pages** يعمل بنجاح
+3. بعد نجاح الـ workflow، تأكد أن الرابط النهائي يخدم ملفات `assets/` وليس `/src/main.tsx`
 
 ## إعداد لوحة التحكم
 
