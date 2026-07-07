@@ -10,7 +10,7 @@ import { LINEAGE_DATA } from '../LineageTree/LineageTree.data';
 const DesertCinematicBackground = lazy(() => import('../DesertCinematicBackground'));
 
 /* مسار وسم «الباب الأصيل» المرجعي لقبيلة السياحين (متوافق مع WasmGallery) */
-const WASM_PATH = 'M55,160 L55,60 L145,60 L145,160';
+const WASM_PATH = 'M40,130 L40,70 L160,70 L160,130';
 
 interface HeroProps {
   scrollToSection: (id: string) => void;
