@@ -1,0 +1,297 @@
+/* الخطوط محمّلة مسبقاً في index.html عبر Google Fonts — لا داعي لإعادة تحميلها هنا */
+@import "tailwindcss";
+@import "./styles/design-tokens.css";
+
+/* ————————————————————————————————————————————————
+   لوحة «مخطوطة الليل النجدية» — الوضع الليلي (الافتراضي)
+   ليل صحراوي عميق بلمسة نيلية + ذهب شمبانيا مصقول
+   ———————————————————————————————————————————————— */
+:root {
+  --ink: #090b10;
+  --ink-2: #0e1219;
+  --coffee: #141a24;
+  --sand: #f4ecdd;
+  --sand-dim: #a89e8a;
+  --brass: #c9a24b;
+  --brass-lt: #e9d197;
+  --olive: #1c241e;
+  --olive-2: #2b3830;
+  --olive-lt: #6b8f71;
+  --copper: #b87333;
+  --copper-lt: #d4956b;
+  --indigo: #182742;
+  --parchment: #efe5cd;
+}
+
+/* الوضع النهاري — «ورق المخطوطة في ضوء النهار» */
+:root.light {
+  --ink: #f8f3e7;
+  --ink-2: #f0e9d7;
+  --coffee: #e8dfc7;
+  --sand: #251d12;
+  --sand-dim: #6e6350;
+  --brass: #8f6a1a;
+  --brass-lt: #755713;
+  --olive: #dce0cc;
+  --olive-2: #c9d1b2;
+  --olive-lt: #3d5c42;
+  --copper: #8b5e3c;
+  --copper-lt: #6b4a2e;
+  --indigo: #d8dfe9;
+  --parchment: #2a2216;
+  --overlay: rgba(248, 243, 231, 0.85);
+}
+
+@theme {
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-coffee: var(--coffee);
+  --color-sand: var(--sand);
+  --color-sand-dim: var(--sand-dim);
+  --color-brass: var(--brass);
+  --color-brass-lt: var(--brass-lt);
+  --color-olive: var(--olive);
+  --color-olive-2: var(--olive-2);
+  --color-olive-lt: var(--olive-lt);
+  --color-copper: var(--copper);
+  --color-copper-lt: var(--copper-lt);
+  --color-indigo: var(--indigo);
+  --color-parchment: var(--parchment);
+
+  --font-ruqaa: "Aref Ruqaa", "Amiri", serif;
+  --font-serif: "Amiri", serif;
+  --font-sans: "IBM Plex Sans Arabic", "Tajawal", sans-serif;
+  --font-kufi: "Reem Kufi", sans-serif;
+
+  /* Spacing Scale Mapping */
+  --spacing-space-1: var(--space-1);
+  --spacing-space-2: var(--space-2);
+  --spacing-space-3: var(--space-3);
+  --spacing-space-4: var(--space-4);
+  --spacing-space-5: var(--space-5);
+  --spacing-space-6: var(--space-6);
+  --spacing-space-7: var(--space-7);
+  --spacing-space-8: var(--space-8);
+  --spacing-space-9: var(--space-9);
+  --spacing-space-10: var(--space-10);
+  --spacing-space-11: var(--space-11);
+  --spacing-space-12: var(--space-12);
+  --spacing-space-13: var(--space-13);
+  --spacing-space-14: var(--space-14);
+  --spacing-space-15: var(--space-15);
+  --spacing-space-16: var(--space-16);
+
+  /* Glow Shadows Mapping */
+  --shadow-glow-sm: var(--glow-brass-sm);
+  --shadow-glow-md: var(--glow-brass-md);
+  --shadow-glow-lg: var(--glow-brass-lg);
+
+  /* Durations Mapping */
+  --transition-duration-fast: var(--duration-fast);
+  --transition-duration-base: var(--duration-base);
+  --transition-duration-slow: var(--duration-slow);
+  --transition-duration-400: var(--duration-400);
+  --transition-duration-800: var(--duration-800);
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-ink);
+    color: var(--color-sand);
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    line-height: 1.5;
+  }
+}
+
+/* ملمس حبيبي خفيف يمنح الصفحة عمق المخطوطة (لا يعترض التفاعل) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+}
+:root.light body::after {
+  opacity: 0.035;
+}
+
+/* Radial background utility */
+.bg-radial {
+  background: radial-gradient(circle at center, var(--tw-gradient-from, rgba(201,162,75,0.35)) 0%, transparent 70%);
+}
+
+/* Brass text selection */
+::selection {
+  background: var(--brass);
+  color: var(--ink);
+}
+
+/* Refined brass scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--ink-2);
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--brass) 45%, transparent);
+  border-radius: 8px;
+  border: 2px solid var(--ink-2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brass);
+}
+
+/* Gradient gold display text for headline accents */
+.text-gold-gradient {
+  background: linear-gradient(120deg, var(--brass) 0%, var(--brass-lt) 45%, var(--brass) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Gold hairline divider (fades at both ends) */
+.gold-hairline {
+  height: 1px;
+  background: linear-gradient(to left, transparent, color-mix(in srgb, var(--brass) 55%, transparent), transparent);
+}
+
+/* Gold hairline start */
+.gold-hairline-start {
+  height: 1px;
+  background: linear-gradient(to left, color-mix(in srgb, var(--brass) 60%, transparent), transparent);
+}
+
+/* خلفية ضبابية سينمائية */
+.fog-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(201,162,75,0.08), transparent 55%),
+    radial-gradient(circle at 80% 60%, rgba(201,162,75,0.06), transparent 55%);
+  filter: blur(40px);
+}
+
+/* زجاج فاخر */
+.glass-panel {
+  background: rgba(9,11,16,0.55);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid color-mix(in srgb, var(--brass) 18%, transparent);
+}
+
+/* إبراز ذهبي هادئ */
+.glow-ambient {
+  box-shadow: 0 0 80px rgba(201,162,75,0.12), 0 0 0 1px color-mix(in srgb, var(--brass) 8%, transparent);
+}
+
+/* تأثير حركة الرمال الخفيفة */
+@keyframes drift-dust {
+  from { transform: translateX(0); }
+  to { transform: translateX(30px); }
+}
+
+/* تحسين العرض على الهواتف */
+@media (max-width: 640px) {
+  .glass-panel {
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+  }
+}
+
+/* Gold hairline divider (fades at both ends) */
+.gold-hairline {
+  height: 1px;
+  background: linear-gradient(to left, transparent, color-mix(in srgb, var(--brass) 55%, transparent), transparent);
+}
+
+/* خط ذهبي يتلاشى من طرف واحد — للترويسات التحريرية غير المتمركزة */
+.gold-hairline-start {
+  height: 1px;
+  background: linear-gradient(to left, color-mix(in srgb, var(--brass) 60%, transparent), transparent);
+}
+
+/* خيط فاصل خافت أعلى كل قسم يمنح الصفحة إيقاع صفحات المخطوطة */
+.section {
+  border-top: 1px solid color-mix(in srgb, var(--brass) 9%, transparent);
+}
+
+/* فاصل السدو بين الأقسام الكبرى */
+.section-divider {
+  height: 30px;
+  background-image: var(--sadu);
+  background-repeat: repeat-x;
+  background-position: center;
+  background-size: 60px 30px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* إطار مزخرف بحواف نحاسية للوحات البارزة */
+.ornate-frame {
+  position: relative;
+  border: 1px solid color-mix(in srgb, var(--brass) 22%, transparent);
+  box-shadow:
+    inset 0 0 0 4px var(--ink),
+    inset 0 0 0 5px color-mix(in srgb, var(--brass) 16%, transparent);
+}
+
+/* Sadu background styling */
+.sadu-band {
+  height: 26px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='26' viewBox='0 0 44 26'%3E%3Cg fill='none' stroke='%23c9a24b' stroke-width='1.1'%3E%3Cpath d='M0 13 11 2 22 13 11 24Z'/%3E%3Cpath d='M22 13 33 2 44 13 33 24Z'/%3E%3C/g%3E%3Cg fill='%23c9a24b'%3E%3Ccircle cx='11' cy='13' r='1.7'/%3E%3Ccircle cx='33' cy='13' r='1.7'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: center;
+  opacity: 0.5;
+}
+
+/* Custom grid pattern for the vector map background */
+.bg-grid-pattern {
+  background-image: radial-gradient(rgba(201, 162, 75, 0.15) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Leaflet style overrides */
+.leaflet-container {
+  background: #0b0e14 !important;
+  font-family: inherit !important;
+}
+.custom-leaflet-tooltip {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.custom-leaflet-tooltip::before {
+  display: none !important;
+}
+
+/* scaleIn animation keyframes */
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes drawmark {
+  from {
+    stroke-dashoffset: 340;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
