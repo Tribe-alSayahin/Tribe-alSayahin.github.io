@@ -28,6 +28,22 @@ const resolveIsAdminRoute = () => {
   return segments.length === 2 && segments[1] === 'admin';
 };
 
+// After a new deployment, old hashed chunk files disappear from GitHub Pages.
+// Reload once to fetch the fresh index.html instead of failing with a stale chunk.
+window.addEventListener('vite:preloadError', (event) => {
+  const RELOAD_KEY = 'siyahin-chunk-retry';
+  try {
+    if (sessionStorage.getItem(RELOAD_KEY) === '1') {
+      return;
+    }
+    sessionStorage.setItem(RELOAD_KEY, '1');
+  } catch {
+    return;
+  }
+  event.preventDefault();
+  window.location.reload();
+});
+
 const RootComponent = resolveIsAdminRoute() ? AdminPage : App;
 
 createRoot(document.getElementById('root')!).render(

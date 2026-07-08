@@ -229,15 +229,63 @@
     <script>
       (function () {
         try {
-          setTimeout(function () {
+          var RELOAD_KEY = 'siyahin-load-retry';
+          var notice = null;
+
+          function appMounted() {
             var root = document.getElementById('root');
-            if (!root || !root.querySelector('#main-content')) {
-              var notice = document.createElement('div');
-              notice.style.cssText = 'position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px;background:#090b10;color:#f4ecdd;font-family:"IBM Plex Sans Arabic",sans-serif;text-align:center;line-height:2;';
-              notice.innerHTML = '<div><strong style="color:#e9d197;font-family:"Aref Ruqaa","Amiri",serif;display:block;font-size:22px;margin-bottom:8px;">تعذر تحميل التطبيق</strong>يرجى تحديث الصفحة أو التأكد من اكتمال النشر على GitHub Pages.</div>';
-              document.body.appendChild(notice);
+            return !!(root && root.childElementCount > 0 && !root.querySelector('.splash-screen'));
+          }
+
+          function removeNotice() {
+            if (notice && notice.parentNode) {
+              notice.parentNode.removeChild(notice);
             }
+            notice = null;
+          }
+
+          function onMounted() {
+            removeNotice();
+            clearTimeout(timer);
+            if (observer) observer.disconnect();
+            try { sessionStorage.removeItem(RELOAD_KEY); } catch (e) {}
+          }
+
+          function showNotice() {
+            if (notice || appMounted()) return;
+            notice = document.createElement('div');
+            notice.style.cssText = 'position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px;background:#090b10;color:#f4ecdd;font-family:"IBM Plex Sans Arabic",sans-serif;text-align:center;line-height:2;';
+            notice.innerHTML = '<div><strong style="color:#e9d197;font-family:"Aref Ruqaa","Amiri",serif;display:block;font-size:22px;margin-bottom:8px;">تعذر تحميل التطبيق</strong>يرجى تحديث الصفحة أو التأكد من اكتمال النشر على GitHub Pages.<br/><button type="button" style="margin-top:16px;padding:10px 28px;background:transparent;border:1px solid #c9a24b;border-radius:8px;color:#e9d197;font-family:inherit;font-size:14px;cursor:pointer;">تحديث الصفحة</button></div>';
+            notice.querySelector('button').addEventListener('click', function () {
+              window.location.reload();
+            });
+            document.body.appendChild(notice);
+          }
+
+          // If the app mounts late (slow connection), remove the notice instead of covering the working site.
+          var observer = null;
+          var root = document.getElementById('root');
+          if (root && typeof MutationObserver !== 'undefined') {
+            observer = new MutationObserver(function () {
+              if (appMounted()) onMounted();
+            });
+            observer.observe(root, { childList: true, subtree: true });
+          }
+
+          var timer = setTimeout(function () {
+            if (appMounted()) return;
+            // One automatic reload to recover from stale cached assets after a new deployment.
+            var retried = false;
+            try { retried = sessionStorage.getItem(RELOAD_KEY) === '1'; } catch (e) {}
+            if (!retried) {
+              try { sessionStorage.setItem(RELOAD_KEY, '1'); } catch (e) {}
+              window.location.reload();
+              return;
+            }
+            showNotice();
           }, 30000);
+
+          if (appMounted()) onMounted();
         } catch (e) {}
       })();
     </script>
