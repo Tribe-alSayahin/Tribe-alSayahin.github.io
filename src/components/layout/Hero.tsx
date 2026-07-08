@@ -1,6 +1,7 @@
 import { ScrollText, Compass, ChevronDown } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
-import { lazy, Suspense } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
+import { lazy, Suspense, useCallback } from 'react';
+import type { PointerEvent as ReactPointerEvent } from 'react';
 import DuneSilhouette from '../DuneSilhouette';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { Button } from '../ui/Button';
@@ -33,10 +34,38 @@ const fadeUp = (delay: number, reduced: boolean) => ({
 
 export function Hero({ scrollToSection }: HeroProps) {
   const prefersReduced = useReducedMotion();
+
+  /* باراللاكس المؤشر: قيم حركية ناعمة تُدير المشهد ثلاثي الأبعاد */
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const springX = useSpring(pointerX, { stiffness: 55, damping: 18 });
+  const springY = useSpring(pointerY, { stiffness: 55, damping: 18 });
+  const plateRotateY = useTransform(springX, [-0.5, 0.5], [-10, 10]);
+  const plateRotateX = useTransform(springY, [-0.5, 0.5], [8, -8]);
+  const textShiftX = useTransform(springX, [-0.5, 0.5], [10, -10]);
+  const textShiftY = useTransform(springY, [-0.5, 0.5], [6, -6]);
+
+  const handlePointerMove = useCallback(
+    (e: ReactPointerEvent<HTMLElement>) => {
+      if (prefersReduced || e.pointerType === 'touch') return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      pointerX.set((e.clientX - rect.left) / rect.width - 0.5);
+      pointerY.set((e.clientY - rect.top) / rect.height - 0.5);
+    },
+    [prefersReduced, pointerX, pointerY]
+  );
+
+  const handlePointerLeave = useCallback(() => {
+    pointerX.set(0);
+    pointerY.set(0);
+  }, [pointerX, pointerY]);
+
   return (
     <section
       id="home"
-      className="min-h-screen flex flex-col justify-between relative overflow-hidden px-6 pt-[130px] pb-0 z-10"
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+      className="min-h-screen flex flex-col justify-between relative overflow-hidden px-6 pt-[130px] pb-0 z-10 scene-3d"
     >
       {/* عنوان للوصف SEO الداخلي */}
       <h1 className="sr-only">الموقع الرسمي لقبيلة السياحين — إرث تالد وديار أصيلة</h1>
@@ -62,11 +91,12 @@ export function Hero({ scrollToSection }: HeroProps) {
       {/* خط سماوي ذهبي رفيع أعلى الصفحة */}
       <div className="absolute top-[92px] inset-x-6 gold-hairline opacity-60" aria-hidden="true" />
 
-      <div className="max-w-[1160px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center relative z-20 flex-grow">
+      <div className="max-w-[1160px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center relative z-20 flex-grow preserve-3d">
         {/* اليسار بصرياً (الثاني في RTL): لوحة الوسم الفلكية */}
-        <div className="lg:col-span-5 flex justify-center items-center relative min-h-[340px] md:min-h-[440px] order-1 lg:order-2">
+        <div className={`lg:col-span-5 flex justify-center items-center relative min-h-[340px] md:min-h-[440px] order-1 lg:order-2 preserve-3d ${prefersReduced ? '' : 'float-3d'}`}>
           <motion.div
-            className="relative w-72 h-72 md:w-[380px] md:h-[380px] flex items-center justify-center"
+            className="relative w-72 h-72 md:w-[380px] md:h-[380px] flex items-center justify-center preserve-3d"
+            style={prefersReduced ? undefined : { rotateX: plateRotateX, rotateY: plateRotateY }}
             initial={prefersReduced ? { opacity: 1 } : { opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
@@ -91,7 +121,7 @@ export function Hero({ scrollToSection }: HeroProps) {
             />
 
             {/* صفيحة الليل النيلية حاملة الوسم */}
-            <div className="absolute w-[240px] h-[240px] md:w-[300px] md:h-[300px] rounded-full border border-indigo/60 bg-[radial-gradient(circle_at_35%_25%,rgba(24,39,66,0.85),rgba(11,14,20,0.9))] shadow-[inset_0_0_45px_rgba(24,39,66,0.8)] flex items-center justify-center overflow-hidden">
+            <div className="absolute w-[240px] h-[240px] md:w-[300px] md:h-[300px] rounded-full border border-indigo/60 bg-[radial-gradient(circle_at_35%_25%,rgba(24,39,66,0.85),rgba(11,14,20,0.9))] shadow-[inset_0_0_45px_rgba(24,39,66,0.8)] flex items-center justify-center overflow-hidden depth-1">
               {/* نجوم خافتة */}
               <div className="absolute inset-0 bg-grid-pattern opacity-20 rounded-full" />
 
@@ -127,7 +157,7 @@ export function Hero({ scrollToSection }: HeroProps) {
             </div>
 
             {/* المحور المركزي */}
-            <div className="absolute w-10 h-10 rounded-full bg-gradient-to-br from-brass to-brass-lt border border-sand/60 shadow-[0_0_22px_rgba(201,162,75,0.6)] flex items-center justify-center z-20">
+            <div className="absolute w-10 h-10 rounded-full bg-gradient-to-br from-brass to-brass-lt border border-sand/60 shadow-[0_0_22px_rgba(201,162,75,0.6)] flex items-center justify-center z-20 depth-3">
               <div className="w-2 h-2 rounded-full bg-ink" />
             </div>
 
@@ -137,7 +167,10 @@ export function Hero({ scrollToSection }: HeroProps) {
         </div>
 
         {/* اليمين بصرياً (الأول في RTL): النص والدعوات */}
-        <div className="lg:col-span-7 text-right flex flex-col justify-center order-2 lg:order-1">
+        <motion.div
+          className="lg:col-span-7 text-right flex flex-col justify-center order-2 lg:order-1"
+          style={prefersReduced ? undefined : { x: textShiftX, y: textShiftY }}
+        >
           {/* السطر التمهيدي */}
           <motion.div {...fadeUp(0.05, prefersReduced)} className="flex items-center gap-3 mb-7">
             <span className="w-9 h-9 rounded-md border border-brass/35 bg-brass/5 flex items-center justify-center shrink-0" aria-hidden="true">
@@ -154,7 +187,7 @@ export function Hero({ scrollToSection }: HeroProps) {
           {/* العنوان الرئيسي بخط الرقعة */}
           <motion.h1
             {...fadeUp(0.15, prefersReduced)}
-            className="font-ruqaa text-[2.6rem] md:text-6xl lg:text-[4.4rem] leading-[1.5] md:leading-[1.45] text-sand mb-6"
+            className="font-ruqaa text-[2.6rem] md:text-6xl lg:text-[4.4rem] leading-[1.5] md:leading-[1.45] text-sand mb-6 text-emboss-3d"
           >
             إرثٌ تالدٌ
             <br />
@@ -207,7 +240,7 @@ export function Hero({ scrollToSection }: HeroProps) {
               ))}
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
 
       {/* إشارة التمرير */}

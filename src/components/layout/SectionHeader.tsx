@@ -14,21 +14,22 @@ export function SectionHeader({
   description,
 }: SectionHeaderProps) {
   return (
-    <div className="relative z-10 mb-16 select-none text-right">
-      {/* الرقم الشبحي الكبير — يجلس في الطرف الأيسر مقابل الترويسة */}
+    <div className="relative z-10 mb-16 select-none text-right scene-3d">
+      {/* الرقم الشبحي الكبير — منحوت في عمق المشهد */}
       <div
-        className="absolute left-0 -top-8 md:-top-14 font-ruqaa text-[7rem] md:text-[11rem] leading-none text-brass/[0.06] pointer-events-none"
+        className="absolute left-0 -top-8 md:-top-14 font-ruqaa text-[7rem] md:text-[11rem] leading-none text-brass/[0.06] pointer-events-none text-carved-3d"
         aria-hidden="true"
       >
         {serialNumber}
       </div>
 
       <motion.div
-        initial={{ opacity: 0, y: 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 18, rotateX: 8 }}
+        whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
         viewport={{ once: true, margin: '-80px' }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="relative"
+        className="relative preserve-3d"
+        style={{ transformOrigin: '50% 100%' }}
       >
         {/* سطر الشارة: رقم القسم + التسمية + خط يمتد حتى نهاية السطر */}
         <div className="flex items-center gap-4 mb-4">
@@ -44,7 +45,7 @@ export function SectionHeader({
           <span className="gold-hairline-start flex-1 min-w-8 mt-0.5" aria-hidden="true" />
         </div>
 
-        <h2 className="font-ruqaa text-3xl md:text-5xl text-sand leading-[1.55] max-w-[780px]">
+        <h2 className="font-ruqaa text-3xl md:text-5xl text-sand leading-[1.55] max-w-[780px] text-emboss-3d">
           {title}
         </h2>
 

@@ -275,6 +275,159 @@ body::after {
   display: none !important;
 }
 
+/* ————————————————————————————————————————————————
+   نظام العمق ثلاثي الأبعاد — «مجسّم المخطوطة»
+   مشهد بمنظور perspective + طبقات مرفوعة على محور Z
+   ———————————————————————————————————————————————— */
+
+/* مشهد ثلاثي الأبعاد: يمنح الأبناء منظوراً حقيقياً */
+.scene-3d {
+  perspective: 1400px;
+  perspective-origin: 50% 40%;
+}
+
+/* الحفاظ على الفضاء ثلاثي الأبعاد للطبقات الداخلية */
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* بطاقة ثلاثية الأبعاد: إمالة وارتفاع مع ظل عمق متدرج */
+.card-3d {
+  transform-style: preserve-3d;
+  transition:
+    transform var(--duration-base, 300ms) cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow var(--duration-base, 300ms) cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+/* طبقات مرفوعة داخل البطاقات ثلاثية الأبعاد */
+.depth-1 { transform: translateZ(18px); }
+.depth-2 { transform: translateZ(36px); }
+.depth-3 { transform: translateZ(56px); }
+
+/* ظل عمق سينمائي متعدد الطبقات */
+.shadow-depth {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.35),
+    0 8px 18px rgba(0, 0, 0, 0.3),
+    0 24px 48px rgba(0, 0, 0, 0.28),
+    0 0 0 1px color-mix(in srgb, var(--brass) 10%, transparent);
+}
+.shadow-depth-lg {
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    0 14px 28px rgba(0, 0, 0, 0.34),
+    0 40px 80px rgba(0, 0, 0, 0.32),
+    0 0 60px rgba(201, 162, 75, 0.08),
+    0 0 0 1px color-mix(in srgb, var(--brass) 14%, transparent);
+}
+:root.light .shadow-depth {
+  box-shadow:
+    0 1px 2px rgba(42, 34, 22, 0.12),
+    0 8px 18px rgba(42, 34, 22, 0.1),
+    0 24px 48px rgba(42, 34, 22, 0.08),
+    0 0 0 1px color-mix(in srgb, var(--brass) 14%, transparent);
+}
+:root.light .shadow-depth-lg {
+  box-shadow:
+    0 2px 4px rgba(42, 34, 22, 0.14),
+    0 14px 28px rgba(42, 34, 22, 0.12),
+    0 40px 80px rgba(42, 34, 22, 0.1),
+    0 0 0 1px color-mix(in srgb, var(--brass) 18%, transparent);
+}
+
+/* بروز نصي ثلاثي الأبعاد للعناوين الكبرى — نقش نحاسي منحوت */
+.text-emboss-3d {
+  text-shadow:
+    0 1px 0 color-mix(in srgb, var(--brass) 35%, transparent),
+    0 2px 0 color-mix(in srgb, var(--brass) 22%, transparent),
+    0 3px 0 color-mix(in srgb, var(--brass) 12%, transparent),
+    0 8px 24px rgba(0, 0, 0, 0.5);
+}
+:root.light .text-emboss-3d {
+  text-shadow:
+    0 1px 0 rgba(255, 252, 240, 0.9),
+    0 2px 2px rgba(42, 34, 22, 0.18),
+    0 6px 18px rgba(42, 34, 22, 0.14);
+}
+
+/* الرقم الشبحي المنحوت في العمق */
+.text-carved-3d {
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.6),
+    0 -1px 0 color-mix(in srgb, var(--brass) 18%, transparent);
+  transform: translateZ(-60px);
+}
+
+/* بريق زجاجي يتبع المؤشر على البطاقات ثلاثية الأبعاد */
+.tilt-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: radial-gradient(
+    380px circle at var(--glare-x, 50%) var(--glare-y, 50%),
+    color-mix(in srgb, var(--brass-lt) 14%, transparent),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity var(--duration-base, 300ms) ease;
+}
+.card-3d:hover .tilt-glare,
+.card-3d:focus-within .tilt-glare {
+  opacity: 1;
+}
+
+/* حافة سُمك البطاقة — توهم بجسم له ثخانة */
+.card-edge-3d::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  transform: translateZ(-14px);
+  background: color-mix(in srgb, var(--ink) 85%, var(--brass) 15%);
+  filter: brightness(0.55);
+}
+
+/* ظهور ثلاثي الأبعاد عند التمرير: دوران من العمق */
+.reveal-3d {
+  opacity: 0;
+  transform: perspective(1200px) rotateX(10deg) translateY(44px) translateZ(-60px);
+  transform-origin: 50% 100%;
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+.reveal-3d.is-revealed {
+  opacity: 1;
+  transform: perspective(1200px) rotateX(0deg) translateY(0) translateZ(0);
+}
+
+/* حلقة أسطرلاب عائمة بعمق دوراني */
+@keyframes float-3d {
+  0%, 100% { transform: translateZ(0) translateY(0) rotateX(0deg); }
+  50% { transform: translateZ(24px) translateY(-10px) rotateX(2.5deg); }
+}
+.float-3d {
+  animation: float-3d 9s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+/* احترام تفضيل تقليل الحركة: تعطيل الإمالة والعوم والدوران */
+@media (prefers-reduced-motion: reduce) {
+  .card-3d,
+  .reveal-3d,
+  .float-3d {
+    transition-duration: 0.01ms !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1;
+  }
+  .reveal-3d { opacity: 1; }
+}
+
 /* scaleIn animation keyframes */
 @keyframes scaleIn {
   from {

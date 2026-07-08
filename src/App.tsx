@@ -87,12 +87,13 @@ export default function App() {
     }
   }, []);
 
-  // Intersection Observer for scroll reveal effect
+  // Intersection Observer for 3D scroll reveal effect
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
             entry.target.classList.add('opacity-100', 'translate-y-0');
             entry.target.classList.remove('opacity-0', 'translate-y-10');
             observer.unobserve(entry.target);
@@ -102,7 +103,7 @@ export default function App() {
       { threshold: 0.12 }
     );
 
-    const revealElements = document.querySelectorAll('.reveal-el');
+    const revealElements = document.querySelectorAll('.reveal-el, .reveal-3d');
     revealElements.forEach((el) => observer.observe(el));
 
     return () => {
@@ -178,7 +179,7 @@ export default function App() {
             title="هجرة الجثوم — أساس الديار"
             description="قبل كل الأقسام تأتي الجثوم: أول هجرة رسمية أسسها السياحين في عالية نجد، ومنها انطلق الاستقرار والتحضر وامتدت بقية الديار."
           />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
+          <div className="reveal-3d">
             <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الجثوم...</div>}>
               <JathumMonument scrollToSection={scrollToSection} />
             </Suspense>
@@ -195,7 +196,7 @@ export default function App() {
             title="ديوان نسب القبيلة الأصيل"
             description="التوثيق المتسلسل لعمود نسب فخذ السياحين من المزاحمة من الروقة من عتيبة الهيلا، وصولاً لعدنان."
           />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
+          <div className="reveal-3d">
             <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل شجرة النسب...</div>}>
               <LineageTree />
             </Suspense>
@@ -212,7 +213,7 @@ export default function App() {
             title="الخلاصة الكوكبية للأنساب"
             description="تمثيل فلكي رمزي يربط الأنساب السبعة الكبرى في فضاء كوكبي مترابط يبرز التلاحم والأصل المشترك للقبيلة."
           />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
+          <div className="reveal-3d">
             <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الأنسب...</div>}>
               <ConstellationDiagram />
             </Suspense>
@@ -229,7 +230,7 @@ export default function App() {
             title="الديار ومنازل الاستقرار"
             description="استكشف التوزيع الجغرافي لديار السياحين التاريخية، من منازلهم في نجد العذية وهجرهم المعتمدة ومناهل المياه القديمة."
           />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
+          <div className="reveal-3d">
             <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل قسم الديار...</div>}>
               <InteractiveMap />
             </Suspense>
@@ -246,7 +247,7 @@ export default function App() {
             title="معرض التراث والمقتنيات"
             description="شواهد بصرية ومقتنيات تراثية تعكس تاريخ القبيلة العريق وصوراً من ذاكرة الصحراء والديار المأهولة."
           />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
+          <div className="reveal-3d">
             <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل معرض التراث...</div>}>
               <HeritageGallery />
             </Suspense>
@@ -263,7 +264,7 @@ export default function App() {
             title="وسم الإبل وعلامة الباب"
             description="وسم «الباب» الشهير للسياحين على الرقبة من الجهة اليسرى، رمز الهوية والأصالة في البادية."
           />
-          <div className="max-w-[720px] mx-auto reveal-el opacity-0 translate-y-10 transition-all duration-800">
+          <div className="max-w-[720px] mx-auto reveal-3d">
             <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل معرض الوسوم...</div>}>
               <WasmGallery />
             </Suspense>
@@ -280,7 +281,7 @@ export default function App() {
             title="الديوان التفاعلي للشعر النبطي"
             description="أبيات وقصائد خالدة لشعراء قبيلة السياحين تصف الشجاعة، الكرم، ومآثر الديار النجدية."
           />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
+          <div className="reveal-3d">
             <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الديوان التفاعلي...</div>}>
               <PoetryCouncil />
             </Suspense>
@@ -297,7 +298,7 @@ export default function App() {
             title="التوثيق الاستشراقي والمدونات التاريخية"
             description="شهادات وملاحظات المستشرقين والرحالة الغربيين حول نسب وقوة ومواقف السياحين في تاريخ الجزيرة العربية."
           />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
+          <div className="reveal-3d">
             <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الأرشيف الاستشراقي...</div>}>
               <OppenheimArchive />
             </Suspense>
@@ -314,7 +315,7 @@ export default function App() {
             title="الأخبار والمناسبات"
             description="قسم القراءة العامة لعناصر الأخبار والمناسبات المنشورة من لوحة الإدارة."
           />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
+          <div className="reveal-3d">
             <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الأخبار والمناسبات...</div>}>
               <NewsEvents />
             </Suspense>
@@ -331,7 +332,7 @@ export default function App() {
             title="قسم الإدارة"
             description="مركز إدارة محتوى الموقع الرسمي لقبيلة السياحين — يتيح للمشرفين نشر الأخبار وجدولة المناسبات وإدارة المحتوى المعروض للعموم."
           />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
+          <div className="reveal-3d">
             <AdminSection />
           </div>
         </div>

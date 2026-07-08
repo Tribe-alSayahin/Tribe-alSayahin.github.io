@@ -1,20 +1,29 @@
 import React from 'react';
+import { Tilt3D } from './Tilt3D';
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   hoverGlow?: boolean;
+  /** إمالة ثلاثية الأبعاد تتبع المؤشر (مفعّلة افتراضياً مع hoverGlow) */
+  tilt3d?: boolean;
 }
 
 export const Card: React.FC<CardProps> = ({
   children,
   className = '',
   hoverGlow = true,
+  tilt3d,
   ...props
 }) => {
+  const enableTilt = tilt3d ?? hoverGlow;
   const baseClasses = 'group relative bg-gradient-to-b from-coffee/70 to-ink-2/50 border border-brass/15 rounded-2xl p-space-6 transition-all duration-base ease-brand text-right';
-  const glowClasses = hoverGlow ? 'shadow-glow-sm hover:shadow-glow-md hover:border-brass/45 hover:-translate-y-1' : '';
+  const glowClasses = hoverGlow
+    ? enableTilt
+      ? 'shadow-depth hover:shadow-depth-lg hover:border-brass/45'
+      : 'shadow-glow-sm hover:shadow-glow-md hover:border-brass/45 hover:-translate-y-1'
+    : '';
 
-  return (
-    <div className={`${baseClasses} ${glowClasses} ${className}`} {...props}>
+  const inner = (
+    <div className={`${baseClasses} ${glowClasses} ${enableTilt ? 'preserve-3d h-full' : ''} ${className}`} {...props}>
       {hoverGlow && (
         <>
           {/* Decorative brass corner brackets, revealed on hover */}
@@ -31,6 +40,10 @@ export const Card: React.FC<CardProps> = ({
       {children}
     </div>
   );
+
+  if (!enableTilt) return inner;
+
+  return <Tilt3D className="h-full rounded-2xl">{inner}</Tilt3D>;
 };
 
 export const CardHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
