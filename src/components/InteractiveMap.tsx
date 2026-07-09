@@ -23,19 +23,6 @@ interface LocationInfo {
 
 const LOCATIONS: LocationInfo[] = [
   {
-    id: 'shaqra',
-    name: 'شقراء',
-    coords: [25.2422, 45.2443],
-    x: 58,
-    y: 44,
-    description: 'العاصمة التاريخية لإقليم الوشم في نجد، وتعتبر من الديار الحضرية العريقة التي سكنها واستقر بها عوائل وأبناء من قبيلة السياحين.',
-    significance: 'مركز حضاري وتجاري هام، وموطن للعديد من الأسر السيحانية المتحضرة تاريخياً والمساهمة في تنمية الإقليم.',
-    imgUrl: 'https://images.unsplash.com/photo-1508962914676-134849a727f0?auto=format&fit=crop&w=600&q=80',
-    historyDetail: 'استوطنت العديد من العوائل والأسر المتحضرة من قبيلة السياحين في شقراء بإقليم الوشم منذ عهود قديمة، حيث شاركوا بفاعلية في النشاط الزراعي والتجاري وتشييد القصور الطينية العريقة بالبلدة التاريخية ومجالسها العلمية والأدبية القديمة.',
-    category: 'settlement',
-    categoryLabel: 'البلدات والحواضر'
-  },
-  {
     id: 'jathum',
     name: 'الجثوم',
     coords: [24.5822, 44.6053],
@@ -602,7 +589,7 @@ export default function InteractiveMap() {
             </div>
             <h5 className="text-sm font-semibold text-sand mb-space-1">الاستقرار والتحضر المدني</h5>
             <p className="text-xs text-sand-dim leading-relaxed">
-              معدل استقرار مجتمعات القبيلة التنموي والتحول من نمط البادية والترحال إلى هجر زراعية عامرة وحواضر تنموية كبرى كشقراء وعفيف وعشيرة.
+              معدل استقرار مجتمعات القبيلة التنموي والتحول من نمط البادية والترحال إلى هجر زراعية عامرة وحواضر تنموية كبرى كالجثوم وعفيف وعشيرة.
             </p>
           </div>
 
@@ -627,7 +614,7 @@ export default function InteractiveMap() {
           <div className="space-y-space-4">
             <div className="flex items-center gap-space-2 text-brass border-b border-brass/10 pb-space-2">
               <MapPin className="w-4 h-4 text-brass-lt" />
-              <h5 className="font-serif font-bold text-base text-sand">الميزة البيئية لنجد وعالية نجد (شقراء، الجثوم، رهاط، عالية نجد)</h5>
+              <h5 className="font-serif font-bold text-base text-sand">الميزة البيئية لنجد وعالية نجد (الجثوم، رهاط، عالية نجد)</h5>
             </div>
             <p className="text-xs text-sand-dim leading-relaxed">
               تتميز ديار نجد وعالية نجد بتربتها الطميية الرملية العميقة المناسبة تماماً لإنتاج تمور الخلاص والسكري الفاخر وزراعة الحبوب القديمة كقمح نجد النبطي. كما تُعد السهول المحيطة كنفود الدحيل والوشم مناطق مثالية للرعي وتدريب الخيل العربية الأصيلة.

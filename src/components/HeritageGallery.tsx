@@ -20,17 +20,6 @@ interface GalleryItem {
 
 const GALLERY_ITEMS: GalleryItem[] = [
   {
-    id: 1,
-    locationId: 'shaqra',
-    title: 'شقراء التاريخية (إقليم الوشم)',
-    category: 'settlements',
-    categoryLabel: 'الحواضر والبلدات القديمة',
-    imgUrl: 'https://images.unsplash.com/photo-1508962914676-134849a727f0?auto=format&fit=crop&w=1200&q=80',
-    satelliteUrl: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=80',
-    description: 'العاصمة التاريخية لإقليم الوشم في نجد وموطن عريق للأسر السيحانية المتحضرة تاريخياً.',
-    story: 'تعتبر محافظة شقراء من أعرق الحواضر في إقليم الوشم بنجد. استوطن بها العديد من أسر وعوائل قبيلة السياحين من الروقة من عتيبة منذ القدم، وشاركت في الحراك العلمي والتجاري والاجتماعي في نجد، وما زالت من معاقل ترابطهم.'
-  },
-  {
     id: 2,
     locationId: 'jathum',
     title: 'هجرة الجثوم (عالية نجد)',
