@@ -1,17 +1,9 @@
 import { motion } from 'motion/react';
 import { Award, Users, ShieldCheck, HeartHandshake } from 'lucide-react';
 import { SectionHeader } from './SectionHeader';
+import { SUPPORTERS_DATA } from './Supporters.data';
 
 export function Supporters() {
-  const supportersList = [
-    { name: 'داعم مجهود التوثيق المالي واللوجستي', role: 'داعم مساهم في صون إرث القبيلة' },
-    { name: 'داعم مجهود التوثيق المالي واللوجستي', role: 'داعم مساهم في صون إرث القبيلة' },
-    { name: 'داعم مجهود التوثيق المالي واللوجستي', role: 'داعم مساهم في صون إرث القبيلة' },
-    { name: 'داعم مجهود التوثيق المالي واللوجستي', role: 'داعم مساهم في صون إرث القبيلة' },
-    { name: 'داعم مجهود التوثيق المالي واللوجستي', role: 'داعم مساهم في صون إرث القبيلة' },
-    { name: 'داعم مجهود التوثيق المالي واللوجستي', role: 'داعم مساهم في صون إرث القبيلة' },
-  ];
-
   return (
     <section id="supporters" className="section section-surface bg-ink px-5 md:px-8 relative z-10 py-20 md:py-28">
       <div className="max-w-[1160px] mx-auto">
@@ -56,7 +48,7 @@ export function Supporters() {
 
           {/* Supporters Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {supportersList.map((sup, idx) => (
+            {SUPPORTERS_DATA.map((sup, idx) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 15 }}
