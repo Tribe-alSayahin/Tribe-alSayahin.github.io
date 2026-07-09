@@ -1,22 +1,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  GitMerge, Search
-} from 'lucide-react';
-import { TreeNode } from './LineageTree.types';
+import { GitMerge, Search } from 'lucide-react';
 import { LINEAGE_DATA } from './LineageTree.data';
-import { DetailPanel } from './subcomponents/DetailPanel';
 import { TreeHierarchy } from './subcomponents/TreeHierarchy';
 
 export default function LineageTree() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedNode, setSelectedNode] = useState<TreeNode | null>(LINEAGE_DATA[0]);
 
-  // Keep the search focused on the existing tree data without changing its hierarchy.
-  const filteredNodes = LINEAGE_DATA.filter(node => {
-    const matchesSearch = node.name.includes(searchQuery) || node.note.includes(searchQuery);
-    return matchesSearch;
-  });
+  const filteredBranches = LINEAGE_DATA.filter(
+    (node) => node.level === 1 && node.name.includes(searchQuery),
+  );
 
   return (
     <div className="editorial-card p-5 md:p-8 shadow-2xl" id="nasab-tree-interactive">
@@ -32,15 +25,15 @@ export default function LineageTree() {
             النسب والفروع
           </div>
           <h3 className="font-ruqaa text-3xl md:text-5xl text-sand leading-tight">
-            شجرة أنساب فخذ السياحين عتيبة
+            فخوذ السياحين من عتيبة
           </h3>
           <p className="text-xs md:text-sm text-sand-dim leading-relaxed max-w-2xl font-sans">
-            تسلسل الفروع والأسماء الواردة في شجرة أنساب السياحين، بعرض مختصر يسهل استكشافه.
+            عرض مختصر للفخوذ الواردة في شجرة أنساب السياحين.
           </p>
         </div>
 
         <span className="shrink-0 rounded-full border border-brass/20 bg-brass/5 px-4 py-2 font-kufi text-xs text-brass-lt">
-          اختر اسمًا لعرض التفاصيل
+          الفخوذ الرئيسية
         </span>
       </div>
 
@@ -68,27 +61,11 @@ export default function LineageTree() {
               </div>
 
               <p className="md:col-span-5 text-right md:text-left text-xs text-sand-dim/80 font-kufi">
-                {filteredNodes.length.toLocaleString('ar-SA')} اسمًا ظاهرًا
+                اختر فخذًا من القائمة
               </p>
             </div>
 
-            {/* Tree Workspace and Sidebar Card Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              
-              {/* Left Side: Detail panel of selected branch */}
-              <div className="lg:col-span-4 order-2 lg:order-1">
-                <DetailPanel selectedNode={selectedNode} />
-              </div>
-
-              {/* Right Side: Visual Tree Hierarchy */}
-              <div className="lg:col-span-8 order-1 lg:order-2 space-y-6">
-                <TreeHierarchy
-                  filteredNodes={filteredNodes}
-                  selectedNode={selectedNode}
-                  onSelectNode={setSelectedNode}
-                />
-              </div>
-            </div>
+            <TreeHierarchy filteredNodes={filteredBranches} />
         </motion.div>
       </AnimatePresence>
     </div>
