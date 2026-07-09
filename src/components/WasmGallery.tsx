@@ -133,7 +133,7 @@ export function WasmGallery() {
             })}
           </div>
 
-          {/* Left Area: Detailed Model Display & Camel Anatomy Blueprint */}
+          {/* Left Area: Detailed Mark Display & Camel Anatomy Blueprint */}
           <Card hoverGlow={false} className="lg:col-span-5 bg-gradient-to-b from-[#142232] to-ink-2 border border-brass/20 rounded-3xl p-space-6 md:p-space-8 flex flex-col justify-between shadow-2xl relative overflow-hidden">
             {/* Ambient background grid pattern */}
             <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(rgba(201,151,62,0.15)_1px,transparent_1px),linear-gradient(90deg,rgba(201,151,62,0.15)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
