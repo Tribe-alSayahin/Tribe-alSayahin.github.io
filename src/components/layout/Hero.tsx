@@ -4,7 +4,6 @@ import { lazy, Suspense } from 'react';
 import DuneSilhouette from '../DuneSilhouette';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { Button } from '../ui/Button';
-import { SIYAHIN_BRANCHES_DATA, POEMS_DATA } from '../PoetryCouncil/PoetryCouncil.data';
 import { LINEAGE_DATA } from '../LineageTree/LineageTree.data';
 
 const DesertCinematicBackground = lazy(() => import('../DesertCinematicBackground'));
@@ -17,9 +16,8 @@ interface HeroProps {
 }
 
 const HERO_STATS = [
-  { value: `${SIYAHIN_BRANCHES_DATA.length}+`, label: 'فخوذ موثقة' },
-  { value: `${LINEAGE_DATA.length}+`, label: 'أعلام في شجرة النسب' },
-  { value: `${POEMS_DATA.length}+`, label: 'قصائد وشواهد شعرية' }
+  { value: `${LINEAGE_DATA.filter((entry) => entry.level === 1).length}+`, label: 'فخوذ في شجرة النسب' },
+  { value: `${LINEAGE_DATA.length}+`, label: 'أعلام في شجرة النسب' }
 ];
 
 const LINEAGE_CHAIN = ['قبيلة السياحين', 'المزاحمة', 'الروقة', 'عتيبة الهيلا'];
@@ -178,7 +176,7 @@ export function Hero({ scrollToSection }: HeroProps) {
             {...fadeUp(0.38, prefersReduced)}
             className="max-w-[600px] text-sand-dim text-base md:text-lg leading-loose mb-9 font-sans"
           >
-            البوابة الرقمية الموثقة لقبيلة السياحين من الروقة من عتيبة — من تلال نجد الشامخة إلى وثائق الأرشيف الاستشراقي والديوان التفاعلي للشعر النبطي الأصيل.
+            البوابة الرقمية الموثقة لقبيلة السياحين من الروقة من عتيبة — من تلال نجد الشامخة إلى وثائق الأرشيف الاستشراقي والتاريخ الشفهي.
           </motion.p>
 
           <motion.div {...fadeUp(0.48, prefersReduced)} className="flex gap-4 flex-wrap">

@@ -277,11 +277,11 @@ export default function App() {
           <SectionHeader
             serialNumber="٠٧"
             badgeText="مجلس الشعراء"
-            title="الديوان التفاعلي للشعر النبطي"
-            description="أبيات وقصائد خالدة لشعراء قبيلة السياحين تصف الشجاعة، الكرم، ومآثر الديار النجدية."
+            title="ديوان الشعر النبطي"
+            description="مساحة مخصصة للقصائد الموثقة وشواهد الشعر النبطي بعد مراجعتها وإسنادها إلى مصادر واضحة."
           />
           <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الديوان التفاعلي...</div>}>
+            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل قسم الشعر...</div>}>
               <PoetryCouncil />
             </Suspense>
           </div>
