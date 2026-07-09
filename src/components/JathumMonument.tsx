@@ -20,7 +20,7 @@ const foundingFacts = [
     icon: MapPin,
     label: 'الموقع',
     value: 'عالية نجد',
-    detail: '٢٤٫٥٨° شمالاً — ٤٤٫٦١° شرقاً، قرب حاضرة شقراء',
+    detail: '٢٤٫٥٨° شمالاً — ٤٤٫٦١° شرقاً، في عالية نجد',
   },
   {
     icon: Landmark,

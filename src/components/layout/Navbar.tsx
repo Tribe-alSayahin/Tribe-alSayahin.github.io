@@ -33,20 +33,20 @@ export function Navbar({
       <div
         className={`transition-all duration-400 ease-brand ${
           isScrolled
-            ? 'mx-3 md:mx-6 mt-3 rounded-2xl border border-brass/25 bg-ink/85 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.35)]'
-            : 'mx-0 mt-0 rounded-none border border-transparent bg-ink/40 backdrop-blur-sm'
+            ? 'mx-3 md:mx-8 mt-3 rounded-2xl border border-brass/25 bg-ink/88 backdrop-blur-xl shadow-[0_14px_42px_rgba(0,0,0,0.32)]'
+            : 'mx-0 mt-0 rounded-none border border-transparent bg-ink/45 backdrop-blur-md'
         }`}
       >
-        <div className="max-w-[1160px] mx-auto px-5 md:px-6 h-[72px] flex items-center justify-between">
+        <div className="max-w-[1240px] mx-auto px-5 md:px-8 h-[76px] flex items-center justify-between">
           <a
             href="#home"
             onClick={(e) => {
               e.preventDefault();
               handleNavigate('home');
             }}
-            className="flex items-center gap-3 text-lg font-bold font-serif text-sand hover:text-brass-lt transition-colors focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-lg p-1"
+            className="flex items-center gap-3 text-lg font-bold font-serif text-sand hover:text-brass-lt transition-colors focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-xl p-1"
           >
-            <div className="w-10 h-10 rounded-lg border border-brass/40 bg-gradient-to-br from-brass/15 to-transparent flex items-center justify-center text-brass shadow-glow-sm p-2">
+            <div             className="w-11 h-11 rounded-xl border border-brass/45 bg-gradient-to-br from-brass/18 to-transparent flex items-center justify-center text-brass shadow-glow-sm p-2">
               <svg
                 viewBox="0 0 200 200"
                 className="w-full h-full"
@@ -64,12 +64,12 @@ export function Navbar({
               <span className="font-kufi text-[10px] font-semibold tracking-[0.22em] text-brass-lt/85">
                 الموقع الرسمي
               </span>
-              <span className="font-kufi text-lg leading-none">قبيلة السياحين</span>
+              <span className="font-kufi text-base md:text-lg leading-none">قبيلة السياحين</span>
             </span>
           </a>
 
           {/* Desktop Links */}
-          <nav className="hidden lg:flex items-center gap-0.5" aria-label="التنقل الرئيسي">
+          <nav className="hidden lg:flex items-center gap-1 rounded-full border border-brass/10 bg-ink-2/35 p-1" aria-label="التنقل الرئيسي">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.id}
@@ -78,7 +78,7 @@ export function Navbar({
                   e.preventDefault();
                   handleNavigate(link.id);
                 }}
-                className={`relative px-3 py-1.5 rounded-full font-kufi font-semibold text-xs md:text-sm transition-colors focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none ${
+                className={`relative px-3.5 py-2 rounded-full font-kufi font-semibold text-xs md:text-sm transition-colors focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none ${
                   activeSection === link.id
                     ? 'text-brass-lt'
                     : 'text-sand-dim hover:text-brass-lt hover:bg-brass/10'

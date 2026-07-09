@@ -10,8 +10,8 @@ export const Card: React.FC<CardProps> = ({
   hoverGlow = true,
   ...props
 }) => {
-  const baseClasses = 'group relative bg-gradient-to-b from-coffee/70 to-ink-2/50 border border-brass/15 rounded-2xl p-space-6 transition-all duration-base ease-brand text-right';
-  const glowClasses = hoverGlow ? 'shadow-glow-sm hover:shadow-glow-md hover:border-brass/45 hover:-translate-y-1' : '';
+  const baseClasses = 'editorial-card group relative rounded-2xl p-space-6 transition-all duration-base ease-brand text-right';
+  const glowClasses = hoverGlow ? 'interactive-lift' : '';
 
   return (
     <div className={`${baseClasses} ${glowClasses} ${className}`} {...props}>
@@ -19,11 +19,11 @@ export const Card: React.FC<CardProps> = ({
         <>
           {/* Decorative brass corner brackets, revealed on hover */}
           <span
-            className="absolute top-2 right-2 w-4 h-4 border-t border-r border-brass/60 rounded-tr-md opacity-0 -translate-y-1 translate-x-1 transition-all duration-base ease-brand group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 pointer-events-none"
+            className="absolute top-3 right-3 w-4 h-4 border-t border-r border-brass/60 rounded-tr-md opacity-0 -translate-y-1 translate-x-1 transition-all duration-base ease-brand group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 pointer-events-none"
             aria-hidden="true"
           />
           <span
-            className="absolute bottom-2 left-2 w-4 h-4 border-b border-l border-brass/60 rounded-bl-md opacity-0 translate-y-1 -translate-x-1 transition-all duration-base ease-brand group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 pointer-events-none"
+            className="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-brass/60 rounded-bl-md opacity-0 translate-y-1 -translate-x-1 transition-all duration-base ease-brand group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 pointer-events-none"
             aria-hidden="true"
           />
         </>

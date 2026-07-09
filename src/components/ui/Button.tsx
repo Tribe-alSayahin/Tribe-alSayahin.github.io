@@ -13,12 +13,12 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   // Base classes with accessible focus ring and smooth transitions
-  const baseClasses = 'relative isolate overflow-hidden inline-flex items-center justify-center font-kufi font-medium rounded-full transition-all duration-base ease-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass/80 focus-visible:ring-offset-2 focus-visible:ring-offset-ink disabled:opacity-50 disabled:pointer-events-none cursor-pointer group';
+  const baseClasses = 'relative isolate overflow-hidden inline-flex items-center justify-center font-kufi font-medium rounded-xl transition-all duration-base ease-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-2 focus-visible:ring-offset-ink disabled:opacity-50 disabled:pointer-events-none cursor-pointer group';
 
   // Variants mapping
   const variantClasses = {
-    primary: 'bg-gradient-to-b from-brass-lt to-brass text-ink font-bold ring-1 ring-inset ring-white/25 shadow-glow-sm hover:shadow-glow-md hover:brightness-105 hover:-translate-y-0.5 active:scale-95',
-    secondary: 'border border-brass/35 bg-brass/5 hover:bg-brass/10 text-brass-lt hover:border-brass/65 hover:-translate-y-0.5',
+    primary: 'bg-gradient-to-b from-brass-lt to-brass text-ink font-bold ring-1 ring-inset ring-sand/30 shadow-glow-sm hover:shadow-glow-md hover:brightness-105 hover:-translate-y-0.5 active:scale-95',
+    secondary: 'border border-brass/40 bg-brass/5 hover:bg-brass/12 text-brass-lt hover:border-brass/70 hover:-translate-y-0.5',
     ghost: 'bg-transparent text-sand hover:bg-brass/10 hover:text-brass-lt',
   };
 

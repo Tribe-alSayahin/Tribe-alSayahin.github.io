@@ -30,7 +30,7 @@ export function Timeline() {
   ];
 
   return (
-    <section id="timeline" className="section bg-ink px-6 relative z-10 py-16">
+    <section id="timeline" className="section section-surface bg-ink px-5 md:px-8 relative z-10 py-20 md:py-28">
       <div className="max-w-[1160px] mx-auto">
         <SectionHeader
           serialNumber="٠٨.٥"
@@ -56,14 +56,7 @@ export function Timeline() {
               />
 
               <div 
-                className="rounded-2xl p-6 md:p-8 border shadow-xl hover:border-brass/50 transition-all duration-300 relative overflow-hidden"
-                style={{ 
-                  background: 'linear-gradient(145deg, var(--coffee), var(--ink-2))',
-                  borderColor: 'var(--brass-lt)',
-                  borderWidth: '1px',
-                  borderStyle: 'solid',
-                  opacity: 0.95
-                }}
+                className="editorial-card interactive-lift p-6 md:p-8 shadow-xl"
               >
                 <h3 className="text-xl md:text-2xl font-serif text-brass-lt font-bold mb-3 text-right">
                   {event.title}

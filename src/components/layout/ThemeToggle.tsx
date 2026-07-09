@@ -10,7 +10,7 @@ export function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
     <button
       id="theme-toggle-btn"
       onClick={onToggle}
-      className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-brass/10 border border-brass/25 text-brass-lt flex items-center justify-center hover:bg-brass/20 hover:border-brass/45 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
+      className="w-10 h-10 md:w-11 md:h-11 rounded-xl bg-brass/8 border border-brass/30 text-brass-lt flex items-center justify-center hover:bg-brass/15 hover:border-brass/55 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
       title={theme === 'dark' ? 'تفعيل الوضع النهاري' : 'تفعيل الوضع الليلي'}
       aria-label="تبديل مظهر الإضاءة"
       aria-pressed={theme === 'light'}

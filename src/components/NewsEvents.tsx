@@ -66,7 +66,7 @@ export default function NewsEvents() {
           <button
             key={key}
             onClick={() => setFilter(key)}
-            className={`font-kufi text-xs md:text-sm px-4 py-2 rounded-lg border transition-all duration-300 ${
+            className={`font-kufi text-xs md:text-sm px-4 py-2 rounded-xl border transition-all duration-300 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none ${
               filter === key
                 ? 'bg-brass/15 border-brass/40 text-brass-lt'
                 : 'bg-transparent border-brass/10 text-sand-dim hover:border-brass/25 hover:text-sand'
@@ -90,7 +90,7 @@ export default function NewsEvents() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="group relative rounded-2xl border border-brass/10 bg-ink-2/40 p-6 hover:border-brass/30 transition-all duration-300"
+                className="editorial-card interactive-lift group relative rounded-2xl p-6"
               >
                 {/* Type Badge */}
                 <div className="flex items-center justify-between mb-4">

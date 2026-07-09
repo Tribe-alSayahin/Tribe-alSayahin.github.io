@@ -36,7 +36,7 @@ export function Hero({ scrollToSection }: HeroProps) {
   return (
     <section
       id="home"
-      className="min-h-screen flex flex-col justify-between relative overflow-hidden px-6 pt-[130px] pb-0 z-10"
+      className="min-h-[760px] md:min-h-screen flex flex-col justify-between relative overflow-hidden px-5 md:px-8 pt-[138px] pb-0 z-10"
     >
       {/* عنوان للوصف SEO الداخلي */}
       <h1 className="sr-only">الموقع الرسمي لقبيلة السياحين — إرث تالد وديار أصيلة</h1>
@@ -62,7 +62,7 @@ export function Hero({ scrollToSection }: HeroProps) {
       {/* خط سماوي ذهبي رفيع أعلى الصفحة */}
       <div className="absolute top-[92px] inset-x-6 gold-hairline opacity-60" aria-hidden="true" />
 
-      <div className="max-w-[1160px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center relative z-20 flex-grow">
+      <div className="max-w-[1240px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center relative z-20 flex-grow">
         {/* اليسار بصرياً (الثاني في RTL): لوحة الوسم الفلكية */}
         <div className="lg:col-span-5 flex justify-center items-center relative min-h-[340px] md:min-h-[440px] order-1 lg:order-2">
           <motion.div
@@ -137,7 +137,7 @@ export function Hero({ scrollToSection }: HeroProps) {
         </div>
 
         {/* اليمين بصرياً (الأول في RTL): النص والدعوات */}
-        <div className="lg:col-span-7 text-right flex flex-col justify-center order-2 lg:order-1">
+        <div className="lg:col-span-7 text-right flex flex-col justify-center order-2 lg:order-1 hero-panel rounded-[2rem] p-6 md:p-10 lg:p-12">
           {/* السطر التمهيدي */}
           <motion.div {...fadeUp(0.05, prefersReduced)} className="flex items-center gap-3 mb-7">
             <span className="w-9 h-9 rounded-md border border-brass/35 bg-brass/5 flex items-center justify-center shrink-0" aria-hidden="true">
@@ -194,7 +194,7 @@ export function Hero({ scrollToSection }: HeroProps) {
 
           {/* شريط الإحصاءات */}
           <motion.div {...fadeUp(0.6, prefersReduced)}>
-            <div className="flex items-stretch justify-start divide-x divide-x-reverse divide-brass/15 border-y border-brass/15 mt-11 max-w-[560px]">
+            <div className="flex items-stretch justify-start divide-x divide-x-reverse divide-brass/15 border-y border-brass/15 mt-10 max-w-[560px]">
               {HERO_STATS.map((stat) => (
                 <div key={stat.label} className="text-right px-6 first:pr-0 py-4 flex-1">
                   <p className="font-ruqaa text-2xl md:text-[2rem] text-gold-gradient leading-tight">
