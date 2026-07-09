@@ -17,12 +17,12 @@ export function Footer({ scrollToSection }: FooterProps) {
   const currentDoc = DOCS_DATA.find((d) => d.id === selectedRefDoc) ?? DOCS_DATA[0];
 
   return (
-    <footer className="bg-ink-2 border-t border-brass/15 py-14 px-6 relative z-10 text-center">
+    <footer className="section-surface bg-ink-2 border-t border-brass/15 py-20 md:py-24 px-5 md:px-8 relative z-10 text-center">
       {/* شريط سدو زخرفي أعلى التذييل */}
       <div className="section-divider absolute top-0 inset-x-0 -translate-y-1/2" aria-hidden="true" />
       <div className="max-w-[1160px] mx-auto">
         {/* REFERENCES & ILLUSTRATED ARCHIVE */}
-        <div className="max-w-[960px] mx-auto mb-14 pb-12 border-b border-brass/15 text-right relative">
+        <div className="editorial-card max-w-[1040px] mx-auto mb-14 p-6 md:p-10 pb-12 border-b border-brass/15 text-right relative">
           <div className="text-center mb-8">
             <span className="font-kufi text-xs text-brass-lt font-semibold">التوثيق التفاعلي</span>
             <h3 className="text-2xl md:text-3xl mt-1 text-sand font-serif">المصادر والمراجع التاريخية</h3>
@@ -31,7 +31,7 @@ export function Footer({ scrollToSection }: FooterProps) {
 
           {/* Tabs Controller */}
           <div className="flex justify-center mb-8">
-            <div className="bg-ink border border-brass/20 rounded-xl p-1 flex gap-1">
+            <div className="bg-ink border border-brass/20 rounded-2xl p-1.5 flex gap-1">
               <button
                 onClick={() => setRefTab('illustrated')}
                 className={`px-5 py-2 rounded-lg text-xs md:text-sm font-kufi transition-all flex items-center gap-2 cursor-pointer focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none border-0 ${

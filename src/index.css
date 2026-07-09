@@ -7,39 +7,39 @@
    ليل صحراوي عميق بلمسة نيلية + ذهب شمبانيا مصقول
    ———————————————————————————————————————————————— */
 :root {
-  --ink: #090b10;
-  --ink-2: #0e1219;
-  --coffee: #141a24;
-  --sand: #f4ecdd;
-  --sand-dim: #a89e8a;
-  --brass: #c9a24b;
-  --brass-lt: #e9d197;
-  --olive: #1c241e;
-  --olive-2: #2b3830;
-  --olive-lt: #6b8f71;
+  --ink: #070503;
+  --ink-2: #0f0b07;
+  --coffee: #17100a;
+  --sand: #fcf8f0;
+  --sand-dim: #bba989;
+  --brass: #d4af37;
+  --brass-lt: #ebd481;
+  --olive: #1b241c;
+  --olive-2: #29382c;
+  --olive-lt: #789579;
   --copper: #b87333;
   --copper-lt: #d4956b;
-  --indigo: #182742;
+  --indigo: #162435;
   --parchment: #efe5cd;
 }
 
 /* الوضع النهاري — «ورق المخطوطة في ضوء النهار» */
 :root.light {
-  --ink: #f8f3e7;
-  --ink-2: #f0e9d7;
-  --coffee: #e8dfc7;
-  --sand: #251d12;
-  --sand-dim: #6e6350;
-  --brass: #8f6a1a;
-  --brass-lt: #755713;
-  --olive: #dce0cc;
-  --olive-2: #c9d1b2;
-  --olive-lt: #3d5c42;
+  --ink: #fcfbf7;
+  --ink-2: #f4f0e6;
+  --coffee: #ebe3d2;
+  --sand: #241a10;
+  --sand-dim: #6b5d47;
+  --brass: #b8892a;
+  --brass-lt: #8a661f;
+  --olive: #e2e6d8;
+  --olive-2: #cbd5bd;
+  --olive-lt: #496549;
   --copper: #8b5e3c;
   --copper-lt: #6b4a2e;
-  --indigo: #d8dfe9;
+  --indigo: #d6dde6;
   --parchment: #2a2216;
-  --overlay: rgba(248, 243, 231, 0.85);
+  --overlay: rgba(252, 251, 247, 0.86);
 }
 
 @theme {
@@ -101,12 +101,27 @@
     color: var(--color-sand);
     line-height: 1.9;
     -webkit-font-smoothing: antialiased;
+    min-width: 320px;
   }
 
   h1, h2, h3 {
     font-family: var(--font-serif);
     font-weight: 700;
     line-height: 1.5;
+  }
+
+  button,
+  a,
+  input,
+  textarea {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: none;
   }
 }
 
@@ -184,7 +199,7 @@ body::after {
 
 /* زجاج فاخر */
 .glass-panel {
-  background: rgba(9,11,16,0.55);
+  background: color-mix(in srgb, var(--ink-2) 78%, transparent);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
   backdrop-filter: blur(16px) saturate(140%);
   border: 1px solid color-mix(in srgb, var(--brass) 18%, transparent);
@@ -192,7 +207,104 @@ body::after {
 
 /* إبراز ذهبي هادئ */
 .glow-ambient {
-  box-shadow: 0 0 80px rgba(201,162,75,0.12), 0 0 0 1px color-mix(in srgb, var(--brass) 8%, transparent);
+  box-shadow: 0 0 80px color-mix(in srgb, var(--brass) 12%, transparent), 0 0 0 1px color-mix(in srgb, var(--brass) 8%, transparent);
+}
+
+/* Shared editorial surfaces used throughout the redesigned page. */
+.site-shell {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--indigo) 22%, transparent) 0, transparent 32rem),
+    var(--ink);
+}
+
+.section {
+  isolation: isolate;
+  scroll-margin-top: 6rem;
+}
+
+.section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.42;
+  background:
+    radial-gradient(circle at 12% 12%, color-mix(in srgb, var(--brass) 7%, transparent), transparent 28rem),
+    radial-gradient(circle at 88% 80%, color-mix(in srgb, var(--indigo) 14%, transparent), transparent 30rem);
+}
+
+.section-surface {
+  border-top: 1px solid color-mix(in srgb, var(--brass) 12%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--sand) 3%, transparent);
+}
+
+.editorial-card {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--coffee) 86%, transparent), color-mix(in srgb, var(--ink-2) 94%, transparent));
+  border: 1px solid color-mix(in srgb, var(--brass) 18%, transparent);
+  border-radius: 1.5rem;
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--ink) 35%, transparent);
+}
+
+.editorial-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--brass), transparent);
+  opacity: 0.55;
+}
+
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--brass-lt);
+  font-family: var(--font-kufi);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.section-kicker::before {
+  content: "";
+  width: 2.25rem;
+  height: 1px;
+  background: var(--brass);
+  opacity: 0.8;
+}
+
+.hero-panel {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--ink-2) 82%, transparent), color-mix(in srgb, var(--indigo) 20%, transparent)),
+    color-mix(in srgb, var(--ink) 78%, transparent);
+  border: 1px solid color-mix(in srgb, var(--brass) 20%, transparent);
+  box-shadow: 0 26px 80px color-mix(in srgb, var(--ink) 45%, transparent);
+  backdrop-filter: blur(18px);
+}
+
+.interactive-lift {
+  transition: transform var(--duration-base) var(--ease-brand), border-color var(--duration-base) ease, box-shadow var(--duration-base) ease;
+}
+
+.interactive-lift:hover {
+  transform: translateY(-0.3rem);
+  border-color: color-mix(in srgb, var(--brass) 46%, transparent);
+  box-shadow: var(--glow-brass-md);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* تأثير حركة الرمال الخفيفة */
@@ -257,13 +369,13 @@ body::after {
 
 /* Custom grid pattern for the vector map background */
 .bg-grid-pattern {
-  background-image: radial-gradient(rgba(201, 162, 75, 0.15) 1px, transparent 1px);
+  background-image: radial-gradient(color-mix(in srgb, var(--brass) 22%, transparent) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
 /* Leaflet style overrides */
 .leaflet-container {
-  background: #0b0e14 !important;
+  background: var(--ink-2) !important;
   font-family: inherit !important;
 }
 .custom-leaflet-tooltip {

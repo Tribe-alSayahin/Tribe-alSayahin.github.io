@@ -13,7 +13,7 @@ export function Supporters() {
   ];
 
   return (
-    <section id="supporters" className="section bg-ink px-6 relative z-10 py-16">
+    <section id="supporters" className="section section-surface bg-ink px-5 md:px-8 relative z-10 py-20 md:py-28">
       <div className="max-w-[1160px] mx-auto">
         <SectionHeader
           serialNumber="٠٨.٧"
@@ -31,34 +31,23 @@ export function Supporters() {
             transition={{ duration: 0.7 }}
             className="flex justify-center"
           >
-            <div 
-              className="relative w-full max-w-lg p-[3px] rounded-3xl shadow-2xl"
-              style={{
-                background: 'linear-gradient(165deg, #ffd700, #c5a059, #8b6508)'
-              }}
-            >
-              <div 
-                className="rounded-[21px] p-8 md:p-10 text-center relative overflow-hidden"
-                style={{
-                  background: 'linear-gradient(165deg, #f2ca74, #cfa04a, #8c6723)',
-                  boxShadow: 'inset 0 4px 12px rgba(255, 255, 255, 0.6), inset 0 -4px 12px rgba(0, 0, 0, 0.5)'
-                }}
-              >
+            <div className="relative w-full max-w-lg p-[3px] rounded-3xl bg-gradient-to-br from-brass-lt via-brass to-brass/60 shadow-glow-lg">
+              <div className="rounded-[21px] p-8 md:p-10 text-center relative overflow-hidden bg-gradient-to-br from-brass-lt/90 via-brass/85 to-brass/65 text-ink shadow-[inset_0_4px_12px_color-mix(in_srgb,var(--sand)_35%,transparent),inset_0_-4px_12px_color-mix(in_srgb,var(--ink)_25%,transparent)]">
                 {/* Vintage decorative elements */}
                 <div className="absolute inset-0 bg-repeat opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'var(--sadu)', backgroundSize: '40px 30px' }} />
                 
-                <span className="block font-kufi text-xs font-bold text-[#4a340b] tracking-wider mb-2">
+                <span className="block font-kufi text-xs font-bold text-ink/80 tracking-wider mb-2">
                   الراعي والداعم المالي الرئيسي لتوثيق إرث القبيلة
                 </span>
                 
-                <h3 className="text-3xl md:text-4xl font-serif font-extrabold text-[#291a03] py-2">
+                <h3 className="text-3xl md:text-4xl font-serif font-extrabold text-ink py-2">
                   اسم الداعم والراعي الرئيسي المعتمد
                 </h3>
                 
-                <div className="w-32 h-[1px] bg-[#4a340b]/30 mx-auto my-4" />
+                <div className="w-32 h-[1px] bg-ink/30 mx-auto my-4" />
                 
-                <p className="font-kufi text-[11px] text-[#4a340b]/80 font-bold uppercase tracking-widest flex items-center justify-center gap-1">
-                  <Award className="w-4.5 h-4.5 text-[#291a03]" />
+                <p className="font-kufi text-[11px] text-ink/80 font-bold uppercase tracking-widest flex items-center justify-center gap-1">
+                  <Award className="w-4.5 h-4.5 text-ink" />
                   لوح نحاسي ذهبي من الفئة الممتازة
                 </p>
               </div>
@@ -74,25 +63,16 @@ export function Supporters() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="p-[2px] rounded-2xl shadow-lg hover:scale-[1.03] transition-all duration-300"
-                style={{
-                  background: 'linear-gradient(145deg, #cda052, #a87f37, #73521a)'
-                }}
+                className="p-[2px] rounded-2xl bg-gradient-to-br from-brass-lt via-brass to-brass/55 shadow-glow-sm hover:shadow-glow-md hover:-translate-y-1 transition-all duration-300"
               >
-                <div 
-                  className="rounded-[14px] p-5 text-center relative overflow-hidden"
-                  style={{
-                    background: 'linear-gradient(145deg, #dfba6b, #b68f3e, #7c5a1d)',
-                    boxShadow: 'inset 0 3px 8px rgba(255, 255, 255, 0.45), inset 0 -3px 8px rgba(0, 0, 0, 0.4)'
-                  }}
-                >
-                  <span className="block font-kufi text-[9px] font-bold text-[#453008] tracking-wide mb-1.5 opacity-85">
+                <div className="rounded-[14px] p-5 text-center relative overflow-hidden bg-gradient-to-br from-brass-lt/90 via-brass/80 to-brass/60 text-ink shadow-[inset_0_3px_8px_color-mix(in_srgb,var(--sand)_25%,transparent),inset_0_-3px_8px_color-mix(in_srgb,var(--ink)_25%,transparent)]">
+                  <span className="block font-kufi text-[9px] font-bold text-ink/75 tracking-wide mb-1.5">
                     داعم توثيق الإرث والموروث التاريخي
                   </span>
-                  <h4 className="text-xl font-serif font-bold text-[#241703]">
+                  <h4 className="text-xl font-serif font-bold text-ink">
                     {sup.name}
                   </h4>
-                  <p className="text-[10px] text-[#453008]/70 font-sans mt-1">
+                  <p className="text-[10px] text-ink/70 font-sans mt-1">
                     {sup.role}
                   </p>
                 </div>
@@ -108,13 +88,7 @@ export function Supporters() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="relative overflow-hidden rounded-3xl border p-6 md:p-8 shadow-xl hover:border-brass/40 transition-all duration-300"
-              style={{
-                background: 'linear-gradient(145deg, #120e0a, #1a130b, var(--ink-2))',
-                borderColor: 'var(--brass-lt)',
-                borderWidth: '1px',
-                borderStyle: 'solid'
-              }}
+              className="editorial-card interactive-lift p-6 md:p-8 shadow-xl"
             >
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-12 h-12 rounded-full border border-brass/35 flex items-center justify-center text-brass-lt bg-brass/10">
@@ -149,13 +123,7 @@ export function Supporters() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="relative overflow-hidden rounded-3xl border p-6 md:p-8 shadow-xl hover:border-brass/40 transition-all duration-300"
-              style={{
-                background: 'linear-gradient(145deg, #120e0a, #1a130b, var(--ink-2))',
-                borderColor: 'var(--brass-lt)',
-                borderWidth: '1px',
-                borderStyle: 'solid'
-              }}
+              className="editorial-card interactive-lift p-6 md:p-8 shadow-xl"
             >
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-12 h-12 rounded-full border border-brass/35 flex items-center justify-center text-brass-lt bg-brass/10">
@@ -197,11 +165,7 @@ export function Supporters() {
               </a>
             </p>
             <div 
-              className="mt-4 max-w-lg mx-auto rounded-2xl p-4 text-right border"
-              style={{
-                background: 'rgba(var(--brass), 0.04)',
-                borderColor: 'rgba(var(--brass), 0.12)'
-              }}
+              className="mt-4 max-w-lg mx-auto rounded-2xl p-4 text-right border border-brass/15 bg-brass/5"
             >
               <p className="text-xs text-sand-dim/90 leading-relaxed font-sans flex gap-2 items-start">
                 <HeartHandshake className="w-4 h-4 text-brass-lt shrink-0 mt-0.5" />

@@ -32,11 +32,11 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="section bg-gradient-to-b from-olive to-ink px-6 relative z-10 py-16">
+    <section id="contact" className="section section-surface bg-gradient-to-b from-olive to-ink px-5 md:px-8 relative z-10 py-20 md:py-28">
       <div className="max-w-[1160px] mx-auto">
         <div className="text-center mb-14">
-          <span className="font-kufi text-xs text-brass-lt font-semibold bg-brass/5 px-4 py-1.5 rounded-full border border-brass/10">على تواصــل</span>
-          <h2 className="text-3xl md:text-5xl mt-3 text-sand font-serif">تواصل معنا</h2>
+          <span className="section-kicker">على تواصــل</span>
+          <h2 className="font-ruqaa text-4xl md:text-6xl mt-4 text-sand">تواصل معنا</h2>
           <div 
             className="w-[84px] h-[26px] mx-auto mt-4 opacity-70 bg-repeat" 
             style={{ backgroundImage: 'var(--sadu)', backgroundSize: '28px 20px' }}
@@ -47,11 +47,11 @@ export function Contact() {
           </p>
         </div>
 
-        <div className="max-w-[640px] mx-auto bg-ink-2 border border-brass/20 rounded-2xl p-8 md:p-10 shadow-2xl relative">
+        <div className="editorial-card max-w-[680px] mx-auto p-6 md:p-10 shadow-2xl relative">
           <form onSubmit={handleSubmit} className="space-y-6" noValidate>
             {formError && (
-              <div className="flex items-center gap-2 p-4 bg-red-950/40 border border-red-500/30 text-red-200 rounded-xl text-sm font-semibold text-right" role="alert">
-                <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
+              <div className="flex items-center gap-2 p-4 bg-copper/10 border border-copper/40 text-sand rounded-xl text-sm font-semibold text-right" role="alert">
+                <AlertCircle className="w-5 h-5 text-copper-lt shrink-0" />
                 <span>{formError}</span>
               </div>
             )}
@@ -64,7 +64,7 @@ export function Contact() {
                 placeholder="اكتب اسمك الكريم"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3.5 rounded-xl border border-brass/20 bg-ink text-sand placeholder-[#7d7259] focus:outline-none focus:border-brass focus:ring-2 focus:ring-brass/15 transition-all text-base focus-visible:ring-2 focus-visible:ring-brass"
+                className="w-full px-4 py-3.5 rounded-xl border border-brass/20 bg-ink/70 text-sand placeholder-sand-dim/70 focus:outline-none focus:border-brass focus:ring-2 focus:ring-brass/15 transition-all text-base focus-visible:ring-2 focus-visible:ring-brass"
               />
             </div>
 
@@ -76,7 +76,7 @@ export function Contact() {
                 placeholder="أدخل بريدك الإلكتروني"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3.5 rounded-xl border border-brass/20 bg-ink text-sand placeholder-[#7d7259] focus:outline-none focus:border-brass focus:ring-2 focus:ring-brass/15 transition-all text-base ltr focus-visible:ring-2 focus-visible:ring-brass"
+                className="w-full px-4 py-3.5 rounded-xl border border-brass/20 bg-ink/70 text-sand placeholder-sand-dim/70 focus:outline-none focus:border-brass focus:ring-2 focus:ring-brass/15 transition-all text-base ltr focus-visible:ring-2 focus-visible:ring-brass"
               />
             </div>
 
@@ -88,7 +88,7 @@ export function Contact() {
                 placeholder="اكتب رسالتك هنا..."
                 value={msg}
                 onChange={(e) => setMsg(e.target.value)}
-                className="w-full px-4 py-3.5 rounded-xl border border-brass/20 bg-ink text-sand placeholder-[#7d7259] focus:outline-none focus:border-brass focus:ring-2 focus:ring-brass/15 transition-all text-base focus-visible:ring-2 focus-visible:ring-brass"
+                className="w-full px-4 py-3.5 rounded-xl border border-brass/20 bg-ink/70 text-sand placeholder-sand-dim/70 focus:outline-none focus:border-brass focus:ring-2 focus:ring-brass/15 transition-all text-base focus-visible:ring-2 focus-visible:ring-brass"
               />
             </div>
 
@@ -107,7 +107,7 @@ export function Contact() {
       {showSuccessModal && (
         <div className="fixed inset-0 z-[120] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="success-modal-title">
           <div className="absolute inset-0 bg-black/85 backdrop-blur-sm" onClick={() => setShowSuccessModal(false)} />
-          <div className="relative bg-[#0d0a07] border border-brass/35 p-8 rounded-2xl max-w-sm w-full shadow-2xl space-y-4 text-center z-10 animate-fade-in">
+          <div className="relative bg-ink-2 border border-brass/35 p-8 rounded-2xl max-w-sm w-full shadow-2xl space-y-4 text-center z-10 animate-fade-in">
             <div className="w-14 h-14 rounded-full bg-brass/10 border border-brass/25 text-brass-lt flex items-center justify-center mx-auto">
               <CheckCircle2 className="w-8 h-8" />
             </div>

@@ -34,7 +34,7 @@ export function AdminSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="relative rounded-2xl border border-brass/20 bg-ink-2/50 p-8 mb-10 overflow-hidden"
+        className="editorial-card relative rounded-2xl p-6 md:p-8 mb-10 overflow-hidden"
       >
         {/* زخرفة خلفية */}
         <div
@@ -64,7 +64,7 @@ export function AdminSection() {
 
           <a
             href={ADMIN_HREF}
-            className="shrink-0 inline-flex items-center gap-2 font-kufi text-sm font-semibold text-ink bg-brass hover:bg-brass-lt transition-colors duration-300 px-6 py-3 rounded-xl shadow-glow-sm"
+            className="shrink-0 inline-flex items-center gap-2 font-kufi text-sm font-semibold text-ink bg-brass hover:bg-brass-lt transition-colors duration-300 px-6 py-3 rounded-xl shadow-glow-sm focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
             aria-label="دخول لوحة الإدارة"
           >
             <Settings className="w-4 h-4" aria-hidden="true" />
@@ -84,7 +84,7 @@ export function AdminSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-40px' }}
               transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="group rounded-2xl border border-brass/10 bg-ink-2/30 p-6 hover:border-brass/25 transition-all duration-300"
+              className="editorial-card interactive-lift group rounded-2xl p-6"
             >
               <div className="w-10 h-10 rounded-lg border border-brass/25 bg-brass/8 flex items-center justify-center mb-4 group-hover:bg-brass/15 transition-colors">
                 <Icon className="w-5 h-5 text-brass-lt" aria-hidden="true" />

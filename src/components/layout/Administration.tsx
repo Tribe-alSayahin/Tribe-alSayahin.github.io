@@ -33,7 +33,7 @@ export function Administration() {
           {adminCards.map((card) => (
             <article
               key={card.title}
-              className="rounded-2xl border border-brass/25 bg-ink-2/80 backdrop-blur-sm p-6 shadow-[0_8px_24px_rgba(0,0,0,0.25)]"
+              className="editorial-card interactive-lift rounded-2xl p-6"
             >
               <h3 className="font-kufi text-lg text-brass-lt mb-3">{card.title}</h3>
               <p className="text-sand-dim leading-8 text-sm md:text-base">{card.description}</p>
