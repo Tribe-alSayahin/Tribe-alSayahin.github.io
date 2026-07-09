@@ -144,7 +144,7 @@ export function Hero({ scrollToSection }: HeroProps) {
               </svg>
             </span>
             <span className="font-kufi text-xs md:text-sm font-semibold tracking-[0.22em] text-brass-lt">
-              الموقع الرسمي لقبيلة السياحين
+              الباب الرسمي
             </span>
             <span className="gold-hairline-start flex-1 min-w-8 mt-0.5" aria-hidden="true" />
           </motion.div>
