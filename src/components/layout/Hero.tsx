@@ -143,8 +143,9 @@ export function Hero({ scrollToSection }: HeroProps) {
                 <path d="M55,170 L55,50 L145,50 L145,170" />
               </svg>
             </span>
-            <span className="font-kufi text-xs md:text-sm font-semibold tracking-[0.22em] text-brass-lt">
-              الباب الرسمي
+            <span className="flex flex-col gap-0.5 font-kufi text-brass-lt">
+              <span className="text-xs md:text-sm font-semibold tracking-[0.16em]">الباب الأصيل</span>
+              <span className="text-[10px] md:text-xs text-brass-lt/75">وسم الباب بنسبة 3 × 1.5</span>
             </span>
             <span className="gold-hairline-start flex-1 min-w-8 mt-0.5" aria-hidden="true" />
           </motion.div>
