@@ -57,7 +57,7 @@ export function Navbar({
                 fill="none"
                 aria-hidden="true"
               >
-                <path d="M55,170 L55,50 L145,50 L145,170" />
+                <path d="M40,130 L40,70 L160,70 L160,130" />
               </svg>
             </div>
             <span className="flex flex-col items-start gap-1 leading-none">

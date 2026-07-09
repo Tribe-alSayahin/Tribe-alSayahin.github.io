@@ -140,7 +140,7 @@ export function Hero({ scrollToSection }: HeroProps) {
           <motion.div {...fadeUp(0.05, prefersReduced)} className="flex items-center gap-3 mb-7">
             <span className="w-9 h-9 rounded-md border border-brass/35 bg-brass/5 flex items-center justify-center shrink-0" aria-hidden="true">
               <svg viewBox="0 0 200 200" className="w-4.5 h-4.5" stroke="var(--brass)" strokeWidth="24" strokeLinecap="round" strokeLinejoin="round" fill="none">
-                <path d="M55,170 L55,50 L145,50 L145,170" />
+                <path d={WASM_PATH} />
               </svg>
             </span>
             <span className="flex flex-col gap-0.5 font-kufi text-brass-lt">
