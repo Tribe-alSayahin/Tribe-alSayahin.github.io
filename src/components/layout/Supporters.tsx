@@ -131,7 +131,7 @@ export function Supporters() {
                 </div>
               </div>
 
-              <h4 className="text-2xl font-serif font-extrabold text-sand leading-snug">
+              <h4 className="text-3xl md:text-4xl font-serif font-extrabold text-sand leading-snug">
                 عبدالعزيز بن سلطان بن تركي ابن مسيلم
               </h4>
               <p className="text-sm text-sand-dim mt-2.5 leading-relaxed font-sans">
