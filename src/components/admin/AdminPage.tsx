@@ -7,6 +7,7 @@ import {
   formatGregorianDateArabic,
   isSchemaNotFoundError,
   SCHEMA_CACHE_ERROR_MESSAGE,
+  VERIFIED_AUTHOR_NAME,
   type AdminPostInsert,
   type AdminPostKind,
   type AdminPostRecord,
@@ -350,7 +351,7 @@ export default function AdminPage() {
                         {formatGregorianDateArabic(post.kind === 'event' ? post.event_date : post.created_at)}
                       </p>
                       <p className="inline-flex items-center gap-1.5 rounded-full border border-brass/25 bg-brass/8 px-2.5 py-1 text-xs font-kufi text-sand">
-                        <span className="text-sm md:text-base leading-none text-sand">حسين بن علي بن بعاج ابن مسيلم</span>
+                        <span className="text-sm md:text-base leading-none text-sand">{VERIFIED_AUTHOR_NAME}</span>
                         <BadgeCheck
                           aria-label="موثق"
                           className="w-4 h-4 text-azure shrink-0"

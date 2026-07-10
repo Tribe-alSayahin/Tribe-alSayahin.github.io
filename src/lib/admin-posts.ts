@@ -21,6 +21,11 @@ export interface AdminPostInsert {
 }
 
 /**
+ * اسم موثّق القبيلة المعتمد الذي يُنسب إليه كل المحتوى المنشور.
+ */
+export const VERIFIED_AUTHOR_NAME = 'حسين بن علي بن بعاج ابن مسيلم';
+
+/**
  * رسالة خطأ واضحة عند غياب جدول admin_posts في قاعدة البيانات.
  * يحدث هذا عادةً عند عدم تنفيذ supabase-setup.sql أو عند انتهاء صلاحية schema cache في PostgREST.
  */
