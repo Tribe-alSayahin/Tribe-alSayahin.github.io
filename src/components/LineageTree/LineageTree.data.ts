@@ -14,7 +14,7 @@ export const LINEAGE_DATA: TreeNode[] = [
   // Level 1: الفراحين
   { 
     id: 'farahin', 
-    name: 'الفراحين (الفرامين)', 
+    name: 'الفراحين', 
     parent_id: 'siyahin', 
     level: 1, 
     source: 'شبكة عتيبة الهيلا، معجم عالية نجد لابن جنيدل', 
@@ -52,7 +52,7 @@ export const LINEAGE_DATA: TreeNode[] = [
   // Level 1: الخوخان
   { 
     id: 'khookhan', 
-    name: 'الخوخان (الخوفان)', 
+    name: 'الخوخان', 
     parent_id: 'siyahin', 
     level: 1, 
     source: 'شبكة عتيبة الهيلا، ديوان البادية العربية', 
@@ -90,7 +90,7 @@ export const LINEAGE_DATA: TreeNode[] = [
   // Level 1: الزمايمة (ذوي زميم)
   { 
     id: 'zamayemah', 
-    name: 'الزمايمة (الزمامة)', 
+    name: 'الزمايمة', 
     parent_id: 'siyahin', 
     level: 1, 
     source: 'موسوعة البدو لأوبنهايم (ج3، ص262)، كتب الرحالة فيلبي', 
@@ -164,7 +164,7 @@ export const LINEAGE_DATA: TreeNode[] = [
   // Level 1: المزانكة
   { 
     id: 'mazankah', 
-    name: 'المزانكة (القرانكة)', 
+    name: 'المزانكة', 
     parent_id: 'siyahin', 
     level: 1, 
     source: 'شبكة عتيبة الهيلا، معجم قبائل الحجاز والوشم', 
@@ -267,7 +267,7 @@ export const LINEAGE_DATA: TreeNode[] = [
   // Level 1: المشاوطة
   { 
     id: 'mushawitah', 
-    name: 'المشاوطة (الشواطة)', 
+    name: 'المشاوطة', 
     parent_id: 'siyahin', 
     level: 1, 
     source: 'روايات قبائل عتيبة، قصائد الفارس فراج بن ريفة', 
@@ -336,7 +336,7 @@ export const LINEAGE_DATA: TreeNode[] = [
   // Level 1: الدلابسة
   { 
     id: 'dalabsah_branch', 
-    name: 'الدلابسة (اللابية)', 
+    name: 'الدلابسة', 
     parent_id: 'siyahin', 
     level: 1, 
     source: 'قصائد ديوان مخلد بن دلباس، روايات عتيبة الهيلا', 
