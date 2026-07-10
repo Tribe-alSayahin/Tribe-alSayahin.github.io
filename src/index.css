@@ -310,14 +310,48 @@ body::after {
 }
 
 .hero-content-panel {
-  border: 1px solid color-mix(in srgb, var(--brass) 22%, transparent);
+  border: 1px solid color-mix(in srgb, var(--brass) 26%, transparent);
   background:
-    linear-gradient(145deg, color-mix(in srgb, var(--ink-2) 78%, transparent), color-mix(in srgb, var(--indigo) 14%, transparent));
+    radial-gradient(ellipse 90% 60% at 50% 0%, color-mix(in srgb, var(--brass) 6%, transparent), transparent 70%),
+    linear-gradient(145deg, color-mix(in srgb, var(--ink-2) 80%, transparent), color-mix(in srgb, var(--indigo) 14%, transparent));
   box-shadow:
-    0 24px 70px color-mix(in srgb, var(--ink) 40%, transparent),
+    0 24px 70px color-mix(in srgb, var(--ink) 45%, transparent),
+    0 0 60px color-mix(in srgb, var(--brass) 7%, transparent),
     inset 0 1px 0 color-mix(in srgb, var(--sand) 12%, transparent);
   -webkit-backdrop-filter: blur(14px) saturate(125%);
   backdrop-filter: blur(14px) saturate(125%);
+}
+
+/* معين نحاسي صغير يتوسط الفاصل المزخرف في الـHero */
+.hero-divider-diamond {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  transform: rotate(45deg);
+  background: linear-gradient(135deg, var(--brass), var(--brass-lt));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--brass) 55%, transparent);
+}
+
+/* خيط عمودي ذهبي يتلاشى — لإشارة التمرير */
+.hero-scroll-line {
+  width: 1px;
+  height: 2rem;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--brass) 60%, transparent), transparent);
+}
+
+/* الزر الأساسي في الـHero — تدرّج ذهبي مع توهج نحاسي */
+.hero-primary-btn {
+  color: var(--ink);
+  font-weight: 700;
+  background: linear-gradient(120deg, var(--brass) 0%, var(--brass-lt) 55%, var(--brass) 100%);
+  border: 1px solid color-mix(in srgb, var(--brass-lt) 60%, transparent);
+  box-shadow: var(--glow-brass-sm);
+  cursor: pointer;
+  transition: box-shadow var(--duration-base) ease;
+}
+
+.hero-primary-btn:hover {
+  box-shadow: var(--glow-brass-md);
 }
 
 .hero-char-gold {
