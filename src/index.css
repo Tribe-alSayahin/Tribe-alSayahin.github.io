@@ -22,6 +22,14 @@
   --indigo: #162435;
   --azure: #2563eb;
   --parchment: #efe5cd;
+
+  /* ─── نظام الذهب الثلاثي المشتق من مشهد الشعار ─── */
+  /* الدرجة ١ — ذهب زاهٍ: العناوين والتفاعلات المهمة */
+  --gold-vivid: #d4af37;
+  /* الدرجة ٢ — ذهب مطفي: النصوص الثانوية والتلميحات */
+  --gold-muted: #a08a4a;
+  /* الدرجة ٣ — ذهب خافت: الحدود والخطوط الفاصلة */
+  --gold-faint: #5a4d2a;
 }
 
 /* الوضع النهاري — «ورق المخطوطة في ضوء النهار» */
@@ -242,25 +250,6 @@ body::after {
   border-bottom: 1px solid color-mix(in srgb, var(--sand) 3%, transparent);
 }
 
-.editorial-card {
-  position: relative;
-  overflow: hidden;
-  background:
-    linear-gradient(145deg, color-mix(in srgb, var(--coffee) 86%, transparent), color-mix(in srgb, var(--ink-2) 94%, transparent));
-  border: 1px solid color-mix(in srgb, var(--brass) 18%, transparent);
-  border-radius: 1.5rem;
-  box-shadow: 0 18px 50px color-mix(in srgb, var(--ink) 35%, transparent);
-}
-
-.editorial-card::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--brass), transparent);
-  opacity: 0.55;
-}
-
 .section-kicker {
   display: inline-flex;
   align-items: center;
@@ -410,3 +399,84 @@ body::after {
     stroke-dashoffset: 0;
   }
 }
+
+/* ─────────────────────────────────────────────────
+   زر «استكشف» — حد ذهبي يمتلئ عند الـ Hover
+   ───────────────────────────────────────────────── */
+.hero-explore-btn {
+  position: relative;
+  color: var(--gold-vivid);
+  border: 1px solid var(--gold-vivid);
+  background: transparent;
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    color 0.45s ease,
+    border-color 0.45s ease;
+}
+
+.hero-explore-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gold-vivid);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: -1;
+}
+
+.hero-explore-btn:hover {
+  color: var(--ink);
+  border-color: var(--gold-vivid);
+}
+
+.hero-explore-btn:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ─────────────────────────────────────────────────
+   بطاقات التحرير — تأثير تمريرة الضوء عند Hover
+   ───────────────────────────────────────────────── */
+.editorial-card {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--coffee) 86%, transparent), color-mix(in srgb, var(--ink-2) 94%, transparent));
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  border-radius: 1.5rem;
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--ink) 35%, transparent);
+}
+
+.editorial-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold-vivid), transparent);
+  opacity: 0.5;
+}
+
+/* تمريرة الضوء القطرية — نفس مبدأ Light Sweep في مشهد الشعار */
+.editorial-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -160%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.055) 50%,
+    transparent 100%
+  );
+  transition: left 0.7s ease;
+  pointer-events: none;
+}
+
+.editorial-card:hover::after {
+  left: 160%;
+}
+

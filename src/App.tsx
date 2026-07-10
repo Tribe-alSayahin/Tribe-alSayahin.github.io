@@ -13,6 +13,7 @@ import { Footer } from './components/layout/Footer';
 import { AdminSection } from './components/layout/AdminSection';
 import { Contact } from './components/layout/Contact';
 import LineageTree from './components/LineageTree';
+import { AnimatePresence, motion } from 'motion/react';
 const JathumMonument = lazy(() => import('./components/JathumMonument'));
 const ConstellationDiagram = lazy(() => import('./components/ConstellationDiagram'));
 const WasmGallery = lazy(() => import('./components/WasmGallery'));
@@ -132,11 +133,31 @@ export default function App() {
   }, []);
 
   if (isNotFound) {
-    return <NotFound onBackToHome={handleBackToHome} />;
+    return (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="not-found"
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.98 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <NotFound onBackToHome={handleBackToHome} />
+        </motion.div>
+      </AnimatePresence>
+    );
   }
 
   return (
-    <div data-app-ready="true" className="site-shell min-h-screen text-sand relative overflow-x-hidden font-sans">
+    <AnimatePresence mode="wait">
+      <motion.div
+        key="main-app"
+        data-app-ready="true"
+        className="site-shell min-h-screen text-sand relative overflow-x-hidden font-sans"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+      >
       {/* BACKGROUND GRAPHICS */}
       <div className="absolute top-0 inset-x-0 h-screen pointer-events-none overflow-hidden z-0">
         <div className="absolute top-[-12%] left-1/2 -translate-x-1/2 w-[720px] h-[720px] rounded-full bg-radial from-indigo/40 to-transparent blur-3xl" />
@@ -349,6 +370,7 @@ export default function App() {
 
       {/* FOOTER */}
       <Footer scrollToSection={scrollToSection} />
-    </div>
+      </motion.div>
+    </AnimatePresence>
   );
 }
