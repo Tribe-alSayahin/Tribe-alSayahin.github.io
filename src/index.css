@@ -20,6 +20,7 @@
   --copper: #b87333;
   --copper-lt: #d4956b;
   --indigo: #162435;
+  --azure: #2563eb;
   --parchment: #efe5cd;
 }
 
@@ -38,6 +39,7 @@
   --copper: #8b5e3c;
   --copper-lt: #6b4a2e;
   --indigo: #d6dde6;
+  --azure: #1d4ed8;
   --parchment: #2a2216;
   --overlay: rgba(252, 251, 247, 0.86);
 }
@@ -56,6 +58,7 @@
   --color-copper: var(--copper);
   --color-copper-lt: var(--copper-lt);
   --color-indigo: var(--indigo);
+  --color-azure: var(--azure);
   --color-parchment: var(--parchment);
 
   --font-ruqaa: "Aref Ruqaa", "Amiri", serif;
