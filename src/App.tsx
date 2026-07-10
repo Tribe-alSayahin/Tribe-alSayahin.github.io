@@ -21,6 +21,7 @@ import { NotFound } from './components/NotFound';
 import { Timeline } from './components/layout/Timeline';
 import { Supporters } from './components/layout/Supporters';
 import { NAV_LINKS } from './lib/navigation';
+import { setSeoMeta } from './lib/seo';
 
 const InteractiveMap = lazy(() => import('./components/InteractiveMap'));
 const HeritageGallery = lazy(() => import('./components/HeritageGallery'));
@@ -131,6 +132,18 @@ export default function App() {
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (isNotFound) {
+      setSeoMeta('الصفحة غير موجودة | الموقع الرسمي لقبيلة السياحين', 'noindex, nofollow');
+      return;
+    }
+
+    setSeoMeta(
+      'الموقع الرسمي لقبيلة السياحين | الروقة من عتيبة',
+      'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
+    );
+  }, [isNotFound]);
 
   if (isNotFound) {
     return (

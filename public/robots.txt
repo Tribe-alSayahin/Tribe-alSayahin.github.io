@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tribe-alsayahin.github.io/sitemap.xml

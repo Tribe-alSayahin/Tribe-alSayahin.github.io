@@ -12,6 +12,7 @@ import {
   type AdminPostRecord,
 } from '../../lib/admin-posts';
 import { isSupabaseConfigured, supabase } from '../../lib/supabase';
+import { setSeoMeta } from '../../lib/seo';
 
 const KIND_OPTIONS: { value: AdminPostKind; label: string }[] = [
   { value: 'news', label: 'خبر' },
@@ -86,6 +87,10 @@ export default function AdminPage() {
       data.subscription.unsubscribe();
     };
   }, [loadPosts]);
+
+  useEffect(() => {
+    setSeoMeta('لوحة الإدارة | الموقع الرسمي لقبيلة السياحين', 'noindex, nofollow');
+  }, []);
 
   const handleSignIn = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
