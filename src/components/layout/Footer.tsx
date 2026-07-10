@@ -7,10 +7,11 @@ interface FooterProps {
 
 export function Footer({ scrollToSection }: FooterProps) {
   return (
-    <footer className="section-surface bg-ink-2 border-t border-brass/15 py-20 md:py-24 px-5 md:px-8 relative z-10 text-center">
+    <footer className="section-surface bg-ink-2 border-t border-brass/15 py-20 md:py-24 px-5 md:px-8 relative z-10 text-center overflow-hidden">
       <div className="section-divider absolute top-0 inset-x-0 -translate-y-1/2" aria-hidden="true" />
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_18%_18%,color-mix(in_srgb,var(--brass)_9%,transparent),transparent_24rem),radial-gradient(circle_at_86%_78%,color-mix(in_srgb,var(--indigo)_16%,transparent),transparent_24rem)]" aria-hidden="true" />
       <div className="max-w-[1160px] mx-auto">
-        <section className="editorial-card max-w-[1040px] mx-auto mb-14 p-6 md:p-10 pb-12 border-b border-brass/15 text-right">
+        <section className="editorial-card max-w-[1040px] mx-auto mb-14 p-6 md:p-10 pb-12 border-b border-brass/15 text-right backdrop-blur-lg">
           <div className="text-center mb-8">
             <span className="font-kufi text-xs text-brass-lt font-semibold">مراجع قابلة للمراجعة</span>
             <h3 className="text-2xl md:text-3xl mt-1 text-sand font-serif">المصادر والمراجع التاريخية</h3>
@@ -24,11 +25,11 @@ export function Footer({ scrollToSection }: FooterProps) {
             </p>
           </div>
 
-          <ol className="space-y-space-4 text-right">
+          <ol className="grid gap-space-4 text-right sm:grid-cols-2">
             {LOCAL_REFS.map((ref, index) => (
               <li
                 key={ref.id}
-                className="relative pr-12 pl-4 py-3 bg-ink-2 border border-brass/15 rounded-xl text-sand text-sm leading-relaxed"
+                className="relative pr-12 pl-4 py-3 bg-ink-2/88 border border-brass/15 rounded-2xl text-sand text-sm leading-relaxed"
               >
                 <span className="absolute top-3.5 right-4 w-6 h-6 rounded-lg bg-brass/15 text-brass-lt border border-brass/20 flex items-center justify-center font-kufi text-xs">
                   {['١', '٢', '٣', '٤', '٥'][index] ?? index + 1}

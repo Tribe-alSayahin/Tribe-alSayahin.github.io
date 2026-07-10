@@ -49,7 +49,7 @@ export function MobileMenu({ isOpen, onClose, onNavigate, activeSection }: Mobil
     <div
       ref={menuRef}
       id="mobile-navigation-menu"
-      className={`lg:hidden absolute top-[92px] inset-x-3 bg-ink/96 backdrop-blur-xl border border-brass/25 rounded-3xl shadow-[0_20px_56px_rgba(0,0,0,0.42)] flex flex-col items-center gap-1 p-5 transition-all duration-400 z-40 ${
+      className={`lg:hidden absolute top-[92px] inset-x-3 bg-ink/88 backdrop-blur-2xl border border-brass/25 rounded-3xl shadow-glow-sm flex flex-col items-center gap-1 p-5 transition-all duration-400 z-40 ${
         isOpen ? 'translate-y-0 opacity-100' : '-translate-y-[150%] opacity-0 pointer-events-none'
       }`}
       role="dialog"
@@ -67,10 +67,10 @@ export function MobileMenu({ isOpen, onClose, onNavigate, activeSection }: Mobil
             e.preventDefault();
             onNavigate(link.id);
           }}
-          className={`w-full text-center py-3 rounded-xl font-semibold text-sm transition-all focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none ${
+          className={`w-full text-center py-3 rounded-xl font-semibold text-sm transition-all border border-transparent focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none ${
             activeSection === link.id
-              ? 'text-brass-lt bg-brass/10'
-              : 'text-sand hover:text-brass-lt hover:bg-brass/10'
+              ? 'text-brass-lt bg-brass/12 border-brass/20'
+              : 'text-sand hover:text-brass-lt hover:bg-brass/10 hover:border-brass/15'
           }`}
           tabIndex={isOpen ? 0 : -1}
         >
