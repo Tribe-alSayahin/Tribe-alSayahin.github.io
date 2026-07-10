@@ -344,11 +344,11 @@ export default function AdminPage() {
                         {post.kind === 'event' ? 'مناسبة' : 'خبر'} •{' '}
                         {formatGregorianDateArabic(post.kind === 'event' ? post.event_date : post.created_at)}
                       </p>
-                      <p className="inline-flex items-center gap-1 rounded-full border border-brass/25 bg-brass/8 px-2 py-0.5 text-[10px] font-kufi text-brass-lt/90">
-                        <span>حسين بن علي بن بعاج ابن مسيلم</span>
+                      <p className="inline-flex items-center gap-1.5 rounded-full border border-azure/45 bg-azure/12 px-2.5 py-1 text-xs font-kufi text-azure">
+                        <span className="text-sm md:text-base leading-none">حسين بن علي بن بعاج ابن مسيلم</span>
                         <BadgeCheck
                           aria-label="موثق"
-                          className="w-3.5 h-3.5 text-azure shrink-0"
+                          className="w-4 h-4 text-azure shrink-0"
                         />
                       </p>
                       <h3 className="font-serif text-lg text-sand">{post.title}</h3>
