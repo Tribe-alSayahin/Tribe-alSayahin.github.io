@@ -64,7 +64,7 @@ export default function NewsEvents() {
 
   return (
     <div className="mt-space-12">
-      <div className="flex items-center gap-3 mb-space-8">
+      <div className="flex flex-wrap items-center gap-2 mb-space-8">
         {FILTER_OPTIONS.map(({ key, label }) => (
           <button
             key={key}

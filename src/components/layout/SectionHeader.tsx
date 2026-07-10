@@ -14,10 +14,10 @@ export function SectionHeader({
   description,
 }: SectionHeaderProps) {
   return (
-    <div className="relative z-10 mb-12 md:mb-16 select-none text-right">
+    <div className="relative z-10 mb-12 md:mb-16 select-none text-right overflow-hidden">
       {/* الرقم الشبحي الكبير — يجلس في الطرف الأيسر مقابل الترويسة */}
       <div
-        className="absolute left-0 -top-5 md:-top-10 font-ruqaa text-[6rem] md:text-[9rem] leading-none text-brass/[0.07] pointer-events-none"
+        className="section-ghost-num absolute left-0 -top-5 md:-top-10 font-ruqaa text-[4.5rem] sm:text-[6rem] md:text-[9rem] leading-none text-brass/[0.07] pointer-events-none"
         aria-hidden="true"
       >
         {serialNumber}
@@ -44,7 +44,7 @@ export function SectionHeader({
           <span className="gold-hairline-start flex-1 min-w-10 mt-0.5 opacity-70" aria-hidden="true" />
         </div>
 
-        <h2 className="font-ruqaa text-4xl md:text-6xl text-sand leading-[1.4] tracking-tight max-w-[780px]">
+        <h2 className="font-ruqaa text-3xl sm:text-4xl md:text-6xl text-sand leading-[1.4] tracking-tight max-w-[780px]">
           {title}
         </h2>
 

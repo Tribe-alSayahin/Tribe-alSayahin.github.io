@@ -74,7 +74,7 @@ export function Hero({ scrollToSection }: HeroProps) {
         {introDone && (
           <motion.div
             key="hero-text"
-            className="hero-content-panel relative z-20 flex flex-col items-center text-center px-6 py-10 md:px-12 md:py-12 gap-5 select-none rounded-[2rem] md:rounded-[2.4rem] w-[min(92vw,780px)]"
+            className="hero-content-panel relative z-20 flex flex-col items-center text-center px-4 py-8 sm:px-6 sm:py-10 md:px-12 md:py-12 gap-4 sm:gap-5 select-none rounded-[2rem] md:rounded-[2.4rem] w-[min(92vw,780px)]"
             initial={{ opacity: 0, y: prefersReduced ? 0 : 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
