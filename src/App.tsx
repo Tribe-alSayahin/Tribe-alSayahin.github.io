@@ -288,11 +288,11 @@ export default function App() {
         </div>
       </section>
 
-      {/* SECTION 6: WASM GALLERY */}
+      {/* SECTION 5: WASM GALLERY */}
       <section id="wasm" className="section bg-ink px-6 relative z-10 py-20 md:py-28">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
-            serialNumber="٠٦"
+            serialNumber="٠٥"
             badgeText="علامات الوسم"
             title="وسم الإبل وعلامة الباب"
             description="وسم «الباب» الشهير للسياحين على الرقبة من الجهة اليسرى، رمز الهوية والأصالة في البادية."
@@ -305,11 +305,11 @@ export default function App() {
         </div>
       </section>
 
-      {/* SECTION 7: POETRY COUNCIL */}
+      {/* SECTION 6: POETRY COUNCIL */}
       <section id="poetry" className="section bg-ink-2 px-6 relative z-10 py-20 md:py-28">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
-            serialNumber="٠٧"
+            serialNumber="٠٦"
             badgeText="مجلس الشعراء"
             title="ديوان الشعر النبطي"
             description="مساحة مخصصة للقصائد الموثقة وشواهد الشعر النبطي بعد مراجعتها وإسنادها إلى مصادر واضحة."
@@ -322,11 +322,11 @@ export default function App() {
         </div>
       </section>
 
-      {/* SECTION 8: OPPENHEIM ARCHIVE */}
+      {/* SECTION 7: OPPENHEIM ARCHIVE */}
       <section id="archive" className="section bg-ink px-6 relative z-10 py-20 md:py-28">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
-            serialNumber="٠٨"
+            serialNumber="٠٧"
             badgeText="الأرشيف والمصادر"
             title="التوثيق الاستشراقي والمدونات التاريخية"
             description="شهادات وملاحظات المستشرقين والرحالة الغربيين حول نسب وقوة ومواقف السياحين في تاريخ الجزيرة العربية."
@@ -339,11 +339,11 @@ export default function App() {
         </div>
       </section>
 
-      {/* SECTION 9: NEWS & EVENTS */}
+      {/* SECTION 8: NEWS & EVENTS */}
       <section id="news" className="section bg-ink-2 px-6 relative z-10 py-20 md:py-28">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
-            serialNumber="٠٩"
+            serialNumber="٠٨"
             badgeText="الأخبار والمناسبات"
             title="الأخبار والمناسبات"
             description="قسم القراءة العامة لعناصر الأخبار والمناسبات المنشورة من لوحة الإدارة."
@@ -356,11 +356,11 @@ export default function App() {
         </div>
       </section>
 
-      {/* SECTION 10: ADMIN */}
+      {/* SECTION 9: ADMIN */}
       <section id="admin" className="section bg-ink px-6 relative z-10 py-20 md:py-28">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
-            serialNumber="١٠"
+            serialNumber="٠٩"
             badgeText="بوابة الإدارة"
             title="قسم الإدارة"
             description="مركز إدارة محتوى الموقع الرسمي لقبيلة السياحين — يتيح للمشرفين نشر الأخبار وجدولة المناسبات وإدارة المحتوى المعروض للعموم."
