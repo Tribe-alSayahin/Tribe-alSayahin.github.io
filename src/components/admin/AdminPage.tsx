@@ -31,6 +31,11 @@ export default function AdminPage() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [eventDate, setEventDate] = useState('');
+  const [editingPostId, setEditingPostId] = useState<string | null>(null);
+  const [editKind, setEditKind] = useState<AdminPostKind>('news');
+  const [editTitle, setEditTitle] = useState('');
+  const [editContent, setEditContent] = useState('');
+  const [editEventDate, setEditEventDate] = useState('');
 
   const canManage = useMemo(() => !!session?.user, [session]);
 
@@ -103,6 +108,7 @@ export default function AdminPage() {
 
   const handleSignOut = async () => {
     setAuthError('');
+    setEditingPostId(null);
     await supabase.auth.signOut();
   };
 
@@ -156,6 +162,54 @@ export default function AdminPage() {
       return;
     }
 
+    if (editingPostId === id) {
+      setEditingPostId(null);
+    }
+    await loadPosts();
+  };
+
+  const beginEditPost = (post: AdminPostRecord) => {
+    setFormError('');
+    setEditingPostId(post.id);
+    setEditKind(post.kind);
+    setEditTitle(post.title);
+    setEditContent(post.content);
+    setEditEventDate(post.event_date ?? '');
+  };
+
+  const handleUpdatePost = async (event: FormEvent<HTMLFormElement>, id: string) => {
+    event.preventDefault();
+    if (!canManage) {
+      setFormError('صلاحية التعديل متاحة للمشرفين فقط.');
+      return;
+    }
+
+    if (!editTitle.trim() || !editContent.trim()) {
+      setFormError('العنوان والمحتوى مطلوبان للتعديل.');
+      return;
+    }
+
+    setFormError('');
+    setIsSubmitting(true);
+
+    const { error } = await supabase
+      .from('admin_posts')
+      .update({
+        title: editTitle.trim(),
+        content: editContent.trim(),
+        kind: editKind,
+        event_date: editKind === 'event' && editEventDate ? editEventDate : null,
+      })
+      .eq('id', id);
+
+    if (error) {
+      setFormError(isSchemaNotFoundError(error.message) ? SCHEMA_CACHE_ERROR_MESSAGE : error.message);
+      setIsSubmitting(false);
+      return;
+    }
+
+    setEditingPostId(null);
+    setIsSubmitting(false);
     await loadPosts();
   };
 
@@ -164,8 +218,10 @@ export default function AdminPage() {
       <div className="max-w-[960px] mx-auto">
         <header className="rounded-2xl border border-brass/20 bg-ink-2/70 p-6 mb-6">
           <p className="font-kufi text-xs text-brass-lt/80 mb-2">الموقع الرسمي لقبيلة السياحين</p>
-          <h1 className="font-ruqaa text-3xl md:text-4xl text-brass-lt mb-2">لوحة الإدارة — الأخبار والمناسبات</h1>
-          <p className="text-sm text-sand-dim">تسجيل الدخول للمشرفين ثم إضافة أو حذف عناصر الأخبار والمناسبات.</p>
+          <h1 className="font-ruqaa text-3xl md:text-4xl text-brass-lt mb-2">لوحة الإدارة القوية — الأخبار والمناسبات</h1>
+          <p className="text-sm text-sand-dim">
+            تسجيل الدخول للمشرفين ثم إدارة العناصر المنشورة بصلاحيات كاملة: إضافة وتعديل وحذف.
+          </p>
         </header>
 
         {isAuthLoading ? (
@@ -291,15 +347,79 @@ export default function AdminPage() {
                       <p className="text-sm text-sand-dim mt-2 leading-relaxed">{post.content}</p>
                     </div>
                     {canManage && (
-                      <button
-                        type="button"
-                        onClick={() => handleDeletePost(post.id)}
-                        className="shrink-0 rounded-lg border border-copper/40 px-3 py-1.5 text-xs font-kufi text-copper hover:bg-copper/10 transition-colors"
-                      >
-                        حذف
-                      </button>
+                      <div className="shrink-0 flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => beginEditPost(post)}
+                          className="rounded-lg border border-brass/35 px-3 py-1.5 text-xs font-kufi text-brass-lt hover:bg-brass/10 transition-colors"
+                        >
+                          تعديل
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDeletePost(post.id)}
+                          className="rounded-lg border border-copper/40 px-3 py-1.5 text-xs font-kufi text-copper hover:bg-copper/10 transition-colors"
+                        >
+                          حذف
+                        </button>
+                      </div>
                     )}
                   </div>
+                  {canManage && editingPostId === post.id && (
+                    <form onSubmit={(event) => handleUpdatePost(event, post.id)} className="grid gap-3 mt-4">
+                      <select
+                        value={editKind}
+                        onChange={(event) => setEditKind(event.target.value as AdminPostKind)}
+                        className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand focus:outline-none focus:border-brass/50"
+                      >
+                        {KIND_OPTIONS.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                      {editKind === 'event' && (
+                        <input
+                          type="date"
+                          value={editEventDate}
+                          onChange={(event) => setEditEventDate(event.target.value)}
+                          className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand focus:outline-none focus:border-brass/50"
+                        />
+                      )}
+                      <input
+                        type="text"
+                        value={editTitle}
+                        onChange={(event) => setEditTitle(event.target.value)}
+                        placeholder="العنوان بعد التعديل"
+                        className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand placeholder:text-sand-dim/60 focus:outline-none focus:border-brass/50"
+                        required
+                      />
+                      <textarea
+                        value={editContent}
+                        onChange={(event) => setEditContent(event.target.value)}
+                        placeholder="المحتوى بعد التعديل"
+                        rows={4}
+                        className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand placeholder:text-sand-dim/60 focus:outline-none focus:border-brass/50"
+                        required
+                      />
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="rounded-lg bg-brass/20 border border-brass/35 px-4 py-2 text-xs font-kufi text-brass-lt hover:bg-brass/30 transition-colors disabled:opacity-60"
+                        >
+                          {isSubmitting ? 'جارٍ حفظ التعديل...' : 'حفظ التعديل'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEditingPostId(null)}
+                          className="rounded-lg border border-sand/25 px-4 py-2 text-xs font-kufi text-sand-dim hover:bg-sand/10 transition-colors"
+                        >
+                          إلغاء
+                        </button>
+                      </div>
+                    </form>
+                  )}
                 </article>
               ))}
             </div>
