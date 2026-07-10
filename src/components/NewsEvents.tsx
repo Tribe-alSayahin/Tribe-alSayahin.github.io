@@ -31,6 +31,8 @@ const mapSupabaseToEntry = (item: AdminPostRecord): NewsEntry => ({
   title: item.title,
   date: formatGregorianDateArabic(item.kind === 'event' ? item.event_date : item.created_at),
   summary: item.content,
+  publisherName: 'الإدارة',
+  isVerified: true,
 });
 
 export default function NewsEvents() {
@@ -109,6 +111,19 @@ export default function NewsEvents() {
                 <time className="block font-serif text-sm text-brass-lt/80 mb-2">
                   {entry.date}
                 </time>
+                {entry.publisherName && (
+                  <p className="mb-2 inline-flex items-center gap-1.5 rounded-full border border-brass/25 bg-brass/8 px-2.5 py-1 text-[11px] font-kufi text-brass-lt">
+                    <span>{entry.publisherName}</span>
+                    {entry.isVerified && (
+                      <span
+                        aria-label="موثق"
+                        className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-indigo text-[10px] text-sand"
+                      >
+                        ✓
+                      </span>
+                    )}
+                  </p>
+                )}
 
                 {/* Title */}
                 <h3 className="font-serif text-xl font-bold text-sand leading-relaxed mb-3 group-hover:text-brass-lt transition-colors">
