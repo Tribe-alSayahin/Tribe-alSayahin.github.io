@@ -257,7 +257,7 @@ export default function JathumMonument({ scrollToSection }: JathumMonumentProps)
             transition={{ duration: 0.8, delay: 0.4 }}
             className="mt-3 font-sans text-xs md:text-sm text-sand/85 max-w-[300px] md:max-w-[380px] leading-relaxed"
           >
-            الجبلُ الأسودُ الشامخ الذي احتضن أولى هِجَر السياحين في نجد — هنا غُرست أول لبِنة، ومن هنا امتدت الديار.
+            هِضابُ الجثومِ الشامخةُ التي احتضنت أولى هِجَر السياحين في نجد — هنا غُرست أوّلُ لَبِنة، ومن هنا امتدّت الديار.
           </motion.p>
         </div>
       </div>
