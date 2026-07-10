@@ -38,9 +38,9 @@
   --ink-2: #f4f0e6;
   --coffee: #ebe3d2;
   --sand: #241a10;
-  --sand-dim: #6b5d47;
-  --brass: #b8892a;
-  --brass-lt: #8a661f;
+  --sand-dim: #4f4233;
+  --brass: #7a5c1a;
+  --brass-lt: #6b4e18;
   --olive: #e2e6d8;
   --olive-2: #cbd5bd;
   --olive-lt: #496549;
@@ -106,6 +106,13 @@
 }
 
 @layer base {
+  html {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
   body {
     font-family: var(--font-sans);
     background-color: var(--color-ink);
@@ -113,6 +120,7 @@
     line-height: 1.9;
     -webkit-font-smoothing: antialiased;
     min-width: 320px;
+    overflow-x: hidden;
   }
 
   h1, h2, h3 {
@@ -394,6 +402,11 @@ body::after {
   .glass-panel {
     backdrop-filter: blur(10px) saturate(120%);
     -webkit-backdrop-filter: blur(10px) saturate(120%);
+  }
+
+  /* تصغير النص الشبحي في ترويسات الأقسام لمنع التمرير الأفقي */
+  .section-ghost-num {
+    font-size: 4.5rem;
   }
 }
 
