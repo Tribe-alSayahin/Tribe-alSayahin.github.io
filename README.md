@@ -8,17 +8,26 @@
 
 - React 19 + TypeScript + Vite
 - Tailwind CSS 4
-- Motion (Framer Motion) للحركة
+- Motion (يُستورد من `motion/react`) للحركة
 - Supabase للمصادقة وقاعدة البيانات والتخزين
 
-## التشغيل محلياً
+## التشغيل المحلي
 
-المتطلبات: Node.js 20 أو أحدث
+### المتطلبات
+
+- Node.js 20 أو أحدث
+
+### الخطوات السريعة
 
 ```bash
 npm install
-npm run dev        # خادم التطوير على http://localhost:3000
+npm run dev
 ```
+
+### روابط التشغيل المحلي
+
+- الموقع العام: http://localhost:3000
+- لوحة الإدارة: http://localhost:3000/admin
 
 ## الأوامر
 
@@ -28,27 +37,6 @@ npm run dev        # خادم التطوير على http://localhost:3000
 | `npm run build` | بناء كامل (الموقع + الخادم) |
 | `npm run build:pages` | بناء النسخة الثابتة للنشر على GitHub Pages |
 | `npm run lint` | فحص أنواع TypeScript |
-
-## النشر
-
-### إعداد GitHub Pages (مهم جداً)
-
-هذا المشروع يعتمد على **GitHub Actions** للنشر، وليس على "Deploy from branch".
-
-1. افتح المستودع في GitHub
-2. اذهب إلى **Settings → Pages**
-3. تحت **Build and deployment / Source**، اختر **GitHub Actions**
-4. لا تتركه مضبوطاً على **Deploy from a branch**
-
-بعد أي push إلى الفرع `main`، سيتم بناء الموقع تلقائياً ونشره من مجلد `dist/` عبر workflow `.github/workflows/deploy.yml`.
-
-### دليل استكشاف الأخطاء
-
-إذا رأيت شاشة تحميل فقط على الموقع المنشور:
-
-1. تأكد أن GitHub Pages مضبوط على **GitHub Actions** وليس **Deploy from branch**
-2. افتح **Actions** في المستودع وتأكد أن workflow **Deploy to GitHub Pages** يعمل بنجاح
-3. بعد نجاح الـ workflow، تأكد أن الرابط النهائي يخدم ملفات `assets/` وليس `/src/main.tsx`
 
 ## إعداد لوحة الإدارة (الأخبار والمناسبات)
 
@@ -68,7 +56,7 @@ npm run dev        # خادم التطوير على http://localhost:3000
 1. افتح مشروعك في Supabase Dashboard
 2. اذهب إلى SQL Editor
 3. انسخ محتوى ملف `supabase-setup.sql` في هذا المستودع
-4. الصقها في SQL Editor واضغط Run
+4. الصقه في SQL Editor واضغط Run
 5. سيُنشأ جدول `public.admin_posts` مع سياسات:
    - قراءة للجميع
    - insert / update / delete للمستخدمين `authenticated` فقط
@@ -88,16 +76,6 @@ supabase db push
 
 ملف الـ migration موجود في `supabase/migrations/20240101000000_create_admin_posts.sql`.
 
-#### استكشاف خطأ "Could not find the table 'public.admin_posts' in the schema cache"
-
-هذا الخطأ يحدث في حالتين:
-1. **الجدول لم يُنشأ بعد** — نفّذ `supabase-setup.sql` أو `supabase db push`
-2. **schema cache قديمة** — نفّذ هذا الأمر في SQL Editor بعد إنشاء الجدول:
-   ```sql
-   notify pgrst, 'reload schema';
-   ```
-   أو اذهب إلى **Supabase Dashboard → Database → PostgREST** واضغط **Reload Schema Cache**.
-
 ### 3) إنشاء مستخدم مشرف
 
 1. اذهب إلى Authentication في Supabase Dashboard
@@ -106,17 +84,19 @@ supabase db push
 
 ### 4) متغيرات البيئة
 
-#### محلياً
+> جميع القيم أدناه **أمثلة وهمية فقط**. لا تضع أي مفاتيح حقيقية داخل المستودع.
+
+#### محلياً (ملف `.env`)
 
 1. أنشئ ملف `.env` من `.env.example`
-2. أضف مفاتيح الواجهة:
+2. أضف متغيرات الواجهة:
 
 ```bash
 NEXT_PUBLIC_SUPABASE_URL="https://your-project-id.supabase.co"
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="your-publishable-public-key"
 ```
 
-3. أضف مفاتيح الخادم والـ API handlers:
+3. أضف متغيرات الخادم وواجهات API:
 
 ```bash
 SUPABASE_URL="https://your-project-id.supabase.co"
@@ -137,24 +117,50 @@ SUPABASE_JWKS_URL="https://your-project-id.supabase.co/auth/v1/.well-known/jwks.
 6. أضف Secret باسم: `SUPABASE_SECRET_KEY`
 7. أضف Secret باسم: `SUPABASE_JWKS_URL`
 
-**هام:**
-- لا تضع `service_role key` في الواجهة أبداً
-- الأمان يعتمد على Supabase Auth + RLS
-- المسار الخادمي `/api/auth/session` يتحقق من ترويسة `Authorization` عبر الحزمة `@supabase/server` ثم يجلب بيانات المستخدم من Supabase على الخادم
+#### متطلبات أمان إلزامية
 
-### 5) التشغيل المحلي
+- لا تضع `service_role key` أو `SUPABASE_SECRET_KEY` في الواجهة أبداً.
+- متغيرات الواجهة تقتصر على القيم العامة فقط (`NEXT_PUBLIC_*`).
+- الأمان يعتمد على Supabase Auth + RLS.
+- المسار الخادمي `/api/auth/session` يتحقق من ترويسة `Authorization` عبر الحزمة `@supabase/server` ثم يجلب بيانات المستخدم من Supabase على الخادم.
 
-```bash
-npm install
-npm run dev
-```
+#### استكشاف خطأ `Could not find the table 'public.admin_posts' in the schema cache`
 
-- الموقع العام: http://localhost:3000
-- لوحة الإدارة: http://localhost:3000/admin
+هذا الخطأ يحدث غالباً في حالتين:
+
+1. **الجدول لم يُنشأ بعد** — نفّذ `supabase-setup.sql` أو `supabase db push`.
+2. **schema cache قديمة** — نفّذ هذا الأمر في SQL Editor بعد إنشاء الجدول:
+
+   ```sql
+   notify pgrst, 'reload schema';
+   ```
+
+   أو اذهب إلى **Supabase Dashboard → Database → PostgREST** واضغط **Reload Schema Cache**.
+
+## النشر
+
+### إعداد GitHub Pages (مهم جداً)
+
+هذا المشروع يعتمد على **GitHub Actions** للنشر، وليس على "Deploy from branch".
+
+1. افتح المستودع في GitHub.
+2. اذهب إلى **Settings → Pages**.
+3. تحت **Build and deployment / Source**، اختر **GitHub Actions**.
+4. لا تتركه مضبوطاً على **Deploy from a branch**.
+
+بعد أي push إلى الفرع `main`، سيتم بناء الموقع تلقائياً ونشره من مجلد `dist/` عبر workflow `.github/workflows/deploy.yml`.
+
+### دليل استكشاف أخطاء النشر
+
+إذا ظهرت شاشة تحميل فقط على الموقع المنشور:
+
+1. تأكد أن GitHub Pages مضبوط على **GitHub Actions** وليس **Deploy from branch**.
+2. افتح **Actions** في المستودع وتأكد أن workflow **Deploy to GitHub Pages** يعمل بنجاح.
+3. بعد نجاح الـ workflow، تأكد أن الرابط النهائي يخدم ملفات `assets/` وليس `/src/main.tsx`.
 
 ## بنية المشروع
 
-```
+```text
 src/
 ├── App.tsx                        # الصفحة الرئيسية وتجميع الأقسام
 ├── lib/
@@ -186,12 +192,13 @@ src/
 
 ## الأمان
 
-- **المصادقة:** Supabase Auth بالبريد الإلكتروني وكلمة المرور
-- **الصلاحيات:** Row Level Security مفعّل على `admin_posts`
-- **الزوار:** قراءة فقط
-- **المستخدمون المسجلون:** إضافة/تعديل/حذف
+- **المصادقة:** Supabase Auth بالبريد الإلكتروني وكلمة المرور.
+- **الصلاحيات:** Row Level Security مفعّل على `admin_posts`.
+- **الزوار:** قراءة فقط.
+- **المستخدمون المسجلون:** إضافة/تعديل/حذف.
+- **القاعدة الذهبية:** أسرار الخادم تبقى على الخادم فقط، ولا تُعرَض في الواجهة.
 
 ## ملاحظات
 
-- لا يتم تخزين كلمات المرور أو الأسرار في الكود
-- السرية تعتمد على Supabase Auth و RLS، وليس على إخفاء الكود
+- لا يتم تخزين كلمات المرور أو الأسرار في الكود.
+- السرية تعتمد على Supabase Auth و RLS، وليس على إخفاء الكود.
