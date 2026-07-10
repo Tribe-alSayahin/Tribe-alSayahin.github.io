@@ -32,7 +32,7 @@ const mapSupabaseToEntry = (item: AdminPostRecord): NewsEntry => ({
   title: item.title,
   date: formatGregorianDateArabic(item.kind === 'event' ? item.event_date : item.created_at),
   summary: item.content,
-  publisherName: 'الإدارة',
+  publisherName: 'حسين بن علي بن بعاج ابن مسيلم',
   isVerified: true,
 });
 

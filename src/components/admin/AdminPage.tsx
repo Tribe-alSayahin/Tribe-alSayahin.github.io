@@ -345,7 +345,7 @@ export default function AdminPage() {
                         {formatGregorianDateArabic(post.kind === 'event' ? post.event_date : post.created_at)}
                       </p>
                       <p className="inline-flex items-center gap-1 rounded-full border border-brass/25 bg-brass/8 px-2 py-0.5 text-[10px] font-kufi text-brass-lt/90">
-                        <span>الإدارة</span>
+                        <span>حسين بن علي بن بعاج ابن مسيلم</span>
                         <BadgeCheck
                           aria-label="موثق"
                           className="w-3.5 h-3.5 text-azure shrink-0"
