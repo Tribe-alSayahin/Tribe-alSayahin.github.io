@@ -1,5 +1,6 @@
--- إعداد Supabase لقسم الإدارة: الأخبار والمناسبات
--- نفّذ هذا الملف كاملاً داخل Supabase SQL Editor
+-- Migration: إنشاء جدول admin_posts لقسم الأخبار والمناسبات
+-- يُطبَّق تلقائياً عند استخدام Supabase CLI (supabase db push)
+-- أو يُنفَّذ يدوياً في Supabase SQL Editor
 
 create extension if not exists pgcrypto;
 
@@ -19,35 +20,39 @@ create index if not exists admin_posts_created_at_idx
 
 alter table public.admin_posts enable row level security;
 
+-- قراءة مفتوحة للجميع (زوار + مستخدمون)
 drop policy if exists "Public can read posts" on public.admin_posts;
 create policy "Public can read posts"
-on public.admin_posts
-for select
-to public
-using (true);
+  on public.admin_posts
+  for select
+  to public
+  using (true);
 
+-- الإضافة للمستخدمين المسجّلين فقط
 drop policy if exists "Authenticated can insert posts" on public.admin_posts;
 create policy "Authenticated can insert posts"
-on public.admin_posts
-for insert
-to authenticated
-with check (auth.uid() is not null);
+  on public.admin_posts
+  for insert
+  to authenticated
+  with check (auth.uid() is not null);
 
+-- التعديل للمستخدمين المسجّلين فقط
 drop policy if exists "Authenticated can update posts" on public.admin_posts;
 create policy "Authenticated can update posts"
-on public.admin_posts
-for update
-to authenticated
-using (auth.uid() is not null)
-with check (auth.uid() is not null);
+  on public.admin_posts
+  for update
+  to authenticated
+  using (auth.uid() is not null)
+  with check (auth.uid() is not null);
 
+-- الحذف للمستخدمين المسجّلين فقط
 drop policy if exists "Authenticated can delete posts" on public.admin_posts;
 create policy "Authenticated can delete posts"
-on public.admin_posts
-for delete
-to authenticated
-using (auth.uid() is not null);
+  on public.admin_posts
+  for delete
+  to authenticated
+  using (auth.uid() is not null);
 
 -- تحديث schema cache في PostgREST بعد إنشاء الجدول
--- يحلّ خطأ "Could not find the table 'public.admin_posts' in the schema cache"
+-- (مطلوب إذا ظهر خطأ "Could not find the table in the schema cache")
 notify pgrst, 'reload schema';
