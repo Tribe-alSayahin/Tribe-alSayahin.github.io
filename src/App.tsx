@@ -136,7 +136,7 @@ export default function App() {
   }
 
   return (
-    <div className="site-shell min-h-screen text-sand relative overflow-x-hidden font-sans">
+    <div data-app-ready="true" className="site-shell min-h-screen text-sand relative overflow-x-hidden font-sans">
       {/* BACKGROUND GRAPHICS */}
       <div className="absolute top-0 inset-x-0 h-screen pointer-events-none overflow-hidden z-0">
         <div className="absolute top-[-12%] left-1/2 -translate-x-1/2 w-[720px] h-[720px] rounded-full bg-radial from-indigo/40 to-transparent blur-3xl" />

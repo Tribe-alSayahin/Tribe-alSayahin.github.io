@@ -160,7 +160,7 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-ink text-sand font-sans px-4 py-8 md:px-6">
+    <div data-app-ready="true" className="min-h-screen bg-ink text-sand font-sans px-4 py-8 md:px-6">
       <div className="max-w-[960px] mx-auto">
         <header className="rounded-2xl border border-brass/20 bg-ink-2/70 p-6 mb-6">
           <p className="font-kufi text-xs text-brass-lt/80 mb-2">الموقع الرسمي لقبيلة السياحين</p>
