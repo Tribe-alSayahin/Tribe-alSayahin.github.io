@@ -1,228 +1,170 @@
-import { ScrollText, Compass, ChevronDown } from 'lucide-react';
+/**
+ * Hero — المشهد الافتتاحي لموقع قبيلة السياحين
+ *
+ * يحتل كامل الشاشة عند الدخول. يُشغِّل الشعار الثلاثي الأبعاد «وسم الباب»
+ * كخلفية، ثم بعد اكتمال حركة الكاميرا الافتتاحية يكشف:
+ *   ١. اسم «قبيلة السياحين» حرفاً بحرف (خط Aref Ruqaa)
+ *   ٢. جملة فرعية (خط Amiri)
+ *   ٣. زر «استكشف» بحد ذهبي يمتلئ عند التمرير
+ *
+ * لا توجد عناصر إضافية في هذا القسم — قوة النقاء تحمي الشعار.
+ */
+import { useState, lazy, Suspense, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { lazy, Suspense } from 'react';
-import DuneSilhouette from '../DuneSilhouette';
+import { ChevronDown } from 'lucide-react';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { Button } from '../ui/Button';
-import { LINEAGE_DATA } from '../LineageTree/LineageTree.data';
 
-const DesertCinematicBackground = lazy(() => import('../DesertCinematicBackground'));
-
-/* مسار وسم «الباب الأصيل» المرجعي لقبيلة السياحين (متوافق مع WasmGallery) */
-const WASM_PATH = 'M40,130 L40,70 L160,70 L160,130';
+const TribalEmblem3D = lazy(() => import('../TribalEmblem3D'));
 
 interface HeroProps {
   scrollToSection: (id: string) => void;
 }
 
-const HERO_STATS = [
-  { value: `${LINEAGE_DATA.filter((entry) => entry.level === 1).length}+`, label: 'فخوذ في شجرة النسب' },
-  { value: `${LINEAGE_DATA.length}+`, label: 'أعلام في شجرة النسب' }
-];
-
-const LINEAGE_CHAIN = ['قبيلة السياحين', 'المزاحمة', 'الروقة', 'عتيبة الهيلا'];
-
-/* حركة ظهور متدرجة موحدة لعناصر النص */
-const fadeUp = (delay: number, reduced: boolean) => ({
-  initial: reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.8, delay: reduced ? 0 : delay, ease: [0.16, 1, 0.3, 1] as const }
-});
+/* اسم القبيلة مقسّماً إلى حروف فردية للكشف المتدرج */
+const TRIBE_NAME = 'قبيلة السياحين';
+const TRIBE_CHARS = Array.from(TRIBE_NAME);
 
 export function Hero({ scrollToSection }: HeroProps) {
   const prefersReduced = useReducedMotion();
+  const [introDone, setIntroDone] = useState(false);
+
+  const handleIntroDone = useCallback(() => setIntroDone(true), []);
+
+  /* مدة ظهور كل حرف */
+  const charDelay = prefersReduced ? 0 : 0.055;
+  const charDuration = prefersReduced ? 0 : 0.55;
+
   return (
     <section
       id="home"
-      className="min-h-[760px] md:min-h-screen flex flex-col justify-between relative overflow-hidden px-5 md:px-8 pt-[138px] pb-0 z-10"
+      className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      aria-label="مدخل الموقع الرسمي لقبيلة السياحين"
     >
-      {/* عنوان للوصف SEO الداخلي */}
+      {/* ─── محتوى SEO مخفي بصرياً ─── */}
       <h1 className="sr-only">الموقع الرسمي لقبيلة السياحين — إرث تالد وديار أصيلة</h1>
       <p className="sr-only">توثيق النسب والديار والشعر والأرشيف الاستشراقي والأخبار والمناسبات</p>
-      {/* سماء الليل النجدية: تدرج نيلي يهبط إلى حبر الصفحة */}
-      <div
-        className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_120%_80%_at_50%_-10%,var(--indigo)_0%,transparent_55%),linear-gradient(to_bottom,#0b0f17_0%,var(--ink)_100%)]"
-        aria-hidden="true"
-      />
 
-      {/* خلفية صحراوية سينمائية */}
+      {/* ─── الشعار الثلاثي الأبعاد (خلفية كاملة الشاشة) ─── */}
       <Suspense fallback={null}>
-        <DesertCinematicBackground />
+        <TribalEmblem3D
+          onIntroDone={handleIntroDone}
+          fullscreen
+        />
       </Suspense>
 
-      {/* نسيج السدو الخافت */}
+      {/* ─── Vignette: تدرج مظلم حول الحواف يُثبّت مركزية الشعار ─── */}
       <div
-        className="absolute inset-0 bg-repeat opacity-[0.05] pointer-events-none select-none"
-        style={{ backgroundImage: 'var(--sadu)', backgroundSize: '88px 52px' }}
+        className="absolute inset-0 pointer-events-none z-10"
+        style={{
+          background:
+            'radial-gradient(ellipse 70% 70% at 50% 50%, transparent 30%, rgba(7,5,3,0.72) 100%)',
+        }}
         aria-hidden="true"
       />
 
-      {/* خط سماوي ذهبي رفيع أعلى الصفحة */}
-      <div className="absolute top-[92px] inset-x-6 gold-hairline opacity-60" aria-hidden="true" />
-
-      <div className="max-w-[1240px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center relative z-20 flex-grow">
-        {/* اليسار بصرياً (الثاني في RTL): لوحة الوسم الفلكية */}
-        <div className="lg:col-span-5 flex justify-center items-center relative min-h-[340px] md:min-h-[440px] order-1 lg:order-2">
+      {/* ─── طبقة نص تظهر بعد اكتمال حركة الكاميرا ─── */}
+      <AnimatePresence>
+        {introDone && (
           <motion.div
-            className="relative w-72 h-72 md:w-[380px] md:h-[380px] flex items-center justify-center"
-            initial={prefersReduced ? { opacity: 1 } : { opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+            key="hero-text"
+            className="relative z-20 flex flex-col items-center text-center px-6 gap-6 select-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
           >
-            {/* حلقة الأسطرلاب الخارجية بعلامات الدرجات */}
+            {/* اسم القبيلة — كشف حرفاً بحرف */}
             <div
-              className={`absolute inset-0 rounded-full border border-brass/40 flex items-center justify-center shadow-[0_0_45px_rgba(201,162,75,0.12)] ${prefersReduced ? '' : 'animate-[spin_240s_linear_infinite]'}`}
+              className="font-ruqaa text-[clamp(2.6rem,8vw,6rem)] leading-[1.4] text-sand flex flex-wrap justify-center"
+              aria-label={TRIBE_NAME}
+              dir="rtl"
             >
-              {[...Array(36)].map((_, i) => (
-                <div
+              {TRIBE_CHARS.map((char, i) => (
+                <motion.span
                   key={i}
-                  className={`absolute w-[1px] ${i % 3 === 0 ? 'h-3.5 bg-brass/60' : 'h-2 bg-brass/30'}`}
-                  style={{ transform: `rotate(${i * 10}deg) translateY(-138px)` }}
-                />
+                  initial={prefersReduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: charDuration,
+                    delay: i * charDelay,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className={char === ' ' ? 'inline-block w-4' : 'inline-block'}
+                  style={
+                    char !== ' '
+                      ? {
+                          background:
+                            'linear-gradient(120deg,#d4af37 0%,#ebd481 45%,#d4af37 100%)',
+                          WebkitBackgroundClip: 'text',
+                          backgroundClip: 'text',
+                          color: 'transparent',
+                          filter: 'drop-shadow(0 0 18px rgba(212,175,55,0.55))',
+                        }
+                      : undefined
+                  }
+                >
+                  {char}
+                </motion.span>
               ))}
             </div>
 
-            {/* حلقة وسطى منقّطة عكسية الدوران */}
-            <div
-              className={`absolute inset-6 rounded-full border border-dashed border-brass/20 ${prefersReduced ? '' : 'animate-[spin_150s_linear_infinite_reverse]'}`}
+            {/* الجملة الفرعية */}
+            <motion.p
+              className="font-serif text-[clamp(0.9rem,2.2vw,1.2rem)] text-sand-dim max-w-[520px] leading-loose"
+              initial={prefersReduced ? { opacity: 1 } : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.8,
+                delay: prefersReduced ? 0 : TRIBE_CHARS.length * charDelay + 0.1,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+            >
+              البوابة الرقمية الموثقة لقبيلة السياحين من الروقة من عتيبة — إرث تالد وديار أصيلة
+            </motion.p>
+
+            {/* زر «استكشف» */}
+            <motion.button
+              onClick={() => scrollToSection('jathum')}
+              className="hero-explore-btn font-kufi text-sm tracking-[0.18em] px-9 py-3.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+              initial={prefersReduced ? { opacity: 1 } : { opacity: 0, scale: 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                duration: 0.65,
+                delay: prefersReduced ? 0 : TRIBE_CHARS.length * charDelay + 0.35,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              whileHover={prefersReduced ? {} : { scale: 1.04 }}
+              whileTap={prefersReduced ? {} : { scale: 0.97 }}
+              aria-label="استكشف محتوى الموقع"
+            >
+              استكشف
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ─── إشارة التمرير لأسفل ─── */}
+      <AnimatePresence>
+        {introDone && (
+          <motion.button
+            key="scroll-hint"
+            onClick={() => scrollToSection('jathum')}
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1 text-brass-lt/60 hover:text-brass-lt transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-2 focus-visible:ring-offset-ink rounded-full px-4 py-1"
+            aria-label="التمرير لأسفل لاستكشاف الموقع"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.6,
+              delay: prefersReduced ? 0 : TRIBE_CHARS.length * charDelay + 0.7,
+            }}
+          >
+            <span className="font-kufi text-[10px] tracking-[0.22em]">تصفّح الديار</span>
+            <ChevronDown
+              className={`w-4 h-4 ${prefersReduced ? '' : 'animate-bounce'}`}
               aria-hidden="true"
             />
-
-            {/* صفيحة الليل النيلية حاملة الوسم */}
-            <div className="absolute w-[240px] h-[240px] md:w-[300px] md:h-[300px] rounded-full border border-indigo/60 bg-[radial-gradient(circle_at_35%_25%,rgba(24,39,66,0.85),rgba(11,14,20,0.9))] shadow-[inset_0_0_45px_rgba(24,39,66,0.8)] flex items-center justify-center overflow-hidden">
-              {/* نجوم خافتة */}
-              <div className="absolute inset-0 bg-grid-pattern opacity-20 rounded-full" />
-
-              {/* وسم «الباب الأصيل» يُرسم عند الدخول */}
-              <svg
-                className="w-[60%] h-[60%] drop-shadow-[0_0_16px_rgba(201,162,75,0.5)]"
-                viewBox="0 0 200 200"
-                fill="none"
-                aria-hidden="true"
-              >
-                <motion.path
-                  d={WASM_PATH}
-                  stroke="var(--brass-lt)"
-                  strokeWidth="12"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  initial={prefersReduced ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0.4 }}
-                  animate={{ pathLength: 1, opacity: 1 }}
-                  transition={prefersReduced ? { duration: 0 } : { duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
-                />
-                {!prefersReduced && (
-                  <motion.path
-                    d={WASM_PATH}
-                    stroke="var(--brass)"
-                    strokeWidth="12"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    animate={{ opacity: [0.3, 0.8, 0.3] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 2.2 }}
-                  />
-                )}
-              </svg>
-            </div>
-
-            {/* المحور المركزي */}
-            <div className="absolute w-10 h-10 rounded-full bg-gradient-to-br from-brass to-brass-lt border border-sand/60 shadow-[0_0_22px_rgba(201,162,75,0.6)] flex items-center justify-center z-20">
-              <div className="w-2 h-2 rounded-full bg-ink" />
-            </div>
-
-            {/* هالة خارجية */}
-            <div className="absolute -inset-12 bg-radial from-brass/5 to-transparent blur-2xl rounded-full pointer-events-none" />
-          </motion.div>
-        </div>
-
-        {/* اليمين بصرياً (الأول في RTL): النص والدعوات */}
-        <div className="lg:col-span-7 text-right flex flex-col justify-center order-2 lg:order-1 hero-panel rounded-[2rem] p-6 md:p-10 lg:p-12">
-          {/* السطر التمهيدي */}
-          <motion.div {...fadeUp(0.05, prefersReduced)} className="flex items-center gap-3 mb-7">
-            <span className="w-9 h-9 rounded-md border border-brass/35 bg-brass/5 flex items-center justify-center shrink-0" aria-hidden="true">
-              <svg viewBox="0 0 200 200" className="w-4.5 h-4.5" stroke="var(--brass)" strokeWidth="24" strokeLinecap="round" strokeLinejoin="round" fill="none">
-                <path d={WASM_PATH} />
-              </svg>
-            </span>
-            <span className="flex flex-col gap-0.5 font-kufi text-brass-lt">
-              <span className="text-xs md:text-sm font-semibold tracking-[0.16em]">الباب الأصيل</span>
-              <span className="text-[10px] md:text-xs text-brass-lt/75">وسم الباب بنسبة 3 × 1.5</span>
-            </span>
-            <span className="gold-hairline-start flex-1 min-w-8 mt-0.5" aria-hidden="true" />
-          </motion.div>
-
-          {/* العنوان الرئيسي بخط الرقعة */}
-          <motion.h1
-            {...fadeUp(0.15, prefersReduced)}
-            className="font-ruqaa text-[2.6rem] md:text-6xl lg:text-[4.4rem] leading-[1.5] md:leading-[1.45] text-sand mb-6"
-          >
-            إرثٌ تالدٌ
-            <br />
-            <span className="text-gold-gradient">صاغتهُ ورسختهُ الديار</span>
-          </motion.h1>
-
-          {/* سلسلة النسب */}
-          <motion.div
-            {...fadeUp(0.28, prefersReduced)}
-            className="flex flex-wrap items-center gap-x-2.5 gap-y-2 mb-6 font-kufi text-sm md:text-base text-sand-dim"
-          >
-            {LINEAGE_CHAIN.map((name, i) => (
-              <span key={name} className="flex items-center gap-2.5">
-                {i > 0 && <span className="w-1 h-1 rounded-full bg-brass/50" aria-hidden="true" />}
-                <span className={i === 0 ? 'text-brass-lt font-semibold' : ''}>{name}</span>
-              </span>
-            ))}
-          </motion.div>
-
-          <motion.p
-            {...fadeUp(0.38, prefersReduced)}
-            className="max-w-[600px] text-sand-dim text-base md:text-lg leading-loose mb-9 font-sans"
-          >
-            البوابة الرقمية الموثقة لقبيلة السياحين من الروقة من عتيبة — من تلال نجد الشامخة إلى وثائق الأرشيف الاستشراقي والتاريخ الشفهي.
-          </motion.p>
-
-          <motion.div {...fadeUp(0.48, prefersReduced)} className="flex gap-4 flex-wrap">
-            <Button variant="primary" size="lg" onClick={() => scrollToSection('lineage')}>
-              <ScrollText className="w-4 h-4" aria-hidden="true" />
-              ديوان نسب القبيلة
-            </Button>
-            <Button variant="secondary" size="lg" onClick={() => scrollToSection('map')}>
-              <Compass className="w-4 h-4" aria-hidden="true" />
-              استكشاف ديار القبيلة
-            </Button>
-          </motion.div>
-
-          {/* شريط الإحصاءات */}
-          <motion.div {...fadeUp(0.6, prefersReduced)}>
-            <div className="flex items-stretch justify-start divide-x divide-x-reverse divide-brass/15 border-y border-brass/15 mt-10 max-w-[560px]">
-              {HERO_STATS.map((stat) => (
-                <div key={stat.label} className="text-right px-6 first:pr-0 py-4 flex-1">
-                  <p className="font-ruqaa text-2xl md:text-[2rem] text-gold-gradient leading-tight">
-                    {stat.value}
-                  </p>
-                  <p className="font-kufi text-[11px] md:text-xs text-sand-dim mt-1">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* إشارة التمرير */}
-      <button
-        onClick={() => scrollToSection('jathum')}
-        className="hidden md:flex flex-col items-center gap-1 mx-auto mt-8 text-brass-lt/70 hover:text-brass-lt transition-colors duration-base relative z-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-2 focus-visible:ring-offset-ink rounded-full px-4 py-1"
-        aria-label="التمرير لأسفل لاستكشاف الموقع"
-      >
-        <span className="font-kufi text-[10px] tracking-[0.2em]">تصفّح الديار</span>
-        <ChevronDown className={`w-4 h-4 ${prefersReduced ? '' : 'animate-bounce'}`} aria-hidden="true" />
-      </button>
-
-      {/* الكثبان الرملية أسفل الواجهة */}
-      <div className="w-full mt-auto relative z-10">
-        <DuneSilhouette />
-      </div>
+          </motion.button>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
