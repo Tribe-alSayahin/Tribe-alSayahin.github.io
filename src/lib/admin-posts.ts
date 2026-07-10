@@ -20,11 +20,32 @@ export interface AdminPostInsert {
   created_by?: string | null;
 }
 
-export const fetchAdminPosts = async () =>
-  supabase
+/**
+ * رسالة خطأ واضحة عند غياب جدول admin_posts في قاعدة البيانات.
+ * يحدث هذا عادةً عند عدم تنفيذ supabase-setup.sql أو عند انتهاء صلاحية schema cache في PostgREST.
+ */
+export const SCHEMA_CACHE_ERROR_MESSAGE =
+  'جدول admin_posts غير موجود في قاعدة البيانات. يرجى تنفيذ ملف supabase-setup.sql في Supabase SQL Editor ثم إعادة المحاولة.';
+
+/** يكشف ما إذا كان الخطأ ناتجاً عن غياب الجدول في schema cache. */
+export const isSchemaNotFoundError = (message: string): boolean =>
+  message.includes('schema cache') ||
+  message.includes('admin_posts') ||
+  message.includes('relation') ||
+  message.includes('does not exist');
+
+export const fetchAdminPosts = async () => {
+  const result = await supabase
     .from('admin_posts')
     .select('id,title,content,kind,event_date,created_at,created_by')
     .order('created_at', { ascending: false });
+
+  if (result.error && isSchemaNotFoundError(result.error.message)) {
+    return { ...result, error: { ...result.error, message: SCHEMA_CACHE_ERROR_MESSAGE } };
+  }
+
+  return result;
+};
 
 const GREGORIAN_DATE_REGEX = /^\d{4}-\d{2}-\d{2}/;
 

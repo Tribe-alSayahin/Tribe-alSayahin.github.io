@@ -63,6 +63,8 @@ npm run dev        # خادم التطوير على http://localhost:3000
 
 ### 2) إعداد قاعدة البيانات وسياسات RLS
 
+#### الطريقة الأولى: SQL Editor (الأبسط)
+
 1. افتح مشروعك في Supabase Dashboard
 2. اذهب إلى SQL Editor
 3. انسخ محتوى ملف `supabase-setup.sql` في هذا المستودع
@@ -70,6 +72,31 @@ npm run dev        # خادم التطوير على http://localhost:3000
 5. سيُنشأ جدول `public.admin_posts` مع سياسات:
    - قراءة للجميع
    - insert / update / delete للمستخدمين `authenticated` فقط
+
+#### الطريقة الثانية: Supabase CLI (للفرق والـ CI)
+
+```bash
+# تثبيت Supabase CLI
+npm install -g supabase
+
+# ربط المشروع بمشروعك في Supabase
+supabase link --project-ref <your-project-ref>
+
+# تطبيق migrations
+supabase db push
+```
+
+ملف الـ migration موجود في `supabase/migrations/20240101000000_create_admin_posts.sql`.
+
+#### استكشاف خطأ "Could not find the table 'public.admin_posts' in the schema cache"
+
+هذا الخطأ يحدث في حالتين:
+1. **الجدول لم يُنشأ بعد** — نفّذ `supabase-setup.sql` أو `supabase db push`
+2. **schema cache قديمة** — نفّذ هذا الأمر في SQL Editor بعد إنشاء الجدول:
+   ```sql
+   notify pgrst, 'reload schema';
+   ```
+   أو اذهب إلى **Supabase Dashboard → Database → PostgREST** واضغط **Reload Schema Cache**.
 
 ### 3) إنشاء مستخدم مشرف
 

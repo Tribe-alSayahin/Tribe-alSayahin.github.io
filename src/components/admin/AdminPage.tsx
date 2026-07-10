@@ -4,6 +4,8 @@ import type { Session } from '@supabase/supabase-js';
 import {
   fetchAdminPosts,
   formatGregorianDateArabic,
+  isSchemaNotFoundError,
+  SCHEMA_CACHE_ERROR_MESSAGE,
   type AdminPostInsert,
   type AdminPostKind,
   type AdminPostRecord,
@@ -130,7 +132,7 @@ export default function AdminPage() {
     const { error } = await supabase.from('admin_posts').insert(payload);
 
     if (error) {
-      setFormError(error.message);
+      setFormError(isSchemaNotFoundError(error.message) ? SCHEMA_CACHE_ERROR_MESSAGE : error.message);
       setIsSubmitting(false);
       return;
     }
@@ -150,7 +152,7 @@ export default function AdminPage() {
     setFormError('');
     const { error } = await supabase.from('admin_posts').delete().eq('id', id);
     if (error) {
-      setFormError(error.message);
+      setFormError(isSchemaNotFoundError(error.message) ? SCHEMA_CACHE_ERROR_MESSAGE : error.message);
       return;
     }
 
