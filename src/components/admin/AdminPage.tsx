@@ -219,7 +219,7 @@ export default function AdminPage() {
       <div className="max-w-[960px] mx-auto">
         <header className="rounded-2xl border border-brass/20 bg-ink-2/70 p-6 mb-6">
           <p className="font-kufi text-xs text-brass-lt/80 mb-2">الموقع الرسمي لقبيلة السياحين</p>
-          <h1 className="font-ruqaa text-3xl md:text-4xl text-brass-lt mb-2">لوحة الإدارة القوية — الأخبار والمناسبات</h1>
+          <h1 className="font-ruqaa text-4xl md:text-5xl text-brass-lt mb-2">لوحة الإدارة — الأخبار والمناسبات</h1>
           <p className="text-sm text-sand-dim">
             تسجيل الدخول للمشرفين ثم إدارة العناصر المنشورة بصلاحيات كاملة: إضافة وتعديل وحذف.
           </p>
@@ -236,7 +236,7 @@ export default function AdminPage() {
               <button
                 type="button"
                 onClick={handleSignOut}
-                className="px-4 py-2 rounded-lg border border-brass/30 text-sm font-kufi text-brass-lt hover:bg-brass/10 transition-colors"
+                className="px-4 py-2 rounded-lg border border-brass/30 text-base font-kufi text-brass-lt hover:bg-brass/10 transition-colors"
               >
                 تسجيل الخروج
               </button>
@@ -244,7 +244,7 @@ export default function AdminPage() {
           </section>
         ) : (
           <section className="rounded-2xl border border-brass/20 bg-ink-2/60 p-5 mb-6">
-            <h2 className="font-kufi text-lg text-brass-lt mb-4">تسجيل دخول المشرف</h2>
+            <h2 className="font-kufi text-xl text-brass-lt mb-4">تسجيل دخول المشرف</h2>
             <form onSubmit={handleSignIn} className="grid gap-3">
               <input
                 type="email"
@@ -265,7 +265,7 @@ export default function AdminPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="rounded-lg bg-brass/20 border border-brass/35 px-4 py-2 text-sm font-kufi text-brass-lt hover:bg-brass/30 transition-colors disabled:opacity-60"
+                className="rounded-lg bg-brass/20 border border-brass/35 px-4 py-2 text-base font-kufi text-brass-lt hover:bg-brass/30 transition-colors disabled:opacity-60"
               >
                 {isSubmitting ? 'جارٍ تسجيل الدخول...' : 'دخول'}
               </button>
@@ -276,7 +276,7 @@ export default function AdminPage() {
 
         {canManage && (
           <section className="rounded-2xl border border-brass/20 bg-ink-2/60 p-5 mb-6">
-            <h2 className="font-kufi text-lg text-brass-lt mb-4">إضافة عنصر جديد</h2>
+            <h2 className="font-kufi text-xl text-brass-lt mb-4">إضافة عنصر جديد</h2>
             <form onSubmit={handleCreatePost} className="grid gap-3">
               <select
                 value={kind}
@@ -320,7 +320,7 @@ export default function AdminPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="rounded-lg bg-brass/20 border border-brass/35 px-4 py-2 text-sm font-kufi text-brass-lt hover:bg-brass/30 transition-colors disabled:opacity-60"
+                className="rounded-lg bg-brass/20 border border-brass/35 px-4 py-2 text-base font-kufi text-brass-lt hover:bg-brass/30 transition-colors disabled:opacity-60"
               >
                 {isSubmitting ? 'جارٍ الحفظ...' : 'إضافة'}
               </button>
@@ -329,7 +329,7 @@ export default function AdminPage() {
         )}
 
         <section className="rounded-2xl border border-brass/20 bg-ink-2/60 p-5">
-          <h2 className="font-kufi text-lg text-brass-lt mb-4">العناصر المنشورة</h2>
+          <h2 className="font-kufi text-xl text-brass-lt mb-4">العناصر المنشورة</h2>
           {isLoadingPosts ? (
             <p className="text-sm font-kufi text-sand-dim">جارٍ تحميل العناصر...</p>
           ) : posts.length === 0 ? (
@@ -359,14 +359,14 @@ export default function AdminPage() {
                         <button
                           type="button"
                           onClick={() => beginEditPost(post)}
-                          className="rounded-lg border border-brass/35 px-3 py-1.5 text-xs font-kufi text-brass-lt hover:bg-brass/10 transition-colors"
+                          className="rounded-lg border border-brass/35 px-3 py-1.5 text-sm font-kufi text-brass-lt hover:bg-brass/10 transition-colors"
                         >
                           تعديل
                         </button>
                         <button
                           type="button"
                           onClick={() => handleDeletePost(post.id)}
-                          className="rounded-lg border border-copper/40 px-3 py-1.5 text-xs font-kufi text-copper hover:bg-copper/10 transition-colors"
+                          className="rounded-lg border border-copper/40 px-3 py-1.5 text-sm font-kufi text-copper hover:bg-copper/10 transition-colors"
                         >
                           حذف
                         </button>
@@ -414,14 +414,14 @@ export default function AdminPage() {
                         <button
                           type="submit"
                           disabled={isSubmitting}
-                          className="rounded-lg bg-brass/20 border border-brass/35 px-4 py-2 text-xs font-kufi text-brass-lt hover:bg-brass/30 transition-colors disabled:opacity-60"
+                          className="rounded-lg bg-brass/20 border border-brass/35 px-4 py-2 text-sm font-kufi text-brass-lt hover:bg-brass/30 transition-colors disabled:opacity-60"
                         >
                           {isSubmitting ? 'جارٍ حفظ التعديل...' : 'حفظ التعديل'}
                         </button>
                         <button
                           type="button"
                           onClick={() => setEditingPostId(null)}
-                          className="rounded-lg border border-sand/25 px-4 py-2 text-xs font-kufi text-sand-dim hover:bg-sand/10 transition-colors"
+                          className="rounded-lg border border-sand/25 px-4 py-2 text-sm font-kufi text-sand-dim hover:bg-sand/10 transition-colors"
                         >
                           إلغاء
                         </button>
