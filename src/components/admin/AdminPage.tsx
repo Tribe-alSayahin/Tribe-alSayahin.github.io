@@ -343,6 +343,10 @@ export default function AdminPage() {
                         {post.kind === 'event' ? 'مناسبة' : 'خبر'} •{' '}
                         {formatGregorianDateArabic(post.kind === 'event' ? post.event_date : post.created_at)}
                       </p>
+                      <p className="inline-flex items-center gap-1 rounded-full border border-brass/25 bg-brass/8 px-2 py-0.5 text-[10px] font-kufi text-brass-lt/90">
+                        <span>الإدارة</span>
+                        <span aria-label="موثق">✓</span>
+                      </p>
                       <h3 className="font-serif text-lg text-sand">{post.title}</h3>
                       <p className="text-sm text-sand-dim mt-2 leading-relaxed">{post.content}</p>
                     </div>

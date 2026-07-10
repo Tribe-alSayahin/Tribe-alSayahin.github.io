@@ -8,6 +8,8 @@ export interface NewsEntry {
   summary: string;
   details?: string;
   tag?: string;
+  publisherName?: string;
+  isVerified?: boolean;
 }
 
 export const NEWS_EVENTS_DATA: NewsEntry[] = [
