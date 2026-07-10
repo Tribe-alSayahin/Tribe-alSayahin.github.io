@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Award, Users, ShieldCheck, HeartHandshake } from 'lucide-react';
+import { Award, Users, ShieldCheck, HeartHandshake, BadgeCheck } from 'lucide-react';
 import { SectionHeader } from './SectionHeader';
 import { SUPPORTERS_DATA } from './Supporters.data';
 
@@ -96,9 +96,12 @@ export function Supporters() {
                 </div>
               </div>
 
-              <h4 className="text-2xl font-serif font-extrabold text-sand leading-snug">
-                حسين بن علي بن بعاج ابن مسيلم
-              </h4>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h4 className="text-3xl md:text-4xl font-serif font-extrabold text-sand leading-snug">
+                  حسين بن علي بن بعاج ابن مسيلم
+                </h4>
+                <BadgeCheck className="w-7 h-7 md:w-8 md:h-8 text-brass-lt shrink-0" aria-label="موثّق" />
+              </div>
               <p className="text-sm text-sand-dim mt-2.5 leading-relaxed font-sans">
                 مدير الموقع والمشرف العام، والمسؤول المباشر عن تدقيق وجمع الوثائق والمقتبسات والمراجع التاريخية لنسب وقبيلة السياحين.
               </p>
@@ -131,9 +134,12 @@ export function Supporters() {
                 </div>
               </div>
 
-              <h4 className="text-2xl font-serif font-extrabold text-sand leading-snug">
-                عبدالعزيز بن سلطان بن تركي ابن مسيلم
-              </h4>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h4 className="text-3xl md:text-4xl font-serif font-extrabold text-sand leading-snug">
+                  عبدالعزيز بن سلطان بن تركي ابن مسيلم
+                </h4>
+                <BadgeCheck className="w-7 h-7 md:w-8 md:h-8 text-brass-lt shrink-0" aria-label="موثّق" />
+              </div>
               <p className="text-sm text-sand-dim mt-2.5 leading-relaxed font-sans">
                 المصمم والمطور والمشرف الفني العام على المنصة الرقمية والتنسيق الفني والتشغيلي لعرض إرث قبيلة السياحين بأسلوب عصري.
               </p>
