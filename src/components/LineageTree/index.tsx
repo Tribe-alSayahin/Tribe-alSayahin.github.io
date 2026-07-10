@@ -11,6 +11,8 @@ export default function LineageTree() {
     (node) => node.level === 1 && node.name.includes(searchQuery),
   );
 
+  const allNodes = LINEAGE_DATA;
+
   return (
     <div className="editorial-card p-5 md:p-8 shadow-2xl" id="nasab-tree-interactive">
       {/* Background Ornaments */}
@@ -28,7 +30,7 @@ export default function LineageTree() {
             فخوذ السياحين من عتيبة
           </h3>
           <p className="text-xs md:text-sm text-sand-dim leading-relaxed max-w-2xl font-sans">
-            عرض مختصر للفخوذ الواردة في شجرة أنساب السياحين.
+            الأفخاذ الرئيسية لقبيلة السياحين من عتيبة، مع فروعها وبطونها المتوارثة.
           </p>
         </div>
 
@@ -65,7 +67,7 @@ export default function LineageTree() {
               </p>
             </div>
 
-            <TreeHierarchy filteredNodes={filteredBranches} />
+            <TreeHierarchy filteredNodes={filteredBranches} allNodes={allNodes} />
         </motion.div>
       </AnimatePresence>
     </div>
