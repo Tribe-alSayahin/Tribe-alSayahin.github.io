@@ -37,7 +37,7 @@ export function Hero({ scrollToSection }: HeroProps) {
   return (
     <section
       id="home"
-      className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      className="hero-atlas relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden"
       aria-label="مدخل الموقع الرسمي لقبيلة السياحين"
     >
       {/* ─── محتوى SEO مخفي بصرياً ─── */}
@@ -54,20 +54,17 @@ export function Hero({ scrollToSection }: HeroProps) {
 
       {/* ─── Vignette: تدرج مظلم حول الحواف يُثبّت مركزية الشعار ─── */}
       <div
-        className="absolute inset-0 pointer-events-none z-10"
-        style={{
-          background:
-            'radial-gradient(ellipse 70% 70% at 50% 50%, transparent 30%, rgba(7,5,3,0.72) 100%)',
-        }}
+        className="hero-vignette absolute inset-0 pointer-events-none z-10"
         aria-hidden="true"
       />
+      <div className="hero-pattern absolute inset-0 pointer-events-none z-10" aria-hidden="true" />
 
       {/* ─── طبقة نص تظهر بعد اكتمال حركة الكاميرا ─── */}
       <AnimatePresence>
         {introDone && (
           <motion.div
             key="hero-text"
-            className="relative z-20 flex flex-col items-center text-center px-6 gap-6 select-none"
+            className="hero-content-panel relative z-20 flex flex-col items-center text-center px-6 py-8 md:py-10 gap-6 select-none rounded-[2rem] md:rounded-[2.4rem] w-[min(92vw,780px)]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -88,19 +85,7 @@ export function Hero({ scrollToSection }: HeroProps) {
                     delay: i * charDelay,
                     ease: [0.16, 1, 0.3, 1],
                   }}
-                  className={char === ' ' ? 'inline-block w-4' : 'inline-block'}
-                  style={
-                    char !== ' '
-                      ? {
-                          background:
-                            'linear-gradient(120deg,#d4af37 0%,#ebd481 45%,#d4af37 100%)',
-                          WebkitBackgroundClip: 'text',
-                          backgroundClip: 'text',
-                          color: 'transparent',
-                          filter: 'drop-shadow(0 0 18px rgba(212,175,55,0.55))',
-                        }
-                      : undefined
-                  }
+                  className={char === ' ' ? 'inline-block w-4' : 'inline-block hero-char-gold'}
                 >
                   {char}
                 </motion.span>

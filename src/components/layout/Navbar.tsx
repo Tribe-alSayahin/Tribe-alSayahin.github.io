@@ -33,11 +33,17 @@ export function Navbar({
       <div
         className={`transition-all duration-400 ease-brand ${
           isScrolled
-            ? 'mx-3 md:mx-8 mt-3 rounded-2xl border border-brass/25 bg-ink/88 backdrop-blur-xl shadow-[0_14px_42px_rgba(0,0,0,0.32)]'
-            : 'mx-0 mt-0 rounded-none border border-transparent bg-ink/45 backdrop-blur-md'
+            ? 'mx-3 md:mx-8 mt-3 rounded-2xl border border-brass/30 bg-ink/84 backdrop-blur-2xl shadow-glow-sm'
+            : 'mx-0 mt-0 rounded-none border border-transparent bg-gradient-to-b from-ink/78 to-ink/35 backdrop-blur-md'
         }`}
       >
-        <div className="max-w-[1240px] mx-auto px-5 md:px-8 h-[76px] flex items-center justify-between">
+        <div className="max-w-[1240px] mx-auto px-5 md:px-8 h-[76px] flex items-center justify-between relative">
+          <span
+            className={`absolute inset-x-5 md:inset-x-8 bottom-0 h-px bg-gradient-to-l from-transparent via-brass/35 to-transparent transition-opacity duration-300 ${
+              isScrolled ? 'opacity-0' : 'opacity-100'
+            }`}
+            aria-hidden="true"
+          />
           <a
             href="#home"
             onClick={(e) => {
@@ -46,7 +52,7 @@ export function Navbar({
             }}
             className="flex items-center gap-3 text-lg font-bold font-serif text-sand hover:text-brass-lt transition-colors focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-xl p-1"
           >
-            <div             className="w-11 h-11 rounded-xl border border-brass/45 bg-gradient-to-br from-brass/18 to-transparent flex items-center justify-center text-brass shadow-glow-sm p-2">
+            <div className="w-11 h-11 rounded-xl border border-brass/45 bg-gradient-to-br from-brass/18 to-transparent flex items-center justify-center text-brass shadow-glow-sm p-2">
               <svg
                 viewBox="0 0 200 200"
                 className="w-full h-full"
@@ -69,7 +75,7 @@ export function Navbar({
           </a>
 
           {/* Desktop Links */}
-          <nav className="hidden lg:flex items-center gap-1" aria-label="التنقل الرئيسي">
+          <nav className="hidden lg:flex items-center gap-1 bg-brass/5 border border-brass/10 rounded-full px-1.5 py-1" aria-label="التنقل الرئيسي">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.id}
@@ -78,9 +84,9 @@ export function Navbar({
                   e.preventDefault();
                   handleNavigate(link.id);
                 }}
-                className={`relative px-3.5 py-2 font-kufi font-semibold text-xs md:text-sm transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-sm ${
+                className={`relative px-3.5 py-2 font-kufi font-semibold text-xs md:text-sm transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-full ${
                   activeSection === link.id
-                    ? 'text-brass-lt'
+                    ? 'text-brass-lt bg-brass/10'
                     : 'text-sand-dim hover:text-brass-lt'
                 }`}
               >
@@ -89,7 +95,7 @@ export function Navbar({
                 {activeSection === link.id && (
                   <motion.span
                     layoutId="nav-active-line"
-                    className="absolute bottom-0 inset-x-3 h-px bg-brass-lt rounded-full"
+                    className="absolute bottom-1 inset-x-3 h-px bg-brass-lt rounded-full"
                     transition={{ type: 'spring', stiffness: 420, damping: 36 }}
                   />
                 )}
