@@ -7,15 +7,15 @@ interface FooterProps {
 
 export function Footer({ scrollToSection }: FooterProps) {
   return (
-    <footer className="section-surface bg-ink-2 border-t border-brass/15 py-20 md:py-24 px-5 md:px-8 relative z-10 text-center overflow-hidden">
+    <footer className="section-surface bg-ink-2 border-t-2 border-brass/20 py-20 md:py-28 lg:py-32 px-5 md:px-8 relative z-10 text-center overflow-hidden">
       <div className="section-divider absolute top-0 inset-x-0 -translate-y-1/2" aria-hidden="true" />
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_18%_18%,color-mix(in_srgb,var(--brass)_9%,transparent),transparent_24rem),radial-gradient(circle_at_86%_78%,color-mix(in_srgb,var(--indigo)_16%,transparent),transparent_24rem)]" aria-hidden="true" />
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_18%_18%,color-mix(in_srgb,var(--brass)_10%,transparent),transparent_24rem),radial-gradient(circle_at_86%_78%,color-mix(in_srgb,var(--indigo)_18%,transparent),transparent_24rem)]" aria-hidden="true" />
       <div className="max-w-[1160px] mx-auto">
-        <section className="editorial-card max-w-[1040px] mx-auto mb-14 p-6 md:p-10 pb-12 border-b border-brass/15 text-right backdrop-blur-lg">
-          <div className="text-center mb-8">
-            <span className="font-kufi text-xs text-brass-lt font-semibold">مراجع قابلة للمراجعة</span>
-            <h3 className="text-2xl md:text-3xl mt-1 text-sand font-serif">المصادر والمراجع التاريخية</h3>
-            <div className="w-[60px] h-[2px] bg-brass/35 mx-auto mt-3" />
+        <section className="editorial-card max-w-[1040px] mx-auto mb-14 md:mb-16 p-6 sm:p-8 md:p-10 pb-12 border-b border-brass/20 text-right backdrop-blur-lg">
+          <div className="text-center mb-8 md:mb-10">
+            <span className="font-kufi text-xs md:text-sm text-brass-lt font-semibold tracking-widest">مراجع قابلة للمراجعة</span>
+            <h3 className="text-xl sm:text-2xl md:text-3xl mt-2 text-sand font-serif leading-[1.4]">المصادر والمراجع التاريخية</h3>
+            <div className="w-[60px] h-[2px] bg-brass/40 mx-auto mt-4" />
           </div>
 
           <div className="flex items-start gap-space-3 max-w-2xl mx-auto mb-space-8 p-space-4 rounded-2xl bg-brass/5 border border-brass/15">
@@ -25,17 +25,17 @@ export function Footer({ scrollToSection }: FooterProps) {
             </p>
           </div>
 
-          <ol className="grid gap-space-4 text-right sm:grid-cols-2">
+          <ol className="grid gap-space-5 text-right sm:grid-cols-2">
             {LOCAL_REFS.map((ref, index) => (
               <li
                 key={ref.id}
-                className="relative pr-12 pl-4 py-3 bg-ink-2/88 border border-brass/15 rounded-2xl text-sand text-sm leading-relaxed"
+                className="relative pr-12 pl-4 py-4 bg-ink-2/78 border border-brass/18 rounded-2xl text-sand text-sm leading-relaxed hover:border-brass/30 transition-colors"
               >
-                <span className="absolute top-3.5 right-4 w-6 h-6 rounded-lg bg-brass/15 text-brass-lt border border-brass/20 flex items-center justify-center font-kufi text-xs">
+                <span className="absolute top-4 right-4 w-7 h-7 rounded-lg bg-brass/12 text-brass-lt border border-brass/25 flex items-center justify-center font-kufi text-xs font-semibold">
                   {['١', '٢', '٣', '٤', '٥'][index] ?? index + 1}
                 </span>
                 {ref.author}، {ref.bookTitle}، الصفحات: {ref.pages}.
-                <span className="block text-sand-dim text-xs mt-1">
+                <span className="block text-sand-dim text-xs mt-2 opacity-80">
                   {ref.publisher}، الطبعة الأولى {ref.year}.
                 </span>
               </li>

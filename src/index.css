@@ -229,6 +229,13 @@ body::after {
   box-shadow: 0 0 80px color-mix(in srgb, var(--brass) 12%, transparent), 0 0 0 1px color-mix(in srgb, var(--brass) 8%, transparent);
 }
 
+/* قسم فاصل مرئي قوي بين الأقسام */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent 0%, color-mix(in srgb, var(--brass) 25%, transparent) 15%, color-mix(in srgb, var(--brass) 30%, transparent) 50%, color-mix(in srgb, var(--brass) 25%, transparent) 85%, transparent 100%);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--brass) 12%, transparent);
+}
+
 /* Shared editorial surfaces used throughout the redesigned page. */
 .site-shell {
   background:
