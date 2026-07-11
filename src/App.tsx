@@ -8,7 +8,8 @@ import { useTheme } from './hooks/useTheme';
 import { useScrollState } from './hooks/useScrollState';
 import { Navbar } from './components/layout/Navbar';
 import { Hero } from './components/layout/Hero';
-import { SectionHeader } from './components/layout/SectionHeader';
+import { Section } from './components/layout/Section';
+import { SectionLoader } from './components/layout/SectionLoader';
 import { Footer } from './components/layout/Footer';
 import { AdminSection } from './components/layout/AdminSection';
 import { Contact } from './components/layout/Contact';
@@ -198,180 +199,141 @@ export default function App() {
       <Hero scrollToSection={scrollToSection} />
 
       {/* TRANSITIONAL SCROLL FILM */}
-      <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل شريط الأفلام...</div>}>
+      <Suspense fallback={<SectionLoader label="جارٍ تحميل شريط الأفلام..." />}>
         <ScrollFilmCanvas />
       </Suspense>
 
       <main id="main-content" className="relative">
       {/* SECTION 0: JATHUM — THE FOUNDATION */}
-      <section id="jathum" className="section bg-ink-2 px-6 relative z-10 py-16 md:py-28 lg:py-32">
-        <div className="max-w-[1160px] mx-auto">
-          <SectionHeader
-            serialNumber="٠٠"
-            badgeText="الأساس والمنطلق"
-            title="هجرة الجثوم — أساس الديار"
-            description="قبل كل الأقسام تأتي الجثوم: أول هجرة رسمية أسسها السياحين في عالية نجد، ومنها انطلق الاستقرار والتحضر وامتدت بقية الديار."
-          />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الجثوم...</div>}>
-              <JathumMonument scrollToSection={scrollToSection} />
-            </Suspense>
-          </div>
-        </div>
-      </section>
+      <Section
+        id="jathum"
+        tone="ink"
+        noBorder
+        serialNumber="٠٠"
+        badgeText="الأساس والمنطلق"
+        title="هجرة الجثوم — أساس الديار"
+        description="قبل كل الأقسام تأتي الجثوم: أول هجرة رسمية أسسها السياحين في عالية نجد، ومنها انطلق الاستقرار والتحضر وامتدت بقية الديار."
+        loaderLabel="جارٍ تحميل الجثوم..."
+      >
+        <JathumMonument scrollToSection={scrollToSection} />
+      </Section>
 
       {/* SECTION 1: LINEAGE TREE */}
-      <section id="lineage" className="section bg-ink-2 px-6 relative z-10 border-t border-brass/15 py-20 md:py-32 lg:py-40">
-        <div className="max-w-[1160px] mx-auto">
-          <SectionHeader
-            serialNumber="٠١"
-            badgeText="النسب والجذر"
-            title="ديوان نسب القبيلة الأصيل"
-            description="التوثيق المتسلسل لعمود نسب فخذ السياحين من المزاحمة من الروقة من عتيبة الهيلا، وصولاً لعدنان."
-          />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل شجرة النسب...</div>}>
-              <LineageTree />
-            </Suspense>
-          </div>
-        </div>
-      </section>
+      <Section
+        id="lineage"
+        tone="ink-2"
+        serialNumber="٠١"
+        badgeText="النسب والجذر"
+        title="ديوان نسب القبيلة الأصيل"
+        description="التوثيق المتسلسل لعمود نسب فخذ السياحين من المزاحمة من الروقة من عتيبة الهيلا، وصولاً لعدنان."
+        loaderLabel="جارٍ تحميل شجرة النسب..."
+      >
+        <LineageTree />
+      </Section>
 
       {/* SECTION 2: OPPENHEIM ARCHIVE */}
-      <section id="archive" className="section bg-ink px-6 relative z-10 border-t border-brass/15 py-20 md:py-32 lg:py-40">
-        <div className="max-w-[1160px] mx-auto">
-          <SectionHeader
-            serialNumber="٠٢"
-            badgeText="الأرشيف والمصادر"
-            title="التوثيق الاستشراقي والمدونات التاريخية"
-            description="شهادات وملاحظات المستشرقين والرحالة الغربيين حول نسب وقوة ومواقف السياحين في تاريخ الجزيرة العربية."
-          />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الأرشيف الاستشراقي...</div>}>
-              <OppenheimArchive />
-            </Suspense>
-          </div>
-        </div>
-      </section>
+      <Section
+        id="archive"
+        tone="ink"
+        serialNumber="٠٢"
+        badgeText="الأرشيف والمصادر"
+        title="التوثيق الاستشراقي والمدونات التاريخية"
+        description="شهادات وملاحظات المستشرقين والرحالة الغربيين حول نسب وقوة ومواقف السياحين في تاريخ الجزيرة العربية."
+        loaderLabel="جارٍ تحميل الأرشيف الاستشراقي..."
+      >
+        <OppenheimArchive />
+      </Section>
 
       {/* SECTION 3: INTERACTIVE MAP */}
-      <section id="map" className="section bg-ink-2 px-6 relative z-10 border-t border-brass/15 py-20 md:py-32 lg:py-40">
-        <div className="max-w-[1160px] mx-auto">
-          <SectionHeader
-            serialNumber="٠٣"
-            badgeText="الديار والهجرات"
-            title="الديار ومنازل الاستقرار"
-            description="استكشف التوزيع الجغرافي لديار السياحين التاريخية، من منازلهم في نجد العذية وهجرهم المعتمدة ومناهل المياه القديمة."
-          />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل قسم الديار...</div>}>
-              <InteractiveMap />
-            </Suspense>
-          </div>
-        </div>
-      </section>
+      <Section
+        id="map"
+        tone="ink-2"
+        serialNumber="٠٣"
+        badgeText="الديار والهجرات"
+        title="الديار ومنازل الاستقرار"
+        description="استكشف التوزيع الجغرافي لديار السياحين التاريخية، من منازلهم في نجد العذية وهجرهم المعتمدة ومناهل المياه القديمة."
+        loaderLabel="جارٍ تحميل قسم الديار..."
+      >
+        <InteractiveMap />
+      </Section>
 
       {/* SECTION 4: HERITAGE GALLERY */}
-      <section id="gallery" className="section bg-ink px-6 relative z-10 border-t border-brass/15 py-20 md:py-32 lg:py-40">
-        <div className="max-w-[1160px] mx-auto">
-          <SectionHeader
-            serialNumber="٠٤"
-            badgeText="الشاهد البصري"
-            title="معرض التراث والمقتنيات"
-            description="شواهد بصرية ومقتنيات تراثية تعكس تاريخ القبيلة العريق وصوراً من ذاكرة الصحراء والديار المأهولة."
-          />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل معرض التراث...</div>}>
-              <HeritageGallery />
-            </Suspense>
-          </div>
-        </div>
-      </section>
+      <Section
+        id="gallery"
+        tone="ink"
+        serialNumber="٠٤"
+        badgeText="الشاهد البصري"
+        title="معرض التراث والمقتنيات"
+        description="شواهد بصرية ومقتنيات تراثية تعكس تاريخ القبيلة العريق وصوراً من ذاكرة الصحراء والديار المأهولة."
+        loaderLabel="جارٍ تحميل معرض التراث..."
+      >
+        <HeritageGallery />
+      </Section>
 
       {/* SECTION 5: WASM GALLERY */}
-      <section id="wasm" className="section bg-ink px-6 relative z-10 border-t border-brass/15 py-14 md:py-24 lg:py-28">
-        <div className="max-w-[1160px] mx-auto">
-          <SectionHeader
-            serialNumber="٠٥"
-            badgeText="علامات الوسم"
-            title="وسم الإبل وعلامة الباب"
-            description="وسم «الباب» الشهير للسياحين على الرقبة من الجهة اليسرى، رمز الهوية والأصالة في البادية."
-          />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <div className="max-w-[720px] mx-auto">
-              <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل معرض الوسوم...</div>}>
-                <WasmGallery />
-              </Suspense>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Section
+        id="wasm"
+        tone="ink-2"
+        narrow
+        serialNumber="٠٥"
+        badgeText="علامات الوسم"
+        title="وسم الإبل وعلامة الباب"
+        description="وسم «الباب» الشهير للسياحين على الرقبة من الجهة اليسرى، رمز الهوية والأصالة في البادية."
+        loaderLabel="جارٍ تحميل معرض الوسوم..."
+      >
+        <WasmGallery />
+      </Section>
 
       {/* SECTION 6: CONSTELLATION DIAGRAM */}
-      <section id="constellation" className="section bg-ink px-6 relative z-10 border-t border-brass/15 py-16 md:py-28 lg:py-32">
-        <div className="max-w-[1160px] mx-auto">
-          <SectionHeader
-            serialNumber="٠٦"
-            badgeText="الأنساب السبعة"
-            title="الخلاصة الكوكبية للأنساب"
-            description="تمثيل فلكي رمزي يربط الأنساب السبعة الكبرى في فضاء كوكبي مترابط يبرز التلاحم والأصل المشترك للقبيلة."
-          />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الأنسب...</div>}>
-              <ConstellationDiagram />
-            </Suspense>
-          </div>
-        </div>
-      </section>
+      <Section
+        id="constellation"
+        tone="ink"
+        serialNumber="٠٦"
+        badgeText="الأنساب السبعة"
+        title="الخلاصة الكوكبية للأنساب"
+        description="تمثيل فلكي رمزي يربط الأنساب السبعة الكبرى في فضاء كوكبي مترابط يبرز التلاحم والأصل المشترك للقبيلة."
+        loaderLabel="جارٍ تحميل الأنسب..."
+      >
+        <ConstellationDiagram />
+      </Section>
 
       {/* SECTION 7: POETRY COUNCIL */}
-      <section id="poetry" className="section bg-ink-2 px-6 relative z-10 border-t border-brass/15 py-16 md:py-28 lg:py-32">
-        <div className="max-w-[1160px] mx-auto">
-          <SectionHeader
-            serialNumber="٠٧"
-            badgeText="مجلس الشعراء"
-            title="ديوان الشعر النبطي"
-            description="مساحة مخصصة للقصائد الموثقة وشواهد الشعر النبطي بعد مراجعتها وإسنادها إلى مصادر واضحة."
-          />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل قسم الشعر...</div>}>
-              <PoetryCouncil />
-            </Suspense>
-          </div>
-        </div>
-      </section>
+      <Section
+        id="poetry"
+        tone="ink-2"
+        serialNumber="٠٧"
+        badgeText="مجلس الشعراء"
+        title="ديوان الشعر النبطي"
+        description="مساحة مخصصة للقصائد الموثقة وشواهد الشعر النبطي بعد مراجعتها وإسنادها إلى مصادر واضحة."
+        loaderLabel="جارٍ تحميل قسم الشعر..."
+      >
+        <PoetryCouncil />
+      </Section>
 
       {/* SECTION 8: NEWS & EVENTS */}
-      <section id="news" className="section bg-ink-2 px-6 relative z-10 border-t border-brass/15 py-14 md:py-24 lg:py-28">
-        <div className="max-w-[1160px] mx-auto">
-          <SectionHeader
-            serialNumber="٠٨"
-            badgeText="الأخبار والمناسبات"
-            title="الأخبار والمناسبات"
-            description="قسم القراءة العامة لعناصر الأخبار والمناسبات المنشورة من لوحة الإدارة."
-          />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الأخبار والمناسبات...</div>}>
-              <NewsEvents />
-            </Suspense>
-          </div>
-        </div>
-      </section>
+      <Section
+        id="news"
+        tone="ink"
+        serialNumber="٠٨"
+        badgeText="الأخبار والمناسبات"
+        title="الأخبار والمناسبات"
+        description="قسم القراءة العامة لعناصر الأخبار والمناسبات المنشورة من لوحة الإدارة."
+        loaderLabel="جارٍ تحميل الأخبار والمناسبات..."
+      >
+        <NewsEvents />
+      </Section>
 
       {/* SECTION 9: ADMIN */}
-      <section id="admin" className="section bg-ink px-6 relative z-10 py-20 md:py-28">
-        <div className="max-w-[1160px] mx-auto">
-          <SectionHeader
-            serialNumber="٠٩"
-            badgeText="بوابة الإدارة"
-            title="قسم الإدارة"
-            description="مركز إدارة محتوى الموقع الرسمي لقبيلة السياحين — يتيح للمشرفين نشر الأخبار وجدولة المناسبات وإدارة المحتوى المعروض للعموم."
-          />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <AdminSection />
-          </div>
-        </div>
-      </section>
+      <Section
+        id="admin"
+        tone="ink-2"
+        serialNumber="٠٩"
+        badgeText="بوابة الإدارة"
+        title="قسم الإدارة"
+        description="مركز إدارة محتوى الموقع الرسمي لقبيلة السياحين — يتيح للمشرفين نشر الأخبار وجدولة المناسبات وإدارة المحتوى المعروض للعموم."
+      >
+        <AdminSection />
+      </Section>
 
       {/* SECTION 8.5: TIMELINE */}
       <Timeline />
