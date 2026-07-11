@@ -26,8 +26,7 @@ export interface MediaInsert {
  * جلب جميع الوسائط
  */
 export async function fetchMedia() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from('media')
     .select('*')
     .order('created_at', { ascending: false });
@@ -43,8 +42,7 @@ export async function fetchMedia() {
  * جلب وسائط حسب النوع
  */
 export async function fetchMediaByType(fileType: string) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from('media')
     .select('*')
     .eq('file_type', fileType)
@@ -61,8 +59,7 @@ export async function fetchMediaByType(fileType: string) {
  * إضافة وسائط جديدة
  */
 export async function createMedia(media: MediaInsert) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await (supabase as any)
+  const { error } = await supabase
     .from('media')
     .insert(media);
 
@@ -77,8 +74,7 @@ export async function createMedia(media: MediaInsert) {
  * حذف وسائط
  */
 export async function deleteMedia(id: string) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await (supabase as any)
+  const { error } = await supabase
     .from('media')
     .delete()
     .eq('id', id);
@@ -94,8 +90,7 @@ export async function uploadFile(
   path: string,
   file: File
 ) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, error } = await (supabase as any).storage
+  const { data, error } = await supabase.storage
     .from(bucket)
     .upload(path, file);
 
@@ -110,8 +105,7 @@ export async function uploadFile(
  * الحصول على رابط عام للملف
  */
 export function getPublicUrl(bucket: string, path: string) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data } = (supabase as any).storage
+  const { data } = supabase.storage
     .from(bucket)
     .getPublicUrl(path);
 

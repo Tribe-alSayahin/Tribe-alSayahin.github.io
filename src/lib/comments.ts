@@ -29,8 +29,7 @@ export interface CommentInsert {
  * جلب تعليقات منشور معين
  */
 export async function fetchCommentsByPost(postId: string, status?: CommentStatus) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let query = (supabase as any)
+  let query = supabase
     .from('comments')
     .select('*')
     .eq('post_id', postId);
@@ -52,8 +51,7 @@ export async function fetchCommentsByPost(postId: string, status?: CommentStatus
  * جلب جميع التعليقات (للوحة الإدارة)
  */
 export async function fetchAllComments(status?: CommentStatus) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let query = (supabase as any)
+  let query = supabase
     .from('comments')
     .select('*');
 
@@ -74,8 +72,7 @@ export async function fetchAllComments(status?: CommentStatus) {
  * إضافة تعليق جديد
  */
 export async function createComment(comment: CommentInsert) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await (supabase as any)
+  const { error } = await supabase
     .from('comments')
     .insert(comment);
 
@@ -90,8 +87,7 @@ export async function createComment(comment: CommentInsert) {
  * تحديث حالة تعليق
  */
 export async function updateCommentStatus(id: string, status: CommentStatus) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await (supabase as any)
+  const { error } = await supabase
     .from('comments')
     .update({ status, updated_at: new Date().toISOString() })
     .eq('id', id);
@@ -107,8 +103,7 @@ export async function updateCommentStatus(id: string, status: CommentStatus) {
  * حذف تعليق
  */
 export async function deleteComment(id: string) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await (supabase as any)
+  const { error } = await supabase
     .from('comments')
     .delete()
     .eq('id', id);

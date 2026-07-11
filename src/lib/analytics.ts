@@ -24,8 +24,7 @@ export interface AnalyticsInsert {
  * تسجيل حدث إحصائي
  */
 export async function trackEvent(event: AnalyticsInsert) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await (supabase as any)
+  const { error } = await supabase
     .from('analytics')
     .insert(event);
 
@@ -36,8 +35,7 @@ export async function trackEvent(event: AnalyticsInsert) {
  * جلب الإحصائيات حسب نوع الحدث
  */
 export async function fetchAnalyticsByEventType(eventType: string, limit = 100) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from('analytics')
     .select('*')
     .eq('event_type', eventType)
@@ -55,8 +53,7 @@ export async function fetchAnalyticsByEventType(eventType: string, limit = 100) 
  * جلب عدد الأحداث حسب النوع
  */
 export async function fetchEventCounts() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from('analytics')
     .select('event_type')
     .order('created_at', { ascending: false });
@@ -82,8 +79,7 @@ export async function fetchAnalyticsByDateRange(
   startDate: Date,
   endDate: Date
 ) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from('analytics')
     .select('*')
     .gte('created_at', startDate.toISOString())
@@ -104,8 +100,7 @@ export async function fetchUniqueVisitors(days = 30) {
   const startDate = new Date();
   startDate.setDate(startDate.getDate() - days);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from('analytics')
     .select('session_id')
     .gte('created_at', startDate.toISOString());

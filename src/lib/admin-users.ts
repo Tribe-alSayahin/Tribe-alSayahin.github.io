@@ -25,8 +25,7 @@ export interface AdminUserInsert {
  * جلب جميع المستخدمين الإداريين
  */
 export async function fetchAdminUsers() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from('admin_users')
     .select('*')
     .order('created_at', { ascending: false });
@@ -42,8 +41,7 @@ export async function fetchAdminUsers() {
  * جلب دور المستخدم الحالي
  */
 export async function fetchCurrentUserRole(userId: string) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from('admin_users')
     .select('role')
     .eq('user_id', userId)
@@ -60,8 +58,7 @@ export async function fetchCurrentUserRole(userId: string) {
  * إضافة مستخدم إداري جديد
  */
 export async function createAdminUser(user: AdminUserInsert) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await (supabase as any)
+  const { error } = await supabase
     .from('admin_users')
     .insert(user);
 
@@ -77,8 +74,7 @@ export async function createAdminUser(user: AdminUserInsert) {
  * تحديث دور مستخدم إداري
  */
 export async function updateAdminUserRole(id: string, role: UserRole) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await (supabase as any)
+  const { error } = await supabase
     .from('admin_users')
     .update({ role, updated_at: new Date().toISOString() })
     .eq('id', id);
@@ -95,8 +91,7 @@ export async function updateAdminUserRole(id: string, role: UserRole) {
  * حذف مستخدم إداري
  */
 export async function deleteAdminUser(id: string) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await (supabase as any)
+  const { error } = await supabase
     .from('admin_users')
     .delete()
     .eq('id', id);
