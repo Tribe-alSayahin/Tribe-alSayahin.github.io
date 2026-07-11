@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { Landmark, MapPin, Crown, BookOpen, ScrollText } from 'lucide-react';
 
+import JathumWeatherCard from './JathumWeatherCard';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 
 interface JathumMonumentProps {
@@ -328,6 +329,8 @@ export default function JathumMonument({ scrollToSection }: JathumMonumentProps)
           ))}
         </div>
       </div>
+
+      <JathumWeatherCard />
 
       {/* ——— شهادة المستشرق فيلبي ——— */}
       <motion.figure
