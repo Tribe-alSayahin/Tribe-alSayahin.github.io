@@ -49,15 +49,15 @@ export function MediaManager() {
 
     try {
       // الحصول على المستخدم الحالي
-      const { data: sessionData } = await (supabase as any).auth.getSession();
+      const { data: sessionData } = await supabase.auth.getSession();
 
-      if (!sessionData?.session?.user) {
+      if (!sessionData.session?.user) {
         setError('يجب تسجيل الدخول لرفع الملفات');
         setIsUploading(false);
         return;
       }
 
-      const user = sessionData.session.user;
+      const userId = sessionData.session.user.id;
 
       // رفع الملف إلى Supabase Storage
       const fileName = `${Date.now()}-${selectedFile.name}`;
@@ -72,7 +72,7 @@ export function MediaManager() {
       }
 
       // الحصول على الرابط العام
-      const { publicUrl } = await getPublicUrl('media', filePath);
+      const { publicUrl } = getPublicUrl('media', filePath);
 
       // حفظ معلومات الملف في قاعدة البيانات
       const { error: insertError } = await createMedia({
@@ -80,7 +80,7 @@ export function MediaManager() {
         file_url: publicUrl,
         file_type: selectedFile.type,
         file_size: selectedFile.size,
-        uploaded_by: user.id,
+        uploaded_by: userId,
       });
 
       if (insertError) {
@@ -91,7 +91,7 @@ export function MediaManager() {
 
       setSelectedFile(null);
       await loadMedia();
-    } catch (err) {
+    } catch {
       setError('حدث خطأ أثناء رفع الملف');
     }
 
@@ -150,7 +150,7 @@ export function MediaManager() {
             </div>
           )}
           <button
-            onClick={handleUpload}
+            onClick={() => { void handleUpload(); }}
             disabled={!selectedFile || isUploading}
             className="flex items-center justify-center gap-2 rounded-lg bg-brass/20 border border-brass/35 px-4 py-2 text-sm font-kufi text-brass-lt hover:bg-brass/30 transition-colors disabled:opacity-60"
           >
@@ -193,7 +193,7 @@ export function MediaManager() {
                 </p>
               </div>
               <button
-                onClick={() => handleDelete(item.id)}
+                onClick={() => { void handleDelete(item.id); }}
                 className="w-full flex items-center justify-center gap-2 rounded-lg border border-copper/40 px-3 py-2 text-sm font-kufi text-copper hover:bg-copper/10 transition-colors"
               >
                 <Trash2 className="w-4 h-4" />

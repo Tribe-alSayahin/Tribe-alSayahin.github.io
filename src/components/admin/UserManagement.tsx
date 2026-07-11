@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Shield, UserPlus, Trash2, Edit2 } from 'lucide-react';
+import { Shield, UserPlus, Trash2 } from 'lucide-react';
 import {
   fetchAdminUsers,
   createAdminUser,
@@ -8,7 +8,6 @@ import {
   type AdminUser,
   type UserRole,
 } from '../../lib/admin-users';
-import { supabase } from '../../lib/supabase';
 
 export function UserManagement() {
   const [users, setUsers] = useState<AdminUser[]>([]);
@@ -89,12 +88,6 @@ export function UserManagement() {
     }
   };
 
-  const roleLabels: Record<UserRole, string> = {
-    super_admin: 'مشرف عام',
-    admin: 'مشرف',
-    editor: 'محرر',
-  };
-
   const roleColors: Record<UserRole, string> = {
     super_admin: 'bg-copper/20 text-copper-lt border-copper/30',
     admin: 'bg-brass/20 text-brass-lt border-brass/30',
@@ -127,7 +120,7 @@ export function UserManagement() {
       {showAddForm && (
         <div className="rounded-xl border border-brass/20 bg-ink-2/60 p-5">
           <h4 className="font-kufi text-lg text-brass-lt mb-4">إضافة مستخدم جديد</h4>
-          <form onSubmit={handleAddUser} className="grid gap-3">
+          <form onSubmit={(e) => { void handleAddUser(e); }} className="grid gap-3">
             <input
               type="email"
               value={newUserEmail}
@@ -193,7 +186,7 @@ export function UserManagement() {
               <div className="flex items-center gap-3">
                 <select
                   value={user.role}
-                  onChange={(e) => handleUpdateRole(user.id, e.target.value as UserRole)}
+                  onChange={(e) => { void handleUpdateRole(user.id, e.target.value as UserRole); }}
                   className={`rounded-lg border px-3 py-1.5 text-sm font-kufi focus:outline-none focus:border-brass/50 ${roleColors[user.role]}`}
                 >
                   <option value="editor">محرر</option>
@@ -201,7 +194,7 @@ export function UserManagement() {
                   <option value="super_admin">مشرف عام</option>
                 </select>
                 <button
-                  onClick={() => handleDeleteUser(user.id)}
+                  onClick={() => { void handleDeleteUser(user.id); }}
                   className="p-2 rounded-lg border border-copper/40 text-copper hover:bg-copper/10 transition-colors"
                   aria-label="حذف المستخدم"
                 >

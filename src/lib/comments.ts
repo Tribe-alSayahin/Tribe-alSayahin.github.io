@@ -25,10 +25,15 @@ export interface CommentInsert {
   status?: CommentStatus;
 }
 
+type ApiError = { message: string };
+type FetchListResult<T> = { data: T[]; error: null } | { data: null; error: ApiError };
+type FetchItemResult<T> = { data: T; error: null } | { data: null; error: ApiError };
+type DeleteResult = { error: ApiError | null };
+
 /**
  * جلب تعليقات منشور معين
  */
-export async function fetchCommentsByPost(postId: string, status?: CommentStatus) {
+export async function fetchCommentsByPost(postId: string, status?: CommentStatus): Promise<FetchListResult<Comment>> {
   let query = supabase
     .from('comments')
     .select('*')
@@ -44,13 +49,13 @@ export async function fetchCommentsByPost(postId: string, status?: CommentStatus
     return { data: null, error };
   }
 
-  return { data, error: null };
+  return { data: (data ?? []), error: null };
 }
 
 /**
  * جلب جميع التعليقات (للوحة الإدارة)
  */
-export async function fetchAllComments(status?: CommentStatus) {
+export async function fetchAllComments(status?: CommentStatus): Promise<FetchListResult<Comment>> {
   let query = supabase
     .from('comments')
     .select('*');
@@ -65,13 +70,13 @@ export async function fetchAllComments(status?: CommentStatus) {
     return { data: null, error };
   }
 
-  return { data, error: null };
+  return { data: (data ?? []), error: null };
 }
 
 /**
  * إضافة تعليق جديد
  */
-export async function createComment(comment: CommentInsert) {
+export async function createComment(comment: CommentInsert): Promise<FetchItemResult<Comment>> {
   const { error } = await supabase
     .from('comments')
     .insert(comment);
@@ -86,7 +91,7 @@ export async function createComment(comment: CommentInsert) {
 /**
  * تحديث حالة تعليق
  */
-export async function updateCommentStatus(id: string, status: CommentStatus) {
+export async function updateCommentStatus(id: string, status: CommentStatus): Promise<FetchItemResult<Comment>> {
   const { error } = await supabase
     .from('comments')
     .update({ status, updated_at: new Date().toISOString() })
@@ -102,11 +107,11 @@ export async function updateCommentStatus(id: string, status: CommentStatus) {
 /**
  * حذف تعليق
  */
-export async function deleteComment(id: string) {
+export async function deleteComment(id: string): Promise<DeleteResult> {
   const { error } = await supabase
     .from('comments')
     .delete()
     .eq('id', id);
 
-  return { error };
+  return { error: error };
 }

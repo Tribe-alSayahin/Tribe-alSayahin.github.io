@@ -22,10 +22,15 @@ export interface MediaInsert {
   uploaded_by: string;
 }
 
+type ApiError = { message: string };
+type FetchListResult<T> = { data: T[]; error: null } | { data: null; error: ApiError };
+type FetchItemResult<T> = { data: T; error: null } | { data: null; error: ApiError };
+type DeleteResult = { error: ApiError | null };
+
 /**
  * جلب جميع الوسائط
  */
-export async function fetchMedia() {
+export async function fetchMedia(): Promise<FetchListResult<Media>> {
   const { data, error } = await supabase
     .from('media')
     .select('*')
@@ -35,13 +40,13 @@ export async function fetchMedia() {
     return { data: null, error };
   }
 
-  return { data, error: null };
+  return { data: (data ?? []), error: null };
 }
 
 /**
  * جلب وسائط حسب النوع
  */
-export async function fetchMediaByType(fileType: string) {
+export async function fetchMediaByType(fileType: string): Promise<FetchListResult<Media>> {
   const { data, error } = await supabase
     .from('media')
     .select('*')
@@ -52,13 +57,13 @@ export async function fetchMediaByType(fileType: string) {
     return { data: null, error };
   }
 
-  return { data, error: null };
+  return { data: (data ?? []), error: null };
 }
 
 /**
  * إضافة وسائط جديدة
  */
-export async function createMedia(media: MediaInsert) {
+export async function createMedia(media: MediaInsert): Promise<FetchItemResult<Media>> {
   const { error } = await supabase
     .from('media')
     .insert(media);
@@ -73,13 +78,13 @@ export async function createMedia(media: MediaInsert) {
 /**
  * حذف وسائط
  */
-export async function deleteMedia(id: string) {
+export async function deleteMedia(id: string): Promise<DeleteResult> {
   const { error } = await supabase
     .from('media')
     .delete()
     .eq('id', id);
 
-  return { error };
+  return { error: error };
 }
 
 /**
@@ -88,8 +93,8 @@ export async function deleteMedia(id: string) {
 export async function uploadFile(
   bucket: string,
   path: string,
-  file: File
-) {
+  file: File,
+): Promise<{ data: { path: string } | null; error: null } | { data: null; error: ApiError }> {
   const { data, error } = await supabase.storage
     .from(bucket)
     .upload(path, file);
@@ -104,7 +109,7 @@ export async function uploadFile(
 /**
  * الحصول على رابط عام للملف
  */
-export function getPublicUrl(bucket: string, path: string) {
+export function getPublicUrl(bucket: string, path: string): { publicUrl: string } {
   const { data } = supabase.storage
     .from(bucket)
     .getPublicUrl(path);

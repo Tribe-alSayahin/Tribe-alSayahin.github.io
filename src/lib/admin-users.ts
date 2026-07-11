@@ -18,13 +18,18 @@ export interface AdminUser {
 export interface AdminUserInsert {
   user_id: string;
   role?: UserRole;
-  full_name?: string;
+  full_name?: string | null;
 }
+
+type ApiError = { message: string };
+type FetchListResult<T> = { data: T[]; error: null } | { data: null; error: ApiError };
+type FetchItemResult<T> = { data: T; error: null } | { data: null; error: ApiError };
+type DeleteResult = { error: ApiError | null };
 
 /**
  * جلب جميع المستخدمين الإداريين
  */
-export async function fetchAdminUsers() {
+export async function fetchAdminUsers(): Promise<FetchListResult<AdminUser>> {
   const { data, error } = await supabase
     .from('admin_users')
     .select('*')
@@ -34,13 +39,13 @@ export async function fetchAdminUsers() {
     return { data: null, error };
   }
 
-  return { data, error: null };
+  return { data: (data ?? []), error: null };
 }
 
 /**
  * جلب دور المستخدم الحالي
  */
-export async function fetchCurrentUserRole(userId: string) {
+export async function fetchCurrentUserRole(userId: string): Promise<FetchItemResult<{ role: UserRole }>> {
   const { data, error } = await supabase
     .from('admin_users')
     .select('role')
@@ -57,7 +62,7 @@ export async function fetchCurrentUserRole(userId: string) {
 /**
  * إضافة مستخدم إداري جديد
  */
-export async function createAdminUser(user: AdminUserInsert) {
+export async function createAdminUser(user: AdminUserInsert): Promise<FetchItemResult<AdminUser>> {
   const { error } = await supabase
     .from('admin_users')
     .insert(user);
@@ -73,7 +78,7 @@ export async function createAdminUser(user: AdminUserInsert) {
 /**
  * تحديث دور مستخدم إداري
  */
-export async function updateAdminUserRole(id: string, role: UserRole) {
+export async function updateAdminUserRole(id: string, role: UserRole): Promise<FetchItemResult<AdminUser>> {
   const { error } = await supabase
     .from('admin_users')
     .update({ role, updated_at: new Date().toISOString() })
@@ -90,11 +95,11 @@ export async function updateAdminUserRole(id: string, role: UserRole) {
 /**
  * حذف مستخدم إداري
  */
-export async function deleteAdminUser(id: string) {
+export async function deleteAdminUser(id: string): Promise<DeleteResult> {
   const { error } = await supabase
     .from('admin_users')
     .delete()
     .eq('id', id);
 
-  return { error };
+  return { error: error };
 }
