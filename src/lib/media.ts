@@ -59,11 +59,11 @@ export async function fetchMediaByType(fileType: string) {
  * إضافة وسائط جديدة
  */
 export async function createMedia(media: MediaInsert) {
-  const { data, error } = await supabase
+  const { data, error } = await (supabase
     .from('media' as any)
     .insert(media as any)
     .select()
-    .single();
+    .single() as any);
 
   if (error) {
     return { data: null, error };

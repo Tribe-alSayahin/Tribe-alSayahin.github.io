@@ -72,11 +72,11 @@ export async function fetchAllComments(status?: CommentStatus) {
  * إضافة تعليق جديد
  */
 export async function createComment(comment: CommentInsert) {
-  const { data, error } = await supabase
+  const { data, error } = await (supabase
     .from('comments' as any)
     .insert(comment as any)
     .select()
-    .single();
+    .single() as any);
 
   if (error) {
     return { data: null, error };
@@ -89,12 +89,12 @@ export async function createComment(comment: CommentInsert) {
  * تحديث حالة تعليق
  */
 export async function updateCommentStatus(id: string, status: CommentStatus) {
-  const { data, error } = await supabase
+  const { data, error } = await (supabase
     .from('comments' as any)
     .update({ status, updated_at: new Date().toISOString() } as any)
     .eq('id', id)
     .select()
-    .single();
+    .single() as any);
 
   if (error) {
     return { data: null, error };

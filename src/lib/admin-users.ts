@@ -51,18 +51,18 @@ export async function fetchCurrentUserRole(userId: string) {
     return { data: null, error };
   }
 
-  return { data: data as { role: UserRole }, error: null };
+  return { data: data as unknown as { role: UserRole }, error: null };
 }
 
 /**
  * إضافة مستخدم إداري جديد
  */
 export async function createAdminUser(user: AdminUserInsert) {
-  const { data, error } = await supabase
+  const { data, error } = await (supabase
     .from('admin_users' as any)
     .insert(user as any)
     .select()
-    .single();
+    .single() as any);
 
   if (error) {
     return { data: null, error };
@@ -75,12 +75,12 @@ export async function createAdminUser(user: AdminUserInsert) {
  * تحديث دور مستخدم إداري
  */
 export async function updateAdminUserRole(id: string, role: UserRole) {
-  const { data, error } = await supabase
+  const { data, error } = await (supabase
     .from('admin_users' as any)
     .update({ role, updated_at: new Date().toISOString() } as any)
     .eq('id', id)
     .select()
-    .single();
+    .single() as any);
 
   if (error) {
     return { data: null, error };
