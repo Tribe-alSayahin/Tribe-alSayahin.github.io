@@ -9,15 +9,16 @@ export default function DesertCinematicBackground() {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-    const width = containerRef.current.clientWidth || 800;
-    const height = containerRef.current.clientHeight || 600;
+    const width = container.clientWidth || 800;
+    const height = container.clientHeight || 600;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setSize(width, height);
-    containerRef.current.appendChild(renderer.domElement);
+    container.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(55, width / Math.max(height, 1), 0.1, 60);
@@ -74,18 +75,17 @@ export default function DesertCinematicBackground() {
     scene.add(stars);
 
     let raf = 0;
-    const timer = new THREE.Timer();
+    const clock = new THREE.Clock();
     function animate() {
       raf = requestAnimationFrame(animate);
-      timer.update();
-      const t = timer.getElapsed();
+      const t = clock.getElapsedTime();
 
       dune.position.y = -1.2 + Math.sin(t * 0.25) * 0.2;
       dune.rotation.y = t * 0.02;
 
       glowMat.opacity = Math.sin(t * 0.4) * 0.04 + 0.18;
 
-      const pos = dust.geometry.attributes.position.array as Float32Array;
+      const pos = dust.geometry.attributes.position.array;
       for (let i = 0; i < count; i++) {
         pos[i * 3] += velocities[i];
         if (pos[i * 3] > 6) pos[i * 3] = -6;
@@ -98,9 +98,8 @@ export default function DesertCinematicBackground() {
     animate();
 
     const onResize = () => {
-      if (!containerRef.current) return;
-      const w = containerRef.current.clientWidth || 800;
-      const h = containerRef.current.clientHeight || 600;
+      const w = container.clientWidth || 800;
+      const h = container.clientHeight || 600;
       renderer.setSize(w, h);
       camera.aspect = w / Math.max(h, 1);
       camera.updateProjectionMatrix();
@@ -110,9 +109,10 @@ export default function DesertCinematicBackground() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', onResize);
-      timer.dispose();
       renderer.dispose();
-      containerRef.current?.removeChild(renderer.domElement);
+      if (container.contains(renderer.domElement)) {
+        container.removeChild(renderer.domElement);
+      }
     };
   }, []);
 

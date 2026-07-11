@@ -1,5 +1,5 @@
 import React from 'react';
-import { Compass, Home, ChevronLeft, Scroll } from 'lucide-react';
+import { Compass, Home, ChevronLeft } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Button } from './ui/Button';
 import { Badge } from './ui/Badge';
@@ -43,7 +43,7 @@ export const NotFound: React.FC<NotFoundProps> = ({ onBackToHome }) => {
         >
           {/* Outer brass ring with degree markings */}
           <div className="absolute inset-0 rounded-full border border-brass/35 animate-[spin_120s_linear_infinite]" aria-hidden="true">
-            {[...Array(12)].map((_, i) => (
+            {Array.from({ length: 12 }).map((_, i) => (
               <div
                 key={i}
                 className="absolute w-[1px] h-2 bg-brass/40"

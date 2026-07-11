@@ -50,7 +50,6 @@ const WASM_VARIATIONS: WasmVariation[] = [
 
 export function WasmGallery() {
   const [selectedVar, setSelectedVar] = useState<WasmVariation>(WASM_VARIATIONS[0]);
-  const [hoveredVar, setHoveredVar] = useState<WasmVariation | null>(null);
 
   return (
     <div id="wasm-gallery" className="mt-space-16 pt-space-12 border-t border-brass/15 text-right">
@@ -80,8 +79,6 @@ export function WasmGallery() {
                 <Card
                   key={item.id}
                   onClick={() => setSelectedVar(item)}
-                  onMouseEnter={() => setHoveredVar(item)}
-                  onMouseLeave={() => setHoveredVar(null)}
                   className={`relative flex flex-col justify-between p-space-5 rounded-2xl border text-right transition-all duration-base cursor-pointer ${
                     isSelected
                       ? 'bg-[#18283a] border-brass shadow-glow-md'

@@ -111,7 +111,7 @@ export default function TribalEmblem3D({ onIntroDone, fullscreen = false }: Trib
     envL2.position.set(-3, 1, -3);
     envScene.add(envL2);
     envScene.add(new THREE.AmbientLight(0x201208, 3));
-    const envRT = pmremGenerator.fromScene(envScene as unknown as Parameters<typeof pmremGenerator.fromScene>[0]);
+    const envRT = pmremGenerator.fromScene(envScene);
     scene.environment = envRT.texture;
     pmremGenerator.dispose();
 
@@ -210,8 +210,8 @@ export default function TribalEmblem3D({ onIntroDone, fullscreen = false }: Trib
     let controls: OrbitControlsType | null = null;
     let userInteracted = false;
 
-    import('three/examples/jsm/controls/OrbitControls.js').then(({ OrbitControls }) => {
-      controls = new OrbitControls(camera, renderer.domElement) as OrbitControlsType;
+    void import('three/examples/jsm/controls/OrbitControls.js').then(({ OrbitControls }) => {
+      controls = new OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.06;
       controls.enableZoom = false;
@@ -222,14 +222,14 @@ export default function TribalEmblem3D({ onIntroDone, fullscreen = false }: Trib
       controls.autoRotateSpeed = 0.5;
       controls.addEventListener('start', () => {
         userInteracted = true;
-        controls!.autoRotate = false;
+        controls.autoRotate = false;
       });
     });
 
     /* ─── EffectComposer + UnrealBloomPass (تحميل غير متزامن) ─── */
     let composer: { render: () => void; setSize: (w: number, h: number) => void } | null = null;
 
-    Promise.all([
+    void Promise.all([
       import('three/examples/jsm/postprocessing/EffectComposer.js'),
       import('three/examples/jsm/postprocessing/RenderPass.js'),
       import('three/examples/jsm/postprocessing/UnrealBloomPass.js'),

@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Film, Compass, ChevronDown, RefreshCw } from 'lucide-react';
+import { Film, Compass, ChevronDown } from 'lucide-react';
 
 interface ScrollFilmCanvasProps {
   framesCount?: number;
@@ -42,7 +42,6 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [images, setImages] = useState<HTMLImageElement[]>([]);
   const [loadProgress, setLoadProgress] = useState(0);
   const [isReady, setIsReady] = useState(() => !framePathPattern);
   const [useFallback, setUseFallback] = useState(true);
@@ -112,8 +111,6 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
     }
 
     imagesRef.current = loadedImages;
-    setImages(loadedImages);
-
     return () => {
       clearTimeout(timeoutId);
     };
@@ -148,7 +145,7 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
   }, []);
 
   // 3. Render and Draw onto Canvas with object-cover and high DPR support
-  const drawFrame = (progress: number) => {
+  const drawFrame = useCallback((progress: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -343,7 +340,6 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
     // Draw Sadu tribal pattern overlays on the sides
     ctx.fillStyle = 'rgba(201, 162, 39, 0.04)';
     const saduHeight = 30;
-    const saduWidth = 15;
     // Draw left trim
     for (let sY = 30; sY < height - 30; sY += saduHeight) {
       ctx.beginPath();
@@ -373,12 +369,12 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
     ctx.textAlign = 'center';
     ctx.fillText('السياحين', centerX, centerY - 100);
     ctx.restore();
-  };
+  }, [isReady, useFallback]);
 
   // Trigger draw on progress, readiness, or resize
   useEffect(() => {
     drawFrame(scrollProgress);
-  }, [scrollProgress, isReady, useFallback]);
+  }, [drawFrame, scrollProgress]);
 
   // Handle Resize correctly
   useEffect(() => {
@@ -387,7 +383,7 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [scrollProgress, isReady, useFallback]);
+  }, [drawFrame, scrollProgress]);
 
   // Smoothstep function to map opacity based on progress ranges
   const getCaptionOpacity = (progress: number, start: number, end: number) => {

@@ -74,8 +74,8 @@ export default function AdminPage() {
       }
     };
 
-    init();
-    loadPosts();
+    void init();
+    void loadPosts();
 
     const { data } = supabase.auth.onAuthStateChange((_event, nextSession) => {
       if (mounted) {
@@ -241,7 +241,9 @@ export default function AdminPage() {
               </p>
               <button
                 type="button"
-                onClick={handleSignOut}
+                onClick={() => {
+                  void handleSignOut();
+                }}
                 className="px-4 py-2 rounded-lg border border-brass/30 text-base font-kufi text-brass-lt hover:bg-brass/10 transition-colors"
               >
                 تسجيل الخروج
@@ -251,7 +253,9 @@ export default function AdminPage() {
         ) : (
           <section className="rounded-2xl border border-brass/20 bg-ink-2/60 p-5 mb-6">
             <h2 className="font-kufi text-xl text-brass-lt mb-4">تسجيل دخول المشرف</h2>
-            <form onSubmit={handleSignIn} className="grid gap-3">
+            <form onSubmit={(event) => {
+              void handleSignIn(event);
+            }} className="grid gap-3">
               <input
                 type="email"
                 value={email}
@@ -283,7 +287,9 @@ export default function AdminPage() {
         {canManage && (
           <section className="rounded-2xl border border-brass/20 bg-ink-2/60 p-5 mb-6">
             <h2 className="font-kufi text-xl text-brass-lt mb-4">إضافة عنصر جديد</h2>
-            <form onSubmit={handleCreatePost} className="grid gap-3">
+            <form onSubmit={(event) => {
+              void handleCreatePost(event);
+            }} className="grid gap-3">
               <select
                 value={kind}
                 onChange={(event) => setKind(event.target.value as AdminPostKind)}
@@ -371,7 +377,9 @@ export default function AdminPage() {
                         </button>
                         <button
                           type="button"
-                          onClick={() => handleDeletePost(post.id)}
+                          onClick={() => {
+                            void handleDeletePost(post.id);
+                          }}
                           className="rounded-lg border border-copper/40 px-3 py-1.5 text-sm font-kufi text-copper hover:bg-copper/10 transition-colors"
                         >
                           حذف
@@ -380,7 +388,9 @@ export default function AdminPage() {
                     )}
                   </div>
                   {canManage && editingPostId === post.id && (
-                    <form onSubmit={(event) => handleUpdatePost(event, post.id)} className="grid gap-3 mt-4">
+                    <form onSubmit={(event) => {
+                      void handleUpdatePost(event, post.id);
+                    }} className="grid gap-3 mt-4">
                       <select
                         value={editKind}
                         onChange={(event) => setEditKind(event.target.value as AdminPostKind)}
