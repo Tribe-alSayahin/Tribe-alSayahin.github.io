@@ -25,8 +25,8 @@ export interface AnalyticsInsert {
  */
 export async function trackEvent(event: AnalyticsInsert) {
   const { error } = await supabase
-    .from('analytics')
-    .insert(event);
+    .from('analytics' as any)
+    .insert(event as any);
 
   return { error };
 }
@@ -36,7 +36,7 @@ export async function trackEvent(event: AnalyticsInsert) {
  */
 export async function fetchAnalyticsByEventType(eventType: string, limit = 100) {
   const { data, error } = await supabase
-    .from('analytics')
+    .from('analytics' as any)
     .select('*')
     .eq('event_type', eventType)
     .order('created_at', { ascending: false })
@@ -54,7 +54,7 @@ export async function fetchAnalyticsByEventType(eventType: string, limit = 100) 
  */
 export async function fetchEventCounts() {
   const { data, error } = await supabase
-    .from('analytics')
+    .from('analytics' as any)
     .select('event_type')
     .order('created_at', { ascending: false });
 
@@ -64,7 +64,7 @@ export async function fetchEventCounts() {
 
   // حساب عدد الأحداث لكل نوع
   const counts: Record<string, number> = {};
-  data?.forEach((event) => {
+  data?.forEach((event: any) => {
     counts[event.event_type] = (counts[event.event_type] || 0) + 1;
   });
 
@@ -78,9 +78,9 @@ export async function fetchAnalyticsByDateRange(
   startDate: Date,
   endDate: Date
 ) {
-  const { data, error } = await supabase
-    .from('analytics')
-    .select('*')
+  const { data, error } = await (supabase
+    .from('analytics' as any)
+    .select('*') as any)
     .gte('created_at', startDate.toISOString())
     .lte('created_at', endDate.toISOString())
     .order('created_at', { ascending: false });
@@ -99,9 +99,9 @@ export async function fetchUniqueVisitors(days = 30) {
   const startDate = new Date();
   startDate.setDate(startDate.getDate() - days);
 
-  const { data, error } = await supabase
-    .from('analytics')
-    .select('session_id')
+  const { data, error } = await (supabase
+    .from('analytics' as any)
+    .select('session_id') as any)
     .gte('created_at', startDate.toISOString());
 
   if (error) {
@@ -109,7 +109,7 @@ export async function fetchUniqueVisitors(days = 30) {
   }
 
   // حساب عدد الجلسات الفريدة
-  const uniqueSessions = new Set(data?.map((event) => event.session_id).filter(Boolean));
+  const uniqueSessions = new Set(data?.map((event: any) => event.session_id).filter(Boolean));
 
   return { data: uniqueSessions.size, error: null };
 }

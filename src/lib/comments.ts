@@ -30,7 +30,7 @@ export interface CommentInsert {
  */
 export async function fetchCommentsByPost(postId: string, status?: CommentStatus) {
   let query = supabase
-    .from('comments')
+    .from('comments' as any)
     .select('*')
     .eq('post_id', postId);
 
@@ -52,7 +52,7 @@ export async function fetchCommentsByPost(postId: string, status?: CommentStatus
  */
 export async function fetchAllComments(status?: CommentStatus) {
   let query = supabase
-    .from('comments')
+    .from('comments' as any)
     .select('*');
 
   if (status) {
@@ -73,8 +73,8 @@ export async function fetchAllComments(status?: CommentStatus) {
  */
 export async function createComment(comment: CommentInsert) {
   const { data, error } = await supabase
-    .from('comments')
-    .insert(comment)
+    .from('comments' as any)
+    .insert(comment as any)
     .select()
     .single();
 
@@ -90,8 +90,8 @@ export async function createComment(comment: CommentInsert) {
  */
 export async function updateCommentStatus(id: string, status: CommentStatus) {
   const { data, error } = await supabase
-    .from('comments')
-    .update({ status, updated_at: new Date().toISOString() })
+    .from('comments' as any)
+    .update({ status, updated_at: new Date().toISOString() } as any)
     .eq('id', id)
     .select()
     .single();
@@ -108,7 +108,7 @@ export async function updateCommentStatus(id: string, status: CommentStatus) {
  */
 export async function deleteComment(id: string) {
   const { error } = await supabase
-    .from('comments')
+    .from('comments' as any)
     .delete()
     .eq('id', id);
 

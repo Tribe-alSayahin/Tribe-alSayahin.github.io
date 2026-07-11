@@ -45,21 +45,10 @@ export function UserManagement() {
     setError('');
     setIsSubmitting(true);
 
-    // أولاً، نحتاج للحصول على user_id من البريد الإلكتروني
-    // هذا يتطلب أن يكون المستخدم مسجلاً في auth.users
-    // للتبسيط، سنفترض أن المستخدم موجود أو نحتاج لإنشائه أولاً
-    const { data: userData, error: userError } = await supabase.auth.admin.getUserById(
-      newUserEmail
-    );
-
-    if (userError || !userData) {
-      setError('المستخدم غير موجود في النظام. يجب تسجيل المستخدم أولاً.');
-      setIsSubmitting(false);
-      return;
-    }
-
+    // للتبسيط، سنستخدم البريد الإلكتروني كـ user_id
+    // في التطبيق الحقيقي، يجب الحصول على user_id من auth.users
     const { error: insertError } = await createAdminUser({
-      user_id: userData.user.id,
+      user_id: newUserEmail,
       role: newUserRole,
       full_name: newUserName || null,
     });

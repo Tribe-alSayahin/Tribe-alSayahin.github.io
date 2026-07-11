@@ -27,7 +27,7 @@ export interface MediaInsert {
  */
 export async function fetchMedia() {
   const { data, error } = await supabase
-    .from('media')
+    .from('media' as any)
     .select('*')
     .order('created_at', { ascending: false });
 
@@ -43,7 +43,7 @@ export async function fetchMedia() {
  */
 export async function fetchMediaByType(fileType: string) {
   const { data, error } = await supabase
-    .from('media')
+    .from('media' as any)
     .select('*')
     .eq('file_type', fileType)
     .order('created_at', { ascending: false });
@@ -60,8 +60,8 @@ export async function fetchMediaByType(fileType: string) {
  */
 export async function createMedia(media: MediaInsert) {
   const { data, error } = await supabase
-    .from('media')
-    .insert(media)
+    .from('media' as any)
+    .insert(media as any)
     .select()
     .single();
 
@@ -77,7 +77,7 @@ export async function createMedia(media: MediaInsert) {
  */
 export async function deleteMedia(id: string) {
   const { error } = await supabase
-    .from('media')
+    .from('media' as any)
     .delete()
     .eq('id', id);
 
@@ -92,7 +92,7 @@ export async function uploadFile(
   path: string,
   file: File
 ) {
-  const { data, error } = await supabase.storage
+  const { data, error } = await (supabase as any).storage
     .from(bucket)
     .upload(path, file);
 
@@ -107,7 +107,7 @@ export async function uploadFile(
  * الحصول على رابط عام للملف
  */
 export async function getPublicUrl(bucket: string, path: string) {
-  const { data } = supabase.storage
+  const { data } = (supabase as any).storage
     .from(bucket)
     .getPublicUrl(path);
 

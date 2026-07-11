@@ -49,15 +49,15 @@ export function MediaManager() {
 
     try {
       // الحصول على المستخدم الحالي
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: sessionData } = await (supabase as any).auth.getSession();
 
-      if (!user) {
+      if (!sessionData?.session?.user) {
         setError('يجب تسجيل الدخول لرفع الملفات');
         setIsUploading(false);
         return;
       }
+
+      const user = sessionData.session.user;
 
       // رفع الملف إلى Supabase Storage
       const fileName = `${Date.now()}-${selectedFile.name}`;

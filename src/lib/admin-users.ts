@@ -26,7 +26,7 @@ export interface AdminUserInsert {
  */
 export async function fetchAdminUsers() {
   const { data, error } = await supabase
-    .from('admin_users')
+    .from('admin_users' as any)
     .select('*')
     .order('created_at', { ascending: false });
 
@@ -42,7 +42,7 @@ export async function fetchAdminUsers() {
  */
 export async function fetchCurrentUserRole(userId: string) {
   const { data, error } = await supabase
-    .from('admin_users')
+    .from('admin_users' as any)
     .select('role')
     .eq('user_id', userId)
     .single();
@@ -59,8 +59,8 @@ export async function fetchCurrentUserRole(userId: string) {
  */
 export async function createAdminUser(user: AdminUserInsert) {
   const { data, error } = await supabase
-    .from('admin_users')
-    .insert(user)
+    .from('admin_users' as any)
+    .insert(user as any)
     .select()
     .single();
 
@@ -76,8 +76,8 @@ export async function createAdminUser(user: AdminUserInsert) {
  */
 export async function updateAdminUserRole(id: string, role: UserRole) {
   const { data, error } = await supabase
-    .from('admin_users')
-    .update({ role, updated_at: new Date().toISOString() })
+    .from('admin_users' as any)
+    .update({ role, updated_at: new Date().toISOString() } as any)
     .eq('id', id)
     .select()
     .single();
@@ -94,7 +94,7 @@ export async function updateAdminUserRole(id: string, role: UserRole) {
  */
 export async function deleteAdminUser(id: string) {
   const { error } = await supabase
-    .from('admin_users')
+    .from('admin_users' as any)
     .delete()
     .eq('id', id);
 
