@@ -7,53 +7,61 @@
    ليل صحراوي عميق بلمسة نيلية + ذهب شمبانيا مصقول
    ———————————————————————————————————————————————— */
 :root {
-  --ink: #060402;
-  --ink-2: #0d0906;
-  --coffee: #191009;
-  --sand: #fdf9f1;
-  --sand-dim: #c6b491;
-  --brass: #dbb44b;
-  --brass-lt: #f1dc8f;
-  --olive: #1b241c;
-  --olive-2: #29382c;
-  --olive-lt: #789579;
-  --copper: #c07c37;
-  --copper-lt: #dca06d;
-  --indigo: #14202f;
-  --azure: #3b82f6;
-  --parchment: #f0e6ce;
+  --ink: #0a0805;
+  --ink-2: #12100d;
+  --coffee: #1a1814;
+  --sand: #faf7f2;
+  --sand-dim: #b8a68a;
+  --brass: #d4a84b;
+  --brass-lt: #e8c96e;
+  --olive: #1e2a1f;
+  --olive-2: #2d3f2e;
+  --olive-lt: #6b8a6c;
+  --copper: #b86b2e;
+  --copper-lt: #d48a4a;
+  --indigo: #1a2838;
+  --azure: #4a90e2;
+  --parchment: #e8dcc8;
+  --sunset: #c97a4a;
+  --sunset-lt: #e8a06a;
+  --emerald: #2d8a5e;
+  --emerald-lt: #4ab07a;
 
   /* ─── نظام الذهب الثلاثي المشتق من مشهد الشعار ─── */
   /* الدرجة ١ — ذهب زاهٍ: العناوين والتفاعلات المهمة */
-  --gold-vivid: #e4c460;
+  --gold-vivid: #f0c860;
   /* الدرجة ٢ — ذهب مطفي: النصوص الثانوية والتلميحات */
-  --gold-muted: #a89055;
+  --gold-muted: #b89648;
   /* الدرجة ٣ — ذهب خافت: الحدود والخطوط الفاصلة */
-  --gold-faint: #5f5230;
+  --gold-faint: #6b5a30;
 }
 
 /* الوضع النهاري — «ورق المخطوطة في ضوء النهار» */
 :root.light {
-  --ink: #fbf8f1;
-  --ink-2: #f3ecdd;
-  --coffee: #e8dfca;
-  --sand: #211710;
-  --sand-dim: #574936;
-  --brass: #8a6516;
-  --brass-lt: #6f5015;
-  --olive: #e2e6d8;
-  --olive-2: #cbd5bd;
-  --olive-lt: #496549;
-  --copper: #8b5e3c;
-  --copper-lt: #6b4a2e;
-  --indigo: #dce3ec;
-  --azure: #1d4ed8;
-  --parchment: #2a2216;
-  --overlay: rgba(251, 248, 241, 0.88);
+  --ink: #f8f4eb;
+  --ink-2: #ebe4d4;
+  --coffee: #ddd4c0;
+  --sand: #2a2418;
+  --sand-dim: #5a4e38;
+  --brass: #9a7018;
+  --brass-lt: #7a5810;
+  --olive: #dce8dc;
+  --olive-2: #c8d4c8;
+  --olive-lt: #4a6a4a;
+  --copper: #8a5a38;
+  --copper-lt: #6a4a28;
+  --indigo: #e0e8f0;
+  --azure: #2a70c0;
+  --parchment: #3a3020;
+  --sunset: #a86040;
+  --sunset-lt: #c87850;
+  --emerald: #2a7850;
+  --emerald-lt: #4a9870;
+  --overlay: rgba(248, 244, 235, 0.90);
 
-  --gold-vivid: #9a7320;
-  --gold-muted: #7a5f28;
-  --gold-faint: #cdbd93;
+  --gold-vivid: #a07020;
+  --gold-muted: #805818;
+  --gold-faint: #d0b890;
 }
 
 @theme {
@@ -72,6 +80,10 @@
   --color-indigo: var(--indigo);
   --color-azure: var(--azure);
   --color-parchment: var(--parchment);
+  --color-sunset: var(--sunset);
+  --color-sunset-lt: var(--sunset-lt);
+  --color-emerald: var(--emerald);
+  --color-emerald-lt: var(--emerald-lt);
 
   --font-ruqaa: "Aref Ruqaa", "Amiri", serif;
   --font-serif: "Amiri", serif;
@@ -419,6 +431,77 @@ body::after {
 @keyframes drift-dust {
   from { transform: translateX(0); }
   to { transform: translateX(30px); }
+}
+
+/* تأثير الظهور التدريجي المحسن */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* تأثير الظهور من اليسار */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* تأثير الظهور من اليمين */
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* تأثير التوسع */
+@keyframes expandIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* تأثير التوهج النابض */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px color-mix(in srgb, var(--brass) 30%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 40px color-mix(in srgb, var(--brass) 50%, transparent);
+  }
+}
+
+/* تأثير التدرج المتحرك */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* تحسين العرض على الهواتف */

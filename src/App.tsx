@@ -231,24 +231,11 @@ export default function App() {
         <LineageTree />
       </Section>
 
-      {/* SECTION 2: OPPENHEIM ARCHIVE */}
-      <Section
-        id="archive"
-        tone="ink"
-        serialNumber="٠٢"
-        badgeText="الأرشيف والمصادر"
-        title="التوثيق الاستشراقي والمدونات التاريخية"
-        description="شهادات وملاحظات المستشرقين والرحالة الغربيين حول نسب وقوة ومواقف السياحين في تاريخ الجزيرة العربية."
-        loaderLabel="جارٍ تحميل الأرشيف الاستشراقي..."
-      >
-        <OppenheimArchive />
-      </Section>
-
-      {/* SECTION 3: INTERACTIVE MAP */}
+      {/* SECTION 2: INTERACTIVE MAP */}
       <Section
         id="map"
-        tone="ink-2"
-        serialNumber="٠٣"
+        tone="ink"
+        serialNumber="٠٢"
         badgeText="الديار والهجرات"
         title="الديار ومنازل الاستقرار"
         description="استكشف التوزيع الجغرافي لديار السياحين التاريخية، من منازلهم في نجد العذية وهجرهم المعتمدة ومناهل المياه القديمة."
@@ -257,11 +244,11 @@ export default function App() {
         <InteractiveMap />
       </Section>
 
-      {/* SECTION 4: HERITAGE GALLERY */}
+      {/* SECTION 3: HERITAGE GALLERY */}
       <Section
         id="gallery"
-        tone="ink"
-        serialNumber="٠٤"
+        tone="ink-2"
+        serialNumber="٠٣"
         badgeText="الشاهد البصري"
         title="معرض التراث والمقتنيات"
         description="شواهد بصرية ومقتنيات تراثية تعكس تاريخ القبيلة العريق وصوراً من ذاكرة الصحراء والديار المأهولة."
@@ -270,12 +257,12 @@ export default function App() {
         <HeritageGallery />
       </Section>
 
-      {/* SECTION 5: WASM GALLERY */}
+      {/* SECTION 4: WASM GALLERY */}
       <Section
         id="wasm"
-        tone="ink-2"
+        tone="ink"
         narrow
-        serialNumber="٠٥"
+        serialNumber="٠٤"
         badgeText="علامات الوسم"
         title="وسم الإبل وعلامة الباب"
         description="وسم «الباب» الشهير للسياحين على الرقبة من الجهة اليسرى، رمز الهوية والأصالة في البادية."
@@ -284,17 +271,30 @@ export default function App() {
         <WasmGallery />
       </Section>
 
-      {/* SECTION 6: CONSTELLATION DIAGRAM */}
+      {/* SECTION 5: CONSTELLATION DIAGRAM */}
       <Section
         id="constellation"
-        tone="ink"
-        serialNumber="٠٦"
+        tone="ink-2"
+        serialNumber="٠٥"
         badgeText="الأنساب السبعة"
         title="الخلاصة الكوكبية للأنساب"
         description="تمثيل فلكي رمزي يربط الأنساب السبعة الكبرى في فضاء كوكبي مترابط يبرز التلاحم والأصل المشترك للقبيلة."
         loaderLabel="جارٍ تحميل الأنسب..."
       >
         <ConstellationDiagram />
+      </Section>
+
+      {/* SECTION 6: OPPENHEIM ARCHIVE */}
+      <Section
+        id="archive"
+        tone="ink"
+        serialNumber="٠٦"
+        badgeText="الأرشيف والمصادر"
+        title="التوثيق الاستشراقي والمدونات التاريخية"
+        description="شهادات وملاحظات المستشرقين والرحالة الغربيين حول نسب وقوة ومواقف السياحين في تاريخ الجزيرة العربية."
+        loaderLabel="جارٍ تحميل الأرشيف الاستشراقي..."
+      >
+        <OppenheimArchive />
       </Section>
 
       {/* SECTION 7: POETRY COUNCIL */}
@@ -335,10 +335,10 @@ export default function App() {
         <AdminSection />
       </Section>
 
-      {/* SECTION 8.5: TIMELINE */}
+      {/* SECTION 10: TIMELINE */}
       <Timeline />
 
-      {/* SECTION 8.7: SUPPORTERS */}
+      {/* SECTION 11: SUPPORTERS */}
       <Supporters />
 
       {/* CONTACT SECTION */}

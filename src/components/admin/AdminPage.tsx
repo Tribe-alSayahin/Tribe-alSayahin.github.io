@@ -1,6 +1,6 @@
 import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import type { Session } from '@supabase/supabase-js';
-import { BadgeCheck } from 'lucide-react';
+import { BadgeCheck, LayoutDashboard, Users, Image as ImageIcon, MessageSquare, BarChart3 } from 'lucide-react';
 
 import {
   fetchAdminPosts,
@@ -14,6 +14,10 @@ import {
 } from '../../lib/admin-posts';
 import { isSupabaseConfigured, supabase } from '../../lib/supabase';
 import { setSeoMeta } from '../../lib/seo';
+import { UserManagement } from './UserManagement';
+import { AnalyticsDashboard } from './AnalyticsDashboard';
+import { MediaManager } from './MediaManager';
+import { CommentManager } from './CommentManager';
 
 const KIND_OPTIONS: { value: AdminPostKind; label: string }[] = [
   { value: 'news', label: 'خبر' },
@@ -39,6 +43,7 @@ export default function AdminPage() {
   const [editTitle, setEditTitle] = useState('');
   const [editContent, setEditContent] = useState('');
   const [editEventDate, setEditEventDate] = useState('');
+  const [activeTab, setActiveTab] = useState<'posts' | 'users' | 'analytics' | 'media' | 'comments'>('posts');
 
   const canManage = useMemo(() => !!session?.user, [session]);
 
@@ -222,14 +227,75 @@ export default function AdminPage() {
 
   return (
     <div data-app-ready="true" className="min-h-screen bg-ink text-sand font-sans px-4 py-8 md:px-6">
-      <div className="max-w-[960px] mx-auto">
+      <div className="max-w-[1200px] mx-auto">
         <header className="rounded-2xl border border-brass/20 bg-ink-2/70 p-6 mb-6">
           <p className="font-kufi text-xs text-brass-lt/80 mb-2">الموقع الرسمي لقبيلة السياحين</p>
-          <h1 className="font-ruqaa text-4xl md:text-5xl text-brass-lt mb-2">لوحة الإدارة — الأخبار والمناسبات</h1>
+          <h1 className="font-ruqaa text-4xl md:text-5xl text-brass-lt mb-2">لوحة الإدارة الشاملة</h1>
           <p className="text-sm text-sand-dim">
-            تسجيل الدخول للمشرفين ثم إدارة العناصر المنشورة بصلاحيات كاملة: إضافة وتعديل وحذف.
+            مركز إدارة محتوى الموقع الرسمي لقبيلة السياحين — إدارة الأخبار والمناسبات والمستخدمين والوسائط والتعليقات والإحصائيات.
           </p>
         </header>
+
+        {/* تبويبات التنقل */}
+        {canManage && (
+          <div className="rounded-2xl border border-brass/20 bg-ink-2/60 p-2 mb-6 flex flex-wrap gap-2">
+            <button
+              onClick={() => setActiveTab('posts')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-kufi text-sm transition-colors ${
+                activeTab === 'posts'
+                  ? 'bg-brass/20 text-brass-lt border border-brass/35'
+                  : 'text-sand-dim hover:bg-brass/5'
+              }`}
+            >
+              <LayoutDashboard className="w-4 h-4" />
+              الأخبار والمناسبات
+            </button>
+            <button
+              onClick={() => setActiveTab('users')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-kufi text-sm transition-colors ${
+                activeTab === 'users'
+                  ? 'bg-brass/20 text-brass-lt border border-brass/35'
+                  : 'text-sand-dim hover:bg-brass/5'
+              }`}
+            >
+              <Users className="w-4 h-4" />
+              إدارة المستخدمين
+            </button>
+            <button
+              onClick={() => setActiveTab('analytics')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-kufi text-sm transition-colors ${
+                activeTab === 'analytics'
+                  ? 'bg-brass/20 text-brass-lt border border-brass/35'
+                  : 'text-sand-dim hover:bg-brass/5'
+              }`}
+            >
+              <BarChart3 className="w-4 h-4" />
+              الإحصائيات
+            </button>
+            <button
+              onClick={() => setActiveTab('media')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-kufi text-sm transition-colors ${
+                activeTab === 'media'
+                  ? 'bg-brass/20 text-brass-lt border border-brass/35'
+                  : 'text-sand-dim hover:bg-brass/5'
+              }`}
+            >
+              <ImageIcon className="w-4 h-4" />
+              الوسائط
+            </button>
+            <button
+              onClick={() => setActiveTab('comments')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-kufi text-sm transition-colors ${
+                activeTab === 'comments'
+                  ? 'bg-brass/20 text-brass-lt border border-brass/35'
+                  : 'text-sand-dim hover:bg-brass/5'
+              }`}
+            >
+              <MessageSquare className="w-4 h-4" />
+              التعليقات
+            </button>
+          </div>
+        )}
 
         {isAuthLoading ? (
           <p className="text-sm font-kufi text-sand-dim">جارٍ التحقق من جلسة الدخول...</p>
@@ -285,171 +351,181 @@ export default function AdminPage() {
         )}
 
         {canManage && (
-          <section className="rounded-2xl border border-brass/20 bg-ink-2/60 p-5 mb-6">
-            <h2 className="font-kufi text-xl text-brass-lt mb-4">إضافة عنصر جديد</h2>
-            <form onSubmit={(event) => {
-              void handleCreatePost(event);
-            }} className="grid gap-3">
-              <select
-                value={kind}
-                onChange={(event) => setKind(event.target.value as AdminPostKind)}
-                className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand focus:outline-none focus:border-brass/50"
-              >
-                {KIND_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+          <>
+            {/* محتوى التبويبات */}
+            {activeTab === 'posts' && (
+              <>
+                <section className="rounded-2xl border border-brass/20 bg-ink-2/60 p-5 mb-6">
+                  <h2 className="font-kufi text-xl text-brass-lt mb-4">إضافة عنصر جديد</h2>
+                  <form onSubmit={(event) => {
+                    void handleCreatePost(event);
+                  }} className="grid gap-3">
+                    <select
+                      value={kind}
+                      onChange={(event) => setKind(event.target.value as AdminPostKind)}
+                      className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand focus:outline-none focus:border-brass/50"
+                    >
+                      {KIND_OPTIONS.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
 
-              {kind === 'event' && (
-                <input
-                  type="date"
-                  value={eventDate}
-                  onChange={(event) => setEventDate(event.target.value)}
-                  className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand focus:outline-none focus:border-brass/50"
-                />
-              )}
-
-              <input
-                type="text"
-                value={title}
-                onChange={(event) => setTitle(event.target.value)}
-                placeholder="العنوان"
-                className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand placeholder:text-sand-dim/60 focus:outline-none focus:border-brass/50"
-                required
-              />
-
-              <textarea
-                value={content}
-                onChange={(event) => setContent(event.target.value)}
-                placeholder="المحتوى"
-                rows={4}
-                className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand placeholder:text-sand-dim/60 focus:outline-none focus:border-brass/50"
-                required
-              />
-
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="rounded-lg bg-brass/20 border border-brass/35 px-4 py-2 text-base font-kufi text-brass-lt hover:bg-brass/30 transition-colors disabled:opacity-60"
-              >
-                {isSubmitting ? 'جارٍ الحفظ...' : 'إضافة'}
-              </button>
-            </form>
-          </section>
-        )}
-
-        <section className="rounded-2xl border border-brass/20 bg-ink-2/60 p-5">
-          <h2 className="font-kufi text-xl text-brass-lt mb-4">العناصر المنشورة</h2>
-          {isLoadingPosts ? (
-            <p className="text-sm font-kufi text-sand-dim">جارٍ تحميل العناصر...</p>
-          ) : posts.length === 0 ? (
-            <p className="text-sm font-kufi text-sand-dim">لا توجد عناصر حالياً.</p>
-          ) : (
-            <div className="grid gap-3">
-              {posts.map((post) => (
-                <article key={post.id} className="rounded-xl border border-brass/15 bg-ink/50 p-4">
-                  <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div>
-                      <p className="text-xs font-kufi text-brass-lt/80 mb-1">
-                        {post.kind === 'event' ? 'مناسبة' : 'خبر'} •{' '}
-                        {formatGregorianDateArabic(post.kind === 'event' ? post.event_date : post.created_at)}
-                      </p>
-                      <p className="inline-flex items-center gap-1.5 rounded-full border border-brass/25 bg-brass/8 px-2.5 py-1 text-xs font-kufi text-sand">
-                        <span className="text-sm md:text-base leading-none text-sand">{VERIFIED_AUTHOR_NAME}</span>
-                        <BadgeCheck
-                          aria-label="موثق"
-                          className="w-4 h-4 text-azure shrink-0"
-                        />
-                      </p>
-                      <h3 className="font-serif text-lg text-sand">{post.title}</h3>
-                      <p className="text-sm text-sand-dim mt-2 leading-relaxed">{post.content}</p>
-                    </div>
-                    {canManage && (
-                      <div className="shrink-0 flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => beginEditPost(post)}
-                          className="rounded-lg border border-brass/35 px-3 py-1.5 text-sm font-kufi text-brass-lt hover:bg-brass/10 transition-colors"
-                        >
-                          تعديل
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            void handleDeletePost(post.id);
-                          }}
-                          className="rounded-lg border border-copper/40 px-3 py-1.5 text-sm font-kufi text-copper hover:bg-copper/10 transition-colors"
-                        >
-                          حذف
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                  {canManage && editingPostId === post.id && (
-                    <form onSubmit={(event) => {
-                      void handleUpdatePost(event, post.id);
-                    }} className="grid gap-3 mt-4">
-                      <select
-                        value={editKind}
-                        onChange={(event) => setEditKind(event.target.value as AdminPostKind)}
-                        className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand focus:outline-none focus:border-brass/50"
-                      >
-                        {KIND_OPTIONS.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                      {editKind === 'event' && (
-                        <input
-                          type="date"
-                          value={editEventDate}
-                          onChange={(event) => setEditEventDate(event.target.value)}
-                          className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand focus:outline-none focus:border-brass/50"
-                        />
-                      )}
+                    {kind === 'event' && (
                       <input
-                        type="text"
-                        value={editTitle}
-                        onChange={(event) => setEditTitle(event.target.value)}
-                        placeholder="العنوان بعد التعديل"
-                        className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand placeholder:text-sand-dim/60 focus:outline-none focus:border-brass/50"
-                        required
+                        type="date"
+                        value={eventDate}
+                        onChange={(event) => setEventDate(event.target.value)}
+                        className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand focus:outline-none focus:border-brass/50"
                       />
-                      <textarea
-                        value={editContent}
-                        onChange={(event) => setEditContent(event.target.value)}
-                        placeholder="المحتوى بعد التعديل"
-                        rows={4}
-                        className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand placeholder:text-sand-dim/60 focus:outline-none focus:border-brass/50"
-                        required
-                      />
-                      <div className="flex flex-wrap gap-2">
-                        <button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className="rounded-lg bg-brass/20 border border-brass/35 px-4 py-2 text-sm font-kufi text-brass-lt hover:bg-brass/30 transition-colors disabled:opacity-60"
-                        >
-                          {isSubmitting ? 'جارٍ حفظ التعديل...' : 'حفظ التعديل'}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setEditingPostId(null)}
-                          className="rounded-lg border border-sand/25 px-4 py-2 text-sm font-kufi text-sand-dim hover:bg-sand/10 transition-colors"
-                        >
-                          إلغاء
-                        </button>
-                      </div>
-                    </form>
+                    )}
+
+                    <input
+                      type="text"
+                      value={title}
+                      onChange={(event) => setTitle(event.target.value)}
+                      placeholder="العنوان"
+                      className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand placeholder:text-sand-dim/60 focus:outline-none focus:border-brass/50"
+                      required
+                    />
+
+                    <textarea
+                      value={content}
+                      onChange={(event) => setContent(event.target.value)}
+                      placeholder="المحتوى"
+                      rows={4}
+                      className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand placeholder:text-sand-dim/60 focus:outline-none focus:border-brass/50"
+                      required
+                    />
+
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="rounded-lg bg-brass/20 border border-brass/35 px-4 py-2 text-base font-kufi text-brass-lt hover:bg-brass/30 transition-colors disabled:opacity-60"
+                    >
+                      {isSubmitting ? 'جارٍ الحفظ...' : 'إضافة'}
+                    </button>
+                  </form>
+                </section>
+
+                <section className="rounded-2xl border border-brass/20 bg-ink-2/60 p-5">
+                  <h2 className="font-kufi text-xl text-brass-lt mb-4">العناصر المنشورة</h2>
+                  {isLoadingPosts ? (
+                    <p className="text-sm font-kufi text-sand-dim">جارٍ تحميل العناصر...</p>
+                  ) : posts.length === 0 ? (
+                    <p className="text-sm font-kufi text-sand-dim">لا توجد عناصر حالياً.</p>
+                  ) : (
+                    <div className="grid gap-3">
+                      {posts.map((post) => (
+                        <article key={post.id} className="rounded-xl border border-brass/15 bg-ink/50 p-4">
+                          <div className="flex flex-wrap items-start justify-between gap-3">
+                            <div>
+                              <p className="text-xs font-kufi text-brass-lt/80 mb-1">
+                                {post.kind === 'event' ? 'مناسبة' : 'خبر'} •{' '}
+                                {formatGregorianDateArabic(post.kind === 'event' ? post.event_date : post.created_at)}
+                              </p>
+                              <p className="inline-flex items-center gap-1.5 rounded-full border border-brass/25 bg-brass/8 px-2.5 py-1 text-xs font-kufi text-sand">
+                                <span className="text-sm md:text-base leading-none text-sand">{VERIFIED_AUTHOR_NAME}</span>
+                                <BadgeCheck
+                                  aria-label="موثق"
+                                  className="w-4 h-4 text-azure shrink-0"
+                                />
+                              </p>
+                              <h3 className="font-serif text-lg text-sand">{post.title}</h3>
+                              <p className="text-sm text-sand-dim mt-2 leading-relaxed">{post.content}</p>
+                            </div>
+                            <div className="shrink-0 flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => beginEditPost(post)}
+                                className="rounded-lg border border-brass/35 px-3 py-1.5 text-sm font-kufi text-brass-lt hover:bg-brass/10 transition-colors"
+                              >
+                                تعديل
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  void handleDeletePost(post.id);
+                                }}
+                                className="rounded-lg border border-copper/40 px-3 py-1.5 text-sm font-kufi text-copper hover:bg-copper/10 transition-colors"
+                              >
+                                حذف
+                              </button>
+                            </div>
+                          </div>
+                          {editingPostId === post.id && (
+                            <form onSubmit={(event) => {
+                              void handleUpdatePost(event, post.id);
+                            }} className="grid gap-3 mt-4">
+                              <select
+                                value={editKind}
+                                onChange={(event) => setEditKind(event.target.value as AdminPostKind)}
+                                className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand focus:outline-none focus:border-brass/50"
+                              >
+                                {KIND_OPTIONS.map((option) => (
+                                  <option key={option.value} value={option.value}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
+                              {editKind === 'event' && (
+                                <input
+                                  type="date"
+                                  value={editEventDate}
+                                  onChange={(event) => setEditEventDate(event.target.value)}
+                                  className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand focus:outline-none focus:border-brass/50"
+                                />
+                              )}
+                              <input
+                                type="text"
+                                value={editTitle}
+                                onChange={(event) => setEditTitle(event.target.value)}
+                                placeholder="العنوان بعد التعديل"
+                                className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand placeholder:text-sand-dim/60 focus:outline-none focus:border-brass/50"
+                                required
+                              />
+                              <textarea
+                                value={editContent}
+                                onChange={(event) => setEditContent(event.target.value)}
+                                placeholder="المحتوى بعد التعديل"
+                                rows={4}
+                                className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand placeholder:text-sand-dim/60 focus:outline-none focus:border-brass/50"
+                                required
+                              />
+                              <div className="flex flex-wrap gap-2">
+                                <button
+                                  type="submit"
+                                  disabled={isSubmitting}
+                                  className="rounded-lg bg-brass/20 border border-brass/35 px-4 py-2 text-sm font-kufi text-brass-lt hover:bg-brass/30 transition-colors disabled:opacity-60"
+                                >
+                                  {isSubmitting ? 'جارٍ حفظ التعديل...' : 'حفظ التعديل'}
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setEditingPostId(null)}
+                                  className="rounded-lg border border-sand/25 px-4 py-2 text-sm font-kufi text-sand-dim hover:bg-sand/10 transition-colors"
+                                >
+                                  إلغاء
+                                </button>
+                              </div>
+                            </form>
+                          )}
+                        </article>
+                      ))}
+                    </div>
                   )}
-                </article>
-              ))}
-            </div>
-          )}
-          {formError && <p className="mt-3 text-xs font-kufi text-copper">{formError}</p>}
-        </section>
+                  {formError && <p className="mt-3 text-xs font-kufi text-copper">{formError}</p>}
+                </section>
+              </>
+            )}
+
+            {activeTab === 'users' && <UserManagement />}
+            {activeTab === 'analytics' && <AnalyticsDashboard />}
+            {activeTab === 'media' && <MediaManager />}
+            {activeTab === 'comments' && <CommentManager />}
+          </>
+        )}
       </div>
     </div>
   );
