@@ -134,14 +134,14 @@ export function CommentManager() {
                   {comment.status === 'pending' && (
                     <>
                       <button
-                        onClick={() => handleApprove(comment.id)}
+                        onClick={() => { void handleApprove(comment.id); }}
                         className="p-2 rounded-lg border border-emerald/40 text-emerald hover:bg-emerald/10 transition-colors"
                         aria-label="موافقة"
                       >
                         <Check className="w-4 h-4" />
                       </button>
                       <button
-                        onClick={() => handleReject(comment.id)}
+                        onClick={() => { void handleReject(comment.id); }}
                         className="p-2 rounded-lg border border-copper/40 text-copper hover:bg-copper/10 transition-colors"
                         aria-label="رفض"
                       >
@@ -150,7 +150,7 @@ export function CommentManager() {
                     </>
                   )}
                   <button
-                    onClick={() => handleDelete(comment.id)}
+                    onClick={() => { void handleDelete(comment.id); }}
                     className="p-2 rounded-lg border border-copper/40 text-copper hover:bg-copper/10 transition-colors"
                     aria-label="حذف"
                   >

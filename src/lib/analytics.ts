@@ -20,21 +20,26 @@ export interface AnalyticsInsert {
   session_id?: string;
 }
 
+type ApiError = { message: string };
+
 /**
  * تسجيل حدث إحصائي
  */
-export async function trackEvent(event: AnalyticsInsert) {
+export async function trackEvent(event: AnalyticsInsert): Promise<{ error: ApiError | null }> {
   const { error } = await supabase
     .from('analytics')
     .insert(event);
 
-  return { error };
+  return { error: error };
 }
 
 /**
  * جلب الإحصائيات حسب نوع الحدث
  */
-export async function fetchAnalyticsByEventType(eventType: string, limit = 100) {
+export async function fetchAnalyticsByEventType(
+  eventType: string,
+  limit = 100,
+): Promise<{ data: AnalyticsEvent[]; error: null } | { data: null; error: ApiError }> {
   const { data, error } = await supabase
     .from('analytics')
     .select('*')
@@ -46,13 +51,13 @@ export async function fetchAnalyticsByEventType(eventType: string, limit = 100) 
     return { data: null, error };
   }
 
-  return { data, error: null };
+  return { data: (data ?? []), error: null };
 }
 
 /**
  * جلب عدد الأحداث حسب النوع
  */
-export async function fetchEventCounts() {
+export async function fetchEventCounts(): Promise<{ data: Record<string, number>; error: null } | { data: null; error: ApiError }> {
   const { data, error } = await supabase
     .from('analytics')
     .select('event_type')
@@ -64,7 +69,7 @@ export async function fetchEventCounts() {
 
   // حساب عدد الأحداث لكل نوع
   const counts: Record<string, number> = {};
-  const rows: Array<{ event_type: string }> = data ?? [];
+  const rows: Array<{ event_type: string }> = (data ?? []);
   for (const row of rows) {
     counts[row.event_type] = (counts[row.event_type] ?? 0) + 1;
   }
@@ -77,8 +82,8 @@ export async function fetchEventCounts() {
  */
 export async function fetchAnalyticsByDateRange(
   startDate: Date,
-  endDate: Date
-) {
+  endDate: Date,
+): Promise<{ data: AnalyticsEvent[]; error: null } | { data: null; error: ApiError }> {
   const { data, error } = await supabase
     .from('analytics')
     .select('*')
@@ -90,13 +95,13 @@ export async function fetchAnalyticsByDateRange(
     return { data: null, error };
   }
 
-  return { data, error: null };
+  return { data: (data ?? []), error: null };
 }
 
 /**
  * جلب إحصائيات الزوار الفريدين
  */
-export async function fetchUniqueVisitors(days = 30) {
+export async function fetchUniqueVisitors(days = 30): Promise<{ data: number; error: null } | { data: null; error: ApiError }> {
   const startDate = new Date();
   startDate.setDate(startDate.getDate() - days);
 
@@ -110,7 +115,7 @@ export async function fetchUniqueVisitors(days = 30) {
   }
 
   // حساب عدد الجلسات الفريدة
-  const rows: Array<{ session_id: string | null }> = data ?? [];
+  const rows: Array<{ session_id: string | null }> = (data ?? []);
   const uniqueSessions = new Set(
     rows.map(r => r.session_id).filter((id): id is string => Boolean(id))
   );

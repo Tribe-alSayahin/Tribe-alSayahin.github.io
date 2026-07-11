@@ -3,7 +3,6 @@ import { BarChart3, Users, Eye, TrendingUp } from 'lucide-react';
 import {
   fetchEventCounts,
   fetchUniqueVisitors,
-  fetchAnalyticsByEventType,
 } from '../../lib/analytics';
 
 export function AnalyticsDashboard() {
