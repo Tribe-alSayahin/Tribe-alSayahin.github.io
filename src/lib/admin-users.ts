@@ -58,35 +58,33 @@ export async function fetchCurrentUserRole(userId: string) {
  * إضافة مستخدم إداري جديد
  */
 export async function createAdminUser(user: AdminUserInsert) {
-  const { data, error } = await (supabase
+  const { error } = await supabase
     .from('admin_users' as any)
-    .insert(user as any)
-    .select()
-    .single() as any);
+    .insert(user as any);
 
   if (error) {
     return { data: null, error };
   }
 
-  return { data, error: null };
+  // إرجاع البيانات المدرجة
+  return { data: user as AdminUser, error: null };
 }
 
 /**
  * تحديث دور مستخدم إداري
  */
 export async function updateAdminUserRole(id: string, role: UserRole) {
-  const { data, error } = await (supabase
+  const { error } = await supabase
     .from('admin_users' as any)
     .update({ role, updated_at: new Date().toISOString() } as any)
-    .eq('id', id)
-    .select()
-    .single() as any);
+    .eq('id', id);
 
   if (error) {
     return { data: null, error };
   }
 
-  return { data, error: null };
+  // إرجاع البيانات المحدثة
+  return { data: { id, role, updated_at: new Date().toISOString() } as AdminUser, error: null };
 }
 
 /**
