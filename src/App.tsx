@@ -38,19 +38,25 @@ export default function App() {
   const isScrolled = useScrollState(40);
   const [activeSection, setActiveSection] = useState('home');
 
-  // Routing state for unknown paths
+  // Routing state
   const [isNotFound, setIsNotFound] = useState(() => {
     if (typeof window !== 'undefined') {
       const path = window.location.pathname;
       const hostname = window.location.hostname;
       const cleanPath = path.replace(/\/$/, '').replace(/\/index\.html$/, '');
       const segments = cleanPath.split('/').filter(Boolean);
-      
+      const lastSegment = segments[segments.length - 1] ?? '';
+
       const isGitHubPages = /\.github\.io$/i.test(hostname);
-      
+
+      // `/admin` route is valid and handled separately
+      if (lastSegment === 'admin') {
+        return false;
+      }
+
       if (isGitHubPages) {
         const isRootUserPage = hostname === 'tribe-alsayahin.github.io';
-        
+
         if (isRootUserPage) {
           return segments.length > 0;
         } else {
