@@ -29,7 +29,7 @@ export function Footer({ scrollToSection }: FooterProps) {
             {LOCAL_REFS.map((ref, index) => (
               <li
                 key={ref.id}
-                className="relative pr-12 pl-4 py-4 bg-ink-2/78 border border-brass/18 rounded-2xl text-sand text-sm leading-relaxed hover:border-brass/30 transition-colors"
+                className="relative pr-12 pl-4 py-4 bg-ink-2/78 border border-brass/18 rounded-2xl text-sand text-sm leading-relaxed hover:border-brass/40 hover:shadow-glow-sm transition-all duration-300"
               >
                 <span className="absolute top-4 right-4 w-7 h-7 rounded-lg bg-brass/12 text-brass-lt border border-brass/25 flex items-center justify-center font-kufi text-xs font-semibold">
                   {['١', '٢', '٣', '٤', '٥'][index] ?? index + 1}
@@ -51,7 +51,7 @@ export function Footer({ scrollToSection }: FooterProps) {
           }}
           className="logo flex items-center justify-center gap-3 text-lg font-bold font-serif text-sand hover:text-brass-lt transition-colors mb-4 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-lg p-1 w-fit mx-auto"
         >
-          <div className="w-10 h-10 rounded-lg border border-brass/40 bg-gradient-to-br from-brass/15 to-transparent flex items-center justify-center text-brass shadow-glow-sm p-2">
+          <div className="w-10 h-10 rounded-lg border border-brass/50 bg-gradient-to-br from-brass/25 via-brass/10 to-transparent flex items-center justify-center text-brass shadow-glow-sm p-2">
             <svg
               viewBox="0 0 200 200"
               className="w-full h-full"

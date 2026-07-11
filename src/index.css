@@ -7,49 +7,53 @@
    ليل صحراوي عميق بلمسة نيلية + ذهب شمبانيا مصقول
    ———————————————————————————————————————————————— */
 :root {
-  --ink: #070503;
-  --ink-2: #0f0b07;
-  --coffee: #17100a;
-  --sand: #fcf8f0;
-  --sand-dim: #bba989;
-  --brass: #d4af37;
-  --brass-lt: #ebd481;
+  --ink: #060402;
+  --ink-2: #0d0906;
+  --coffee: #191009;
+  --sand: #fdf9f1;
+  --sand-dim: #c6b491;
+  --brass: #dbb44b;
+  --brass-lt: #f1dc8f;
   --olive: #1b241c;
   --olive-2: #29382c;
   --olive-lt: #789579;
-  --copper: #b87333;
-  --copper-lt: #d4956b;
-  --indigo: #162435;
-  --azure: #2563eb;
-  --parchment: #efe5cd;
+  --copper: #c07c37;
+  --copper-lt: #dca06d;
+  --indigo: #14202f;
+  --azure: #3b82f6;
+  --parchment: #f0e6ce;
 
   /* ─── نظام الذهب الثلاثي المشتق من مشهد الشعار ─── */
   /* الدرجة ١ — ذهب زاهٍ: العناوين والتفاعلات المهمة */
-  --gold-vivid: #d4af37;
+  --gold-vivid: #e4c460;
   /* الدرجة ٢ — ذهب مطفي: النصوص الثانوية والتلميحات */
-  --gold-muted: #a08a4a;
+  --gold-muted: #a89055;
   /* الدرجة ٣ — ذهب خافت: الحدود والخطوط الفاصلة */
-  --gold-faint: #5a4d2a;
+  --gold-faint: #5f5230;
 }
 
 /* الوضع النهاري — «ورق المخطوطة في ضوء النهار» */
 :root.light {
-  --ink: #fcfbf7;
-  --ink-2: #f4f0e6;
-  --coffee: #ebe3d2;
-  --sand: #241a10;
-  --sand-dim: #4f4233;
-  --brass: #7a5c1a;
-  --brass-lt: #6b4e18;
+  --ink: #fbf8f1;
+  --ink-2: #f3ecdd;
+  --coffee: #e8dfca;
+  --sand: #211710;
+  --sand-dim: #574936;
+  --brass: #8a6516;
+  --brass-lt: #6f5015;
   --olive: #e2e6d8;
   --olive-2: #cbd5bd;
   --olive-lt: #496549;
   --copper: #8b5e3c;
   --copper-lt: #6b4a2e;
-  --indigo: #d6dde6;
+  --indigo: #dce3ec;
   --azure: #1d4ed8;
   --parchment: #2a2216;
-  --overlay: rgba(252, 251, 247, 0.86);
+  --overlay: rgba(251, 248, 241, 0.88);
+
+  --gold-vivid: #9a7320;
+  --gold-muted: #7a5f28;
+  --gold-faint: #cdbd93;
 }
 
 @theme {
@@ -96,6 +100,18 @@
   --shadow-glow-sm: var(--glow-brass-sm);
   --shadow-glow-md: var(--glow-brass-md);
   --shadow-glow-lg: var(--glow-brass-lg);
+
+  /* Elevation Shadows Mapping */
+  --shadow-elev-1: var(--elev-1);
+  --shadow-elev-2: var(--elev-2);
+  --shadow-elev-3: var(--elev-3);
+
+  /* Radius Scale Mapping */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
 
   /* Durations Mapping */
   --transition-duration-fast: var(--duration-fast);
@@ -218,10 +234,11 @@ body::after {
 
 /* زجاج فاخر */
 .glass-panel {
-  background: color-mix(in srgb, var(--ink-2) 78%, transparent);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  backdrop-filter: blur(16px) saturate(140%);
-  border: 1px solid color-mix(in srgb, var(--brass) 18%, transparent);
+  background: color-mix(in srgb, var(--ink-2) 76%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+  border: 1px solid color-mix(in srgb, var(--brass) 20%, transparent);
+  box-shadow: var(--elev-1);
 }
 
 /* إبراز ذهبي هادئ */
@@ -382,9 +399,9 @@ body::after {
 }
 
 .interactive-lift:hover {
-  transform: translateY(-0.3rem);
+  transform: translateY(-0.35rem);
   border-color: color-mix(in srgb, var(--brass) 46%, transparent);
-  box-shadow: var(--glow-brass-md);
+  box-shadow: var(--elev-2), var(--glow-brass-sm);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -547,12 +564,22 @@ body::after {
   position: relative;
   overflow: hidden;
   background:
-    linear-gradient(145deg, color-mix(in srgb, var(--coffee) 80%, transparent), color-mix(in srgb, var(--ink-2) 94%, transparent));
+    linear-gradient(145deg, color-mix(in srgb, var(--coffee) 82%, transparent), color-mix(in srgb, var(--ink-2) 95%, transparent));
   border: 1px solid color-mix(in srgb, var(--brass) 20%, transparent);
-  border-radius: 1.5rem;
-  box-shadow: 0 18px 50px color-mix(in srgb, var(--ink) 35%, transparent);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--elev-2), inset 0 1px 0 color-mix(in srgb, var(--sand) 6%, transparent);
   -webkit-backdrop-filter: blur(12px) saturate(120%);
   backdrop-filter: blur(12px) saturate(120%);
+  transition:
+    transform var(--duration-base) var(--ease-brand),
+    border-color var(--duration-base) ease,
+    box-shadow var(--duration-base) ease;
+}
+
+.editorial-card:hover {
+  transform: translateY(-0.35rem);
+  border-color: color-mix(in srgb, var(--brass) 40%, transparent);
+  box-shadow: var(--elev-3), var(--glow-brass-sm);
 }
 
 .editorial-card::before {

@@ -33,7 +33,7 @@ export function SectionHeader({
         {/* سطر الشارة: رقم القسم + التسمية + خط يمتد حتى نهاية السطر */}
         <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-5">
           <span
-            className="font-ruqaa text-xs sm:text-sm text-brass border border-brass/35 rounded-xl w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center bg-brass/8 shrink-0 shadow-glow-sm"
+            className="font-ruqaa text-xs sm:text-sm text-brass border border-brass/40 rounded-xl w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center bg-gradient-to-br from-brass/15 to-brass/[0.04] shrink-0 shadow-glow-sm"
             aria-hidden="true"
           >
             {serialNumber}
@@ -49,7 +49,7 @@ export function SectionHeader({
         </h2>
 
         {description && (
-          <p className="max-w-[650px] mt-4 sm:mt-5 md:mt-6 text-sand-dim text-xs sm:text-sm md:text-base leading-relaxed sm:leading-loose font-sans border-r-2 border-brass/30 pr-4 sm:pr-5">
+          <p className="max-w-[650px] mt-4 sm:mt-5 md:mt-6 text-sand-dim text-xs sm:text-sm md:text-base leading-relaxed sm:leading-loose font-sans border-r-2 border-brass/40 pr-4 sm:pr-5">
             {description}
           </p>
         )}
