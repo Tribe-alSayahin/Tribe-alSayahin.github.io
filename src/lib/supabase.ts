@@ -304,7 +304,7 @@ const noopClient: SupabaseLike = {
       }
       return createTable<AdminPostRecordLike>();
     };
-  })() as any,
+  })() as unknown as SupabaseLike['from'],
   storage: {
     from: () => ({
       upload: () => Promise.resolve({ data: null, error: { message: 'Supabase is not configured' } }),
