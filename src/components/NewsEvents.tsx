@@ -55,7 +55,7 @@ export default function NewsEvents() {
         // keep fallback data
       }
     };
-    load();
+    void load();
   }, []);
 
   const filtered = filter === 'all'

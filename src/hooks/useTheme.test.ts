@@ -56,16 +56,17 @@ describe('useTheme', () => {
 
   it('يحفظ الوضع الجديد في localStorage عند التبديل', () => {
     const { result } = renderHook(() => useTheme());
+    const storage = window.localStorage as unknown as ReturnType<typeof mockLocalStorage>;
 
     act(() => {
       result.current.toggleTheme();
     });
-    expect(localStorage.setItem).toHaveBeenCalledWith('siyahin-theme', 'light');
+    expect(storage.setItem).toHaveBeenCalledWith('siyahin-theme', 'light');
 
     act(() => {
       result.current.toggleTheme();
     });
-    expect(localStorage.setItem).toHaveBeenCalledWith('siyahin-theme', 'dark');
+    expect(storage.setItem).toHaveBeenCalledWith('siyahin-theme', 'dark');
   });
 
   it('يضيف فئة light على عنصر html عند تفعيل الوضع الفاتح', () => {

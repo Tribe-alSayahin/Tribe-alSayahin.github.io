@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Camera, Image as ImageIcon, ChevronRight, ChevronLeft, Sparkles, MapPin, Compass, Globe, Type } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Sparkles, MapPin, Compass, Globe, Type } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Card } from './ui/Card';
 import { Badge } from './ui/Badge';

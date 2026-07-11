@@ -210,7 +210,7 @@ export default function TribalEmblem3D({ onIntroDone, fullscreen = false }: Trib
     let controls: OrbitControlsType | null = null;
     let userInteracted = false;
 
-    import('three/examples/jsm/controls/OrbitControls.js').then(({ OrbitControls }) => {
+    void import('three/examples/jsm/controls/OrbitControls.js').then(({ OrbitControls }) => {
       controls = new OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.06;
@@ -229,7 +229,7 @@ export default function TribalEmblem3D({ onIntroDone, fullscreen = false }: Trib
     /* ─── EffectComposer + UnrealBloomPass (تحميل غير متزامن) ─── */
     let composer: { render: () => void; setSize: (w: number, h: number) => void } | null = null;
 
-    Promise.all([
+    void Promise.all([
       import('three/examples/jsm/postprocessing/EffectComposer.js'),
       import('three/examples/jsm/postprocessing/RenderPass.js'),
       import('three/examples/jsm/postprocessing/UnrealBloomPass.js'),

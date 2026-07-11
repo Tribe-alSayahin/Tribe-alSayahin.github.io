@@ -1,5 +1,4 @@
 import { BookOpen } from 'lucide-react';
-import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 
 export default function PoetryCouncil() {

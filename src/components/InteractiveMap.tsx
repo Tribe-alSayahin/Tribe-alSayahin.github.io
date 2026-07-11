@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { MapPin, Compass, Layers, Info, CheckCircle2, X, TrendingUp, Droplets, BookOpen, Award, Activity, FileText, Globe } from 'lucide-react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { MapPin, Compass, Layers, Info, CheckCircle2, X, TrendingUp, Droplets, BookOpen, Award, Activity, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Button } from './ui/Button';
 import { Badge } from './ui/Badge';
@@ -19,6 +19,69 @@ interface LocationInfo {
   historyDetail: string;
   category: 'settlement' | 'well' | 'region';
   categoryLabel: string;
+}
+
+type LeafletCoordinates = [number, number];
+
+interface LeafletMapOptions {
+  center: LeafletCoordinates;
+  zoom: number;
+  zoomControl?: boolean;
+  attributionControl?: boolean;
+}
+
+interface LeafletSetViewOptions {
+  animate?: boolean;
+}
+
+interface LeafletMapInstance {
+  remove(): void;
+  setView(coords: LeafletCoordinates, zoom: number, options?: LeafletSetViewOptions): void;
+}
+
+interface LeafletTileLayer {
+  addTo(map: LeafletMapInstance): void;
+}
+
+interface LeafletDivIconOptions {
+  className?: string;
+  html: string;
+  iconSize?: [number, number];
+  iconAnchor?: [number, number];
+}
+
+interface LeafletPopupOptions {
+  closeButton?: boolean;
+  className?: string;
+}
+
+interface LeafletTooltipOptions {
+  direction?: 'top' | 'bottom' | 'left' | 'right' | 'center' | 'auto';
+  className?: string;
+}
+
+interface LeafletMarkerInstance {
+  addTo(map: LeafletMapInstance): LeafletMarkerInstance;
+  bindPopup(content: HTMLElement, options?: LeafletPopupOptions): LeafletMarkerInstance;
+  bindTooltip(content: string, options?: LeafletTooltipOptions): LeafletMarkerInstance;
+  on(event: 'click', handler: () => void): LeafletMarkerInstance;
+  openPopup(): void;
+}
+
+interface LeafletAPI {
+  map(container: HTMLElement, options: LeafletMapOptions): LeafletMapInstance;
+  tileLayer(url: string, options: { maxZoom: number }): LeafletTileLayer;
+  divIcon(options: LeafletDivIconOptions): unknown;
+  marker(coords: LeafletCoordinates, options: { icon: unknown }): LeafletMarkerInstance;
+  DomUtil: {
+    create(tagName: string, className?: string): HTMLDivElement;
+  };
+}
+
+declare global {
+  interface Window {
+    L?: LeafletAPI;
+  }
 }
 
 const LOCATIONS: LocationInfo[] = [
@@ -66,13 +129,12 @@ const LOCATIONS: LocationInfo[] = [
 export default function InteractiveMap() {
   const [selectedLoc, setSelectedLoc] = useState<LocationInfo>(LOCATIONS[0]);
   const [mapMode, setMapMode] = useState<'vector' | 'satellite'>('vector');
-  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
   const [leafletLoaded, setLeafletLoaded] = useState(false);
   const [activePopupId, setActivePopupId] = useState<string | null>(null);
   
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const leafletMapRef = useRef<any>(null);
-  const markersRef = useRef<any[]>([]);
+  const leafletMapRef = useRef<LeafletMapInstance | null>(null);
+  const markersRef = useRef<LeafletMarkerInstance[]>([]);
 
   // Dynamically load Leaflet for live map view
   useEffect(() => {
@@ -105,11 +167,11 @@ export default function InteractiveMap() {
       leafletMapRef.current = null;
     }
 
-    const L = (window as any).L;
-    if (!L) return;
+    const leaflet = window.L;
+    if (!leaflet) return;
 
     // Initialize map centered around Saudi Arabia [24.0, 45.0]
-    const map = L.map(mapContainerRef.current, {
+    const map = leaflet.map(mapContainerRef.current, {
       center: [23.9, 43.5],
       zoom: 6,
       zoomControl: true,
@@ -119,12 +181,12 @@ export default function InteractiveMap() {
     leafletMapRef.current = map;
 
     // Load CartoDB Dark Matter tile layer for an elegant matching style
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    leaflet.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       maxZoom: 18,
     }).addTo(map);
 
     // Add Sadu themed custom marker style
-    const customIcon = L.divIcon({
+    const customIcon = leaflet.divIcon({
       className: 'custom-map-marker',
       html: `
         <div class="relative flex items-center justify-center">
@@ -138,7 +200,7 @@ export default function InteractiveMap() {
 
     // Add markers
     LOCATIONS.forEach((loc) => {
-      const popupContent = L.DomUtil.create('div', 'custom-leaflet-popup-container');
+      const popupContent = leaflet.DomUtil.create('div', 'custom-leaflet-popup-container');
       popupContent.innerHTML = `
         <div style="text-align: right; font-family: sans-serif; direction: rtl; min-width: 240px; max-width: 290px; padding: 4px; color: #ece1cb; background-color: #100c07; border-radius: 8px;">
           <div style="width: 100%; height: 60px; background: linear-gradient(135deg, #1f160d, #0c0804); border-radius: 6px; margin-bottom: 8px; border: 1px solid rgba(201, 162, 39, 0.25); display: flex; align-items: center; justify-content: center;">
@@ -152,7 +214,7 @@ export default function InteractiveMap() {
         </div>
       `;
 
-      const marker = L.marker(loc.coords, { icon: customIcon })
+      const marker = leaflet.marker(loc.coords, { icon: customIcon })
         .addTo(map)
         .bindPopup(popupContent, {
           closeButton: true,
@@ -173,7 +235,7 @@ export default function InteractiveMap() {
     });
 
     // Pan to selected location coordinates
-    map.setView(selectedLoc.coords, 7);
+    map.setView(LOCATIONS[0].coords, 7);
 
     return () => {
       if (leafletMapRef.current) {
@@ -185,7 +247,7 @@ export default function InteractiveMap() {
   }, [leafletLoaded, mapMode]);
 
   // Move camera when selected Location changes in satellite view
-  const selectLocation = (loc: LocationInfo) => {
+  const selectLocation = useCallback((loc: LocationInfo) => {
     setSelectedLoc(loc);
     setActivePopupId(loc.id);
     if (mapMode === 'satellite' && leafletMapRef.current) {
@@ -197,7 +259,15 @@ export default function InteractiveMap() {
         markersRef.current[index].openPopup();
       }
     }
-  };
+  }, [mapMode]);
+
+  useEffect(() => {
+    if (mapMode !== 'satellite' || !leafletMapRef.current) {
+      return;
+    }
+
+    leafletMapRef.current.setView(selectedLoc.coords, 8, { animate: true });
+  }, [mapMode, selectedLoc]);
 
   // Listen for external selections (e.g. from HeritageGallery)
   useEffect(() => {
@@ -218,7 +288,7 @@ export default function InteractiveMap() {
     return () => {
       window.removeEventListener('select-map-location', handleCustomSelect);
     };
-  }, [mapMode]);
+  }, [selectLocation]);
 
   return (
     <div className="space-y-12">
