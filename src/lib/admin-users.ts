@@ -25,8 +25,9 @@ export interface AdminUserInsert {
  * جلب جميع المستخدمين الإداريين
  */
 export async function fetchAdminUsers() {
-  const { data, error } = await supabase
-    .from('admin_users' as any)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await (supabase as any)
+    .from('admin_users')
     .select('*')
     .order('created_at', { ascending: false });
 
@@ -41,8 +42,9 @@ export async function fetchAdminUsers() {
  * جلب دور المستخدم الحالي
  */
 export async function fetchCurrentUserRole(userId: string) {
-  const { data, error } = await supabase
-    .from('admin_users' as any)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await (supabase as any)
+    .from('admin_users')
     .select('role')
     .eq('user_id', userId)
     .single();
@@ -58,9 +60,10 @@ export async function fetchCurrentUserRole(userId: string) {
  * إضافة مستخدم إداري جديد
  */
 export async function createAdminUser(user: AdminUserInsert) {
-  const { error } = await supabase
-    .from('admin_users' as any)
-    .insert(user as any);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await (supabase as any)
+    .from('admin_users')
+    .insert(user);
 
   if (error) {
     return { data: null, error };
@@ -74,9 +77,10 @@ export async function createAdminUser(user: AdminUserInsert) {
  * تحديث دور مستخدم إداري
  */
 export async function updateAdminUserRole(id: string, role: UserRole) {
-  const { error } = await supabase
-    .from('admin_users' as any)
-    .update({ role, updated_at: new Date().toISOString() } as any)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await (supabase as any)
+    .from('admin_users')
+    .update({ role, updated_at: new Date().toISOString() })
     .eq('id', id);
 
   if (error) {
@@ -91,8 +95,9 @@ export async function updateAdminUserRole(id: string, role: UserRole) {
  * حذف مستخدم إداري
  */
 export async function deleteAdminUser(id: string) {
-  const { error } = await supabase
-    .from('admin_users' as any)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await (supabase as any)
+    .from('admin_users')
     .delete()
     .eq('id', id);
 

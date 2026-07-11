@@ -26,8 +26,9 @@ export interface MediaInsert {
  * جلب جميع الوسائط
  */
 export async function fetchMedia() {
-  const { data, error } = await supabase
-    .from('media' as any)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await (supabase as any)
+    .from('media')
     .select('*')
     .order('created_at', { ascending: false });
 
@@ -42,8 +43,9 @@ export async function fetchMedia() {
  * جلب وسائط حسب النوع
  */
 export async function fetchMediaByType(fileType: string) {
-  const { data, error } = await supabase
-    .from('media' as any)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await (supabase as any)
+    .from('media')
     .select('*')
     .eq('file_type', fileType)
     .order('created_at', { ascending: false });
@@ -59,9 +61,10 @@ export async function fetchMediaByType(fileType: string) {
  * إضافة وسائط جديدة
  */
 export async function createMedia(media: MediaInsert) {
-  const { error } = await supabase
-    .from('media' as any)
-    .insert(media as any);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await (supabase as any)
+    .from('media')
+    .insert(media);
 
   if (error) {
     return { data: null, error };
@@ -74,8 +77,9 @@ export async function createMedia(media: MediaInsert) {
  * حذف وسائط
  */
 export async function deleteMedia(id: string) {
-  const { error } = await supabase
-    .from('media' as any)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await (supabase as any)
+    .from('media')
     .delete()
     .eq('id', id);
 
@@ -90,6 +94,7 @@ export async function uploadFile(
   path: string,
   file: File
 ) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, error } = await (supabase as any).storage
     .from(bucket)
     .upload(path, file);
@@ -104,7 +109,8 @@ export async function uploadFile(
 /**
  * الحصول على رابط عام للملف
  */
-export async function getPublicUrl(bucket: string, path: string) {
+export function getPublicUrl(bucket: string, path: string) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data } = (supabase as any).storage
     .from(bucket)
     .getPublicUrl(path);

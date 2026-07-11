@@ -24,9 +24,10 @@ export interface AnalyticsInsert {
  * تسجيل حدث إحصائي
  */
 export async function trackEvent(event: AnalyticsInsert) {
-  const { error } = await supabase
-    .from('analytics' as any)
-    .insert(event as any);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await (supabase as any)
+    .from('analytics')
+    .insert(event);
 
   return { error };
 }
@@ -35,8 +36,9 @@ export async function trackEvent(event: AnalyticsInsert) {
  * جلب الإحصائيات حسب نوع الحدث
  */
 export async function fetchAnalyticsByEventType(eventType: string, limit = 100) {
-  const { data, error } = await supabase
-    .from('analytics' as any)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await (supabase as any)
+    .from('analytics')
     .select('*')
     .eq('event_type', eventType)
     .order('created_at', { ascending: false })
@@ -53,8 +55,9 @@ export async function fetchAnalyticsByEventType(eventType: string, limit = 100) 
  * جلب عدد الأحداث حسب النوع
  */
 export async function fetchEventCounts() {
-  const { data, error } = await supabase
-    .from('analytics' as any)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await (supabase as any)
+    .from('analytics')
     .select('event_type')
     .order('created_at', { ascending: false });
 
@@ -64,9 +67,10 @@ export async function fetchEventCounts() {
 
   // حساب عدد الأحداث لكل نوع
   const counts: Record<string, number> = {};
-  data?.forEach((event: any) => {
-    counts[event.event_type] = (counts[event.event_type] || 0) + 1;
-  });
+  const rows: Array<{ event_type: string }> = data ?? [];
+  for (const row of rows) {
+    counts[row.event_type] = (counts[row.event_type] ?? 0) + 1;
+  }
 
   return { data: counts, error: null };
 }
@@ -78,9 +82,10 @@ export async function fetchAnalyticsByDateRange(
   startDate: Date,
   endDate: Date
 ) {
-  const { data, error } = await (supabase
-    .from('analytics' as any)
-    .select('*') as any)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await (supabase as any)
+    .from('analytics')
+    .select('*')
     .gte('created_at', startDate.toISOString())
     .lte('created_at', endDate.toISOString())
     .order('created_at', { ascending: false });
@@ -99,9 +104,10 @@ export async function fetchUniqueVisitors(days = 30) {
   const startDate = new Date();
   startDate.setDate(startDate.getDate() - days);
 
-  const { data, error } = await (supabase
-    .from('analytics' as any)
-    .select('session_id') as any)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await (supabase as any)
+    .from('analytics')
+    .select('session_id')
     .gte('created_at', startDate.toISOString());
 
   if (error) {
@@ -109,7 +115,10 @@ export async function fetchUniqueVisitors(days = 30) {
   }
 
   // حساب عدد الجلسات الفريدة
-  const uniqueSessions = new Set(data?.map((event: any) => event.session_id).filter(Boolean));
+  const rows: Array<{ session_id: string | null }> = data ?? [];
+  const uniqueSessions = new Set(
+    rows.map(r => r.session_id).filter((id): id is string => Boolean(id))
+  );
 
   return { data: uniqueSessions.size, error: null };
 }

@@ -29,8 +29,9 @@ export interface CommentInsert {
  * جلب تعليقات منشور معين
  */
 export async function fetchCommentsByPost(postId: string, status?: CommentStatus) {
-  let query = supabase
-    .from('comments' as any)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let query = (supabase as any)
+    .from('comments')
     .select('*')
     .eq('post_id', postId);
 
@@ -51,8 +52,9 @@ export async function fetchCommentsByPost(postId: string, status?: CommentStatus
  * جلب جميع التعليقات (للوحة الإدارة)
  */
 export async function fetchAllComments(status?: CommentStatus) {
-  let query = supabase
-    .from('comments' as any)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let query = (supabase as any)
+    .from('comments')
     .select('*');
 
   if (status) {
@@ -72,9 +74,10 @@ export async function fetchAllComments(status?: CommentStatus) {
  * إضافة تعليق جديد
  */
 export async function createComment(comment: CommentInsert) {
-  const { error } = await supabase
-    .from('comments' as any)
-    .insert(comment as any);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await (supabase as any)
+    .from('comments')
+    .insert(comment);
 
   if (error) {
     return { data: null, error };
@@ -87,9 +90,10 @@ export async function createComment(comment: CommentInsert) {
  * تحديث حالة تعليق
  */
 export async function updateCommentStatus(id: string, status: CommentStatus) {
-  const { error } = await supabase
-    .from('comments' as any)
-    .update({ status, updated_at: new Date().toISOString() } as any)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await (supabase as any)
+    .from('comments')
+    .update({ status, updated_at: new Date().toISOString() })
     .eq('id', id);
 
   if (error) {
@@ -103,8 +107,9 @@ export async function updateCommentStatus(id: string, status: CommentStatus) {
  * حذف تعليق
  */
 export async function deleteComment(id: string) {
-  const { error } = await supabase
-    .from('comments' as any)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await (supabase as any)
+    .from('comments')
     .delete()
     .eq('id', id);
 
