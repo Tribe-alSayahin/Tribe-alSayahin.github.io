@@ -209,7 +209,7 @@ export default function HeritageGallery() {
               <div className="flex items-center justify-between pt-space-1 border-t border-brass/5 mt-space-1">
                 {item.locationId ? (
                   <button
-                    onClick={(e) => handleLocateOnMap(e, item.locationId!)}
+                    onClick={(e) => handleLocateOnMap(e, item.locationId)}
                     className="text-[10px] bg-brass/10 hover:bg-brass/25 border border-brass/35 text-brass-lt font-semibold px-space-2.5 py-space-1 rounded-lg flex items-center gap-space-1 cursor-pointer transition-colors"
                   >
                     <MapPin className="w-3 h-3 text-brass" />
@@ -357,7 +357,7 @@ export default function HeritageGallery() {
                 {currentItem.locationId && (
                   <Button
                     onClick={(e) => {
-                      handleLocateOnMap(e, currentItem.locationId!);
+                      handleLocateOnMap(e, currentItem.locationId);
                       closeLightbox();
                     }}
                     className="w-full"

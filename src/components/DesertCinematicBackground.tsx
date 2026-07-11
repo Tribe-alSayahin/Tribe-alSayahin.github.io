@@ -74,11 +74,10 @@ export default function DesertCinematicBackground() {
     scene.add(stars);
 
     let raf = 0;
-    const timer = new THREE.Timer();
+    const clock = new THREE.Clock();
     function animate() {
       raf = requestAnimationFrame(animate);
-      timer.update();
-      const t = timer.getElapsed();
+      const t = clock.getElapsedTime();
 
       dune.position.y = -1.2 + Math.sin(t * 0.25) * 0.2;
       dune.rotation.y = t * 0.02;
@@ -110,7 +109,6 @@ export default function DesertCinematicBackground() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', onResize);
-      timer.dispose();
       renderer.dispose();
       containerRef.current?.removeChild(renderer.domElement);
     };

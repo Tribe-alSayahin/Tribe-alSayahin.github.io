@@ -9,11 +9,10 @@ interface State {
   error: Error | null;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export class ErrorBoundary extends (Component as any)<Props, State> {
+export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { hasError: false, error: null } as State;
+    this.state = { hasError: false, error: null };
   }
 
   static getDerivedStateFromError(error: Error): State {

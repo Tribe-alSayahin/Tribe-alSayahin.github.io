@@ -30,7 +30,7 @@ const resolveIsAdminRoute = () => {
 
 const RootComponent = resolveIsAdminRoute() ? AdminPage : App;
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ErrorBoundary>
       <RootComponent />

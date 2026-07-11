@@ -1,18 +1,20 @@
 /* إعدادات الحركة الموحدة (Motion Presets) - ديوان قبيلة السياحين */
 
+const EASE_BRAND: [number, number, number, number] = [0.16, 1, 0.3, 1]; // --ease-brand
+
 export const transitionFast = {
   duration: 0.15, // 150ms (--duration-fast)
-  ease: [0.16, 1, 0.3, 1], // --ease-brand
+  ease: EASE_BRAND,
 };
 
 export const transitionBase = {
   duration: 0.3, // 300ms (--duration-base)
-  ease: [0.16, 1, 0.3, 1], // --ease-brand
+  ease: EASE_BRAND,
 };
 
 export const transitionSlow = {
   duration: 0.5, // 500ms (--duration-slow)
-  ease: [0.16, 1, 0.3, 1], // --ease-brand
+  ease: EASE_BRAND,
 };
 
 export const fadeIn = {
