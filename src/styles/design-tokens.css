@@ -26,9 +26,21 @@
   --space-16: 64px;
 
   /* 3. مقياس التوهج الذهبي النحاسي الموحد (Brass Glow & Shadow Scale) */
-  --glow-brass-sm: 0 2px 12px rgba(201, 162, 75, 0.14);
-  --glow-brass-md: 0 4px 24px rgba(201, 162, 75, 0.28);
-  --glow-brass-lg: 0 8px 36px rgba(201, 162, 75, 0.45);
+  --glow-brass-sm: 0 2px 14px rgba(219, 180, 75, 0.16);
+  --glow-brass-md: 0 6px 26px rgba(219, 180, 75, 0.30);
+  --glow-brass-lg: 0 10px 40px rgba(219, 180, 75, 0.48);
+
+  /* 3.1 مقياس ظلال العمق المحايدة (Elevation Shadows) — للعمق الطبقي الفخم */
+  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.20), 0 2px 8px rgba(0, 0, 0, 0.16);
+  --elev-2: 0 4px 12px rgba(0, 0, 0, 0.24), 0 8px 28px rgba(0, 0, 0, 0.20);
+  --elev-3: 0 10px 30px rgba(0, 0, 0, 0.30), 0 20px 60px rgba(0, 0, 0, 0.28);
+
+  /* 3.2 مقياس نصف القطر الموحّد (Radius Scale) */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+  --radius-2xl: 2.25rem;
 
   /* 4. مقياس مدد وحركات الانتقال الموحدة (Transition Durations & Easing) */
   --duration-fast: 150ms;
@@ -37,4 +49,5 @@
   --duration-400: 400ms;
   --duration-800: 800ms;
   --ease-brand: cubic-bezier(0.16, 1, 0.3, 1); /* منحنى تسارع فخم وبطيء يعكس عراقة الهوية */
+  --ease-smooth: cubic-bezier(0.22, 0.61, 0.36, 1); /* منحنى انسيابي للتفاعلات الدقيقة */
 }
