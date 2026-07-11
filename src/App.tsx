@@ -204,7 +204,7 @@ export default function App() {
 
       <main id="main-content" className="relative">
       {/* SECTION 0: JATHUM — THE FOUNDATION */}
-      <section id="jathum" className="section bg-ink-2 px-6 relative z-10 py-20 md:py-28">
+      <section id="jathum" className="section bg-ink-2 px-6 relative z-10 py-16 md:py-28 lg:py-32">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠٠"
@@ -221,7 +221,7 @@ export default function App() {
       </section>
 
       {/* SECTION 1: LINEAGE TREE */}
-      <section id="lineage" className="section bg-ink-2 px-6 relative z-10 py-20 md:py-28">
+      <section id="lineage" className="section bg-ink-2 px-6 relative z-10 border-t border-brass/15 py-20 md:py-32 lg:py-40">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠١"
@@ -237,25 +237,25 @@ export default function App() {
         </div>
       </section>
 
-      {/* SECTION 2: CONSTELLATION DIAGRAM */}
-      <section id="constellation" className="section bg-ink px-6 relative z-10 py-20 md:py-28">
+      {/* SECTION 2: OPPENHEIM ARCHIVE */}
+      <section id="archive" className="section bg-ink px-6 relative z-10 border-t border-brass/15 py-20 md:py-32 lg:py-40">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠٢"
-            badgeText="الأنساب السبعة"
-            title="الخلاصة الكوكبية للأنساب"
-            description="تمثيل فلكي رمزي يربط الأنساب السبعة الكبرى في فضاء كوكبي مترابط يبرز التلاحم والأصل المشترك للقبيلة."
+            badgeText="الأرشيف والمصادر"
+            title="التوثيق الاستشراقي والمدونات التاريخية"
+            description="شهادات وملاحظات المستشرقين والرحالة الغربيين حول نسب وقوة ومواقف السياحين في تاريخ الجزيرة العربية."
           />
           <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الأنسب...</div>}>
-              <ConstellationDiagram />
+            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الأرشيف الاستشراقي...</div>}>
+              <OppenheimArchive />
             </Suspense>
           </div>
         </div>
       </section>
 
       {/* SECTION 3: INTERACTIVE MAP */}
-      <section id="map" className="section bg-ink-2 px-6 relative z-10 py-20 md:py-28">
+      <section id="map" className="section bg-ink-2 px-6 relative z-10 border-t border-brass/15 py-20 md:py-32 lg:py-40">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠٣"
@@ -272,7 +272,7 @@ export default function App() {
       </section>
 
       {/* SECTION 4: HERITAGE GALLERY */}
-      <section id="gallery" className="section bg-ink px-6 relative z-10 py-20 md:py-28">
+      <section id="gallery" className="section bg-ink px-6 relative z-10 border-t border-brass/15 py-20 md:py-32 lg:py-40">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠٤"
@@ -289,7 +289,7 @@ export default function App() {
       </section>
 
       {/* SECTION 5: WASM GALLERY */}
-      <section id="wasm" className="section bg-ink px-6 relative z-10 py-20 md:py-28">
+      <section id="wasm" className="section bg-ink px-6 relative z-10 border-t border-brass/15 py-14 md:py-24 lg:py-28">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠٥"
@@ -297,19 +297,38 @@ export default function App() {
             title="وسم الإبل وعلامة الباب"
             description="وسم «الباب» الشهير للسياحين على الرقبة من الجهة اليسرى، رمز الهوية والأصالة في البادية."
           />
-          <div className="max-w-[720px] mx-auto reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل معرض الوسوم...</div>}>
-              <WasmGallery />
+          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
+            <div className="max-w-[720px] mx-auto">
+              <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل معرض الوسوم...</div>}>
+                <WasmGallery />
+              </Suspense>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 6: CONSTELLATION DIAGRAM */}
+      <section id="constellation" className="section bg-ink px-6 relative z-10 border-t border-brass/15 py-16 md:py-28 lg:py-32">
+        <div className="max-w-[1160px] mx-auto">
+          <SectionHeader
+            serialNumber="٠٦"
+            badgeText="الأنساب السبعة"
+            title="الخلاصة الكوكبية للأنساب"
+            description="تمثيل فلكي رمزي يربط الأنساب السبعة الكبرى في فضاء كوكبي مترابط يبرز التلاحم والأصل المشترك للقبيلة."
+          />
+          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
+            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الأنسب...</div>}>
+              <ConstellationDiagram />
             </Suspense>
           </div>
         </div>
       </section>
 
-      {/* SECTION 6: POETRY COUNCIL */}
-      <section id="poetry" className="section bg-ink-2 px-6 relative z-10 py-20 md:py-28">
+      {/* SECTION 7: POETRY COUNCIL */}
+      <section id="poetry" className="section bg-ink-2 px-6 relative z-10 border-t border-brass/15 py-16 md:py-28 lg:py-32">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
-            serialNumber="٠٦"
+            serialNumber="٠٧"
             badgeText="مجلس الشعراء"
             title="ديوان الشعر النبطي"
             description="مساحة مخصصة للقصائد الموثقة وشواهد الشعر النبطي بعد مراجعتها وإسنادها إلى مصادر واضحة."
@@ -322,25 +341,8 @@ export default function App() {
         </div>
       </section>
 
-      {/* SECTION 7: OPPENHEIM ARCHIVE */}
-      <section id="archive" className="section bg-ink px-6 relative z-10 py-20 md:py-28">
-        <div className="max-w-[1160px] mx-auto">
-          <SectionHeader
-            serialNumber="٠٧"
-            badgeText="الأرشيف والمصادر"
-            title="التوثيق الاستشراقي والمدونات التاريخية"
-            description="شهادات وملاحظات المستشرقين والرحالة الغربيين حول نسب وقوة ومواقف السياحين في تاريخ الجزيرة العربية."
-          />
-          <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
-            <Suspense fallback={<div className="text-center text-sm text-sand-dim font-kufi py-8">جارٍ تحميل الأرشيف الاستشراقي...</div>}>
-              <OppenheimArchive />
-            </Suspense>
-          </div>
-        </div>
-      </section>
-
       {/* SECTION 8: NEWS & EVENTS */}
-      <section id="news" className="section bg-ink-2 px-6 relative z-10 py-20 md:py-28">
+      <section id="news" className="section bg-ink-2 px-6 relative z-10 border-t border-brass/15 py-14 md:py-24 lg:py-28">
         <div className="max-w-[1160px] mx-auto">
           <SectionHeader
             serialNumber="٠٨"
