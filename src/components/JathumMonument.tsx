@@ -1,12 +1,16 @@
-import { useRef } from 'react';
+'use client';
+
+import { useRef, useCallback } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { Landmark, MapPin, Crown, BookOpen, ScrollText } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import JathumWeatherCard from './JathumWeatherCard';
 import { useReducedMotion } from '../hooks/useReducedMotion';
+import { SECTION_TO_ROUTE } from '../lib/navigation';
 
 interface JathumMonumentProps {
-  scrollToSection: (id: string) => void;
+  scrollToSection?: (id: string) => void;
 }
 
 /** لوحات الحقائق النحاسية — أركان قصة التأسيس */
@@ -54,6 +58,19 @@ const thurayyaStars = [
 export default function JathumMonument({ scrollToSection }: JathumMonumentProps) {
   const sceneRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
+  const router = useRouter();
+
+  const navigate = useCallback(
+    (id: string) => {
+      if (scrollToSection) {
+        scrollToSection(id);
+      } else {
+        const route = SECTION_TO_ROUTE[id] ?? `/#${id}`;
+        router.push(route);
+      }
+    },
+    [scrollToSection, router]
+  );
 
   const { scrollYProgress } = useScroll({
     target: sceneRef,
@@ -292,13 +309,13 @@ export default function JathumMonument({ scrollToSection }: JathumMonumentProps)
           {/* أزرار الاستكشاف */}
           <div className="flex flex-wrap gap-3 mt-7">
             <button
-              onClick={() => scrollToSection('map')}
+              onClick={() => navigate('map')}
               className="font-kufi text-sm font-semibold px-6 py-2.5 rounded-full bg-gradient-to-l from-brass to-brass-lt text-ink shadow-glow-sm hover:-translate-y-0.5 hover:shadow-glow-md transition-all cursor-pointer border-0 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
             >
               موقعها على خريطة الديار
             </button>
             <button
-              onClick={() => scrollToSection('gallery')}
+              onClick={() => navigate('gallery')}
               className="font-kufi text-sm font-semibold px-6 py-2.5 rounded-full bg-transparent text-brass-lt border border-brass/35 hover:bg-brass/10 hover:-translate-y-0.5 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
             >
               شواهدها في معرض التراث

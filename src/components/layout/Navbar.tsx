@@ -1,41 +1,29 @@
+'use client';
+
 import { useState } from 'react';
 import { motion } from 'motion/react';
 import { Menu, X } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ThemeToggle } from './ThemeToggle';
 import { MobileMenu } from './MobileMenu';
-import { NAV_LINKS } from '../../lib/navigation';
+import { SITE_ROUTES } from '../../lib/navigation';
+import { useScrollState } from '../../hooks/useScrollState';
 
-interface NavbarProps {
-  isScrolled: boolean;
-  theme: 'dark' | 'light';
-  onToggleTheme: () => void;
-  scrollToSection: (id: string) => void;
-  activeSection?: string;
+function isLinkActive(linkHref: string, pathname: string): boolean {
+  if (linkHref === '/') {
+    return pathname === '/';
+  }
+  return pathname.startsWith(linkHref.replace(/#$/, ''));
 }
 
-function isLinkActive(link: typeof NAV_LINKS[number], activeSection?: string): boolean {
-  if (!activeSection) return false;
-  if (activeSection === link.id) return true;
-  return link.sections?.some((s) => s.id === activeSection) ?? false;
-}
-
-export function Navbar({
-  isScrolled,
-  theme,
-  onToggleTheme,
-  scrollToSection,
-  activeSection,
-}: NavbarProps) {
+export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const handleNavigate = (id: string) => {
-    setIsMenuOpen(false);
-    scrollToSection(id);
-  };
+  const isScrolled = useScrollState(40);
+  const pathname = usePathname();
 
   return (
     <header className="fixed top-0 inset-x-0 z-50">
-      {/* الحاوية تتحول إلى كبسولة عائمة عند التمرير */}
       <div
         className={`transition-all duration-400 ease-brand ${
           isScrolled
@@ -50,12 +38,8 @@ export function Navbar({
             }`}
             aria-hidden="true"
           />
-          <a
-            href="#home"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavigate('home');
-            }}
+          <Link
+            href="/"
             className="flex items-center gap-3 text-lg font-bold font-serif text-sand hover:text-brass-lt transition-colors focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-xl p-1"
           >
             <div className="w-11 h-11 rounded-xl border border-brass/50 bg-gradient-to-br from-brass/25 via-brass/10 to-transparent flex items-center justify-center text-brass shadow-glow-sm p-2">
@@ -78,42 +62,34 @@ export function Navbar({
               </span>
               <span className="font-kufi text-base md:text-lg leading-none">قبيلة السياحين</span>
             </span>
-          </a>
+          </Link>
 
-          {/* Desktop Links */}
           <nav className="hidden lg:flex items-center gap-1 bg-brass/5 border border-brass/10 rounded-full px-1.5 py-1" aria-label="التنقل الرئيسي">
-            {NAV_LINKS.map((link) => (
-              <a
+            {SITE_ROUTES.filter((link) => link.id !== 'home').map((link) => (
+              <Link
                 key={link.id}
-                href={`#${link.id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavigate(link.id);
-                }}
+                href={link.href}
                 className={`relative px-3.5 py-2 font-kufi font-semibold text-xs md:text-sm transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-full ${
-                  isLinkActive(link, activeSection)
+                  isLinkActive(link.href, pathname)
                     ? 'text-brass-lt bg-brass/10'
                     : 'text-sand-dim hover:text-brass-lt'
                 }`}
               >
                 <span className="relative">{link.label}</span>
-                {/* خط ذهبي رفيع تحت الرابط النشط — بلا خلفية أو صندوق */}
-                {isLinkActive(link, activeSection) && (
+                {isLinkActive(link.href, pathname) && (
                   <motion.span
                     layoutId="nav-active-line"
                     className="absolute bottom-1 inset-x-3 h-px bg-brass-lt rounded-full"
                     transition={{ type: 'spring', stiffness: 420, damping: 36 }}
                   />
                 )}
-              </a>
+              </Link>
             ))}
           </nav>
 
-          {/* Theme Toggle & Mobile Navigation Control */}
           <div className="flex items-center gap-2.5">
-            <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+            <ThemeToggle />
 
-            {/* Mobile menu toggle */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 text-brass-lt bg-transparent border-0 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-full cursor-pointer"
@@ -130,16 +106,12 @@ export function Navbar({
           </div>
         </div>
 
-        {/* خيط ذهبي أسفل الشريط في وضع القمة فقط */}
         {!isScrolled && <div className="gold-hairline absolute bottom-0 inset-x-0" aria-hidden="true" />}
       </div>
 
-      {/* Mobile Navigation Links */}
       <MobileMenu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
-        onNavigate={handleNavigate}
-        activeSection={activeSection}
       />
     </header>
   );

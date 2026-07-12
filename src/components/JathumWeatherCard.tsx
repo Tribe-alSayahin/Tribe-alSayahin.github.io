@@ -1,3 +1,5 @@
+'use client';
+
 import { CloudSun, Droplets, Thermometer, ThermometerSun, Wind } from 'lucide-react';
 
 import { useJathumWeather } from '../hooks/useJathumWeather';

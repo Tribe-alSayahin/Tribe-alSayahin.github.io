@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useCallback, type FormEvent } from 'react';
 import type { Session } from '@supabase/supabase-js';
 

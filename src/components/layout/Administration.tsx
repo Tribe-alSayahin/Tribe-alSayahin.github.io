@@ -1,3 +1,5 @@
+'use client';
+
 import { SectionHeader } from './SectionHeader';
 
 const adminCards = [
@@ -29,7 +31,7 @@ export function Administration() {
           description="القسم المعني بالإشراف الإداري على الموقع الرسمي لقبيلة السياحين، وتنظيم المحتوى، وتوحيد قنوات التواصل الرسمية."
         />
 
-        <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800 grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="opacity-100 translate-y-0 transition-all duration-800 grid grid-cols-1 md:grid-cols-3 gap-5">
           {adminCards.map((card) => (
             <article
               key={card.title}

@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Shield, UserPlus, Trash2, Search } from 'lucide-react';
 import {

@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, Shield, Activity, Info } from 'lucide-react';

@@ -1,23 +1,29 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
-import { NAV_LINKS } from '../../lib/navigation';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { SITE_ROUTES } from '../../lib/navigation';
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  onNavigate: (id: string) => void;
-  activeSection?: string;
 }
 
-function isActiveLink(activeSection: string | undefined, link: typeof NAV_LINKS[number]): boolean {
-  if (!activeSection) return false;
-  if (activeSection === link.id) return true;
-  return link.sections?.some((s) => s.id === activeSection) ?? false;
+function isActiveLink(pathname: string, href: string): boolean {
+  if (href === '/') return pathname === '/';
+  return pathname.startsWith(href.replace(/#.*$/, '').replace(/\/$/, ''));
 }
 
-export function MobileMenu({ isOpen, onClose, onNavigate, activeSection }: MobileMenuProps) {
+function isActiveSub(pathname: string, href: string): boolean {
+  const base = href.replace(/#.*$/, '');
+  return pathname === base || pathname.startsWith(base);
+}
+
+export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
-  // Close on ESC key press + focus trap
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen) return;
@@ -66,42 +72,36 @@ export function MobileMenu({ isOpen, onClose, onNavigate, activeSection }: Mobil
       <h2 id="mobile-navigation-title" className="w-full text-center text-xs font-kufi text-brass-lt/90 pb-3 border-b border-brass/10 mb-2">
         التنقل السريع
       </h2>
-      {NAV_LINKS.map((link) => (
+      {SITE_ROUTES.filter((link) => link.id !== 'home').map((link) => (
         <div key={link.id} className="flex flex-col">
-          <a
-            href={`#${link.id}`}
-            onClick={(e) => {
-              e.preventDefault();
-              onNavigate(link.id);
-            }}
+          <Link
+            href={link.href}
+            onClick={onClose}
             className={`w-full text-center py-3 rounded-xl font-semibold text-sm transition-all border focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none ${
-              isActiveLink(activeSection, link)
+              isActiveLink(pathname, link.href)
                 ? 'text-brass-lt bg-brass/12 border-brass/20'
                 : 'text-sand border-transparent hover:text-brass-lt hover:bg-brass/10 hover:border-brass/15'
             }`}
             tabIndex={isOpen ? 0 : -1}
           >
             {link.label}
-          </a>
+          </Link>
           {link.sections && link.sections.length > 0 && (
             <div className="grid grid-cols-2 gap-2 px-3 pb-2 pt-1">
               {link.sections.map((section) => (
-                <a
+                <Link
                   key={section.id}
-                  href={`#${section.id}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onNavigate(section.id);
-                  }}
+                  href={section.href}
+                  onClick={onClose}
                   className={`text-center py-2 rounded-lg text-xs font-kufi transition-colors focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none ${
-                    activeSection === section.id
+                    isActiveSub(pathname, section.href)
                       ? 'text-brass-lt bg-brass/10 border border-brass/20'
                       : 'text-sand-dim hover:text-brass-lt hover:bg-brass/5 border border-transparent'
                   }`}
                   tabIndex={isOpen ? 0 : -1}
                 >
                   {section.label}
-                </a>
+                </Link>
               ))}
             </div>
           )}
