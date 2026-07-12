@@ -145,7 +145,7 @@ export default function App() {
     }
 
     setSeoMeta(
-      'الموقع الرسمي لقبيلة السياحين | الروقة من عتيبة',
+      'قبيلة السياحين (السيحاني) | الموقع الرسمي | الروقة من عتيبة',
       'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
     );
   }, [isNotFound]);
