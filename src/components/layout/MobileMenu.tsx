@@ -59,7 +59,8 @@ export function MobileMenu({ isOpen, onClose, onNavigate, activeSection }: Mobil
         isOpen ? 'translate-y-0 opacity-100' : '-translate-y-[150%] opacity-0 pointer-events-none'
       }`}
       role="dialog"
-      aria-modal="true"
+      aria-hidden={!isOpen}
+      aria-modal={isOpen}
       aria-labelledby="mobile-navigation-title"
     >
       <h2 id="mobile-navigation-title" className="w-full text-center text-xs font-kufi text-brass-lt/90 pb-3 border-b border-brass/10 mb-2">
