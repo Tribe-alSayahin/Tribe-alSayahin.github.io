@@ -88,41 +88,35 @@ supabase db push
 
 #### محلياً (ملف `.env`)
 
-1. أنشئ ملف `.env` من `.env.example`
-2. أضف متغيرات الواجهة:
+1. أنشئ ملف `.env` من `.env.example`:
 
 ```bash
+cp .env.example .env
+```
+
+2. عدّل القيم في `.env`:
+
+```bash
+# متغيرات الواجهة (تُحقن في كود المتصفح)
 NEXT_PUBLIC_SUPABASE_URL="https://your-project-id.supabase.co"
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="your-publishable-public-key"
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="your-publishable-anon-key"
+
+# مفتاح الخادم — وقت البناء فقط، لا يصل للمتصفح
+SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
 ```
-
-3. أضف متغيرات الخادم وواجهات API:
-
-```bash
-SUPABASE_URL="https://your-project-id.supabase.co"
-SUPABASE_PUBLISHABLE_KEY="your-publishable-public-key"
-SUPABASE_SECRET_KEY="your-secret-server-key"
-SUPABASE_JWKS_URL="https://your-project-id.supabase.co/auth/v1/.well-known/jwks.json"
-```
-
-> في Supabase Edge Functions يتم حقن هذه القيم تلقائياً، أما في Express داخل هذا المشروع فيلزم تعريفها في البيئة محلياً أو داخل أسرار النشر.
 
 #### على GitHub Actions
 
 1. اذهب إلى **Settings → Secrets and variables → Actions**
 2. أضف Secret باسم: `NEXT_PUBLIC_SUPABASE_URL`
 3. أضف Secret باسم: `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
-4. أضف Secret باسم: `SUPABASE_URL`
-5. أضف Secret باسم: `SUPABASE_PUBLISHABLE_KEY`
-6. أضف Secret باسم: `SUPABASE_SECRET_KEY`
-7. أضف Secret باسم: `SUPABASE_JWKS_URL`
+4. أضف Secret باسم: `SUPABASE_SERVICE_ROLE_KEY`
 
 #### متطلبات أمان إلزامية
 
-- لا تضع `service_role key` أو `SUPABASE_SECRET_KEY` في الواجهة أبداً.
+- لا تضع `service_role key` أو `SUPABASE_SERVICE_ROLE_KEY` في متغيرات `NEXT_PUBLIC_*` أبداً.
 - متغيرات الواجهة تقتصر على القيم العامة فقط (`NEXT_PUBLIC_*`).
 - الأمان يعتمد على Supabase Auth + RLS.
-- المسار الخادمي `/api/auth/session` يتحقق من ترويسة `Authorization` عبر الحزمة `@supabase/server` ثم يجلب بيانات المستخدم من Supabase على الخادم.
 
 #### استكشاف خطأ `Could not find the table 'public.admin_posts' in the schema cache`
 
