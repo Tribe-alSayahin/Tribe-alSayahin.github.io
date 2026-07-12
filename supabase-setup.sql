@@ -7,7 +7,7 @@ create extension if not exists pgcrypto;
 create table if not exists public.admin_posts (
   id uuid primary key default gen_random_uuid(),
   title text not null,
-  slug text unique,
+  slug text,
   content text not null,
   kind text not null check (kind in ('news', 'event')),
   status text not null check (status in ('draft', 'published')) default 'published',
@@ -28,6 +28,63 @@ alter table public.admin_posts
 -- فهرس فريد على slug (يسمح بقيم null متعددة)
 create unique index if not exists admin_posts_slug_unique_idx
   on public.admin_posts (slug);
+
+-- تعبئة slug للمنشورات القديمة ومنع الـ null في المستقبل
+-- 1. دالة slugify تولد slug من العنوان
+-- 2. تحديث الصفوف التي slug فارغة
+-- 3. جعل العمود NOT NULL
+-- ملاحظة: إذا كان slugify(title) فارغاً (عنوان بدون أحرف أبجدية رقمية)، يُستخدم id كـ slug.
+
+-- (ملاحظة: لا تستخدم منطق C# slug، لكن منطق SQL بسيط)
+
+-- 1. تعبئة slug الفارغة مع معالجة التكرار
+-- تولد slug من العنوان، وإذا كان مكرراً تُلحق عداد، وإذا كان العنوان لا يحتوي على أحرف أبجدية رقمية تُستخدم id.
+DO $$
+DECLARE
+  rec record;
+  base_slug text;
+  final_slug text;
+  counter int;
+BEGIN
+  FOR rec IN
+    SELECT id, title
+    FROM public.admin_posts
+    WHERE slug IS NULL
+    ORDER BY created_at
+  LOOP
+    base_slug := lower(
+      regexp_replace(
+        regexp_replace(
+          regexp_replace(
+            regexp_replace(rec.title, '\s+', '-', 'g'),
+            '[^[:alnum:]-]', '', 'g'
+          ),
+          '-+', '-', 'g'
+        ),
+        '^-|-$', '', 'g'
+      )
+    );
+
+    IF base_slug = '' THEN
+      final_slug := rec.id::text;
+    ELSE
+      final_slug := base_slug;
+      counter := 1;
+      WHILE EXISTS (
+        SELECT 1 FROM public.admin_posts WHERE slug = final_slug AND id <> rec.id
+      ) LOOP
+        final_slug := base_slug || '-' || counter;
+        counter := counter + 1;
+      END LOOP;
+    END IF;
+
+    UPDATE public.admin_posts SET slug = final_slug WHERE id = rec.id;
+  END LOOP;
+END $$;
+
+-- 2. جعل slug NOT NULL بعد التعبئة
+alter table public.admin_posts
+  alter column slug set not null;
 
 alter table public.admin_posts
   drop constraint if exists admin_posts_created_by_fkey;
