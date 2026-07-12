@@ -32,9 +32,11 @@ const resolveIsAdminRoute = () => {
 const isAdmin = resolveIsAdminRoute();
 
 const AdminWrapper = () => (
-  <Suspense fallback={<p className="text-sand p-8">جارٍ تحميل لوحة الإدارة...</p>}>
-    <AdminPage />
-  </Suspense>
+  <div data-app-ready="true">
+    <Suspense fallback={<p className="text-sand p-8">جارٍ تحميل لوحة الإدارة...</p>}>
+      <AdminPage />
+    </Suspense>
+  </div>
 );
 
 const RootComponent = isAdmin ? AdminWrapper : App;

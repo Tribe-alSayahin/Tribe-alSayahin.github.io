@@ -137,14 +137,14 @@ export default function AdminPage() {
 
   if (isAuthLoading) {
     return (
-      <div className="min-h-screen bg-ink text-sand font-sans flex items-center justify-center p-8">
+      <div data-app-ready="true" className="min-h-screen bg-ink text-sand font-sans flex items-center justify-center p-8">
         <p className="font-kufi text-sand-dim">جارٍ التحقق من جلسة الدخول...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-ink text-sand font-sans p-4 md:p-6">
+    <div data-app-ready="true" className="min-h-screen bg-ink text-sand font-sans p-4 md:p-6">
       <div className="max-w-[1400px] mx-auto">
         <header className="rounded-2xl border border-brass/20 bg-ink-2/70 p-6 mb-6">
           <p className="font-kufi text-xs text-brass-lt/80 mb-2">الموقع الرسمي لقبيلة السياحين</p>

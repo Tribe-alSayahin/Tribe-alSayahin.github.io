@@ -30,6 +30,7 @@ export class ErrorBoundary extends Component<Props, State> {
     if (state.hasError) {
       return (
         <div
+          data-app-ready="true"
           dir="rtl"
           style={{
             position: 'fixed',
