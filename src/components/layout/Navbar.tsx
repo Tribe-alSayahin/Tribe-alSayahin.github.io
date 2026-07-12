@@ -13,6 +13,12 @@ interface NavbarProps {
   activeSection?: string;
 }
 
+function isLinkActive(link: typeof NAV_LINKS[number], activeSection?: string): boolean {
+  if (!activeSection) return false;
+  if (activeSection === link.id) return true;
+  return link.sections?.some((s) => s.id === activeSection) ?? false;
+}
+
 export function Navbar({
   isScrolled,
   theme,
@@ -85,14 +91,14 @@ export function Navbar({
                   handleNavigate(link.id);
                 }}
                 className={`relative px-3.5 py-2 font-kufi font-semibold text-xs md:text-sm transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-full ${
-                  activeSection === link.id
+                  isLinkActive(link, activeSection)
                     ? 'text-brass-lt bg-brass/10'
                     : 'text-sand-dim hover:text-brass-lt'
                 }`}
               >
                 <span className="relative">{link.label}</span>
                 {/* خط ذهبي رفيع تحت الرابط النشط — بلا خلفية أو صندوق */}
-                {activeSection === link.id && (
+                {isLinkActive(link, activeSection) && (
                   <motion.span
                     layoutId="nav-active-line"
                     className="absolute bottom-1 inset-x-3 h-px bg-brass-lt rounded-full"

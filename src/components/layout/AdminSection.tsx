@@ -19,15 +19,11 @@ const FEATURES = [
   },
 ];
 
-const ADMIN_HREF =
-  typeof window !== 'undefined' &&
-  /tribe-alsayahin\.github\.io$/i.test(window.location.hostname)
-    ? '/admin'
-    : '/admin';
+const ADMIN_HREF = '/admin';
 
 export function AdminSection() {
   return (
-    <div className="mt-space-12">
+    <div>
       {/* بطاقة البوابة */}
       <motion.div
         initial={{ opacity: 0, y: 24 }}
@@ -59,6 +55,15 @@ export function AdminSection() {
             <p className="font-sans text-sm text-sand-dim leading-loose max-w-[480px]">
               بوابة المشرفين لإدارة المحتوى المنشور على الموقع من أخبار ومناسبات بصلاحيات كاملة للإضافة
               والتعديل والحذف. يتطلب الدخول بريداً إلكترونياً وكلمة مرور.
+            </p>
+            <p className="font-sans text-xs text-sand-dim/70 mt-3">
+              البريد الإداري:{' '}
+              <a
+                href="mailto:admin@alsaihani.com"
+                className="text-brass-lt hover:text-brass underline underline-offset-4"
+              >
+                admin@alsaihani.com
+              </a>
             </p>
           </div>
 
