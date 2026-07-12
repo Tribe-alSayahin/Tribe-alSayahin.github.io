@@ -83,15 +83,17 @@ export async function getPostBySlug(slug: string): Promise<NewsPost | null> {
     return null;
   }
 
+  const decodedSlug = decodeURIComponent(slug);
+
   const { data, error } = await client
     .from('admin_posts')
     .select('*')
-    .eq('slug', slug)
+    .eq('slug', decodedSlug)
     .eq('status', 'published')
     .single();
 
   if (error) {
-    console.error('[posts] Failed to fetch post by slug:', error.message);
+    console.error('[posts] Failed to fetch post by slug:', decodedSlug, error.message);
     return null;
   }
 
