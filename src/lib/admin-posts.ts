@@ -6,6 +6,7 @@ export type AdminPostStatus = 'draft' | 'published';
 export interface AdminPostRecord {
   id: string;
   title: string;
+  slug: string | null;
   content: string;
   kind: AdminPostKind;
   status: AdminPostStatus;
@@ -18,6 +19,7 @@ export interface AdminPostRecord {
 
 export interface AdminPostInsert {
   title: string;
+  slug?: string;
   content: string;
   kind: AdminPostKind;
   status?: AdminPostStatus;
@@ -29,6 +31,7 @@ export interface AdminPostInsert {
 
 export interface AdminPostUpdate {
   title?: string;
+  slug?: string;
   content?: string;
   kind?: AdminPostKind;
   status?: AdminPostStatus;
@@ -78,7 +81,7 @@ export const fetchAdminPosts = async (options: FetchPostsOptions = {}) => {
 
   let query = supabase
     .from('admin_posts')
-    .select('id,title,content,kind,status,featured_image,event_date,created_at,updated_at,created_by', { count: 'exact' });
+    .select('id,title,slug,content,kind,status,featured_image,event_date,created_at,updated_at,created_by', { count: 'exact' });
 
   if (kind !== 'all') {
     query = query.eq('kind', kind);
@@ -108,7 +111,7 @@ export const fetchAdminPosts = async (options: FetchPostsOptions = {}) => {
 export const fetchAdminPostById = async (id: string) => {
   const result = await supabase
     .from('admin_posts')
-    .select('id,title,content,kind,status,featured_image,event_date,created_at,updated_at,created_by')
+    .select('id,title,slug,content,kind,status,featured_image,event_date,created_at,updated_at,created_by')
     .eq('id', id)
     .single();
 

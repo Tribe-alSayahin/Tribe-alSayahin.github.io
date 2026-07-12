@@ -7,6 +7,7 @@ create extension if not exists pgcrypto;
 create table if not exists public.admin_posts (
   id uuid primary key default gen_random_uuid(),
   title text not null,
+  slug text unique,
   content text not null,
   kind text not null check (kind in ('news', 'event')),
   status text not null check (status in ('draft', 'published')) default 'published',
@@ -20,8 +21,13 @@ create table if not exists public.admin_posts (
 -- إضافة الأعمدة المفقودة عند وجود جدول قديم
 alter table public.admin_posts
   add column if not exists status text not null check (status in ('draft', 'published')) default 'published',
+  add column if not exists slug text,
   add column if not exists featured_image text,
   add column if not exists updated_at timestamptz not null default now();
+
+-- فهرس فريد على slug (يسمح بقيم null متعددة)
+create unique index if not exists admin_posts_slug_unique_idx
+  on public.admin_posts (slug);
 
 alter table public.admin_posts
   drop constraint if exists admin_posts_created_by_fkey;
