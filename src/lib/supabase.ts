@@ -5,6 +5,7 @@ type SupabaseErrorLike = { message: string } | null;
 interface AdminPostRecordLike {
   id: string;
   title: string;
+  slug: string | null;
   content: string;
   kind: 'news' | 'event';
   status: 'draft' | 'published';
@@ -17,6 +18,7 @@ interface AdminPostRecordLike {
 
 interface AdminPostInsertLike {
   title: string;
+  slug?: string;
   content: string;
   kind: 'news' | 'event';
   status?: 'draft' | 'published';

@@ -7,12 +7,14 @@ import {
   AdminPostInsert,
   AdminPostUpdate,
 } from '../../lib/admin-posts';
+import { createSlug } from '../../lib/slug';
 
 interface PostFormProps {
   initial?: {
     kind?: AdminPostKind;
     status?: AdminPostStatus;
     title?: string;
+    slug?: string | null;
     content?: string;
     event_date?: string | null;
     featured_image?: string | null;
@@ -47,14 +49,17 @@ export function PostForm({
   const [kind, setKind] = useState<AdminPostKind>(initial.kind ?? 'news');
   const [status, setStatus] = useState<AdminPostStatus>(initial.status ?? 'published');
   const [title, setTitle] = useState(initial.title ?? '');
+  const [slug, setSlug] = useState(initial.slug ?? '');
   const [content, setContent] = useState(initial.content ?? '');
   const [eventDate, setEventDate] = useState(initial.event_date ?? '');
   const [featuredImage, setFeaturedImage] = useState(initial.featured_image ?? '');
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
+    const generatedSlug = createSlug(slug || title);
     const payload: AdminPostInsert = {
       title: title.trim(),
+      slug: generatedSlug,
       content: content.trim(),
       kind,
       status,
@@ -126,6 +131,17 @@ export function PostForm({
           placeholder="عنوان الخبر أو المناسبة"
           className="w-full rounded-lg border border-brass/20 bg-ink/70 px-3 py-2.5 text-sand placeholder:text-sand-dim/60 focus:outline-none focus:border-brass/50"
           required
+        />
+      </div>
+
+      <div>
+        <label className="block text-xs font-kufi text-sand-dim mb-1.5">الرابط المختصر (slug) — يُولد تلقائياً من العنوان إذا تركته فارغاً</label>
+        <input
+          type="text"
+          value={slug}
+          onChange={(e) => setSlug(e.target.value)}
+          placeholder="الرابط-المختصر-للمنشور"
+          className="w-full rounded-lg border border-brass/20 bg-ink/70 px-3 py-2.5 text-sand placeholder:text-sand-dim/60 focus:outline-none focus:border-brass/50 ltr"
         />
       </div>
 
