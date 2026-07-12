@@ -18,7 +18,8 @@ export const NotFound: React.FC<NotFoundProps> = ({ onBackToHome }) => {
   };
 
   return (
-    <div 
+    <div
+      data-app-ready="true"
       className="min-h-screen bg-ink text-sand flex flex-col justify-between relative overflow-hidden select-none"
       role="main"
       aria-label="صفحة الخطأ 404 - الصفحة غير موجودة"
