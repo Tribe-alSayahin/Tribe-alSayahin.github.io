@@ -39,14 +39,18 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
   framesCount = 45,
   framePathPattern = ""
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [loadProgress, setLoadProgress] = useState(0);
   const [isReady, setIsReady] = useState(() => !framePathPattern);
   const [useFallback, setUseFallback] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const lastDrawnFrameRef = useRef<number>(-1);
+  const isVisibleRef = useRef(false);
+  const scrollRafRef = useRef<number | null>(null);
+  const latestProgressRef = useRef(0);
 
   // 1. Preload sequence with a safety timeout (9 seconds)
   useEffect(() => {
@@ -118,11 +122,19 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
 
   // 2. Track Scroll Progress inside our component container
   useEffect(() => {
+    const scheduleScrollProgress = () => {
+      if (scrollRafRef.current !== null) return;
+      scrollRafRef.current = requestAnimationFrame(() => {
+        setScrollProgress(latestProgressRef.current);
+        scrollRafRef.current = null;
+      });
+    };
+
     const handleScroll = () => {
-      if (!containerRef.current) return;
+      if (!containerRef.current || !isVisibleRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-      
+
       // Calculate how much of the component has been scrolled
       // Start tracking when top of container reaches top of viewport, and end when bottom reaches bottom
       const totalScrollableHeight = rect.height - windowHeight;
@@ -130,18 +142,45 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
 
       const currentScroll = -rect.top;
       const progress = Math.min(Math.max(currentScroll / totalScrollableHeight, 0), 1);
-      setScrollProgress(progress);
+      latestProgressRef.current = progress;
+      scheduleScrollProgress();
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll);
-    // Initial call
-    handleScroll();
+    // Initial call only if visible
+    if (isVisibleRef.current) handleScroll();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
+      if (scrollRafRef.current !== null) {
+        cancelAnimationFrame(scrollRafRef.current);
+        scrollRafRef.current = null;
+      }
     };
+  }, []);
+
+  // 2.5 Observe visibility to avoid expensive rendering while off-screen
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || typeof IntersectionObserver === 'undefined') {
+      setIsVisible(true);
+      isVisibleRef.current = true;
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const visible = entry.isIntersecting;
+        setIsVisible(visible);
+        isVisibleRef.current = visible;
+      },
+      { threshold: 0, rootMargin: '0px' }
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
   }, []);
 
   // 3. Render and Draw onto Canvas with object-cover and high DPR support
@@ -373,17 +412,20 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
 
   // Trigger draw on progress, readiness, or resize
   useEffect(() => {
+    if (!isVisible) return;
     drawFrame(scrollProgress);
-  }, [drawFrame, scrollProgress]);
+  }, [drawFrame, scrollProgress, isVisible]);
 
   // Handle Resize correctly
   useEffect(() => {
     const handleResize = () => {
+      if (!isVisible) return;
+      lastDrawnFrameRef.current = -1;
       drawFrame(scrollProgress);
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [drawFrame, scrollProgress]);
+  }, [drawFrame, scrollProgress, isVisible]);
 
   // Smoothstep function to map opacity based on progress ranges
   const getCaptionOpacity = (progress: number, start: number, end: number) => {
@@ -410,10 +452,11 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
   };
 
   return (
-    <div 
+    <section
       id="scroll-film-container"
-      ref={containerRef} 
+      ref={containerRef}
       className="relative w-full h-[300vh] bg-[#070503]"
+      aria-label="العرض السينمائي التفاعلي للديار"
     >
       {/* Sticky Canvas Viewport (100vh) */}
       <div className="sticky top-0 left-0 w-full h-screen overflow-hidden flex items-center justify-center">
@@ -448,9 +491,10 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
         </AnimatePresence>
 
         {/* The Main High-Performance Canvas */}
-        <canvas 
+        <canvas
           ref={canvasRef}
           className="w-full h-full object-cover block"
+          aria-hidden="true"
         />
 
         {/* Cinematic Scrolled Content Overlays (Captions - Off-center RTL style) */}
@@ -469,9 +513,9 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
                   <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brass/10 border border-brass/25 text-brass-lt text-[10px] font-kufi font-bold mb-3 tracking-wider">
                     <Compass className="w-3 h-3 text-brass-lt animate-spin-slow" /> مَعْلَمٌ وَتَارِيخ
                   </span>
-                  <h3 className="text-2xl md:text-4xl font-serif font-bold text-sand drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)] leading-tight">
+                  <h2 className="text-2xl md:text-4xl font-serif font-bold text-sand drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)] leading-tight">
                     {caption.text}
-                  </h3>
+                  </h2>
                   <p className="text-sm md:text-base text-sand-dim/95 mt-3 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] font-sans leading-relaxed">
                     {caption.sub}
                   </p>
@@ -520,7 +564,7 @@ export const ScrollFilmCanvas: React.FC<ScrollFilmCanvasProps> = ({
         <div className="absolute bottom-8 left-8 border-b border-l border-brass/20 w-8 h-8 pointer-events-none" />
 
       </div>
-    </div>
+    </section>
   );
 };
 
