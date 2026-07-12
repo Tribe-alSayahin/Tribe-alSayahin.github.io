@@ -1,5 +1,6 @@
-import { BookOpen } from 'lucide-react';
+import { BookOpen, Mail } from 'lucide-react';
 import { LOCAL_REFS } from '../../lib/references';
+import { NAV_LINKS } from '../../lib/navigation';
 
 interface FooterProps {
   scrollToSection: (id: string) => void;
@@ -8,9 +9,10 @@ interface FooterProps {
 export function Footer({ scrollToSection }: FooterProps) {
   return (
     <footer className="section-surface bg-ink-2 border-t-2 border-brass/20 py-20 md:py-28 lg:py-32 px-5 md:px-8 relative z-10 text-center overflow-hidden">
+      <div className="footer-sadu" aria-hidden="true" />
       <div className="section-divider absolute top-0 inset-x-0 -translate-y-1/2" aria-hidden="true" />
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_18%_18%,color-mix(in_srgb,var(--brass)_10%,transparent),transparent_24rem),radial-gradient(circle_at_86%_78%,color-mix(in_srgb,var(--indigo)_18%,transparent),transparent_24rem)]" aria-hidden="true" />
-      <div className="max-w-[1160px] mx-auto">
+      <div className="max-w-[1160px] mx-auto relative z-10">
         <section className="editorial-card max-w-[1040px] mx-auto mb-14 md:mb-16 p-6 sm:p-8 md:p-10 pb-12 border-b border-brass/20 text-right backdrop-blur-lg">
           <div className="text-center mb-8 md:mb-10">
             <span className="font-kufi text-xs md:text-sm text-brass-lt font-semibold tracking-widest">مراجع قابلة للمراجعة</span>
@@ -42,6 +44,29 @@ export function Footer({ scrollToSection }: FooterProps) {
             ))}
           </ol>
         </section>
+
+        <div className="footer-links">
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.id}
+              href={`#${link.id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection(link.id);
+              }}
+            >
+              {link.label}
+            </a>
+          ))}
+          <a
+            href="mailto:admin@alsaihani.com"
+            className="inline-flex items-center gap-1.5 text-brass-lt hover:text-brass"
+            aria-label="مراسلة إدارة الموقع"
+          >
+            <Mail className="w-4 h-4" aria-hidden="true" />
+            admin@alsaihani.com
+          </a>
+        </div>
 
         <a
           href="#home"

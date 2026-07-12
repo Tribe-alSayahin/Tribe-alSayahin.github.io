@@ -11,27 +11,25 @@ import { Hero } from './components/layout/Hero';
 import { Section } from './components/layout/Section';
 import { SectionLoader } from './components/layout/SectionLoader';
 import { Footer } from './components/layout/Footer';
+import { ChapterDivider } from './components/layout/ChapterDivider';
 import { AdminSection } from './components/layout/AdminSection';
 import { Contact } from './components/layout/Contact';
+import { Timeline } from './components/layout/Timeline';
+import { Supporters } from './components/layout/Supporters';
 import LineageTree from './components/LineageTree';
 import { AnimatePresence, motion } from 'motion/react';
 const JathumMonument = lazy(() => import('./components/JathumMonument'));
 const ConstellationDiagram = lazy(() => import('./components/ConstellationDiagram'));
 const WasmGallery = lazy(() => import('./components/WasmGallery'));
 import { NotFound } from './components/NotFound';
-import { Timeline } from './components/layout/Timeline';
-import { Supporters } from './components/layout/Supporters';
-import { NAV_LINKS } from './lib/navigation';
-import { setSeoMeta } from './lib/seo';
-
 const InteractiveMap = lazy(() => import('./components/InteractiveMap'));
 const HeritageGallery = lazy(() => import('./components/HeritageGallery'));
 const PoetryCouncil = lazy(() => import('./components/PoetryCouncil/index'));
 const OppenheimArchive = lazy(() => import('./components/OppenheimArchive'));
 const NewsEvents = lazy(() => import('./components/NewsEvents'));
 const ScrollFilmCanvas = lazy(() => import('./components/ScrollFilmCanvas'));
-
-const SECTION_IDS = NAV_LINKS.map((link) => link.id);
+import { SECTION_IDS } from './lib/navigation';
+import { setSeoMeta } from './lib/seo';
 
 export default function App() {
   const { theme, toggleTheme } = useTheme();
@@ -74,7 +72,7 @@ export default function App() {
       const hostname = window.location.hostname;
       const isGitHubPages = /\.github\.io$/i.test(hostname);
       const isRootUserPage = hostname === 'tribe-alsayahin.github.io';
-      
+
       let homePath = '/';
       if (isGitHubPages && !isRootUserPage) {
         const pathname = window.location.pathname;
@@ -83,7 +81,7 @@ export default function App() {
           homePath = `/${segments[0]}/`;
         }
       }
-      
+
       window.history.pushState({}, '', homePath);
     }
     setIsNotFound(false);
@@ -210,12 +208,20 @@ export default function App() {
       </Suspense>
 
       <main id="main-content" className="relative">
-      {/* SECTION 0: JATHUM — THE FOUNDATION */}
+      {/* CHAPTER 1: الأصول */}
+      <ChapterDivider
+        id="chapter-origins"
+        number={1}
+        title="الأصول"
+        description="الجذور الأولى: الجثوم والنسب والأنساب، حيث تبدأ قصة السياحين."
+      />
+
       <Section
         id="jathum"
         tone="ink"
         noBorder
-        serialNumber="٠٠"
+        chapterNumber={1}
+        serialNumber="٠١"
         badgeText="الأساس والمنطلق"
         title="هجرة الجثوم — أساس الديار"
         description="قبل كل الأقسام تأتي الجثوم: أول هجرة رسمية أسسها السياحين في عالية نجد، ومنها انطلق الاستقرار والتحضر وامتدت بقية الديار."
@@ -224,11 +230,11 @@ export default function App() {
         <JathumMonument scrollToSection={scrollToSection} />
       </Section>
 
-      {/* SECTION 1: LINEAGE TREE */}
       <Section
         id="lineage"
         tone="ink-2"
-        serialNumber="٠١"
+        chapterNumber={1}
+        serialNumber="٠٢"
         badgeText="النسب والجذر"
         title="ديوان نسب القبيلة الأصيل"
         description="التوثيق المتسلسل لعمود نسب فخذ السياحين من المزاحمة من الروقة من عتيبة الهيلا، وصولاً لعدنان."
@@ -237,51 +243,11 @@ export default function App() {
         <LineageTree />
       </Section>
 
-      {/* SECTION 2: INTERACTIVE MAP */}
-      <Section
-        id="map"
-        tone="ink"
-        serialNumber="٠٢"
-        badgeText="الديار والهجرات"
-        title="الديار ومنازل الاستقرار"
-        description="استكشف التوزيع الجغرافي لديار السياحين التاريخية، من منازلهم في نجد العذية وهجرهم المعتمدة ومناهل المياه القديمة."
-        loaderLabel="جارٍ تحميل قسم الديار..."
-      >
-        <InteractiveMap />
-      </Section>
-
-      {/* SECTION 3: HERITAGE GALLERY */}
-      <Section
-        id="gallery"
-        tone="ink-2"
-        serialNumber="٠٣"
-        badgeText="الشاهد البصري"
-        title="معرض التراث والمقتنيات"
-        description="شواهد بصرية ومقتنيات تراثية تعكس تاريخ القبيلة العريق وصوراً من ذاكرة الصحراء والديار المأهولة."
-        loaderLabel="جارٍ تحميل معرض التراث..."
-      >
-        <HeritageGallery />
-      </Section>
-
-      {/* SECTION 4: WASM GALLERY */}
-      <Section
-        id="wasm"
-        tone="ink"
-        narrow
-        serialNumber="٠٤"
-        badgeText="علامات الوسم"
-        title="وسم الإبل وعلامة الباب"
-        description="وسم «الباب» الشهير للسياحين على الرقبة من الجهة اليسرى، رمز الهوية والأصالة في البادية."
-        loaderLabel="جارٍ تحميل معرض الوسوم..."
-      >
-        <WasmGallery />
-      </Section>
-
-      {/* SECTION 5: CONSTELLATION DIAGRAM */}
       <Section
         id="constellation"
-        tone="ink-2"
-        serialNumber="٠٥"
+        tone="ink"
+        chapterNumber={1}
+        serialNumber="٠٣"
         badgeText="الأنساب السبعة"
         title="الخلاصة الكوكبية للأنساب"
         description="تمثيل فلكي رمزي يربط الأنساب السبعة الكبرى في فضاء كوكبي مترابط يبرز التلاحم والأصل المشترك للقبيلة."
@@ -290,23 +256,68 @@ export default function App() {
         <ConstellationDiagram />
       </Section>
 
-      {/* SECTION 6: OPPENHEIM ARCHIVE */}
+      {/* CHAPTER 2: الديار */}
+      <ChapterDivider
+        id="chapter-diyar"
+        number={2}
+        title="الديار"
+        description="منازل الاستقرار والهجرات: خريطة الديار ومعرض التراث البصري."
+      />
+
       <Section
-        id="archive"
-        tone="ink"
-        serialNumber="٠٦"
-        badgeText="الأرشيف والمصادر"
-        title="التوثيق الاستشراقي والمدونات التاريخية"
-        description="شهادات وملاحظات المستشرقين والرحالة الغربيين حول نسب وقوة ومواقف السياحين في تاريخ الجزيرة العربية."
-        loaderLabel="جارٍ تحميل الأرشيف الاستشراقي..."
+        id="map"
+        tone="ink-2"
+        noBorder
+        chapterNumber={2}
+        serialNumber="٠٤"
+        badgeText="الديار والهجرات"
+        title="الديار ومنازل الاستقرار"
+        description="استكشف التوزيع الجغرافي لديار السياحين التاريخية، من منازلهم في نجد العذية وهجرهم المعتمدة ومناهل المياه القديمة."
+        loaderLabel="جارٍ تحميل قسم الديار..."
       >
-        <OppenheimArchive />
+        <InteractiveMap />
       </Section>
 
-      {/* SECTION 7: POETRY COUNCIL */}
+      <Section
+        id="gallery"
+        tone="ink"
+        chapterNumber={2}
+        serialNumber="٠٥"
+        badgeText="الشاهد البصري"
+        title="معرض التراث والمقتنيات"
+        description="شواهد بصرية ومقتنيات تراثية تعكس تاريخ القبيلة العريق وصوراً من ذاكرة الصحراء والديار المأهولة."
+        loaderLabel="جارٍ تحميل معرض التراث..."
+      >
+        <HeritageGallery />
+      </Section>
+
+      {/* CHAPTER 3: الهوية */}
+      <ChapterDivider
+        id="chapter-identity"
+        number={3}
+        title="الهوية"
+        description="وسم الإبل وديوان الشعر: علامات الهوية والإبداع القبلي."
+      />
+
+      <Section
+        id="wasm"
+        tone="ink-2"
+        noBorder
+        chapterNumber={3}
+        narrow
+        serialNumber="٠٦"
+        badgeText="علامات الوسم"
+        title="وسم الإبل وعلامة الباب"
+        description="وسم «الباب» الشهير للسياحين على الرقبة من الجهة اليسرى، رمز الهوية والأصالة في البادية."
+        loaderLabel="جارٍ تحميل معرض الوسوم..."
+      >
+        <WasmGallery />
+      </Section>
+
       <Section
         id="poetry"
-        tone="ink-2"
+        tone="ink"
+        chapterNumber={3}
         serialNumber="٠٧"
         badgeText="مجلس الشعراء"
         title="ديوان الشعر النبطي"
@@ -316,11 +327,54 @@ export default function App() {
         <PoetryCouncil />
       </Section>
 
-      {/* SECTION 8: NEWS & EVENTS */}
+      {/* CHAPTER 4: التاريخ */}
+      <ChapterDivider
+        id="chapter-history"
+        number={4}
+        title="التاريخ"
+        description="الخط الزمني والأرشيف الاستشراقي: شهادات الماضي وتوثيقاته."
+      />
+
+      <Section
+        id="timeline"
+        tone="ink-2"
+        noBorder
+        chapterNumber={4}
+        serialNumber="٠٨"
+        badgeText="من تاريخ القبيلة"
+        title="صفحات من مآثر وإرث القبيلة"
+        description="تسلسل زمني يوثق أبرز المحطات التاريخية لفروسية ومواقف قبيلة السياحين وإسهامها الوطني المعتمد."
+      >
+        <Timeline />
+      </Section>
+
+      <Section
+        id="archive"
+        tone="ink"
+        chapterNumber={4}
+        serialNumber="٠٩"
+        badgeText="الأرشيف والمصادر"
+        title="التوثيق الاستشراقي والمدونات التاريخية"
+        description="شهادات وملاحظات المستشرقين والرحالة الغربيين حول نسب وقوة ومواقف السياحين في تاريخ الجزيرة العربية."
+        loaderLabel="جارٍ تحميل الأرشيف الاستشراقي..."
+      >
+        <OppenheimArchive />
+      </Section>
+
+      {/* CHAPTER 5: المجتمع */}
+      <ChapterDivider
+        id="chapter-community"
+        number={5}
+        title="المجتمع"
+        description="الأخبار والداعمين والتواصل: حاضر القبيلة وتواصلها مع الأجيال."
+      />
+
       <Section
         id="news"
-        tone="ink"
-        serialNumber="٠٨"
+        tone="ink-2"
+        noBorder
+        chapterNumber={5}
+        serialNumber="١٠"
         badgeText="الأخبار والمناسبات"
         title="الأخبار والمناسبات"
         description="قسم القراءة العامة لعناصر الأخبار والمناسبات المنشورة من لوحة الإدارة."
@@ -329,26 +383,42 @@ export default function App() {
         <NewsEvents />
       </Section>
 
-      {/* SECTION 9: ADMIN */}
+      <Section
+        id="supporters"
+        tone="ink"
+        chapterNumber={5}
+        serialNumber="١١"
+        badgeText="بدعمهم نستمر"
+        title="داعمو وثيقة وإرث القبيلة"
+        description="تقديراً وعرفاناً لرجالات وأبناء قبيلة السياحين الذين ساهموا بسخاء ودعم مستمر في توثيق هذا الإرث التاريخي العريق وصونه للأجيال."
+      >
+        <Supporters />
+      </Section>
+
+      <Section
+        id="contact"
+        tone="ink-2"
+        chapterNumber={5}
+        serialNumber="١٢"
+        badgeText="على تواصل"
+        title="تواصل معنا"
+        description="لأي استفسار أو إضافة معلومة موثّقة عن القبيلة، يسعدنا تواصلكم."
+      >
+        <Contact />
+      </Section>
+
       <Section
         id="admin"
-        tone="ink-2"
-        serialNumber="٠٩"
+        tone="ink"
+        noBorder
+        chapterNumber={5}
+        serialNumber="١٣"
         badgeText="بوابة الإدارة"
         title="قسم الإدارة"
         description="مركز إدارة محتوى الموقع الرسمي لقبيلة السياحين — يتيح للمشرفين نشر الأخبار وجدولة المناسبات وإدارة المحتوى المعروض للعموم."
       >
         <AdminSection />
       </Section>
-
-      {/* SECTION 10: TIMELINE */}
-      <Timeline />
-
-      {/* SECTION 11: SUPPORTERS */}
-      <Supporters />
-
-      {/* CONTACT SECTION */}
-      <Contact />
       </main>
 
       {/* FOOTER */}

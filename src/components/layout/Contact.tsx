@@ -32,75 +32,60 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="section section-surface bg-gradient-to-b from-olive to-ink px-5 md:px-8 relative z-10 py-20 md:py-28">
-      <div className="max-w-[1160px] mx-auto">
-        <div className="text-center mb-14">
-          <span className="section-kicker">على تواصــل</span>
-          <h2 className="font-ruqaa text-4xl md:text-6xl mt-4 text-sand">تواصل معنا</h2>
-          <div 
-            className="w-[84px] h-[26px] mx-auto mt-4 opacity-70 bg-repeat" 
-            style={{ backgroundImage: 'var(--sadu)', backgroundSize: '28px 20px' }}
-            aria-hidden="true"
-          />
-          <p className="max-w-[620px] mx-auto mt-4 text-sand-dim text-sm md:text-base font-sans">
-            لأي استفسار أو إضافة معلومة موثّقة عن القبيلة، يسعدنا تواصلكم.
-          </p>
-        </div>
-
-        <div className="editorial-card max-w-[680px] mx-auto p-6 md:p-10 shadow-2xl relative">
-          <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-            {formError && (
-              <div className="flex items-center gap-2 p-4 bg-copper/10 border border-copper/40 text-sand rounded-xl text-sm font-semibold text-right" role="alert">
-                <AlertCircle className="w-5 h-5 text-copper-lt shrink-0" />
-                <span>{formError}</span>
-              </div>
-            )}
-
-            <div className="space-y-2 text-right">
-              <label htmlFor="contact-name" className="block font-semibold text-brass-lt text-sm">الاسم الكـريم</label>
-              <input
-                id="contact-name"
-                type="text"
-                placeholder="اكتب اسمك الكريم"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3.5 rounded-xl border border-brass/20 bg-ink/70 text-sand placeholder-sand-dim/70 focus:outline-none focus:border-brass focus:ring-2 focus:ring-brass/15 transition-all text-base focus-visible:ring-2 focus-visible:ring-brass"
-              />
+    <div className="max-w-[680px] mx-auto">
+      <div className="editorial-card p-6 md:p-10 shadow-2xl relative">
+        <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+          {formError && (
+            <div className="flex items-center gap-2 p-4 bg-copper/10 border border-copper/40 text-sand rounded-xl text-sm font-semibold text-right" role="alert">
+              <AlertCircle className="w-5 h-5 text-copper-lt shrink-0" />
+              <span>{formError}</span>
             </div>
+          )}
 
-            <div className="space-y-2 text-right">
-              <label htmlFor="contact-email" className="block font-semibold text-brass-lt text-sm">البريد الإلكتروني</label>
-              <input
-                id="contact-email"
-                type="email"
-                placeholder="أدخل بريدك الإلكتروني"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3.5 rounded-xl border border-brass/20 bg-ink/70 text-sand placeholder-sand-dim/70 focus:outline-none focus:border-brass focus:ring-2 focus:ring-brass/15 transition-all text-base ltr focus-visible:ring-2 focus-visible:ring-brass"
-              />
-            </div>
+          <div className="space-y-2 text-right">
+            <label htmlFor="contact-name" className="block font-semibold text-brass-lt text-sm">الاسم الكـريم</label>
+            <input
+              id="contact-name"
+              type="text"
+              placeholder="اكتب اسمك الكريم"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-4 py-3.5 rounded-xl border border-brass/20 bg-ink/70 text-sand placeholder-sand-dim/70 focus:outline-none focus:border-brass focus:ring-2 focus:ring-brass/15 transition-all text-base focus-visible:ring-2 focus-visible:ring-brass"
+            />
+          </div>
 
-            <div className="space-y-2 text-right">
-              <label htmlFor="contact-msg" className="block font-semibold text-brass-lt text-sm">الرسالة</label>
-              <textarea
-                id="contact-msg"
-                rows={4}
-                placeholder="اكتب رسالتك هنا..."
-                value={msg}
-                onChange={(e) => setMsg(e.target.value)}
-                className="w-full px-4 py-3.5 rounded-xl border border-brass/20 bg-ink/70 text-sand placeholder-sand-dim/70 focus:outline-none focus:border-brass focus:ring-2 focus:ring-brass/15 transition-all text-base focus-visible:ring-2 focus-visible:ring-brass"
-              />
-            </div>
+          <div className="space-y-2 text-right">
+            <label htmlFor="contact-email" className="block font-semibold text-brass-lt text-sm">البريد الإلكتروني</label>
+            <input
+              id="contact-email"
+              type="email"
+              placeholder="أدخل بريدك الإلكتروني"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-3.5 rounded-xl border border-brass/20 bg-ink/70 text-sand placeholder-sand-dim/70 focus:outline-none focus:border-brass focus:ring-2 focus:ring-brass/15 transition-all text-base ltr focus-visible:ring-2 focus-visible:ring-brass"
+            />
+          </div>
 
-            <button
-              type="submit"
-              className="w-full py-4 rounded-xl font-bold text-lg bg-gradient-to-r from-brass to-brass-lt text-ink hover:-translate-y-1 hover:shadow-lg active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none border-0"
-            >
-              <Send className="w-5 h-5" />
-              إرسال الرسالة
-            </button>
-          </form>
-        </div>
+          <div className="space-y-2 text-right">
+            <label htmlFor="contact-msg" className="block font-semibold text-brass-lt text-sm">الرسالة</label>
+            <textarea
+              id="contact-msg"
+              rows={4}
+              placeholder="اكتب رسالتك هنا..."
+              value={msg}
+              onChange={(e) => setMsg(e.target.value)}
+              className="w-full px-4 py-3.5 rounded-xl border border-brass/20 bg-ink/70 text-sand placeholder-sand-dim/70 focus:outline-none focus:border-brass focus:ring-2 focus:ring-brass/15 transition-all text-base focus-visible:ring-2 focus-visible:ring-brass"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-4 rounded-xl font-bold text-lg bg-gradient-to-r from-brass to-brass-lt text-ink hover:-translate-y-1 hover:shadow-lg active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none border-0"
+          >
+            <Send className="w-5 h-5" />
+            إرسال الرسالة
+          </button>
+        </form>
       </div>
 
       {/* Form Submission Success Modal */}
@@ -122,6 +107,6 @@ export function Contact() {
           </div>
         </div>
       )}
-    </section>
+    </div>
   );
 }

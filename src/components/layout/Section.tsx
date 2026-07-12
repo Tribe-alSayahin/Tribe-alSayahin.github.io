@@ -19,6 +19,8 @@ interface SectionProps {
   id: string;
   /** درجة الخلفية — تتناوب بين الحبر الداكن ودرجته الثانية */
   tone: 'ink' | 'ink-2';
+  /** رقم الفصل (لعرضه في الترويسة) */
+  chapterNumber?: number;
   serialNumber: string;
   badgeText: string;
   title: string;
@@ -29,6 +31,10 @@ interface SectionProps {
   noBorder?: boolean;
   /** حصر عرض المحتوى (لا الترويسة) في عمود ضيّق */
   narrow?: boolean;
+  /** إخفاء الترويسة (للأقسام ذات الترويسة المخصصة) */
+  noHeader?: boolean;
+  /** سطح الخلفية — يمكن استخدامه لألواح زيتونية أو رخامية */
+  surface?: 'default' | 'olive' | 'parchment';
   children: ReactNode;
 }
 
@@ -38,6 +44,7 @@ const SECTION_PADDING = 'py-16 md:py-24 lg:py-32';
 export function Section({
   id,
   tone,
+  chapterNumber,
   serialNumber,
   badgeText,
   title,
@@ -45,9 +52,13 @@ export function Section({
   loaderLabel,
   noBorder = false,
   narrow = false,
+  noHeader = false,
+  surface = 'default',
   children,
 }: SectionProps) {
   const toneClass = tone === 'ink' ? 'bg-ink' : 'bg-ink-2';
+  const surfaceClass =
+    surface === 'olive' ? 'bg-olive' : surface === 'parchment' ? 'bg-parchment' : toneClass;
   const borderClass = noBorder ? '' : 'border-t border-brass/15';
 
   const body = loaderLabel ? (
@@ -59,15 +70,18 @@ export function Section({
   return (
     <section
       id={id}
-      className={`section ${toneClass} px-6 relative z-10 ${borderClass} ${SECTION_PADDING}`}
+      className={`section ${surfaceClass} px-6 relative z-10 ${borderClass} ${SECTION_PADDING}`}
     >
       <div className="max-w-[1160px] mx-auto">
-        <SectionHeader
-          serialNumber={serialNumber}
-          badgeText={badgeText}
-          title={title}
-          description={description}
-        />
+        {!noHeader && (
+          <SectionHeader
+            chapterNumber={chapterNumber}
+            serialNumber={serialNumber}
+            badgeText={badgeText}
+            title={title}
+            description={description}
+          />
+        )}
         <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
           {narrow ? <div className="max-w-[720px] mx-auto">{body}</div> : body}
         </div>

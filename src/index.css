@@ -34,6 +34,9 @@
   --gold-muted: #b89648;
   /* الدرجة ٣ — ذهب خافت: الحدود والخطوط الفاصلة */
   --gold-faint: #6b5a30;
+
+  /* ─── نمط السدو الزخرفي المستخدم في الخلفيات والفواصل ─── */
+  --sadu: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='26' viewBox='0 0 44 26'%3E%3Cg fill='none' stroke='%23c9a24b' stroke-width='1.1'%3E%3Cpath d='M0 13 11 2 22 13 11 24Z'/%3E%3Cpath d='M22 13 33 2 44 13 33 24Z'/%3E%3C/g%3E%3Cg fill='%23c9a24b'%3E%3Ccircle cx='11' cy='13' r='1.7'/%3E%3Ccircle cx='33' cy='13' r='1.7'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 /* الوضع النهاري — «ورق المخطوطة في ضوء النهار» */
@@ -694,4 +697,198 @@ body::after {
 
 .editorial-card:hover::after {
   left: 160%;
+}
+
+/* ─────────────────────────────────────────────────
+   فواصل الفصول (ChapterDivider) — مساحة سردية بين الأقسام
+   ───────────────────────────────────────────────── */
+.chapter-divider {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  scroll-margin-top: 6rem;
+}
+
+.chapter-divider::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--sadu);
+  background-repeat: repeat;
+  background-size: 88px 52px;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.chapter-divider::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 40%, color-mix(in srgb, var(--brass) 10%, transparent), transparent 30rem),
+    radial-gradient(circle at 80% 60%, color-mix(in srgb, var(--indigo) 16%, transparent), transparent 30rem);
+  pointer-events: none;
+}
+
+.chapter-divider-panel {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 3rem 2rem;
+  max-width: 720px;
+  border: 1px solid color-mix(in srgb, var(--brass) 22%, transparent);
+  border-radius: var(--radius-2xl);
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--ink-2) 82%, transparent), color-mix(in srgb, var(--indigo) 18%, transparent));
+  backdrop-filter: blur(18px) saturate(120%);
+  box-shadow: var(--elev-3), 0 0 80px color-mix(in srgb, var(--brass) 8%, transparent);
+}
+
+.chapter-divider-number {
+  font-family: var(--font-kufi);
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  line-height: 1;
+  color: var(--brass);
+  opacity: 0.18;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+.chapter-divider-title {
+  font-family: var(--font-ruqaa);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: var(--sand);
+  line-height: 1.25;
+  margin-bottom: 0.75rem;
+}
+
+.chapter-divider-desc {
+  font-family: var(--font-sans);
+  color: var(--sand-dim);
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+.chapter-divider .sadu-band {
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+  height: 22px;
+  opacity: 0.25;
+}
+
+.chapter-divider .sadu-band-bottom {
+  position: absolute;
+  bottom: 0;
+  inset-inline: 0;
+  height: 22px;
+  opacity: 0.25;
+  transform: rotate(180deg);
+}
+
+/* ─────────────────────────────────────────────────
+   تأثير الغبار الذهبي المتحرك
+   ───────────────────────────────────────────────── */
+.dust-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image:
+    radial-gradient(circle at 20% 20%, color-mix(in srgb, var(--brass) 18%, transparent) 0, transparent 1px),
+    radial-gradient(circle at 80% 80%, color-mix(in srgb, var(--brass) 12%, transparent) 0, transparent 1px),
+    radial-gradient(circle at 40% 70%, color-mix(in srgb, var(--brass) 10%, transparent) 0, transparent 1px);
+  background-size: 120px 120px, 180px 180px, 240px 240px;
+  opacity: 0.6;
+  animation: drift-dust 24s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dust-layer {
+    animation: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────
+   شريط فصول سريعة في المدخل
+   ───────────────────────────────────────────────── */
+.hero-chapter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.hero-chapter-bar button {
+  font-family: var(--font-kufi);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--brass) 35%, transparent);
+  background: color-mix(in srgb, var(--ink) 60%, transparent);
+  color: var(--sand-dim);
+  backdrop-filter: blur(8px);
+  transition: all var(--duration-base) ease;
+  cursor: pointer;
+}
+
+.hero-chapter-bar button:hover {
+  background: color-mix(in srgb, var(--brass) 15%, transparent);
+  color: var(--brass-lt);
+  border-color: color-mix(in srgb, var(--brass) 60%, transparent);
+}
+
+.hero-chapter-bar button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--brass) 50%, transparent);
+}
+
+/* ─────────────────────────────────────────────────
+   تحديثات التذييل
+   ───────────────────────────────────────────────── */
+.footer-sadu {
+  position: absolute;
+  inset: 0;
+  background-image: var(--sadu);
+  background-repeat: repeat;
+  background-size: 88px 52px;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-links a {
+  font-family: var(--font-kufi);
+  font-size: 0.85rem;
+  color: var(--sand-dim);
+  transition: color var(--duration-base) ease;
+}
+
+.footer-links a:hover {
+  color: var(--brass-lt);
+}
+
+.footer-links a:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--brass) 40%, transparent);
+  border-radius: 0.25rem;
 }

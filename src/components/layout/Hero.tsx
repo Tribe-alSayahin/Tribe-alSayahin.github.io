@@ -1,5 +1,5 @@
 /**
- * Hero — المشهد الافتتاحي لموقع قبيلة السياحين
+ * Hero — مدخل ديوان قبيلة السياحين
  *
  * يحتل كامل الشاشة عند الدخول. يُشغِّل الشعار الثلاثي الأبعاد «وسم الباب»
  * كخلفية، ثم بعد اكتمال حركة الكاميرا الافتتاحية يكشف لوحة رسمية:
@@ -7,8 +7,7 @@
  *   ٢. اسم «قبيلة السياحين» كلمةً كلمة بحروف متشابكة (خط Aref Ruqaa)
  *   ٣. فاصل مزخرف ثم الجملة الفرعية (خط Amiri)
  *   ٤. زر أساسي ذهبي «استكشف الموقع» وزر ثانوي «شجرة النسب»
- *
- * لا توجد عناصر إضافية في هذا القسم — قوة النقاء تحمي الشعار.
+ *   ٥. شريط فصول سريعة للانتقال إلى كل فصل
  */
 import { useState, lazy, Suspense, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -31,6 +30,14 @@ const PANEL_CORNERS = [
   'top-3 left-3 border-t border-l rounded-tl-xl',
   'bottom-3 right-3 border-b border-r rounded-br-xl',
   'bottom-3 left-3 border-b border-l rounded-bl-xl',
+] as const;
+
+const CHAPTERS = [
+  { id: 'jathum', label: 'الأصول' },
+  { id: 'map', label: 'الديار' },
+  { id: 'wasm', label: 'الهوية' },
+  { id: 'timeline', label: 'التاريخ' },
+  { id: 'news', label: 'المجتمع' },
 ] as const;
 
 export function Hero({ scrollToSection }: HeroProps) {
@@ -68,6 +75,7 @@ export function Hero({ scrollToSection }: HeroProps) {
         aria-hidden="true"
       />
       <div className="hero-pattern absolute inset-0 pointer-events-none z-10" aria-hidden="true" />
+      <div className="dust-layer" aria-hidden="true" />
 
       {/* ─── طبقة نص تظهر بعد اكتمال حركة الكاميرا ─── */}
       <AnimatePresence>
@@ -178,6 +186,31 @@ export function Hero({ scrollToSection }: HeroProps) {
               >
                 شجرة النسب
               </motion.button>
+            </motion.div>
+
+            {/* شريط الفصول السريعة */}
+            <motion.div
+              className="hero-chapter-bar w-full max-w-[520px]"
+              initial={prefersReduced ? { opacity: 1 } : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.6,
+                delay: afterName + 0.55,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              role="list"
+              aria-label="فصول الموقع الرئيسية"
+            >
+              {CHAPTERS.map((chapter) => (
+                <button
+                  key={chapter.id}
+                  onClick={() => scrollToSection(chapter.id)}
+                  role="listitem"
+                  aria-label={`الانتقال إلى فصل ${chapter.label}`}
+                >
+                  {chapter.label}
+                </button>
+              ))}
             </motion.div>
           </motion.div>
         )}

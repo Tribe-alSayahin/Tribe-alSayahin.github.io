@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tribe-alsayahin.github.io/sitemap.xml
+Sitemap: https://alsaihani.com/sitemap.xml
