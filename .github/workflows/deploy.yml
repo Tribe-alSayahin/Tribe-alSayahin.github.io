@@ -78,10 +78,13 @@ jobs:
         uses: actions/deploy-pages@v4
 
       - name: Ping search engines (sitemap + IndexNow)
+        env:
+          # INDEXNOW_KEY is public by design (stored in public/<key>.txt for verification).
+          # Store it in GitHub Secrets → INDEXNOW_KEY to allow key rotation without editing this file.
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY || '6d3e7f1a9b2c4d8e5f0a6b3c7d1e2f4a' }}
         run: |
           SITEMAP="https://alsaihani.com/sitemap.xml"
-          INDEXNOW_KEY="6d3e7f1a9b2c4d8e5f0a6b3c7d1e2f4a"
-          SITE_URL="https://alsaihani.com/"
+          SITE="https://alsaihani.com"
 
           echo "→ Bing sitemap ping"
           curl -sf "https://www.bing.com/ping?sitemap=${SITEMAP}" -o /dev/null && echo "  ✓ Bing" || echo "  ✗ Bing (non-fatal)"
@@ -89,6 +92,20 @@ jobs:
           echo "→ Yandex sitemap ping"
           curl -sf "https://yandex.com/ping?sitemap=${SITEMAP}" -o /dev/null && echo "  ✓ Yandex" || echo "  ✗ Yandex (non-fatal)"
 
-          echo "→ IndexNow (Bing + Yandex + others)"
-          curl -sf "https://api.indexnow.org/indexnow?url=${SITE_URL}&key=${INDEXNOW_KEY}" -o /dev/null && echo "  ✓ IndexNow" || echo "  ✗ IndexNow (non-fatal)"
+          echo "→ IndexNow batch (all static URLs)"
+          curl -sf -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -d "{
+              \"host\": \"alsaihani.com\",
+              \"key\": \"${INDEXNOW_KEY}\",
+              \"keyLocation\": \"${SITE}/${INDEXNOW_KEY}.txt\",
+              \"urlList\": [
+                \"${SITE}/\",
+                \"${SITE}/nasab/\",
+                \"${SITE}/diyar/\",
+                \"${SITE}/hawiya/\",
+                \"${SITE}/tarikh/\",
+                \"${SITE}/news/\"
+              ]
+            }" -o /dev/null && echo "  ✓ IndexNow batch" || echo "  ✗ IndexNow batch (non-fatal)"
         continue-on-error: true
