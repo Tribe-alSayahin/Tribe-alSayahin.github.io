@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { GitBranch } from 'lucide-react';
 import type { TreeNode } from '../LineageTree.types';

@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Section — الغلاف الموحّد لأقسام الصفحة الرئيسية
  *
@@ -82,7 +84,7 @@ export function Section({
             description={description}
           />
         )}
-        <div className="reveal-el opacity-0 translate-y-10 transition-all duration-800">
+        <div className="opacity-100 translate-y-0 transition-all duration-800">
           {narrow ? <div className="max-w-[720px] mx-auto">{body}</div> : body}
         </div>
       </div>

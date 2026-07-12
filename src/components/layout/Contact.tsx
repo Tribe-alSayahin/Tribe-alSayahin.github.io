@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, FormEvent } from 'react';
 import { Send, AlertCircle, CheckCircle2 } from 'lucide-react';
 

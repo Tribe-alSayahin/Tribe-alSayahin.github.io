@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Compass, Home, ChevronLeft } from 'lucide-react';
 import { motion } from 'motion/react';

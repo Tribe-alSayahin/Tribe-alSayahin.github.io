@@ -47,29 +47,49 @@ create policy "Public can read posts"
 on public.admin_posts
 for select
 to public
-using (true);
+using (status = 'published');
 
-drop policy if exists "Authenticated can insert posts" on public.admin_posts;
-create policy "Authenticated can insert posts"
+drop policy if exists "Super admin can insert posts" on public.admin_posts;
+create policy "Super admin can insert posts"
 on public.admin_posts
 for insert
 to authenticated
-with check (auth.uid() is not null);
+with check (
+  exists (
+    select 1 from public.admin_users
+    where user_id = auth.uid() and role = 'super_admin'
+  )
+);
 
-drop policy if exists "Authenticated can update posts" on public.admin_posts;
-create policy "Authenticated can update posts"
+drop policy if exists "Super admin can update posts" on public.admin_posts;
+create policy "Super admin can update posts"
 on public.admin_posts
 for update
 to authenticated
-using (auth.uid() is not null)
-with check (auth.uid() is not null);
+using (
+  exists (
+    select 1 from public.admin_users
+    where user_id = auth.uid() and role = 'super_admin'
+  )
+)
+with check (
+  exists (
+    select 1 from public.admin_users
+    where user_id = auth.uid() and role = 'super_admin'
+  )
+);
 
-drop policy if exists "Authenticated can delete posts" on public.admin_posts;
-create policy "Authenticated can delete posts"
+drop policy if exists "Super admin can delete posts" on public.admin_posts;
+create policy "Super admin can delete posts"
 on public.admin_posts
 for delete
 to authenticated
-using (auth.uid() is not null);
+using (
+  exists (
+    select 1 from public.admin_users
+    where user_id = auth.uid() and role = 'super_admin'
+  )
+);
 
 -- جدول إدارة المستخدمين والصلاحيات
 create table if not exists public.admin_users (

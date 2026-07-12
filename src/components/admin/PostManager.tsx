@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Search, Filter, Trash2, Edit, Calendar, Newspaper, Check, ChevronLeft, ChevronRight } from 'lucide-react';

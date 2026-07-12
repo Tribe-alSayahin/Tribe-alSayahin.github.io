@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'motion/react';
 import { Award, Users, ShieldCheck, HeartHandshake, BadgeCheck } from 'lucide-react';
 import { SUPPORTERS_DATA } from './Supporters.data';

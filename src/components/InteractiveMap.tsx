@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { MapPin, Compass, Layers, Info, CheckCircle2, X, TrendingUp, Droplets, BookOpen, Award, Activity, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';

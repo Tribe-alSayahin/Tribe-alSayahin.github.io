@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { MessageSquare, Check, X, Trash2, Search, Filter } from 'lucide-react';
 import {

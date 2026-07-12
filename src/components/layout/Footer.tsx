@@ -1,12 +1,11 @@
+'use client';
+
+import Link from 'next/link';
 import { BookOpen, Mail } from 'lucide-react';
 import { LOCAL_REFS } from '../../lib/references';
-import { NAV_LINKS } from '../../lib/navigation';
+import { SITE_ROUTES } from '../../lib/navigation';
 
-interface FooterProps {
-  scrollToSection: (id: string) => void;
-}
-
-export function Footer({ scrollToSection }: FooterProps) {
+export function Footer() {
   return (
     <footer className="section-surface bg-ink-2 border-t-2 border-brass/20 py-20 md:py-28 lg:py-32 px-5 md:px-8 relative z-10 text-center overflow-hidden">
       <div className="footer-sadu" aria-hidden="true" />
@@ -46,17 +45,13 @@ export function Footer({ scrollToSection }: FooterProps) {
         </section>
 
         <div className="footer-links">
-          {NAV_LINKS.map((link) => (
-            <a
+          {SITE_ROUTES.map((link) => (
+            <Link
               key={link.id}
-              href={`#${link.id}`}
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection(link.id);
-              }}
+              href={link.href}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
           <a
             href="mailto:admin@alsaihani.com"
@@ -68,12 +63,8 @@ export function Footer({ scrollToSection }: FooterProps) {
           </a>
         </div>
 
-        <a
-          href="#home"
-          onClick={(event) => {
-            event.preventDefault();
-            scrollToSection('home');
-          }}
+        <Link
+          href="/"
           className="logo flex items-center justify-center gap-3 text-lg font-bold font-serif text-sand hover:text-brass-lt transition-colors mb-4 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-lg p-1 w-fit mx-auto"
         >
           <div className="w-10 h-10 rounded-lg border border-brass/50 bg-gradient-to-br from-brass/25 via-brass/10 to-transparent flex items-center justify-center text-brass shadow-glow-sm p-2">
@@ -96,7 +87,7 @@ export function Footer({ scrollToSection }: FooterProps) {
             </span>
             <span className="font-kufi text-lg leading-none">قبيلة السياحين</span>
           </span>
-        </a>
+        </Link>
         <p className="text-sand-dim text-sm">
           © {new Date().getFullYear()} الموقع الرسمي لقبيلة السياحين — جميع الحقوق محفوظة
         </p>

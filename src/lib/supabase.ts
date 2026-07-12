@@ -220,11 +220,22 @@ interface SupabaseLike {
   storage: StorageBucket;
 }
 
-const env = import.meta.env;
+const viteEnv =
+  typeof import.meta !== 'undefined'
+    ? (import.meta as unknown as { env?: Record<string, string | undefined> }).env
+    : undefined;
+const nodeEnv = typeof process !== 'undefined' ? process.env : undefined;
+
 const SUPABASE_URL =
-  env.NEXT_PUBLIC_SUPABASE_URL ?? env.VITE_SUPABASE_URL;
+  nodeEnv?.NEXT_PUBLIC_SUPABASE_URL ??
+  viteEnv?.NEXT_PUBLIC_SUPABASE_URL ??
+  viteEnv?.VITE_SUPABASE_URL ??
+  '';
 const SUPABASE_PUBLISHABLE_KEY =
-  env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? env.VITE_SUPABASE_ANON_KEY;
+  nodeEnv?.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
+  viteEnv?.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
+  viteEnv?.VITE_SUPABASE_ANON_KEY ??
+  '';
 
 let client: SupabaseLike | null = null;
 

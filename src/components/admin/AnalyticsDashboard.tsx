@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { BarChart3, Users, Eye, TrendingUp, Calendar } from 'lucide-react';
 import {

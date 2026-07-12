@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * SectionLoader — حالة تحميل موحّدة لأقسام الموقع
  *

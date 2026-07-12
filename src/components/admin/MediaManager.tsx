@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Image, Upload, Trash2, Download, Copy, Search, Filter } from 'lucide-react';
 import {

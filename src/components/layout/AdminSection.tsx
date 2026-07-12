@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'motion/react';
 import { Settings, BookOpen, Calendar } from 'lucide-react';
 

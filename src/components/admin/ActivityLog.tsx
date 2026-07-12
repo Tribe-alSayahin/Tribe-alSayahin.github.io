@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect, useCallback } from 'react';
 import { Activity } from 'lucide-react';
 import { fetchAdminLogs, AdminLog, actionLabels, actionColors } from '../../lib/admin-logs';
