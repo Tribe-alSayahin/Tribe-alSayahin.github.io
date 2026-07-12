@@ -1,9 +1,10 @@
-import {StrictMode} from 'react';
-import {createRoot} from 'react-dom/client';
+import { StrictMode, lazy, Suspense } from 'react';
+import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 import { ErrorBoundary } from './components/ErrorBoundary.tsx';
-import AdminPage from './components/admin/AdminPage.tsx';
+
+const AdminPage = lazy(() => import('./components/admin/AdminPage.tsx'));
 
 const resolveIsAdminRoute = () => {
   if (typeof window === 'undefined') {
@@ -28,7 +29,15 @@ const resolveIsAdminRoute = () => {
   return segments.length === 2 && segments[1] === 'admin';
 };
 
-const RootComponent = resolveIsAdminRoute() ? AdminPage : App;
+const isAdmin = resolveIsAdminRoute();
+
+const AdminWrapper = () => (
+  <Suspense fallback={<p className="text-sand p-8">جارٍ تحميل لوحة الإدارة...</p>}>
+    <AdminPage />
+  </Suspense>
+);
+
+const RootComponent = isAdmin ? AdminWrapper : App;
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

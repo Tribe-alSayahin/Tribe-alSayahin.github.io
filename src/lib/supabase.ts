@@ -1,4 +1,4 @@
-import { createClient, type AuthChangeEvent, type Session } from '@supabase/supabase-js';
+import { createClient, type AuthChangeEvent, type Session, type User } from '@supabase/supabase-js';
 
 type SupabaseErrorLike = { message: string } | null;
 
@@ -7,8 +7,11 @@ interface AdminPostRecordLike {
   title: string;
   content: string;
   kind: 'news' | 'event';
+  status: 'draft' | 'published';
+  featured_image: string | null;
   event_date: string | null;
   created_at: string;
+  updated_at: string;
   created_by: string | null;
 }
 
@@ -16,8 +19,11 @@ interface AdminPostInsertLike {
   title: string;
   content: string;
   kind: 'news' | 'event';
+  status?: 'draft' | 'published';
+  featured_image?: string | null;
   event_date?: string | null;
   created_by?: string | null;
+  updated_at?: string;
 }
 
 interface AdminUserRecordLike {
@@ -90,117 +96,127 @@ interface AnalyticsInsertLike {
   session_id?: string;
 }
 
+interface AdminLogRecordLike {
+  id: string;
+  user_id: string | null;
+  action: string;
+  target_type: string;
+  target_id: string | null;
+  details: Record<string, unknown> | null;
+  created_at: string;
+}
+
+interface AdminLogInsertLike {
+  user_id?: string | null;
+  action: string;
+  target_type: string;
+  target_id?: string | null;
+  details?: Record<string, unknown>;
+}
+
 interface QueryResult<T> {
   data: T | null;
   error: SupabaseErrorLike;
+  count?: number | null;
+  status?: number;
+  statusText?: string;
 }
 
 interface OrderOptions {
   ascending?: boolean;
 }
 
-type AdminPostsSelectQuery = Promise<QueryResult<AdminPostRecordLike[]>> & {
-  order(column: string, options?: OrderOptions): AdminPostsSelectQuery;
-  eq(column: string, value: string): AdminPostsSelectQuery;
-  limit(count: number): AdminPostsSelectQuery;
-  single(): Promise<QueryResult<AdminPostRecordLike>>;
+type SelectQuery<T> = Promise<QueryResult<T[]>> & {
+  order(column: string, options?: OrderOptions): SelectQuery<T>;
+  eq(column: string, value: string | number | boolean | null): SelectQuery<T>;
+  neq(column: string, value: string | number | boolean | null): SelectQuery<T>;
+  in(column: string, values: string[]): SelectQuery<T>;
+  or(filters: string, options?: { foreignTable: string }): SelectQuery<T>;
+  gte(column: string, value: string): SelectQuery<T>;
+  lte(column: string, value: string): SelectQuery<T>;
+  gt(column: string, value: string): SelectQuery<T>;
+  lt(column: string, value: string): SelectQuery<T>;
+  is(column: string, value: null): SelectQuery<T>;
+  limit(count: number): SelectQuery<T>;
+  range(from: number, to: number): SelectQuery<T>;
+  single(): Promise<QueryResult<T>>;
+  maybeSingle(): Promise<QueryResult<T>>;
 };
 
-type AdminPostsMutationQuery = Promise<QueryResult<null>> & {
-  eq(column: string, value: string): Promise<QueryResult<null>>;
+type MutationQuery<T> = Promise<QueryResult<null>> & {
+  eq(column: string, value: string | number | boolean | null): Promise<QueryResult<null>>;
+  in(column: string, values: string[]): Promise<QueryResult<null>>;
+  select(columns?: string): SelectQuery<T>;
 };
 
 interface AdminPostsTable {
-  select(columns?: string): AdminPostsSelectQuery;
-  insert(payload: AdminPostInsertLike): Promise<QueryResult<null>>;
-  update(payload: Partial<AdminPostInsertLike>): AdminPostsMutationQuery;
-  delete(): AdminPostsMutationQuery;
+  select(columns?: string, options?: { count?: 'exact' | 'planned' | 'estimated' }): SelectQuery<AdminPostRecordLike>;
+  insert(payload: AdminPostInsertLike | AdminPostInsertLike[]): Promise<QueryResult<AdminPostRecordLike[]>>;
+  update(payload: Partial<AdminPostInsertLike>): MutationQuery<AdminPostRecordLike>;
+  delete(): MutationQuery<AdminPostRecordLike>;
 }
-
-type AdminUsersSelectQuery = Promise<QueryResult<AdminUserRecordLike[]>> & {
-  order(column: string, options?: OrderOptions): AdminUsersSelectQuery;
-  eq(column: string, value: string): AdminUsersSelectQuery;
-  single(): Promise<QueryResult<AdminUserRecordLike>>;
-};
-
-type AdminUsersMutationQuery = Promise<QueryResult<null>> & {
-  eq(column: string, value: string): Promise<QueryResult<null>>;
-};
 
 interface AdminUsersTable {
-  select(columns?: string): AdminUsersSelectQuery;
-  insert(payload: AdminUserInsertLike): Promise<QueryResult<null>>;
-  update(payload: Partial<AdminUserInsertLike>): AdminUsersMutationQuery;
-  delete(): AdminUsersMutationQuery;
+  select(columns?: string, options?: { count?: 'exact' | 'planned' | 'estimated' }): SelectQuery<AdminUserRecordLike>;
+  insert(payload: AdminUserInsertLike | AdminUserInsertLike[]): Promise<QueryResult<AdminUserRecordLike[]>>;
+  update(payload: Partial<AdminUserInsertLike>): MutationQuery<AdminUserRecordLike>;
+  delete(): MutationQuery<AdminUserRecordLike>;
 }
-
-type CommentsSelectQuery = Promise<QueryResult<CommentRecordLike[]>> & {
-  order(column: string, options?: OrderOptions): CommentsSelectQuery;
-  eq(column: string, value: string): CommentsSelectQuery;
-};
-
-type CommentsMutationQuery = Promise<QueryResult<null>> & {
-  eq(column: string, value: string): Promise<QueryResult<null>>;
-};
 
 interface CommentsTable {
-  select(columns?: string): CommentsSelectQuery;
-  insert(payload: CommentInsertLike): Promise<QueryResult<null>>;
-  update(payload: Partial<CommentInsertLike>): CommentsMutationQuery;
-  delete(): CommentsMutationQuery;
+  select(columns?: string, options?: { count?: 'exact' | 'planned' | 'estimated' }): SelectQuery<CommentRecordLike>;
+  insert(payload: CommentInsertLike | CommentInsertLike[]): Promise<QueryResult<CommentRecordLike[]>>;
+  update(payload: Partial<CommentInsertLike>): MutationQuery<CommentRecordLike>;
+  delete(): MutationQuery<CommentRecordLike>;
 }
-
-type MediaSelectQuery = Promise<QueryResult<MediaRecordLike[]>> & {
-  order(column: string, options?: OrderOptions): MediaSelectQuery;
-  eq(column: string, value: string): MediaSelectQuery;
-};
-
-type MediaMutationQuery = Promise<QueryResult<null>> & {
-  eq(column: string, value: string): Promise<QueryResult<null>>;
-};
 
 interface MediaTable {
-  select(columns?: string): MediaSelectQuery;
-  insert(payload: MediaInsertLike): Promise<QueryResult<null>>;
-  delete(): MediaMutationQuery;
+  select(columns?: string, options?: { count?: 'exact' | 'planned' | 'estimated' }): SelectQuery<MediaRecordLike>;
+  insert(payload: MediaInsertLike | MediaInsertLike[]): Promise<QueryResult<MediaRecordLike[]>>;
+  delete(): MutationQuery<MediaRecordLike>;
 }
 
-type AnalyticsSelectQuery = Promise<QueryResult<AnalyticsRecordLike[]>> & {
-  order(column: string, options?: OrderOptions): AnalyticsSelectQuery;
-  eq(column: string, value: string): AnalyticsSelectQuery;
-  limit(count: number): AnalyticsSelectQuery;
-  gte(column: string, value: string): AnalyticsSelectQuery;
-  lte(column: string, value: string): AnalyticsSelectQuery;
-};
-
-type AnalyticsMutationQuery = Promise<QueryResult<null>>;
-
 interface AnalyticsTable {
-  select(columns?: string): AnalyticsSelectQuery;
-  insert(payload: AnalyticsInsertLike): AnalyticsMutationQuery;
+  select(columns?: string, options?: { count?: 'exact' | 'planned' | 'estimated' }): SelectQuery<AnalyticsRecordLike>;
+  insert(payload: AnalyticsInsertLike | AnalyticsInsertLike[]): Promise<QueryResult<AnalyticsRecordLike[]>>;
+}
+
+interface AdminLogsTable {
+  select(columns?: string, options?: { count?: 'exact' | 'planned' | 'estimated' }): SelectQuery<AdminLogRecordLike>;
+  insert(payload: AdminLogInsertLike | AdminLogInsertLike[]): Promise<QueryResult<AdminLogRecordLike[]>>;
 }
 
 interface StorageBucket {
   from(bucket: string): {
     upload(path: string, file: File): Promise<{ data: { path: string } | null; error: SupabaseErrorLike }>;
     getPublicUrl(path: string): { data: { publicUrl: string } };
+    remove(paths: string[]): Promise<{ error: SupabaseErrorLike }>;
+    list(prefix?: string, options?: { limit?: number }): Promise<{ data: { name: string }[] | null; error: SupabaseErrorLike }>;
   };
 }
 
 interface SupabaseLike {
   auth: {
-    signInWithPassword(credentials: { email: string; password: string }): Promise<{ data: null; error: SupabaseErrorLike }>;
+    signInWithPassword(credentials: { email: string; password: string }): Promise<{
+      data: { user: User | null; session: Session | null };
+      error: SupabaseErrorLike;
+    }>;
     signOut(): Promise<{ error: SupabaseErrorLike }>;
     getSession(): Promise<{ data: { session: Session | null } }>;
+    getUser(): Promise<{ data: { user: User | null } }>;
     onAuthStateChange(
       callback: (event: AuthChangeEvent, session: Session | null) => void,
     ): { data: { subscription: { unsubscribe(): void } } };
+    admin: {
+      getUserById(userId: string): Promise<{ data: { user: User | null } }>;
+    };
   };
   from(table: 'admin_posts'): AdminPostsTable;
   from(table: 'admin_users'): AdminUsersTable;
   from(table: 'comments'): CommentsTable;
   from(table: 'media'): MediaTable;
   from(table: 'analytics'): AnalyticsTable;
+  from(table: 'admin_logs'): AdminLogsTable;
   storage: StorageBucket;
 }
 
@@ -230,39 +246,37 @@ const createQueryResult = <T>(data: T | null = null, error: SupabaseErrorLike = 
   error,
 });
 
-const createNoopSelectQuery = <T>(): Promise<QueryResult<T[]>> & {
-  order: () => Promise<QueryResult<T[]>>;
-  eq: () => Promise<QueryResult<T[]>>;
-  limit: () => Promise<QueryResult<T[]>>;
-  single: () => Promise<QueryResult<T>>;
-} => {
+const createNoopSelectQuery = <T>(): SelectQuery<T> => {
   const query = Promise.resolve(
     createQueryResult<T[]>([]),
-  ) as unknown as Promise<QueryResult<T[]>> & {
-    order: () => Promise<QueryResult<T[]>>;
-    eq: () => Promise<QueryResult<T[]>>;
-    limit: () => Promise<QueryResult<T[]>>;
-    single: () => Promise<QueryResult<T>>;
-  };
+  ) as unknown as SelectQuery<T>;
 
   query.order = () => createNoopSelectQuery<T>();
   query.eq = () => createNoopSelectQuery<T>();
+  query.neq = () => createNoopSelectQuery<T>();
+  query.in = () => createNoopSelectQuery<T>();
+  query.or = () => createNoopSelectQuery<T>();
+  query.gte = () => createNoopSelectQuery<T>();
+  query.lte = () => createNoopSelectQuery<T>();
+  query.gt = () => createNoopSelectQuery<T>();
+  query.lt = () => createNoopSelectQuery<T>();
+  query.is = () => createNoopSelectQuery<T>();
   query.limit = () => createNoopSelectQuery<T>();
+  query.range = () => createNoopSelectQuery<T>();
   query.single = () => Promise.resolve(createQueryResult<T>(null));
+  query.maybeSingle = () => Promise.resolve(createQueryResult<T>(null));
 
   return query;
 };
 
-const createNoopMutationQuery = (): Promise<QueryResult<null>> & {
-  eq: () => Promise<QueryResult<null>>;
-} => {
+const createNoopMutationQuery = <T>(): MutationQuery<T> => {
   const query = Promise.resolve(
     createQueryResult<null>(null),
-  ) as unknown as Promise<QueryResult<null>> & {
-    eq: () => Promise<QueryResult<null>>;
-  };
+  ) as unknown as MutationQuery<T>;
 
   query.eq = () => Promise.resolve(createQueryResult<null>(null));
+  query.in = () => Promise.resolve(createQueryResult<null>(null));
+  query.select = () => createNoopSelectQuery<T>();
 
   return query;
 };
@@ -270,11 +284,12 @@ const createNoopMutationQuery = (): Promise<QueryResult<null>> & {
 const noopClient: SupabaseLike = {
   auth: {
     signInWithPassword: () => Promise.resolve({
-      data: null,
+      data: { user: null, session: null },
       error: { message: 'Supabase is not configured' },
     }),
     signOut: () => Promise.resolve({ error: null }),
     getSession: () => Promise.resolve({ data: { session: null } }),
+    getUser: () => Promise.resolve({ data: { user: null } }),
     onAuthStateChange: () => ({
       data: {
         subscription: {
@@ -282,13 +297,16 @@ const noopClient: SupabaseLike = {
         },
       },
     }),
+    admin: {
+      getUserById: () => Promise.resolve({ data: { user: null } }),
+    },
   },
   from: (() => {
-    const createTable = <T>() => ({
+    const createTable = <T>(): { select: () => SelectQuery<T>; insert: () => Promise<QueryResult<T[]>>; update: () => MutationQuery<T>; delete: () => MutationQuery<T> } => ({
       select: () => createNoopSelectQuery<T>(),
-      insert: () => Promise.resolve(createQueryResult<null>(null)),
-      update: () => createNoopMutationQuery(),
-      delete: () => createNoopMutationQuery(),
+      insert: () => Promise.resolve(createQueryResult<T[]>([])),
+      update: () => createNoopMutationQuery<T>(),
+      delete: () => createNoopMutationQuery<T>(),
     });
 
     return (table: string) => {
@@ -299,7 +317,15 @@ const noopClient: SupabaseLike = {
       if (table === 'analytics') {
         return {
           select: () => createNoopSelectQuery<AnalyticsRecordLike>(),
-          insert: () => Promise.resolve(createQueryResult<null>(null)),
+          insert: () => Promise.resolve(createQueryResult<AnalyticsRecordLike[]>([])),
+        };
+      }
+      if (table === 'admin_logs') {
+        return {
+          select: () => createNoopSelectQuery<AdminLogRecordLike>(),
+          insert: () => Promise.resolve(createQueryResult<AdminLogRecordLike[]>([])),
+          update: () => createNoopMutationQuery<AdminLogRecordLike>(),
+          delete: () => createNoopMutationQuery<AdminLogRecordLike>(),
         };
       }
       return createTable<AdminPostRecordLike>();
@@ -309,6 +335,8 @@ const noopClient: SupabaseLike = {
     from: () => ({
       upload: () => Promise.resolve({ data: null, error: { message: 'Supabase is not configured' } }),
       getPublicUrl: () => ({ data: { publicUrl: '' } }),
+      remove: () => Promise.resolve({ error: null }),
+      list: () => Promise.resolve({ data: [], error: null }),
     }),
   },
 };
