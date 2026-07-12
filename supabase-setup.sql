@@ -17,6 +17,19 @@ create table if not exists public.admin_posts (
   created_by uuid null references auth.users(id) on delete set null
 );
 
+-- إضافة الأعمدة المفقودة عند وجود جدول قديم
+alter table public.admin_posts
+  add column if not exists status text not null check (status in ('draft', 'published')) default 'published',
+  add column if not exists featured_image text,
+  add column if not exists updated_at timestamptz not null default now();
+
+alter table public.admin_posts
+  drop constraint if exists admin_posts_created_by_fkey;
+
+alter table public.admin_posts
+  add constraint admin_posts_created_by_fkey
+  foreign key (created_by) references auth.users(id) on delete set null;
+
 -- فهرس على created_at لتسريع الاستعلامات المرتّبة بالتاريخ
 create index if not exists admin_posts_created_at_idx
   on public.admin_posts (created_at desc);
