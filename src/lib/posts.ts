@@ -15,8 +15,8 @@ export interface NewsPost {
 }
 
 const SUPABASE_URL =
-  process.env.SUPABASE_URL ||
   process.env.NEXT_PUBLIC_SUPABASE_URL ||
+  process.env.SUPABASE_URL ||
   '';
 const SERVICE_ROLE_KEY =
   process.env.SUPABASE_SERVICE_ROLE_KEY ||
