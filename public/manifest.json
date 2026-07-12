@@ -1,0 +1,33 @@
+{
+  "name": "الموقع الرسمي لقبيلة السياحين",
+  "short_name": "السياحين",
+  "description": "البوابة الرقمية الموثقة لقبيلة السياحين من الروقة من عتيبة — توثيق النسب والديار والشعر والأرشيف الاستشراقي والأخبار والمناسبات.",
+  "start_url": "https://alsaihani.com/",
+  "display": "standalone",
+  "background_color": "#070503",
+  "theme_color": "#070503",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
+}
