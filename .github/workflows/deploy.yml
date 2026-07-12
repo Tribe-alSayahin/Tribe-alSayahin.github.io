@@ -76,3 +76,19 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Ping search engines (sitemap + IndexNow)
+        run: |
+          SITEMAP="https://alsaihani.com/sitemap.xml"
+          INDEXNOW_KEY="6d3e7f1a9b2c4d8e5f0a6b3c7d1e2f4a"
+          SITE_URL="https://alsaihani.com/"
+
+          echo "→ Bing sitemap ping"
+          curl -sf "https://www.bing.com/ping?sitemap=${SITEMAP}" -o /dev/null && echo "  ✓ Bing" || echo "  ✗ Bing (non-fatal)"
+
+          echo "→ Yandex sitemap ping"
+          curl -sf "https://yandex.com/ping?sitemap=${SITEMAP}" -o /dev/null && echo "  ✓ Yandex" || echo "  ✗ Yandex (non-fatal)"
+
+          echo "→ IndexNow (Bing + Yandex + others)"
+          curl -sf "https://api.indexnow.org/indexnow?url=${SITE_URL}&key=${INDEXNOW_KEY}" -o /dev/null && echo "  ✓ IndexNow" || echo "  ✗ IndexNow (non-fatal)"
+        continue-on-error: true

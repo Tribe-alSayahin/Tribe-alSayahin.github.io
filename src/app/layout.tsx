@@ -5,6 +5,8 @@ import { Footer } from '../components/layout/Footer';
 import '../index.css';
 
 const siteUrl = 'https://alsaihani.com';
+const bingVerification = process.env.NEXT_PUBLIC_BING_VERIFICATION_CODE ?? '';
+const yandexVerification = process.env.NEXT_PUBLIC_YANDEX_VERIFICATION_CODE ?? '';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -72,6 +74,10 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'TLLA8u0sNYnmx4nC4ClcIVoktOtyRVxyycDORVZlhSk',
+    ...(yandexVerification ? { yandex: yandexVerification } : {}),
+    other: {
+      ...(bingVerification ? { 'msvalidate.01': [bingVerification] } : {}),
+    },
   },
   icons: {
     icon: [
