@@ -14,6 +14,7 @@ import { AnalyticsDashboard } from './AnalyticsDashboard';
 import { MediaManager } from './MediaManager';
 import { CommentManager } from './CommentManager';
 import { ActivityLog } from './ActivityLog';
+import { ThanksLetterGenerator } from './ThanksLetterGenerator';
 import { ToastContainer, type Toast } from './Toast';
 
 export default function AdminPage() {
@@ -132,6 +133,8 @@ export default function AdminPage() {
         return <CommentManager onNotify={addToast} />;
       case 'activity':
         return <ActivityLog />;
+      case 'thanks-letter':
+        return <ThanksLetterGenerator />;
       default:
         return <DashboardOverview onTabChange={setActiveTab} />;
     }
