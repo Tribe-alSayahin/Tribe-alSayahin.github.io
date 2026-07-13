@@ -13,21 +13,13 @@ import {
   CalendarDays,
   type LucideIcon,
 } from 'lucide-react';
-
-export type AdminTab =
-  | 'dashboard'
-  | 'posts'
-  | 'events'
-  | 'users'
-  | 'analytics'
-  | 'media'
-  | 'comments'
-  | 'activity'
-  | 'thanks-letter';
+import type { UserRole } from '../../lib/admin-users';
+import { getAllowedAdminTabs, type AdminTab } from '../../lib/admin-access';
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
   onTabChange: (tab: AdminTab) => void;
+  currentRole: UserRole | null;
   userEmail?: string;
   onSignOut: () => void;
 }
@@ -53,9 +45,12 @@ const NAV_ITEMS: NavItem[] = [
 export function AdminSidebar({
   activeTab,
   onTabChange,
+  currentRole,
   userEmail,
   onSignOut,
 }: AdminSidebarProps) {
+  const allowedTabs = getAllowedAdminTabs(currentRole);
+
   return (
     <aside className="rounded-2xl border border-brass/20 bg-ink-2/70 p-4 h-fit">
       <div className="mb-6 pb-4 border-b border-brass/10">
@@ -64,7 +59,7 @@ export function AdminSidebar({
       </div>
 
       <nav aria-label="التنقل الإداري" className="space-y-1">
-        {NAV_ITEMS.map((item) => {
+        {NAV_ITEMS.filter((item) => allowedTabs.includes(item.id)).map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
           return (
