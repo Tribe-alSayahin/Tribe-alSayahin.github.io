@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getAllPostSlugs, getPostBySlug } from '../../../lib/posts';
+import { buildSeoExcerpt } from '../../../lib/seo';
 
 const siteUrl = 'https://alsaihani.com';
 
@@ -19,24 +20,37 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = await getPostBySlug(slug);
   if (!post) return { title: 'الخبر غير موجود' };
 
+  const description = buildSeoExcerpt(post.content);
+  const keywords = [
+    post.kind === 'event' ? 'مناسبات قبيلة السياحين' : 'أخبار قبيلة السياحين',
+    post.kind === 'event' ? 'فعاليات السياحين' : 'مستجدات السياحين',
+    post.title,
+    'قبيلة السياحين',
+    'الموقع الرسمي لقبيلة السياحين',
+  ];
+
   return {
     title: post.title,
-    description: post.content.slice(0, 160).replace(/\s+/g, ' '),
+    description,
+    keywords,
     alternates: { canonical: `/news/${slug}/` },
     openGraph: {
       type: 'article',
+      locale: 'ar_SA',
       title: post.title,
-      description: post.content.slice(0, 160).replace(/\s+/g, ' '),
+      description,
       url: `/news/${slug}/`,
       images: post.featured_image ? [post.featured_image] : ['/og-image.png'],
       publishedTime: post.created_at,
       modifiedTime: post.updated_at,
       authors: ['الموقع الرسمي لقبيلة السياحين'],
+      section: post.kind === 'event' ? 'المناسبات' : 'الأخبار',
+      tags: keywords,
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
-      description: post.content.slice(0, 160).replace(/\s+/g, ' '),
+      description,
       images: post.featured_image ? [post.featured_image] : ['/og-image.png'],
     },
   };
@@ -46,12 +60,13 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
   const { slug } = await params;
   const post = await getPostBySlug(slug);
   if (!post) notFound();
+  const description = buildSeoExcerpt(post.content);
 
   const articleLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: post.title,
-    description: post.content.slice(0, 160).replace(/\s+/g, ' '),
+    description,
     image: post.featured_image ?? `${siteUrl}/og-image.png`,
     datePublished: post.created_at,
     dateModified: post.updated_at,
@@ -72,6 +87,12 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
       '@type': 'WebPage',
       '@id': `${siteUrl}/news/${slug}/`,
     },
+    articleSection: post.kind === 'event' ? 'المناسبات' : 'الأخبار',
+    keywords: [
+      post.kind === 'event' ? 'مناسبات قبيلة السياحين' : 'أخبار قبيلة السياحين',
+      post.title,
+      'قبيلة السياحين',
+    ],
   };
 
   const breadcrumbLd = {

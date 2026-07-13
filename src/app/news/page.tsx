@@ -11,11 +11,14 @@ export const metadata: Metadata = {
   title: 'الأخبار والمناسبات',
   description:
     'آخر الأخبار والمناسبات والفعاليات لقبيلة السياحين: تغطية مستمرة للحاضر القبلي وتواصل الأجيال.',
+  keywords: ['أخبار قبيلة السياحين', 'مناسبات قبيلة السياحين', 'فعاليات السياحين', 'أخبار القبائل', 'الموقع الرسمي لقبيلة السياحين'],
+  robots: { index: true, follow: true },
   alternates: { canonical: '/news/' },
   openGraph: {
     title: 'الأخبار والمناسبات | قبيلة السياحين',
     description:
       'آخر الأخبار والمناسبات والفعاليات لقبيلة السياحين: تغطية مستمرة للحاضر القبلي وتواصل الأجيال.',
+    locale: 'ar_SA',
     url: '/news/',
   },
 };
@@ -37,6 +40,19 @@ const breadcrumbLd = {
       item: `${siteUrl}/news/`,
     },
   ],
+};
+
+const webPageLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${siteUrl}/news/#webpage`,
+  url: `${siteUrl}/news/`,
+  name: 'الأخبار والمناسبات | الموقع الرسمي لقبيلة السياحين',
+  description: 'آخر الأخبار والمناسبات والفعاليات لقبيلة السياحين: تغطية مستمرة للحاضر القبلي وتواصل الأجيال.',
+  inLanguage: 'ar-SA',
+  isPartOf: {
+    '@id': `${siteUrl}/#website`,
+  },
 };
 
 export default function NewsPage() {
@@ -89,6 +105,10 @@ export default function NewsPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }}
       />
     </>
   );

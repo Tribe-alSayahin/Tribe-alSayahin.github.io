@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { getAllPostSlugs } from '../lib/posts';
+import { getAllPostsForSitemap } from '../lib/posts';
 
 export const dynamic = 'force-static';
 
@@ -24,10 +24,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: path === '' ? 1.0 : path === '/news/' ? 0.9 : 0.8,
   }));
 
-  const slugs = await getAllPostSlugs();
-  const newsEntries: MetadataRoute.Sitemap = slugs.map((post) => ({
+  const posts = await getAllPostsForSitemap();
+  const newsEntries: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${siteUrl}/news/${post.slug}/`,
-    lastModified,
+    lastModified: new Date(post.updated_at),
     changeFrequency: 'weekly',
     priority: 0.7,
   }));

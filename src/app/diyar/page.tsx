@@ -10,11 +10,14 @@ export const metadata: Metadata = {
   title: 'الديار والهجرات',
   description:
     'استكشف ديار قبيلة السياحين ومنازلها التاريخية ومنازل الاستقرار والهجرات وهجرها المعتمدة ومناهل المياه القديمة.',
+  keywords: ['ديار قبيلة السياحين', 'هجرات السياحين', 'منازل السياحين', 'ديار عتيبة', 'نجد'],
+  robots: { index: true, follow: true },
   alternates: { canonical: '/diyar/' },
   openGraph: {
     title: 'الديار والهجرات | قبيلة السياحين',
     description:
       'استكشف ديار قبيلة السياحين ومنازلها التاريخية ومنازل الاستقرار والهجرات وهجرها المعتمدة ومناهل المياه القديمة.',
+    locale: 'ar_SA',
     url: '/diyar/',
   },
 };
@@ -36,6 +39,20 @@ const breadcrumbLd = {
       item: `${siteUrl}/diyar/`,
     },
   ],
+};
+
+const webPageLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${siteUrl}/diyar/#webpage`,
+  url: `${siteUrl}/diyar/`,
+  name: 'الديار والهجرات | الموقع الرسمي لقبيلة السياحين',
+  description:
+    'استكشف ديار قبيلة السياحين ومنازلها التاريخية ومنازل الاستقرار والهجرات وهجرها المعتمدة ومناهل المياه القديمة.',
+  inLanguage: 'ar-SA',
+  isPartOf: {
+    '@id': `${siteUrl}/#website`,
+  },
 };
 
 export default function DiyarPage() {
@@ -76,6 +93,10 @@ export default function DiyarPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }}
       />
     </>
   );
