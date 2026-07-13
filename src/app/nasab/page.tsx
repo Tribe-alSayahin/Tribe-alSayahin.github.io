@@ -11,11 +11,14 @@ export const metadata: Metadata = {
   title: 'النسب والفخوذ',
   description:
     'توثيق نسب قبيلة السياحين (السيحاني) من المزاحمة من الروقة من عتيبة: هجرة الجثوم وشجرة النسب والأنساب الكوكبية.',
+  keywords: ['نسب قبيلة السياحين', 'فخوذ السياحين', 'السيحاني', 'الروقة من عتيبة', 'هجرة الجثوم'],
+  robots: { index: true, follow: true },
   alternates: { canonical: '/nasab/' },
   openGraph: {
     title: 'النسب والفخوذ | قبيلة السياحين',
     description:
       'توثيق نسب قبيلة السياحين (السيحاني) من المزاحمة من الروقة من عتيبة: هجرة الجثوم وشجرة النسب والأنساب الكوكبية.',
+    locale: 'ar_SA',
     url: '/nasab/',
   },
 };
@@ -37,6 +40,20 @@ const breadcrumbLd = {
       item: `${siteUrl}/nasab/`,
     },
   ],
+};
+
+const webPageLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${siteUrl}/nasab/#webpage`,
+  url: `${siteUrl}/nasab/`,
+  name: 'النسب والفخوذ | الموقع الرسمي لقبيلة السياحين',
+  description:
+    'توثيق نسب قبيلة السياحين (السيحاني) من المزاحمة من الروقة من عتيبة: هجرة الجثوم وشجرة النسب والأنساب الكوكبية.',
+  inLanguage: 'ar-SA',
+  isPartOf: {
+    '@id': `${siteUrl}/#website`,
+  },
 };
 
 export default function NasabPage() {
@@ -89,6 +106,10 @@ export default function NasabPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }}
       />
     </>
   );

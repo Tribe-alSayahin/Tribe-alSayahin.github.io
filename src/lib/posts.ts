@@ -14,6 +14,11 @@ export interface NewsPost {
   created_by?: string | null;
 }
 
+export interface SitemapPost {
+  slug: string;
+  updated_at: string;
+}
+
 const SUPABASE_URL =
   process.env.NEXT_PUBLIC_SUPABASE_URL ||
   process.env.SUPABASE_URL ||
@@ -53,6 +58,27 @@ export async function getAllPostSlugs(): Promise<{ slug: string }[]> {
   }
 
   return (data as Pick<NewsPost, 'slug'>[] | null)?.filter((p) => p.slug) ?? [];
+}
+
+export async function getAllPostsForSitemap(): Promise<SitemapPost[]> {
+  const client = getServerClient();
+  if (!client) {
+    console.warn('[posts] Supabase service role key not configured; skipping dynamic sitemap entries.');
+    return [];
+  }
+
+  const { data, error } = await client
+    .from('admin_posts')
+    .select('slug, updated_at')
+    .eq('status', 'published')
+    .order('updated_at', { ascending: false });
+
+  if (error) {
+    console.error('[posts] Failed to fetch sitemap posts:', error.message);
+    return [];
+  }
+
+  return (data as SitemapPost[] | null)?.filter((post) => post.slug && post.updated_at) ?? [];
 }
 
 export async function getAllPosts(): Promise<NewsPost[]> {

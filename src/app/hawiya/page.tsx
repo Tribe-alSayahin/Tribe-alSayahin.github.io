@@ -10,11 +10,14 @@ export const metadata: Metadata = {
   title: 'الهوية ووسم الإبل والشعر',
   description:
     'وسم الإبل «الباب» الشهير للسياحين وديوان الشعر النبطي: علامات الهوية والإبداع القبلي.',
+  keywords: ['وسم السياحين', 'وسم الإبل الباب', 'شعر قبيلة السياحين', 'ديوان الشعر النبطي', 'هوية السياحين'],
+  robots: { index: true, follow: true },
   alternates: { canonical: '/hawiya/' },
   openGraph: {
     title: 'الهوية ووسم الإبل والشعر | قبيلة السياحين',
     description:
       'وسم الإبل «الباب» الشهير للسياحين وديوان الشعر النبطي: علامات الهوية والإبداع القبلي.',
+    locale: 'ar_SA',
     url: '/hawiya/',
   },
 };
@@ -36,6 +39,19 @@ const breadcrumbLd = {
       item: `${siteUrl}/hawiya/`,
     },
   ],
+};
+
+const webPageLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${siteUrl}/hawiya/#webpage`,
+  url: `${siteUrl}/hawiya/`,
+  name: 'الهوية ووسم الإبل والشعر | الموقع الرسمي لقبيلة السياحين',
+  description: 'وسم الإبل «الباب» الشهير للسياحين وديوان الشعر النبطي: علامات الهوية والإبداع القبلي.',
+  inLanguage: 'ar-SA',
+  isPartOf: {
+    '@id': `${siteUrl}/#website`,
+  },
 };
 
 export default function HawiyaPage() {
@@ -77,6 +93,10 @@ export default function HawiyaPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }}
       />
     </>
   );

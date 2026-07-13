@@ -10,11 +10,14 @@ export const metadata: Metadata = {
   title: 'التاريخ والأرشيف الاستشراقي',
   description:
     'الخط الزمني لقبيلة السياحين والأرشيف الاستشراقي: شهادات الماضي وتوثيقاته.',
+  keywords: ['تاريخ قبيلة السياحين', 'الأرشيف الاستشراقي', 'وثائق السياحين', 'تاريخ عتيبة', 'الخط الزمني للسياحين'],
+  robots: { index: true, follow: true },
   alternates: { canonical: '/tarikh/' },
   openGraph: {
     title: 'التاريخ والأرشيف الاستشراقي | قبيلة السياحين',
     description:
       'الخط الزمني لقبيلة السياحين والأرشيف الاستشراقي: شهادات الماضي وتوثيقاته.',
+    locale: 'ar_SA',
     url: '/tarikh/',
   },
 };
@@ -36,6 +39,19 @@ const breadcrumbLd = {
       item: `${siteUrl}/tarikh/`,
     },
   ],
+};
+
+const webPageLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${siteUrl}/tarikh/#webpage`,
+  url: `${siteUrl}/tarikh/`,
+  name: 'التاريخ والأرشيف الاستشراقي | الموقع الرسمي لقبيلة السياحين',
+  description: 'الخط الزمني لقبيلة السياحين والأرشيف الاستشراقي: شهادات الماضي وتوثيقاته.',
+  inLanguage: 'ar-SA',
+  isPartOf: {
+    '@id': `${siteUrl}/#website`,
+  },
 };
 
 export default function TarikhPage() {
@@ -76,6 +92,10 @@ export default function TarikhPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }}
       />
     </>
   );
