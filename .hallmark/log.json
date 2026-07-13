@@ -1,0 +1,29 @@
+[
+  {
+    "date": "2026-07-13",
+    "macrostructure": "Index-First",
+    "theme": "Almanac-variant (existing palette)",
+    "enrichment": "Tier B hand-built SVG (tribal seal)",
+    "brief": "قبيلة السياحين · بوابة الأرشيف · N12 · Ft3-variant",
+    "nav": "N12",
+    "footer": "Ft3-variant"
+  },
+  {
+    "date": "2026-07-13",
+    "macrostructure": "Manifesto",
+    "theme": "Brutal-variant (existing palette)",
+    "enrichment": "Tier A CSS Sadu art (enhanced)",
+    "brief": "قبيلة السياحين · بيان الهوية · N9 · Ft5",
+    "nav": "N9",
+    "footer": "Ft5"
+  },
+  {
+    "date": "2026-07-13",
+    "macrostructure": "Long Document",
+    "theme": "Lumen-variant (existing palette)",
+    "enrichment": "Tier B hand-built SVG (Najd map lines)",
+    "brief": "قبيلة السياحين · ديوان المخطوطة · N6 · Ft4",
+    "nav": "N6",
+    "footer": "Ft4"
+  }
+]
