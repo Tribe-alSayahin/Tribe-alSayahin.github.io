@@ -6,6 +6,7 @@ import type { Session } from '@supabase/supabase-js';
 import { isSupabaseConfigured, supabase } from '../../lib/supabase';
 import { setSeoMeta } from '../../lib/seo';
 import { logAdminAction } from '../../lib/admin-logs';
+import { fetchCurrentUserRole, type UserRole } from '../../lib/admin-users';
 import { AdminSidebar, type AdminTab } from './AdminSidebar';
 import { DashboardOverview } from './DashboardOverview';
 import { PostManager } from './PostManager';
@@ -15,10 +16,12 @@ import { MediaManager } from './MediaManager';
 import { CommentManager } from './CommentManager';
 import { ActivityLog } from './ActivityLog';
 import { ThanksLetterGenerator } from './ThanksLetterGenerator';
+import { EventManager } from './EventManager';
 import { ToastContainer, type Toast } from './Toast';
 
 export default function AdminPage() {
   const [session, setSession] = useState<Session | null>(null);
+  const [currentRole, setCurrentRole] = useState<UserRole | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authError, setAuthError] = useState('');
@@ -74,6 +77,25 @@ export default function AdminPage() {
     setSeoMeta('لوحة الإدارة | الموقع الرسمي لقبيلة السياحين', 'noindex, nofollow');
   }, []);
 
+  useEffect(() => {
+    const loadRole = async () => {
+      if (!session?.user?.id) {
+        setCurrentRole(null);
+        return;
+      }
+
+      const result = await fetchCurrentUserRole(session.user.id);
+      if (result.error) {
+        setCurrentRole(null);
+        return;
+      }
+
+      setCurrentRole(result.data.role);
+    };
+
+    void loadRole();
+  }, [session?.user?.id]);
+
   const handleSignIn = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setAuthError('');
@@ -112,10 +134,12 @@ export default function AdminPage() {
       });
     }
     await supabase.auth.signOut();
+    setCurrentRole(null);
     setActiveTab('dashboard');
   };
 
   const canManage = Boolean(session?.user);
+  const canManageEvents = currentRole === 'admin' || currentRole === 'super_admin';
 
   const renderContent = () => {
     switch (activeTab) {
@@ -123,6 +147,8 @@ export default function AdminPage() {
         return <DashboardOverview onTabChange={setActiveTab} />;
       case 'posts':
         return <PostManager onNotify={addToast} />;
+      case 'events':
+        return <EventManager onNotify={addToast} canManage={canManageEvents} userId={session?.user?.id ?? null} />;
       case 'users':
         return <UserManagement onNotify={addToast} />;
       case 'analytics':
