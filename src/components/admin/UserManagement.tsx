@@ -51,6 +51,7 @@ export function UserManagement({ onNotify }: UserManagementProps = {}) {
     return users.filter(
       (user) =>
         (user.full_name ?? '').toLowerCase().includes(term) ||
+        (user.email ?? '').toLowerCase().includes(term) ||
         user.user_id.toLowerCase().includes(term) ||
         user.role.toLowerCase().includes(term)
     );
@@ -71,7 +72,7 @@ export function UserManagement({ onNotify }: UserManagementProps = {}) {
     setIsSubmitting(true);
 
     const { error: insertError } = await createAdminUser({
-      user_id: newUserEmail.trim(),
+      email: newUserEmail.trim(),
       role: newUserRole,
       full_name: newUserName || null,
     });
@@ -230,7 +231,7 @@ export function UserManagement({ onNotify }: UserManagementProps = {}) {
                     {user.full_name || 'بدون اسم'}
                   </p>
                   <p className="text-sm text-sand-dim truncate" dir="ltr">
-                    {user.user_id}
+                    {user.email ?? user.user_id}
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -263,7 +264,7 @@ export function UserManagement({ onNotify }: UserManagementProps = {}) {
       <ConfirmModal
         isOpen={!!deleteTarget}
         title="تأكيد حذف المستخدم"
-        message={`هل أنت متأكد من حذف المستخدم "${deleteTarget?.full_name || deleteTarget?.user_id}"؟`}
+        message={`هل أنت متأكد من حذف المستخدم "${deleteTarget?.full_name || deleteTarget?.email || deleteTarget?.user_id}"؟`}
         confirmLabel="حذف"
         onConfirm={() => deleteTarget && void handleDeleteUser(deleteTarget)}
         onCancel={() => setDeleteTarget(null)}

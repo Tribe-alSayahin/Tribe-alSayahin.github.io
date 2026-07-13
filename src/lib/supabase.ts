@@ -290,6 +290,7 @@ interface SupabaseLike {
       getUserById(userId: string): Promise<{ data: { user: User | null } }>;
     };
   };
+  rpc<T>(fn: string, args?: Record<string, string | number | boolean | null | undefined>): Promise<QueryResult<T>>;
   from(table: 'admin_posts'): AdminPostsTable;
   from(table: 'admin_users'): AdminUsersTable;
   from(table: 'comments'): CommentsTable;
@@ -396,6 +397,7 @@ const noopClient: SupabaseLike = {
       getUserById: () => Promise.resolve({ data: { user: null } }),
     },
   },
+  rpc: () => Promise.resolve(createQueryResult(null)),
   from: (() => {
     const createTable = <T>(): { select: () => SelectQuery<T>; insert: () => Promise<QueryResult<T[]>>; update: () => MutationQuery<T>; delete: () => MutationQuery<T> } => ({
       select: () => createNoopSelectQuery<T>(),

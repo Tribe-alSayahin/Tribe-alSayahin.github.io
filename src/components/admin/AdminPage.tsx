@@ -7,7 +7,8 @@ import { isSupabaseConfigured, supabase } from '../../lib/supabase';
 import { setSeoMeta } from '../../lib/seo';
 import { logAdminAction } from '../../lib/admin-logs';
 import { fetchCurrentUserRole, type UserRole } from '../../lib/admin-users';
-import { AdminSidebar, type AdminTab } from './AdminSidebar';
+import { getAllowedAdminTabs, isAdminPanelRole, isAdminTabAllowed, type AdminTab } from '../../lib/admin-access';
+import { AdminSidebar } from './AdminSidebar';
 import { DashboardOverview } from './DashboardOverview';
 import { PostManager } from './PostManager';
 import { UserManagement } from './UserManagement';
@@ -23,8 +24,10 @@ export default function AdminPage() {
   const [session, setSession] = useState<Session | null>(null);
   const [currentRole, setCurrentRole] = useState<UserRole | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const [isRoleLoading, setIsRoleLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authError, setAuthError] = useState('');
+  const [roleError, setRoleError] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
@@ -81,20 +84,37 @@ export default function AdminPage() {
     const loadRole = async () => {
       if (!session?.user?.id) {
         setCurrentRole(null);
+        setRoleError('');
         return;
       }
 
-      const result = await fetchCurrentUserRole(session.user.id);
+      setIsRoleLoading(true);
+      const result = await fetchCurrentUserRole();
       if (result.error) {
         setCurrentRole(null);
+        setRoleError(result.error.message);
+        setIsRoleLoading(false);
         return;
       }
 
-      setCurrentRole(result.data.role);
+      setCurrentRole(result.data?.role ?? null);
+      setRoleError('');
+      setIsRoleLoading(false);
     };
 
     void loadRole();
   }, [session?.user?.id]);
+
+  useEffect(() => {
+    if (isAdminTabAllowed(currentRole, activeTab)) {
+      return;
+    }
+
+    const [fallbackTab] = getAllowedAdminTabs(currentRole);
+    if (fallbackTab) {
+      setActiveTab(fallbackTab);
+    }
+  }, [activeTab, currentRole]);
 
   const handleSignIn = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -135,11 +155,13 @@ export default function AdminPage() {
     }
     await supabase.auth.signOut();
     setCurrentRole(null);
+    setRoleError('');
+    setIsRoleLoading(false);
     setActiveTab('dashboard');
   };
 
-  const canManage = Boolean(session?.user);
-  const canManageEvents = currentRole === 'admin' || currentRole === 'super_admin';
+  const canManage = isAdminPanelRole(currentRole);
+  const canManageEvents = canManage;
 
   const renderContent = () => {
     switch (activeTab) {
@@ -166,10 +188,10 @@ export default function AdminPage() {
     }
   };
 
-  if (isAuthLoading) {
+  if (isAuthLoading || (session?.user && isRoleLoading)) {
     return (
       <div data-app-ready="true" className="min-h-screen bg-ink text-sand font-sans flex items-center justify-center p-8">
-        <p className="font-kufi text-sand-dim">جارٍ التحقق من جلسة الدخول...</p>
+        <p className="font-kufi text-sand-dim">جارٍ التحقق من صلاحيات لوحة الإدارة...</p>
       </div>
     );
   }
@@ -185,7 +207,7 @@ export default function AdminPage() {
           </p>
         </header>
 
-        {!canManage ? (
+        {!session?.user ? (
           <section className="max-w-md mx-auto rounded-2xl border border-brass/20 bg-ink-2/60 p-6">
             <h2 className="font-kufi text-xl text-brass-lt mb-4">تسجيل دخول المشرف</h2>
             <form onSubmit={(event) => { void handleSignIn(event); }} className="grid gap-4">
@@ -217,12 +239,27 @@ export default function AdminPage() {
               )}
             </form>
           </section>
+        ) : !canManage ? (
+          <section className="max-w-2xl mx-auto rounded-2xl border border-copper/25 bg-ink-2/60 p-6 text-center space-y-4">
+            <h2 className="font-kufi text-xl text-copper-lt">تعذر فتح لوحة الإدارة</h2>
+            <p className="text-sm text-sand-dim">
+              {roleError || 'هذا الحساب لا يملك صلاحية الدخول إلى لوحة الإدارة. يرجى مراجعة المشرف العام لمنحك دوراً إدارياً صحيحاً.'}
+            </p>
+            <button
+              type="button"
+              onClick={() => void handleSignOut()}
+              className="rounded-lg border border-copper/35 px-4 py-2 text-sm font-kufi text-copper-lt hover:bg-copper/10 transition-colors focus-visible:ring-2 focus-visible:ring-copper focus-visible:outline-none"
+            >
+              تسجيل الخروج
+            </button>
+          </section>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             <div className="lg:col-span-3">
               <AdminSidebar
                 activeTab={activeTab}
                 onTabChange={setActiveTab}
+                currentRole={currentRole}
                 userEmail={session?.user?.email}
                 onSignOut={() => void handleSignOut()}
               />

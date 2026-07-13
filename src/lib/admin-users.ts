@@ -9,6 +9,7 @@ export type UserRole = 'super_admin' | 'admin' | 'editor';
 export interface AdminUser {
   id: string;
   user_id: string;
+  email: string | null;
   role: UserRole;
   full_name: string | null;
   created_at: string;
@@ -16,90 +17,74 @@ export interface AdminUser {
 }
 
 export interface AdminUserInsert {
-  user_id: string;
+  email: string;
   role?: UserRole;
   full_name?: string | null;
 }
 
 type ApiError = { message: string };
 type FetchListResult<T> = { data: T[]; error: null } | { data: null; error: ApiError };
-type FetchItemResult<T> = { data: T; error: null } | { data: null; error: ApiError };
-type DeleteResult = { error: ApiError | null };
+type FetchItemResult<T> = { data: T | null; error: null } | { data: null; error: ApiError };
+type MutationResult = { error: ApiError | null };
 
 /**
  * جلب جميع المستخدمين الإداريين
  */
 export async function fetchAdminUsers(): Promise<FetchListResult<AdminUser>> {
-  const { data, error } = await supabase
-    .from('admin_users')
-    .select('*')
-    .order('created_at', { ascending: false });
+  const { data, error } = await supabase.rpc<AdminUser[]>('list_admin_users');
 
   if (error) {
     return { data: null, error };
   }
 
-  return { data: (data ?? []), error: null };
+  return { data: Array.isArray(data) ? data : [], error: null };
 }
 
 /**
  * جلب دور المستخدم الحالي
  */
-export async function fetchCurrentUserRole(userId: string): Promise<FetchItemResult<{ role: UserRole }>> {
-  const { data, error } = await supabase
-    .from('admin_users')
-    .select('role')
-    .eq('user_id', userId)
-    .single();
+export async function fetchCurrentUserRole(): Promise<FetchItemResult<{ role: UserRole }>> {
+  const { data, error } = await supabase.rpc<UserRole | null>('current_admin_role');
 
   if (error) {
     return { data: null, error };
   }
 
-  return { data: data as unknown as { role: UserRole }, error: null };
+  return { data: data ? { role: data } : null, error: null };
 }
 
 /**
  * إضافة مستخدم إداري جديد
  */
-export async function createAdminUser(user: AdminUserInsert): Promise<FetchItemResult<AdminUser>> {
-  const { error } = await supabase
-    .from('admin_users')
-    .insert(user);
+export async function createAdminUser(user: AdminUserInsert): Promise<MutationResult> {
+  const { error } = await supabase.rpc<null>('create_admin_user', {
+    user_email: user.email.trim(),
+    user_role: user.role ?? 'editor',
+    user_full_name: user.full_name ?? null,
+  });
 
-  if (error) {
-    return { data: null, error };
-  }
-
-  // إرجاع البيانات المدرجة
-  return { data: user as AdminUser, error: null };
+  return { error };
 }
 
 /**
  * تحديث دور مستخدم إداري
  */
-export async function updateAdminUserRole(id: string, role: UserRole): Promise<FetchItemResult<AdminUser>> {
-  const { error } = await supabase
-    .from('admin_users')
-    .update({ role, updated_at: new Date().toISOString() })
-    .eq('id', id);
+export async function updateAdminUserRole(id: string, role: UserRole): Promise<MutationResult> {
+  const { error } = await supabase.rpc<null>('update_admin_user_role', {
+    admin_user_id: id,
+    new_role: role,
+  });
 
-  if (error) {
-    return { data: null, error };
-  }
-
-  // إرجاع البيانات المحدثة
-  return { data: { id, role, updated_at: new Date().toISOString() } as AdminUser, error: null };
+  return { error };
 }
 
 /**
  * حذف مستخدم إداري
  */
-export async function deleteAdminUser(id: string): Promise<DeleteResult> {
-  const { error } = await supabase
-    .from('admin_users')
-    .delete()
-    .eq('id', id);
+export async function deleteAdminUser(id: string): Promise<MutationResult> {
+  const { error } = await supabase.rpc<null>('delete_admin_user', {
+    admin_user_id: id,
+  });
 
-  return { error: error };
+  return { error };
 }
