@@ -622,7 +622,7 @@ function buildIndividualLetterHtml(opts: {
   <!-- Recipient box -->
   <div class="recipient-box">
     <div style="flex:1;">
-      <div class="recipient-label">المُكرَّم / المُكرَّمة</div>
+      <div class="recipient-label">المُكرَّم</div>
       <div class="recipient-name">${esc(opts.recipientName)}</div>
       <div class="recipient-role">${esc(opts.recipientRole)}</div>
     </div>
@@ -924,7 +924,7 @@ export function ThanksLetterGenerator() {
             {mode === 'individual' && (
               <div className="flex items-center gap-3 border border-[#c9a24b] rounded-lg bg-[#e8dcc8] px-4 py-3 mb-4">
                 <div className="flex-1">
-                  <p className="text-[9px] text-[#6b5a30] mb-1" style={{ fontFamily: 'IBM Plex Sans Arabic, sans-serif' }}>المُكرَّم / المُكرَّمة</p>
+                  <p className="text-[9px] text-[#6b5a30] mb-1" style={{ fontFamily: 'IBM Plex Sans Arabic, sans-serif' }}>المُكرَّم</p>
                   <p className="text-[15px] font-bold text-[#c9a24b]" style={{ fontFamily: 'Aref Ruqaa, serif' }}>{selectedSupporter.name}</p>
                   <p className="text-[10px] text-[#4a3c28] mt-0.5">{selectedSupporter.role}</p>
                 </div>
