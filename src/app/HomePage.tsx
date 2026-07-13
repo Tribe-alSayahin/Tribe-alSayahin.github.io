@@ -39,7 +39,7 @@ export default function HomePage() {
                   {route.label}
                 </h3>
                 <p className="text-sand-dim text-sm leading-relaxed">
-                  اكتشف المزيد عن {route.label} ومحتوياته المفصّلة.
+                  {route.description ?? `اكتشف المزيد عن ${route.label} ومحتوياته المفصّلة.`}
                 </p>
               </Link>
             ))}

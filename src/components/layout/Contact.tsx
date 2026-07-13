@@ -27,6 +27,10 @@ export function Contact() {
       return;
     }
 
+    const subject = encodeURIComponent(`رسالة من الموقع — ${name}`);
+    const body = encodeURIComponent(`الاسم: ${name}\nالبريد: ${email}\n\nالرسالة:\n${msg}`);
+    window.location.href = `mailto:admin@alsaihani.com?subject=${subject}&body=${body}`;
+
     setShowSuccessModal(true);
     setName('');
     setEmail('');
