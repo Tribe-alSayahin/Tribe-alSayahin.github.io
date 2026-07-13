@@ -81,7 +81,7 @@ export function EventManager({ onNotify, canManage, userId }: EventManagerProps)
       return;
     }
 
-    setImages((result.data ?? []) as AdminEventImage[]);
+    setImages(result.data ?? []);
   }, [onNotify]);
 
   useEffect(() => {
@@ -251,7 +251,7 @@ export function EventManager({ onNotify, canManage, userId }: EventManagerProps)
 
     if (uploaded > 0 && !editingEvent.cover_image_url) {
       const imagesResult = await fetchAdminEventImages(editingEvent.id);
-      const firstImage = (imagesResult.data ?? [])[0] as AdminEventImage | undefined;
+      const firstImage = (imagesResult.data ?? [])[0];
       if (firstImage) {
         await setCoverImage(editingEvent, firstImage);
         await loadEvents();
@@ -470,7 +470,7 @@ export function EventManager({ onNotify, canManage, userId }: EventManagerProps)
             </button>
           </div>
 
-          <form onSubmit={handleSaveEvent} className="grid gap-4">
+          <form onSubmit={(event) => { void handleSaveEvent(event); }} className="grid gap-4">
             {formError && (
               <p className="rounded-lg border border-copper/30 bg-copper/10 px-3 py-2 text-sm font-kufi text-copper-lt">
                 {formError}
@@ -523,7 +523,7 @@ export function EventManager({ onNotify, canManage, userId }: EventManagerProps)
                 <label className="block text-xs font-kufi text-sand-dim mb-1.5">حالة النشر</label>
                 <select
                   value={form.status}
-                  onChange={(event) => onFormChange('status', event.target.value as AdminEventStatus)}
+                  onChange={(event) => onFormChange('status', event.target.value)}
                   className="w-full rounded-lg border border-brass/20 bg-ink/70 px-3 py-2.5 text-sand focus:outline-none focus:border-brass/50"
                 >
                   {STATUS_OPTIONS.map((option) => (

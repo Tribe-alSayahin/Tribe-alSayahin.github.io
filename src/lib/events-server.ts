@@ -91,7 +91,7 @@ export async function getPublishedEvents(): Promise<PublishedEvent[]> {
     return [];
   }
 
-  return (data ?? []) as PublishedEvent[];
+  return data ?? [];
 }
 
 export async function getPublishedEventBySlug(slug: string): Promise<PublishedEvent | null> {
@@ -115,7 +115,7 @@ export async function getPublishedEventBySlug(slug: string): Promise<PublishedEv
     return null;
   }
 
-  return (data as PublishedEvent | null) ?? null;
+  return data ?? null;
 }
 
 export async function getAllEventSlugs(): Promise<{ slug: string }[]> {
@@ -136,7 +136,7 @@ export async function getAllEventSlugs(): Promise<{ slug: string }[]> {
     return [];
   }
 
-  return (data ?? []) as { slug: string }[];
+  return data ?? [];
 }
 
 export async function getAllEventsForSitemap(): Promise<Array<{ slug: string; updated_at: string }>> {
@@ -157,5 +157,5 @@ export async function getAllEventsForSitemap(): Promise<Array<{ slug: string; up
     return [];
   }
 
-  return (data ?? []) as Array<{ slug: string; updated_at: string }>;
+  return data ?? [];
 }

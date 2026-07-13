@@ -96,7 +96,7 @@ export const validateEventImageFile = (file: File): string | null => {
 async function readFileAsDataUrl(file: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result ?? ''));
+    reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
     reader.onerror = () => reject(new Error('تعذر قراءة الصورة.'));
     reader.readAsDataURL(file);
   });
@@ -172,7 +172,7 @@ export async function optimizeEventImage(file: File): Promise<{ main: Blob; thum
   return { main, thumb };
 }
 
-export async function fetchAdminEvents() {
+export async function fetchAdminEvents(): Promise<{ data: AdminEventRecord[]; error: null } | { data: null; error: { message: string } }> {
   const eventsResult = await supabase
     .from('admin_events')
     .select('id,title,slug,summary,description,event_date_gregorian,event_date_hijri,location,status,cover_image_url,cover_thumbnail_url,created_at,updated_at,created_by')
@@ -200,7 +200,7 @@ export async function fetchAdminEvents() {
 
   const counts = new Map<string, number>();
   for (const row of imagesResult.data ?? []) {
-    const eventId = row.event_id as string;
+    const eventId = row.event_id;
     counts.set(eventId, (counts.get(eventId) ?? 0) + 1);
   }
 
