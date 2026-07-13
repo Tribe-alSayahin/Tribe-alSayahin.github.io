@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
-import { Navbar } from '../components/layout/Navbar';
-import { Footer } from '../components/layout/Footer';
+import { NavbarWrapper } from '../components/layout/NavbarWrapper';
+import { FooterWrapper } from '../components/layout/FooterWrapper';
 import '../index.css';
 
 const siteUrl = 'https://alsaihani.com';
@@ -198,11 +198,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           انتقل إلى المحتوى الرئيسي
         </a>
-        <Navbar />
+        <NavbarWrapper />
         <main id="main-content" className="relative">
           {children}
         </main>
-        <Footer />
+        <FooterWrapper />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }}
