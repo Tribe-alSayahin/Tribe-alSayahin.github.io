@@ -116,6 +116,68 @@ interface AdminLogInsertLike {
   details?: Record<string, unknown>;
 }
 
+interface AdminEventRecordLike {
+  id: string;
+  title: string;
+  slug: string;
+  summary: string;
+  description: string;
+  event_date_gregorian: string;
+  event_date_hijri: string;
+  location: string | null;
+  status: 'draft' | 'published';
+  cover_image_url: string | null;
+  cover_thumbnail_url: string | null;
+  created_at: string;
+  updated_at: string;
+  created_by: string | null;
+}
+
+interface AdminEventInsertLike {
+  title: string;
+  slug: string;
+  summary: string;
+  description: string;
+  event_date_gregorian: string;
+  event_date_hijri: string;
+  location?: string | null;
+  status?: 'draft' | 'published';
+  created_by?: string | null;
+  cover_image_url?: string | null;
+  cover_thumbnail_url?: string | null;
+  updated_at?: string;
+}
+
+interface AdminEventImageRecordLike {
+  id: string;
+  event_id: string;
+  file_name: string;
+  storage_path: string;
+  public_url: string;
+  thumbnail_path: string;
+  thumbnail_url: string;
+  mime_type: string;
+  size_bytes: number;
+  sort_order: number;
+  is_cover: boolean;
+  uploaded_by: string | null;
+  created_at: string;
+}
+
+interface AdminEventImageInsertLike {
+  event_id: string;
+  file_name: string;
+  storage_path: string;
+  public_url: string;
+  thumbnail_path: string;
+  thumbnail_url: string;
+  mime_type: string;
+  size_bytes: number;
+  sort_order: number;
+  is_cover?: boolean;
+  uploaded_by?: string | null;
+}
+
 interface QueryResult<T> {
   data: T | null;
   error: SupabaseErrorLike;
@@ -146,8 +208,9 @@ type SelectQuery<T> = Promise<QueryResult<T[]>> & {
 };
 
 type MutationQuery<T> = Promise<QueryResult<null>> & {
-  eq(column: string, value: string | number | boolean | null): Promise<QueryResult<null>>;
-  in(column: string, values: string[]): Promise<QueryResult<null>>;
+  eq(column: string, value: string | number | boolean | null): MutationQuery<T>;
+  neq(column: string, value: string | number | boolean | null): MutationQuery<T>;
+  in(column: string, values: string[]): MutationQuery<T>;
   select(columns?: string): SelectQuery<T>;
 };
 
@@ -188,9 +251,23 @@ interface AdminLogsTable {
   insert(payload: AdminLogInsertLike | AdminLogInsertLike[]): Promise<QueryResult<AdminLogRecordLike[]>>;
 }
 
+interface AdminEventsTable {
+  select(columns?: string, options?: { count?: 'exact' | 'planned' | 'estimated' }): SelectQuery<AdminEventRecordLike>;
+  insert(payload: AdminEventInsertLike | AdminEventInsertLike[]): MutationQuery<AdminEventRecordLike>;
+  update(payload: Partial<AdminEventInsertLike>): MutationQuery<AdminEventRecordLike>;
+  delete(): MutationQuery<AdminEventRecordLike>;
+}
+
+interface AdminEventImagesTable {
+  select(columns?: string, options?: { count?: 'exact' | 'planned' | 'estimated' }): SelectQuery<AdminEventImageRecordLike>;
+  insert(payload: AdminEventImageInsertLike | AdminEventImageInsertLike[]): MutationQuery<AdminEventImageRecordLike>;
+  update(payload: Partial<AdminEventImageInsertLike>): MutationQuery<AdminEventImageRecordLike>;
+  delete(): MutationQuery<AdminEventImageRecordLike>;
+}
+
 interface StorageBucket {
   from(bucket: string): {
-    upload(path: string, file: File): Promise<{ data: { path: string } | null; error: SupabaseErrorLike }>;
+    upload(path: string, file: File | Blob, options?: { contentType?: string; upsert?: boolean }): Promise<{ data: { path: string } | null; error: SupabaseErrorLike }>;
     getPublicUrl(path: string): { data: { publicUrl: string } };
     remove(paths: string[]): Promise<{ error: SupabaseErrorLike }>;
     list(prefix?: string, options?: { limit?: number }): Promise<{ data: { name: string }[] | null; error: SupabaseErrorLike }>;
@@ -219,6 +296,8 @@ interface SupabaseLike {
   from(table: 'media'): MediaTable;
   from(table: 'analytics'): AnalyticsTable;
   from(table: 'admin_logs'): AdminLogsTable;
+  from(table: 'admin_events'): AdminEventsTable;
+  from(table: 'admin_event_images'): AdminEventImagesTable;
   storage: StorageBucket;
 }
 
@@ -289,8 +368,9 @@ const createNoopMutationQuery = <T>(): MutationQuery<T> => {
     createQueryResult<null>(null),
   ) as unknown as MutationQuery<T>;
 
-  query.eq = () => Promise.resolve(createQueryResult<null>(null));
-  query.in = () => Promise.resolve(createQueryResult<null>(null));
+  query.eq = () => createNoopMutationQuery<T>();
+  query.neq = () => createNoopMutationQuery<T>();
+  query.in = () => createNoopMutationQuery<T>();
   query.select = () => createNoopSelectQuery<T>();
 
   return query;
@@ -341,6 +421,22 @@ const noopClient: SupabaseLike = {
           insert: () => Promise.resolve(createQueryResult<AdminLogRecordLike[]>([])),
           update: () => createNoopMutationQuery<AdminLogRecordLike>(),
           delete: () => createNoopMutationQuery<AdminLogRecordLike>(),
+        };
+      }
+      if (table === 'admin_events') {
+        return {
+          select: () => createNoopSelectQuery<AdminEventRecordLike>(),
+          insert: () => createNoopMutationQuery<AdminEventRecordLike>(),
+          update: () => createNoopMutationQuery<AdminEventRecordLike>(),
+          delete: () => createNoopMutationQuery<AdminEventRecordLike>(),
+        };
+      }
+      if (table === 'admin_event_images') {
+        return {
+          select: () => createNoopSelectQuery<AdminEventImageRecordLike>(),
+          insert: () => createNoopMutationQuery<AdminEventImageRecordLike>(),
+          update: () => createNoopMutationQuery<AdminEventImageRecordLike>(),
+          delete: () => createNoopMutationQuery<AdminEventImageRecordLike>(),
         };
       }
       return createTable<AdminPostRecordLike>();

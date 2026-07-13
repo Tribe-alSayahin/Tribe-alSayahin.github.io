@@ -64,6 +64,7 @@ export const SITE_ROUTES: NavLinkItem[] = [
     chapter: 5,
     sections: [
       { id: 'news', label: 'الأخبار', href: '/news/' },
+      { id: 'events', label: 'المناسبات', href: '/events/' },
       { id: 'supporters', label: 'الداعمين', href: '/news/#supporters' },
       { id: 'contact', label: 'التواصل', href: '/news/#contact' },
       { id: 'admin', label: 'الإدارة', href: '/admin/' },
@@ -88,6 +89,7 @@ export const SECTION_TO_ROUTE: Record<string, string> = {
   timeline: '/tarikh/',
   archive: '/tarikh/#archive',
   news: '/news/',
+  events: '/events/',
   supporters: '/news/#supporters',
   contact: '/news/#contact',
   admin: '/admin/',
@@ -101,6 +103,7 @@ export const STATIC_ROUTE_PATHS = [
   '/hawiya/',
   '/tarikh/',
   '/news/',
+  '/events/',
   '/admin/',
 ];
 

@@ -10,12 +10,14 @@ import {
   Activity,
   LogOut,
   ScrollText,
+  CalendarDays,
   type LucideIcon,
 } from 'lucide-react';
 
 export type AdminTab =
   | 'dashboard'
   | 'posts'
+  | 'events'
   | 'users'
   | 'analytics'
   | 'media'
@@ -39,6 +41,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { id: 'dashboard', label: 'نظرة عامة', icon: LayoutDashboard },
   { id: 'posts', label: 'الأخبار والمناسبات', icon: Newspaper },
+  { id: 'events', label: 'المناسبات المصوّرة', icon: CalendarDays },
   { id: 'users', label: 'المستخدمين', icon: Users },
   { id: 'comments', label: 'التعليقات', icon: MessageSquare },
   { id: 'media', label: 'الوسائط', icon: ImageIcon },
