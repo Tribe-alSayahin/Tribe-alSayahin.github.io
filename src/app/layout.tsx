@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import { NavbarWrapper } from '../components/layout/NavbarWrapper';
 import { FooterWrapper } from '../components/layout/FooterWrapper';
+import { OFFICIAL_LOGO_IMAGE_URL } from '../lib/branding';
 import '../index.css';
 
 const siteUrl = 'https://alsaihani.com';
@@ -130,7 +131,7 @@ const organizationLd = {
       alternateName: ['Al-Siyahin Tribe', 'Al-Siyahin', 'السيحاني'],
       url: `${siteUrl}/`,
       email: 'admin@alsaihani.com',
-      logo: `${siteUrl}/logo.png`,
+      logo: OFFICIAL_LOGO_IMAGE_URL,
       image: `${siteUrl}/og-image.png`,
       description:
         'فخذ السياحين (السيحاني) من المزاحمة من الروقة من عتيبة الهيلا — قبيلة عربية أصيلة في نجد وما حولها.',

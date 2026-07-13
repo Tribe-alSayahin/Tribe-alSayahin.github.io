@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Printer, RefreshCw, Users, User, Plus, Trash2 } from 'lucide-react';
 import { SUPPORTERS_DATA } from '../layout/Supporters.data';
+import { OFFICIAL_LOGO_IMAGE_URL } from '../../lib/branding';
 
 type LetterMode = 'group' | 'individual';
 type SourceMode = 'list' | 'manual';
@@ -40,15 +41,23 @@ const CORNER_PATH = `<path d="M0 0 L28 0 L28 4 L4 4 L4 28 L0 28 Z"/>
 /** Black seal with golden arch/gateway — returns an SVG string */
 function sealSvgString(size = 64): string {
   return `<svg width="${size}" height="${size}" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="50" cy="50" r="48" fill="#0a0a0a" stroke="#c9a24b" stroke-width="2.5"/>
-  <circle cx="50" cy="50" r="42" fill="none" stroke="#c9a24b" stroke-width="0.8" stroke-dasharray="3,3"/>
-  <path d="M25 74 L25 50 Q25 26 50 26 Q75 26 75 50 L75 74" fill="none" stroke="#c9a24b" stroke-width="2.2"/>
-  <rect x="22" y="50" width="5" height="24" fill="#c9a24b"/>
-  <rect x="73" y="50" width="5" height="24" fill="#c9a24b"/>
-  <polygon points="50,22 54,32 46,32" fill="#c9a24b"/>
-  <rect x="18" y="74" width="64" height="4" rx="1" fill="#c9a24b"/>
-  <text x="18" y="44" font-size="8" fill="#c9a24b" opacity="0.7">✦</text>
-  <text x="74" y="44" font-size="8" fill="#c9a24b" opacity="0.7">✦</text>
+ <defs>
+   <linearGradient id="seal-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+     <stop offset="0%" stop-color="#efd48a"/>
+     <stop offset="55%" stop-color="#c9a24b"/>
+     <stop offset="100%" stop-color="#8d6a2a"/>
+   </linearGradient>
+ </defs>
+ <circle cx="50" cy="50" r="48" fill="#090704" stroke="url(#seal-gold)" stroke-width="2.5"/>
+ <circle cx="50" cy="50" r="42" fill="none" stroke="url(#seal-gold)" stroke-width="1.1"/>
+ <circle cx="50" cy="50" r="33" fill="none" stroke="#c9a24b" stroke-width="0.9" opacity="0.5"/>
+ <path d="M50 18c6 4 6 13 0 18c-6-5-6-14 0-18Z" fill="url(#seal-gold)"/>
+ <path d="M50 22v9" stroke="#f0d88f" stroke-width="1.2" stroke-linecap="round"/>
+ <path d="M37 71v-15h26v15" fill="none" stroke="url(#seal-gold)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M37 56h26" stroke="#e6c678" stroke-width="2" stroke-linecap="round"/>
+ <path d="M30 75h40" stroke="url(#seal-gold)" stroke-width="2.2" stroke-linecap="round"/>
+ <circle cx="28" cy="49" r="2.2" fill="#c9a24b" opacity="0.78"/>
+ <circle cx="72" cy="49" r="2.2" fill="#c9a24b" opacity="0.78"/>
 </svg>`;
 }
 
@@ -324,7 +333,7 @@ function structuralElements(): string {
 function letterHeader(): string {
   return `<div class="header">
     <div class="logo-wrap">
-      <img src="/logo.svg" alt="شعار قبيلة السياحين" style="width:68px;height:68px;object-fit:contain;"/>
+      <img src="${OFFICIAL_LOGO_IMAGE_URL}" alt="شعار قبيلة السياحين" style="width:68px;height:68px;object-fit:cover;border-radius:50%;border:1.2px solid #c9a24b;"/>
       ${sealSvgString(58)}
     </div>
     <div class="tribe-name">الموقع الرسمي لقبيلة السياحين</div>
@@ -821,7 +830,7 @@ export function ThanksLetterGenerator() {
               <div className="relative z-10">
                 {/* Header */}
                 <div className="text-center mb-4">
-                  <img src="/logo.svg" alt="الشعار" className="w-12 h-12 mx-auto mb-2" />
+                  <img src={OFFICIAL_LOGO_IMAGE_URL} alt="الشعار" className="w-12 h-12 mx-auto mb-2 object-cover rounded-full border border-[#c9a24b]" />
                   <p className="text-xl font-bold" style={{ fontFamily: 'Aref Ruqaa, serif', color: '#c9a24b' }}>
                     الموقع الرسمي لقبيلة السياحين
                   </p>
@@ -911,7 +920,7 @@ export function ThanksLetterGenerator() {
                       {signatureName}
                     </p>
                   </div>
-                  <img src="/logo.svg" alt="" className="w-7 h-7 opacity-40" />
+                  <img src={OFFICIAL_LOGO_IMAGE_URL} alt="" className="w-7 h-7 opacity-50 object-cover rounded-full border border-[#c9a24b]/50" />
                 </div>
 
                 {/* Watermark */}
