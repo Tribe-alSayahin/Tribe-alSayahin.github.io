@@ -11,6 +11,8 @@ export interface NavLinkItem {
   href: string;
   /** رقم الفصل (للترويسات والفواصل) */
   chapter?: number;
+  /** وصف موجز للقسم (للبطاقات والـ SEO) */
+  description?: string;
   /** الأقسام الفرعية ضمن الفصل (للقائمة المتنقلة) */
   sections?: NavSection[];
 }
@@ -21,6 +23,7 @@ export const SITE_ROUTES: NavLinkItem[] = [
     label: 'الأصول',
     href: '/nasab/',
     chapter: 1,
+    description: 'تعقّب الجذور من السياحين عبر الجثوم إلى المزاحمة — شجرة النسب الموثّقة والفخوذ الكاملة.',
     sections: [
       { id: 'jathum', label: 'الجثوم', href: '/nasab/#jathum' },
       { id: 'lineage', label: 'النسب', href: '/nasab/#lineage' },
@@ -32,6 +35,7 @@ export const SITE_ROUTES: NavLinkItem[] = [
     label: 'الديار',
     href: '/diyar/',
     chapter: 2,
+    description: 'خريطة تفاعلية لديار القبيلة وهجراتها التاريخية ومناهل المياه القديمة وصور التراث.',
     sections: [
       { id: 'map', label: 'الخريطة', href: '/diyar/#map' },
       { id: 'gallery', label: 'التراث', href: '/diyar/#gallery' },
@@ -42,6 +46,7 @@ export const SITE_ROUTES: NavLinkItem[] = [
     label: 'الهوية',
     href: '/hawiya/',
     chapter: 3,
+    description: 'وسم الإبل «الباب» الفريد وديوان الشعر النبطي — علامات الهوية القبلية الأصيلة.',
     sections: [
       { id: 'wasm', label: 'الوسم', href: '/hawiya/#wasm' },
       { id: 'poetry', label: 'الشعر', href: '/hawiya/#poetry' },
@@ -52,6 +57,7 @@ export const SITE_ROUTES: NavLinkItem[] = [
     label: 'التاريخ',
     href: '/tarikh/',
     chapter: 4,
+    description: 'الخط الزمني للقبيلة والأرشيف الاستشراقي النادر — وثائق تاريخية لم تُجمع من قبل.',
     sections: [
       { id: 'timeline', label: 'الخط الزمني', href: '/tarikh/#timeline' },
       { id: 'archive', label: 'الأرشيف', href: '/tarikh/#archive' },
@@ -62,6 +68,7 @@ export const SITE_ROUTES: NavLinkItem[] = [
     label: 'المجتمع',
     href: '/news/',
     chapter: 5,
+    description: 'آخر أخبار القبيلة ومناسباتها وأسماء الداعمين — تواصل مع أبناء السياحين في كل مكان.',
     sections: [
       { id: 'news', label: 'الأخبار', href: '/news/' },
       { id: 'events', label: 'المناسبات', href: '/events/' },

@@ -16,6 +16,17 @@ const staticPaths = [
   '/events/',
 ];
 
+/** hreflang alternates لصفحة واحدة (عربية فقط) */
+function buildAlternates(path: string) {
+  const url = `${siteUrl}${path}`;
+  return {
+    languages: {
+      'ar-SA': url,
+      'x-default': url,
+    },
+  };
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
 
@@ -24,6 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified,
     changeFrequency: path === '' || path === '/news/' || path === '/events/' ? 'daily' : 'weekly',
     priority: path === '' ? 1.0 : path === '/news/' || path === '/events/' ? 0.9 : 0.8,
+    alternates: buildAlternates(path),
   }));
 
   const posts = await getAllPostsForSitemap();
@@ -32,6 +44,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(post.updated_at),
     changeFrequency: 'weekly',
     priority: 0.7,
+    alternates: buildAlternates(`/news/${post.slug}/`),
   }));
 
   const events = await getAllEventsForSitemap();
@@ -40,6 +53,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(event.updated_at),
     changeFrequency: 'weekly',
     priority: 0.75,
+    alternates: buildAlternates(`/events/${event.slug}/`),
   }));
 
   return [...staticEntries, ...newsEntries, ...eventEntries];
