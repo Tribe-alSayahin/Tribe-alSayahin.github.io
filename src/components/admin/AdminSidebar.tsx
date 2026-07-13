@@ -9,6 +9,7 @@ import {
   MessageSquare,
   Activity,
   LogOut,
+  ScrollText,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -19,7 +20,8 @@ export type AdminTab =
   | 'analytics'
   | 'media'
   | 'comments'
-  | 'activity';
+  | 'activity'
+  | 'thanks-letter';
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -42,6 +44,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'media', label: 'الوسائط', icon: ImageIcon },
   { id: 'analytics', label: 'الإحصائيات', icon: BarChart3 },
   { id: 'activity', label: 'سجل النشاطات', icon: Activity },
+  { id: 'thanks-letter', label: 'خطاب شكر الداعمين', icon: ScrollText },
 ];
 
 export function AdminSidebar({
