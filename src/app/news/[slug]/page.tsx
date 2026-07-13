@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getAllPostSlugs, getPostBySlug } from '../../../lib/posts';
 import { buildSeoExcerpt } from '../../../lib/seo';
+import { OFFICIAL_LOGO_IMAGE_URL } from '../../../lib/branding';
 
 const siteUrl = 'https://alsaihani.com';
 
@@ -80,7 +81,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
       name: 'الموقع الرسمي لقبيلة السياحين',
       logo: {
         '@type': 'ImageObject',
-        url: `${siteUrl}/logo.png`,
+        url: OFFICIAL_LOGO_IMAGE_URL,
       },
     },
     mainEntityOfPage: {

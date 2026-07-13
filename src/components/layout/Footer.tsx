@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { BookOpen, Mail } from 'lucide-react';
 import { LOCAL_REFS } from '../../lib/references';
 import { SITE_ROUTES } from '../../lib/navigation';
+import { OFFICIAL_LOGO_IMAGE_URL } from '../../lib/branding';
 
 export function Footer() {
   return (
@@ -67,19 +68,12 @@ export function Footer() {
           href="/"
           className="logo flex items-center justify-center gap-3 text-lg font-bold font-serif text-sand hover:text-brass-lt transition-colors mb-4 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-lg p-1 w-fit mx-auto"
         >
-          <div className="w-10 h-10 rounded-lg border border-brass/50 bg-gradient-to-br from-brass/25 via-brass/10 to-transparent flex items-center justify-center text-brass shadow-glow-sm p-2">
-            <svg
-              viewBox="0 0 200 200"
-              className="w-full h-full"
-              stroke="currentColor"
-              strokeWidth="22"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path d="M40,130 L40,70 L160,70 L160,130" />
-            </svg>
+          <div className="w-10 h-10 rounded-lg border border-brass/50 bg-ink/70 flex items-center justify-center shadow-glow-sm overflow-hidden">
+            <img
+              src={OFFICIAL_LOGO_IMAGE_URL}
+              alt="شعار قبيلة السياحين"
+              className="w-full h-full object-cover"
+            />
           </div>
           <span className="flex flex-col items-start gap-1 leading-none text-right">
             <span className="font-kufi text-[10px] font-semibold tracking-[0.22em] text-brass-lt/85">
