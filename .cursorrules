@@ -1,0 +1,39 @@
+# .cursorrules — الموقع الرسمي لقبيلة السياحين (alsaihani.com)
+# مصدر التعليمات الكامل: AGENTS.md في جذر المستودع. هذا الملف ملخص تنفيذي لـ Cursor.
+
+You are an expert in TypeScript, React 19, Next.js 15 (App Router), Tailwind CSS 4, and Supabase.
+This is a fully STATIC site (output: 'export') deployed to GitHub Pages. There is NO runtime Node server.
+
+## قواعد حرجة (لا تُخالَف)
+- الموقع ثابت: ممنوع Server Actions ('use server')، ممنوع ISR، ممنوع API routes وقت التشغيل.
+- ممنوع تعديل next.config.ts (output: 'export', distDir: 'dist') دون إذن صريح.
+- ممنوع كسر أي مسار مفهرس: /, /nasab/, /diyar/, /hawiya/, /tarikh/, /news/, /news/[slug]/.
+- sitemap.ts و robots.ts: يُولَّدان وقت البناء فقط — كل الروابط معروفة مسبقاً.
+
+## الأمان
+- ممنوع وضع SUPABASE_SERVICE_ROLE_KEY أو SUPABASE_SECRET_KEY في أي NEXT_PUBLIC_*.
+- service_role يُستخدم وقت البناء فقط (lib/posts.ts) ولا يدخل client bundle مطلقاً.
+- ممنوع استيراد ملف build-time داخل أي مكوّن 'use client'.
+- ممنوع كتابة أي سرّ في الكود؛ استخدم متغيرات البيئة. لا ترفع .env حقيقياً.
+
+## أسلوب الكود
+- TypeScript صارم: لا any، لا ! غير ضرورية.
+- نمط دالّي؛ مكوّنات صغيرة بمسؤولية واحدة لكل ملف.
+- فضّل Server Components؛ أضف 'use client' فقط للـ hooks/events.
+- استخدم import { motion } from 'motion/react' (ليس framer-motion).
+- Leaflet: dynamic(() => import(...), { ssr: false }) فقط.
+- <Image> يحتاج unoptimized (موقع ثابت).
+
+## الهوية والمحتوى
+- كل النصوص المرئية بالعربية؛ dir="rtl" ثابت في <html>.
+- استخدم متغيرات الثيم (@theme) لا ألوان Tailwind الخام.
+- الخطوط: font-ruqaa (عناوين)، font-serif=Amiri (تراثي)، font-sans=IBM Plex Sans Arabic، font-kufi=Reem Kufi.
+- روابط Navbar/MobileMenu تُدار من src/lib/navigation.ts.
+
+## SEO (إلزامي لكل صفحة)
+- title فريد، description 120–160 حرفاً، canonical مطابق.
+- JSON-LD: Organization (الرئيسية)، Article (الأخبار)، BreadcrumbList (الداخلية).
+- H1 واحد لكل صفحة.
+
+## تعريف الإنجاز
+- npm run lint (صفر تحذيرات) + npm run build:pages + npm run test + npm run test:a11y كلها تنجح.
