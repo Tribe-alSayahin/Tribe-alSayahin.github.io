@@ -31,8 +31,16 @@ export const metadata: Metadata = {
     'وثائق نجد',
     'الأخبار',
     'المناسبات',
+    'حسين بن علي بن بعاج ابن مسيلم',
+    'حسين بن علي السياحين',
+    'بعاج ابن مسيلم',
+    'مشرف موقع السياحين',
+    'آل مسيلم السياحين',
   ],
-  authors: [{ name: 'الموقع الرسمي لقبيلة السياحين' }],
+  authors: [
+    { name: 'حسين بن علي بن بعاج ابن مسيلم' },
+    { name: 'الموقع الرسمي لقبيلة السياحين' },
+  ],
   applicationName: 'الموقع الرسمي لقبيلة السياحين',
   generator: 'Next.js',
   robots: {
@@ -174,8 +182,61 @@ const organizationLd = {
         'ديار نجد',
         'هجرة الجثوم',
       ],
+      member: [
+        {
+          '@type': 'OrganizationRole',
+          member: {
+            '@type': 'Person',
+            '@id': `${siteUrl}/#hussain`,
+            name: 'حسين بن علي بن بعاج ابن مسيلم',
+            alternateName: ['حسين السياحين', 'حسين بن علي السياحين'],
+            jobTitle: 'المشرف العام',
+            description:
+              'مدير الموقع الرسمي لقبيلة السياحين والمشرف العام، والمسؤول المباشر عن تدقيق وجمع الوثائق والمقتبسات والمراجع التاريخية لنسب وقبيلة السياحين من الروقة من عتيبة.',
+            memberOf: { '@id': `${siteUrl}/#organization` },
+          },
+          roleName: 'المشرف العام',
+          startDate: '2024',
+        },
+      ],
     },
   ],
+};
+
+const hussainPersonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${siteUrl}/#hussain`,
+  name: 'حسين بن علي بن بعاج ابن مسيلم',
+  alternateName: [
+    'حسين السياحين',
+    'حسين بن علي السياحين',
+    'حسين بن علي بن بعاج',
+    'حسين ابن مسيلم',
+  ],
+  jobTitle: 'المشرف العام — الموقع الرسمي لقبيلة السياحين',
+  description:
+    'حسين بن علي بن بعاج ابن مسيلم، من آل مسيلم في قبيلة السياحين (السيحاني) من الروقة من عتيبة. مدير الموقع الرسمي لقبيلة السياحين والمشرف العام على توثيق نسب القبيلة وديارها وشعرها وأرشيفها الاستشراقي.',
+  url: `${siteUrl}/hussain/`,
+  sameAs: [`${siteUrl}/hussain/`, `${siteUrl}/#hussain`],
+  memberOf: {
+    '@type': 'Organization',
+    '@id': `${siteUrl}/#organization`,
+    name: 'قبيلة السياحين (السيحاني)',
+    url: `${siteUrl}/`,
+  },
+  knowsAbout: [
+    'نسب قبيلة السياحين',
+    'تاريخ عتيبة',
+    'آل مسيلم',
+    'الأرشيف الاستشراقي لنجد',
+    'الشعر النبطي',
+    'وثائق نجد التاريخية',
+  ],
+  nationality: {
+    '@type': 'Country',
+    name: 'المملكة العربية السعودية',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -207,6 +268,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(hussainPersonLd) }}
         />
       </body>
     </html>
