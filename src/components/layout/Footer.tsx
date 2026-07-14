@@ -94,7 +94,7 @@ export function Footer() {
             <span className="font-kufi text-[10px] font-semibold tracking-[0.22em] text-brass-lt/85">
               الموقع الرسمي
             </span>
-            <span className="font-kufi text-lg leading-none">قبيلة السياحين</span>
+            <span className="font-kufi text-lg leading-none">لقبيلة السياحين</span>
           </span>
         </Link>
         <p className="text-sand-dim text-sm">

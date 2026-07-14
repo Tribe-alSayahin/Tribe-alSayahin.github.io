@@ -85,12 +85,13 @@ export function Hero({ scrollToSection }: HeroProps) {
 
         {/* شارة رسمية */}
         <motion.span
-          className="font-kufi text-[11px] md:text-xs tracking-[0.28em] text-brass-lt bg-brass/5 border border-brass/15 rounded-full px-5 py-1.5"
+          className="inline-flex flex-col items-center gap-0.5 font-kufi text-[11px] md:text-xs tracking-[0.22em] text-brass-lt bg-brass/5 border border-brass/15 rounded-full px-5 py-2"
           initial={prefersReduced ? { opacity: 1 } : { opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          الموقع الرسمي — الروقة من عتيبة
+          <span>الموقع الرسمي</span>
+          <span className="text-[10px] md:text-[11px] tracking-[0.08em] text-brass-lt/90">لقبيلة السياحين</span>
         </motion.span>
 
         {/* اسم القبيلة — كشف كلمةً كلمة بحروف متشابكة */}

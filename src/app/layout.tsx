@@ -12,7 +12,7 @@ const yandexVerification = process.env.NEXT_PUBLIC_YANDEX_VERIFICATION_CODE ?? '
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'قبيلة السياحين (السيحاني) | الموقع الرسمي | الروقة من عتيبة',
+    default: 'قبيلة السياحين (السيحاني) | الموقع الرسمي لقبيلة السياحين',
     template: '%s | الموقع الرسمي لقبيلة السياحين',
   },
   description:
