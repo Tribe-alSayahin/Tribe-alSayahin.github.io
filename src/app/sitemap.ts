@@ -14,6 +14,7 @@ const staticPaths = [
   '/tarikh/',
   '/news/',
   '/events/',
+  '/hussain/',
 ];
 
 /** hreflang alternates لصفحة واحدة (عربية فقط) */
@@ -34,7 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${siteUrl}${path}`,
     lastModified,
     changeFrequency: path === '' || path === '/news/' || path === '/events/' ? 'daily' : 'weekly',
-    priority: path === '' ? 1.0 : path === '/news/' || path === '/events/' ? 0.9 : 0.8,
+    priority: path === '' ? 1.0 : path === '/news/' || path === '/events/' ? 0.9 : path === '/hussain/' ? 0.85 : 0.8,
     alternates: buildAlternates(path),
   }));
 
