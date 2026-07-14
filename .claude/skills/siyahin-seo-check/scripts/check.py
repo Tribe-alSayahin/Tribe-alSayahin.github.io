@@ -65,16 +65,20 @@ def check_seo(src):
             f"لم يُعثر على page.tsx تحت {app}", "تحقّق من مسار --src")
         return
 
-    # تكرار title/description
+    # تكرار title/description — نتتبع الملف الأول فقط لكل قيمة (نتجاهل openGraph بداخل نفس الملف)
     titles, descs = {}, {}
     for p in pages:
         txt = read_text(p)
         t = re.findall(r"title:\s*['\"`]([^'\"`]{1,120})['\"`]", txt)
         d = re.findall(r"description:\s*['\"`]([^'\"`]{1,300})['\"`]", txt)
         for x in t:
-            titles.setdefault(x, []).append(str(p))
+            files = titles.setdefault(x, [])
+            if str(p) not in files:
+                files.append(str(p))
         for x in d:
-            descs.setdefault(x, []).append(str(p))
+            files = descs.setdefault(x, [])
+            if str(p) not in files:
+                files.append(str(p))
 
     dup_t = {k: v for k, v in titles.items() if len(v) > 1}
     dup_d = {k: v for k, v in descs.items() if len(v) > 1}
@@ -217,9 +221,10 @@ def check_routes(src):
         "محظور" if admin_blocked else "غير محظور",
         "أضف disallow: '/admin/' في robots.ts" if not admin_blocked else "")
 
-    # noindex في صفحة admin
+    # noindex في صفحة admin — يتعرف على "noindex" كنص أو على { index: false } بالصياغة الكائنية
     admin_page = read_text(Path(src) / "app" / "admin" / "page.tsx")
-    has_noindex = "noindex" in admin_page.lower()
+    has_noindex = ("noindex" in admin_page.lower() or
+                   bool(re.search(r"index\s*:\s*false", admin_page)))
     add("المسارات", "/admin يحمل noindex",
         PASS if (has_noindex or not admin_page) else WARN,
         "noindex موجود" if has_noindex else ("لا صفحة admin" if not admin_page else "ناقص"),
