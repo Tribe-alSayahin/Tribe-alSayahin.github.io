@@ -5,12 +5,12 @@ import { getPublishedEvents } from '../../lib/events-server';
 
 export const metadata: Metadata = {
   title: 'المناسبات والأحداث',
-  description: 'أرشيف مناسبات قبيلة السياحين المصوّر: اللقاءات والاحتفالات والتكريمات والفعاليات التراثية.',
-  alternates: { canonical: '/events/' },
+  description: 'أرشيف مناسبات قبيلة السياحين المصوّر: اللقاءات القبلية والاحتفالات الموسمية والتكريمات والفعاليات التراثية التي تجمع أبناء القبيلة.',
+  alternates: { canonical: 'https://alsaihani.com/events/' },
   openGraph: {
     title: 'المناسبات والأحداث | قبيلة السياحين',
-    description: 'أرشيف مناسبات قبيلة السياحين المصوّر: اللقاءات والاحتفالات والتكريمات والفعاليات التراثية.',
-    url: '/events/',
+    description: 'أرشيف مناسبات قبيلة السياحين المصوّر: اللقاءات القبلية والاحتفالات الموسمية والتكريمات والفعاليات التراثية التي تجمع أبناء القبيلة.',
+    url: 'https://alsaihani.com/events/',
     locale: 'ar_SA',
   },
 };
