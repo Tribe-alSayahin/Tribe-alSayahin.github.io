@@ -2,25 +2,7 @@
 
 import { BookOpen } from 'lucide-react';
 import { Badge } from '../ui/Badge';
-
-const baajPoemLines = [
-  'يا عيد وصّيتك على شيخة الذود؟',
-  'كسبي من الأجناب نقوة حلالي!',
-  'شعيتها والقوم في نومها رقود؟',
-  'ملحًا أسوق الروح فيها ما بالي!',
-  'وردتها عدًا على الجد ما رود؟',
-  'وشربت من زبيدة شرابًا زلالي!',
-  'ومن الجثوم اليا الطرودي لها حدود!',
-  'وغرب اليا صدعان زين المفالي!',
-  'ومن المظيح للمحامه لها نود؟',
-  'ولها على صفو الغبيوي مدالي!',
-  'واليا وردت سهوات ما يشرب الرود!',
-  'وحنا جنبها محتمين التوالي!',
-  'حتى تصدر منه والعالم شهود؟',
-  'وتاخذ لها على القطين جتوالي!',
-  'وضيعتها يا عيد يا راعي القود؟',
-  'هذا وأنا محرصك يا هملالي!'
-];
+import { baajPoemLines, baajStory } from './PoetryCouncil.data';
 
 export default function PoetryCouncil() {
   return (
@@ -35,10 +17,18 @@ export default function PoetryCouncil() {
           </div>
           <h3 className="text-2xl md:text-3xl font-serif text-sand font-bold">قصيدة الشيخ بعاج بن علوش بن فرج بن مسيلم</h3>
           <p className="text-sm text-sand-dim leading-loose">
-            من محفوظات الديار عن رحلة الكسب من الأجناب، وما تبعها من وصية الشيخ بعاج لابنه عيد على
-            شيخة الذود.
+            من محفوظات الديار عن رحلة الكسب من الأجناب، وما تبعها من وصية الشيخ بعاج لابنه عيد على شيخة الذود.
           </p>
         </div>
+
+        <section className="rounded-2xl border border-brass/20 bg-ink/70 p-space-5 md:p-space-7" aria-labelledby="baaj-story-title">
+          <h4 id="baaj-story-title" className="font-serif text-xl text-brass-lt font-bold mb-space-4">السالفة</h4>
+          <div className="space-y-space-3 text-sand-dim leading-loose font-serif">
+            {baajStory.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
+        </section>
 
         <article className="rounded-2xl border border-brass/20 bg-ink/70 p-space-5 md:p-space-7">
           <p className="font-kufi text-xs text-brass-lt mb-space-4">مقام القصيدة: سهوات عفيف والجثوم</p>
