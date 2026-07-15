@@ -356,9 +356,6 @@ sequenceDiagram
 
 <br/>
 
-<!-- 🐍 حركة الثعبان — تُنشَّط تلقائيًا بعد إضافة workflow snake.yml -->
-<img src="https://raw.githubusercontent.com/Tribe-alSayahin/Tribe-alSayahin.github.io/output/github-contribution-grid-snake-dark.svg" width="100%"/>
-
 </div>
 
 <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.gif" width="100%"/>
