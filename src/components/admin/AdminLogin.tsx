@@ -21,10 +21,10 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
     }
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) onLoginSuccess();
-    });
+    }).catch(() => {});
   }, [onLoginSuccess]);
 
-  const handleSubmit = async (e: FormEvent) => {
+  const doSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
@@ -40,7 +40,7 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
     }
   };
 
-  const handleGoogleSignIn = async () => {
+  const doGoogleSignIn = async () => {
     setError('');
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -51,6 +51,14 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
     if (error) {
       setError(error.message || 'خطأ في تسجيل الدخول عبر Google');
     }
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    void doSubmit(e);
+  };
+
+  const handleGoogleSignIn = () => {
+    void doGoogleSignIn();
   };
 
   if (notConfigured) {
