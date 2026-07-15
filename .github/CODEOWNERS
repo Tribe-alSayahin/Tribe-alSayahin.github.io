@@ -1,1 +1,24 @@
-* @
+# CODEOWNERS — قبيلة السياحين (Tribe-alSayahin.github.io)
+# يفرض مراجعة المالك على المسارات الحساسة قبل الدمج.
+# التوثيق: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# قاعدة شاملة (fallback) — أي ملف لم يُطابق قاعدة أدنى
+* @mwthrc23-ui
+
+# سير عمل CI/CD والنشر — تعديلها قد يعرّض الأسرار أو يعطّل النشر
+/.github/ @mwthrc23-ui
+
+# منطق الاتصال بـ Supabase وقراءة متغيرات البيئة الحساسة
+/src/lib/posts.ts @mwthrc23-ui
+/src/lib/supabase*.ts @mwthrc23-ui
+
+# نماذج متغيرات البيئة — يجب ألا تحتوي أسراراً فعلية أبداً
+/.env.example @mwthrc23-ui
+
+# إعدادات البناء والنشر الثابت
+/next.config.ts @mwthrc23-ui
+/package.json @mwthrc23-ui
+
+# لوحة التحكم الإدارية (admin) — مسار حساس يتعامل مع صلاحيات وبيانات
+/src/app/admin/ @mwthrc23-ui
+/src/components/admin/ @mwthrc23-ui
