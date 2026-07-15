@@ -280,6 +280,10 @@ interface SupabaseLike {
       data: { user: User | null; session: Session | null };
       error: SupabaseErrorLike;
     }>;
+    signInWithOAuth(options: { provider: string; options?: Record<string, unknown> }): Promise<{
+      data: { url: string | null; provider: string | null };
+      error: SupabaseErrorLike;
+    }>;
     signOut(): Promise<{ error: SupabaseErrorLike }>;
     getSession(): Promise<{ data: { session: Session | null } }>;
     getUser(): Promise<{ data: { user: User | null } }>;
@@ -384,6 +388,7 @@ const noopClient: SupabaseLike = {
       error: { message: 'Supabase is not configured' },
     }),
     signOut: () => Promise.resolve({ error: null }),
+    signInWithOAuth: () => Promise.resolve({ data: { url: null, provider: null }, error: { message: 'Supabase is not configured' } }),
     getSession: () => Promise.resolve({ data: { session: null } }),
     getUser: () => Promise.resolve({ data: { user: null } }),
     onAuthStateChange: () => ({
