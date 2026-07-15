@@ -1,21 +1,24 @@
-# Security Policy
+# سياسة الأمان — الموقع الرسمي لقبيلة السياحين
 
-## Supported Versions
+## نطاق هذا المشروع
+هذا موقع تعريفي ثابت (Next.js static export) لا يحتوي نظام إصدارات تقليدياً.
+هذه السياسة تنطبق على الفرع الرئيسي (main) وما هو منشور فعلياً على alsaihani.com.
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+## الإفادة عن ثغرة أمنية
+إن اكتشفت ثغرة أمنية (تسريب مفاتيح، ثغرة XSS، تجاوز صلاحيات في لوحة الإدارة، إلخ):
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+1. **لا تفتح Issue علنياً.** استخدم أحد القناتين التاليتين فقط:
+   - [GitHub Security Advisories](https://github.com/Tribe-alSayahin/Tribe-alSayahin.github.io/security/advisories/new) (الطريقة المفضّلة، خاصة وسرية).
+   - التواصل المباشر مع مالك المستودع: @mwthrc23-ui
 
-## Reporting a Vulnerability
+2. أرفق وصفاً واضحاً لخطوات إعادة الإنتاج (reproduction steps)، والتأثير المحتمل،
+   وأي إثبات مفهوم (PoC) إن وُجد، دون نشره علناً.
 
-Use this section to tell people how to report a vulnerability.
+## المهلة المتوقعة للاستجابة
+- إقرار أولي باستلام التقرير: خلال 72 ساعة.
+- تقييم أولي للخطورة: خلال 7 أيام.
+- إن تأكدت الثغرة: سيتم إصلاحها ونشر تحديث قبل الإفادة العلنية عنها.
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+## خارج نطاق هذه السياسة
+- تقارير تتعلق بمحتوى تاريخي/نسبي (الدقة التاريخية تُعالج عبر قنوات المحتوى، لا الأمان).
+- هجمات تتطلب وصولاً فيزيائياً مسبقاً لجهاز المستخدم.
