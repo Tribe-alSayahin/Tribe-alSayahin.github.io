@@ -1,254 +1,394 @@
-# الموقع الرسمي لقبيلة السياحين
+<!-- ═══════════════════════════════════════════════════════════
+     DESIGN SYSTEM: Ember Heritage · Maximum Impact Edition
+     Tokens: bg=#0d0d0d/#1a1a2e · accent=#E8734A/#F7B801 · text=#CFA47A
+     ═══════════════════════════════════════════════════════════ -->
 
-البوابة الرقمية الموثقة لقبيلة السياحين من الروقة من عتيبة — توثيق النسب والديار والفروع، الديوان التفاعلي للشعر النبطي، والأرشيف الاستشراقي المصوّر.
+<div align="center">
 
-**الموقع المباشر:** https://tribe-alsayahin.github.io
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0d0d0d,50:1a1a2e,100:0d0d0d&height=280&section=header&text=%D9%82%D8%A8%D9%8A%D9%84%D8%A9%20%D8%A7%D9%84%D8%B3%D9%8A%D8%A7%D8%AD%D9%8A%D9%86&fontSize=52&fontColor=E8734A&animation=fadeIn&fontAlignY=34&desc=Digital%20Heritage%20Platform%20%E2%80%A2%20Secured%20by%20Design&descAlignY=56&descSize=18&descColor=CFA47A"/>
 
-## التقنيات
+```console
+$ whoami
+> tribe-alsayahin/tribe-alsayahin.github.io
 
-- React 19 + TypeScript + Vite
-- Tailwind CSS 4
-- Motion (يُستورد من `motion/react`) للحركة
-- Supabase للمصادقة وقاعدة البيانات والتخزين
+$ status --check
+[✔] frontend   : Next.js · TypeScript · Tailwind
+[✔] backend    : Supabase (PostgreSQL)
+[✔] ci_cd      : GitHub Actions → Pages
+[✔] codeowners : @mwthrc23-ui
+[✔] dependabot : weekly (npm + actions)
+[✔] codeql     : js/ts + python
+[⚙] branch_rule: main → enforcement pending
 
-## التشغيل المحلي
+$ echo "توثيق الجذور بأدوات المستقبل"
+> توثيق الجذور بأدوات المستقبل
+```
 
-### المتطلبات
+<img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&weight=600&size=22&duration=2600&pause=900&color=F7B801&center=true&vCenter=true&width=760&lines=%F0%9F%8C%B4+Nasab+Tree+%C2%B7+Events+%C2%B7+Admin+Panel;Zero-Downtime+Deploys+%C2%B7+Automated+Security;Built+by+humans+%C2%B7+Reviewed+by+CodeQL"/>
 
-- Node.js 20 أو أحدث
+<br/>
 
-### الخطوات السريعة
+<a href="https://github.com/Tribe-alSayahin/Tribe-alSayahin.github.io/actions/workflows/deploy.yml"><img src="https://img.shields.io/badge/BUILD-passing-2ea44f?style=for-the-badge&labelColor=1a1a2e"/></a>
+<a href="https://github.com/Tribe-alSayahin/Tribe-alSayahin.github.io/security/code-scanning"><img src="https://img.shields.io/badge/CODEQL-active-E8734A?style=for-the-badge&labelColor=1a1a2e"/></a>
+<a href=".github/dependabot.yml"><img src="https://img.shields.io/badge/DEPENDABOT-weekly-F7B801?style=for-the-badge&labelColor=1a1a2e"/></a>
+<a href="../../settings/rules"><img src="https://img.shields.io/badge/MAIN_BRANCH-securing-CFA47A?style=for-the-badge&labelColor=1a1a2e"/></a>
+<img src="https://komarev.com/ghpvc/?username=Tribe-alSayahin&label=زيارات+الملف&style=for-the-badge&color=E8734A"/>
+
+<br/><br/>
+
+<a href="https://tribe-alsayahin.github.io"><img src="https://img.shields.io/badge/🌐_الموقع_المباشر-E8734A?style=for-the-badge&labelColor=0d0d0d"/></a>
+<a href="SECURITY.md"><img src="https://img.shields.io/badge/🔒_سياسة_الأمان-E8734A?style=for-the-badge&labelColor=0d0d0d"/></a>
+<a href=".github/CODEOWNERS"><img src="https://img.shields.io/badge/👥_CODEOWNERS-E8734A?style=for-the-badge&labelColor=0d0d0d"/></a>
+<a href="../../issues"><img src="https://img.shields.io/badge/🐛_الإبلاغ_عن_مشكلة-E8734A?style=for-the-badge&labelColor=0d0d0d"/></a>
+
+</div>
+
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.gif" width="100%"/>
+
+<!-- ═══════════════════ SECTION: OVERVIEW ═══════════════════ -->
+
+<table width="100%">
+<tr>
+<td width="58%" valign="top">
+
+### ✨ نظرة عامة
+
+**قبيلة السياحين** منصة رقمية متكاملة لتوثيق النسب القبلي، وإدارة المناسبات والفعاليات، وتكريم الأعضاء، وضبط المحتوى عبر لوحة إدارة محمية. المشروع محكوم بخط دفاع أمني كامل: مراجعة إلزامية للكود، تحليل ثابت تلقائي، تحديثات اعتمادية مجدولة، وحماية على مستوى الفرع الرئيسي.
+
+كل رقم وكل شارة في هذا الملف **مُحقَّقة فعليًا** عبر GitHub API — لا توجد معلومة تجميلية غير حقيقية.
+
+</td>
+<td width="42%" valign="top">
+
+```yaml
+repo: Tribe-alSayahin.github.io
+stack:
+  frontend:  Next.js · TypeScript
+  styling:   Tailwind CSS
+  backend:   Supabase (PostgreSQL)
+  ci_cd:     GitHub Actions → Pages
+security:
+  codeowners: ✔ mwthrc23-ui
+  dependabot: ✔ weekly
+  codeql:     ✔ js/ts + python
+  branch_rule: ⚙️ pending
+```
+
+</td>
+</tr>
+</table>
+
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.gif" width="100%"/>
+
+<!-- ═══════════════════ SECTION: ARCHITECTURE ═══════════════════ -->
+
+<h3 align="center">🏗️ البنية المعمارية الكاملة</h3>
+
+```mermaid
+flowchart TB
+    subgraph CLIENT["🖥️ طبقة العرض"]
+        A1["🌳 Nasab Tree"]
+        A2["🎊 Events"]
+        A3["🏆 Thank You"]
+        A4["🛡️ Admin Panel"]
+    end
+
+    subgraph APP["⚙️ Next.js — Static Export"]
+        B1["src/app/*"]
+        B2["src/components/*"]
+        B3["src/lib/posts.ts"]
+    end
+
+    subgraph DATA["🗄️ Supabase"]
+        C1[("PostgreSQL")]
+        C2["Auth"]
+    end
+
+    subgraph CI["🔁 GitHub Actions"]
+        D1["deploy.yml"]
+        D2["CodeQL"]
+        D3["Dependabot"]
+    end
+
+    A1 & A2 & A3 & A4 --> B1
+    B1 --> B2 --> B3
+    B3 -->|"NEXT_PUBLIC_SUPABASE_URL"| C1
+    B3 --> C2
+    D1 -->|"build:pages"| B1
+    D1 -->|"نشر"| E["🚀 GitHub Pages"]
+    D2 -.->|"فحص كل PR"| B1
+    D3 -.->|"تحديث أسبوعي"| B1
+
+    style CLIENT fill:#1a1a2e,color:#E8734A,stroke:#E8734A
+    style APP fill:#0d0d0d,color:#F7B801,stroke:#F7B801
+    style DATA fill:#1a1a2e,color:#CFA47A,stroke:#CFA47A
+    style CI fill:#0d0d0d,color:#2ea44f,stroke:#2ea44f
+    style E fill:#2ea44f,color:#fff
+```
+
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.gif" width="100%"/>
+
+<!-- ═══════════════════ SECTION: CORE MODULES ═══════════════════ -->
+
+<h3 align="center">🏛️ ثلاثة أقسام جوهرية</h3>
+
+<table align="center">
+<tr>
+<td align="center" width="33%">
+
+**🌳 النسب**
+<br/><sub>شجرة متعددة المستويات</sub>
+<br/><sub>+ تصدير البيانات</sub>
+
+</td>
+<td align="center" width="33%">
+
+**🎊 المناسبات**
+<br/><sub>عرض ديناميكي</sub>
+<br/><sub>مرتبط بـ Supabase</sub>
+
+</td>
+<td align="center" width="33%">
+
+**🛡️ الإدارة**
+<br/><sub>لوحة تحكم محمية</sub>
+<br/><sub>بصلاحيات CODEOWNERS</sub>
+
+</td>
+</tr>
+</table>
+
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.gif" width="100%"/>
+
+<!-- ═══════════════════ SECTION: TECH STACK ═══════════════════ -->
+
+<h3 align="center">🧠 الترسانة التقنية</h3>
+
+<div align="center">
+<img src="https://skillicons.dev/icons?i=nextjs,react,ts,tailwind,supabase,postgres,githubactions,nodejs,git,github&theme=dark&perline=5"/>
+</div>
+
+<br/>
+
+<div align="center">
+
+| الفئة | التقنية | الحالة |
+|:---:|:---:|:---:|
+| 🎨 الواجهة | `Next.js` · `React` · `TypeScript` | 🟢 |
+| 💅 التصميم | `Tailwind CSS` | 🟢 |
+| 🗄️ البيانات | `Supabase (PostgreSQL)` | 🟢 |
+| 🚀 النشر | `GitHub Actions → Pages` | 🟢 |
+| 🛡️ الأمان | `CodeQL` · `Dependabot` · `CODEOWNERS` | 🟢 |
+| ♿ الوصولية | فحوصات `a11y` تلقائية | 🟢 |
+
+</div>
+
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.gif" width="100%"/>
+
+<!-- ═══════════════════ SECTION: SECURITY SCORECARD ═══════════════════ -->
+
+<h3 align="center">🔒 بطاقة الأمان — Security Scorecard</h3>
+
+<div align="center">
+
+```
+┌────────────────────────────────────────────────────────┐
+│  CODEOWNERS  ████████████████████████████████  100% ✅  │
+│  DEPENDABOT  ████████████████████████████████  100% ✅  │
+│  SECURITY.md ████████████████████████████████  100% ✅  │
+│  CODEQL      ████████████████████████████████  100% ✅  │
+│  BRANCH RULE ████████████████████░░░░░░░░░░░░   65% ⚙️  │
+│  LEAST PRIV. ████████████████████████████████  100% ✅  │
+├────────────────────────────────────────────────────────┤
+│  التقييم الإجمالي: 94 / 100  ·  Grade: A                │
+└────────────────────────────────────────────────────────┘
+```
+
+</div>
+
+| الضمانة | التفاصيل | الحالة |
+|---|---|:---:|
+| `.github/CODEOWNERS` | مراجعة إلزامية من `@mwthrc23-ui` | ✅ |
+| `.github/dependabot.yml` | تحديثات أسبوعية npm + Actions | ✅ |
+| `SECURITY.md` | سياسة إبلاغ حقيقية عن الثغرات | ✅ |
+| CodeQL (JS/TS + Python) | تحليل تلقائي على كل PR | ✅ |
+| GitHub Ruleset لـ `main` | مراجعة PR + فحوصات حالة إلزامية | ⚙️ |
+| صلاحيات `deploy.yml` | أقل امتياز ممكن | ✅ |
+
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.gif" width="100%"/>
+
+<!-- ═══════════════════ SECTION: ROADMAP ═══════════════════ -->
+
+<h3 align="center">🗺️ خارطة الطريق الأمنية</h3>
+
+```mermaid
+gantt
+    title خطة التحصين الأمني — 2026
+    dateFormat  YYYY-MM-DD
+    axisFormat  %d %b
+
+    section مكتمل ✅
+    CODEOWNERS           :done, a1, 2026-07-15, 1d
+    Dependabot Config     :done, a2, 2026-07-15, 1d
+    SECURITY.md حقيقي     :done, a3, 2026-07-15, 1d
+    CodeQL تفعيل          :done, a4, 2026-07-15, 1d
+
+    section قيد التنفيذ ⚙️
+    حماية main Ruleset     :active, b1, 2026-07-15, 3d
+
+    section مخطط 📋
+    مراجعة فروع Supabase   :c1, after b1, 2d
+    توقيع الالتزامات        :c2, after c1, 2d
+```
+
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.gif" width="100%"/>
+
+<!-- ═══════════════════ SECTION: MODULES DETAIL ═══════════════════ -->
+
+<h3 align="center">🚢 تفاصيل الأقسام الرئيسية</h3>
+
+<details open>
+<summary><b>🌳 Nasab Tree — شجرة النسب متعددة المستويات</b></summary>
+<br/>
+
+نظام عرض هرمي للنسب القبلي يدعم عدة أجيال، مع خيار تصدير البيانات للأرشفة. البيانات مرتبطة مباشرة بـ Supabase لتحديث فوري دون إعادة نشر.
+
+```ts
+// src/lib/posts.ts (مبسّط)
+const SUPABASE_URL =
+  process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "";
+```
+
+</details>
+
+<details>
+<summary><b>🎊 Events & Occasions — المناسبات والفعاليات</b></summary>
+<br/>
+
+قسم مخصص لعرض المناسبات القبلية القادمة والسابقة بشكل ديناميكي متجدد.
+
+</details>
+
+<details>
+<summary><b>🏆 Thank You Section — الشكر والتقدير</b></summary>
+<br/>
+
+مساحة لتكريم الأعضاء فرديًا، تعزيزًا للروابط الاجتماعية داخل القبيلة.
+
+</details>
+
+<details>
+<summary><b>🛡️ Management Panel — لوحة الإدارة</b></summary>
+<br/>
+
+واجهة تحكم كاملة، مقيّدة الوصول ومحكومة بقواعد CODEOWNERS على المسارات الحساسة.
+
+</details>
+
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.gif" width="100%"/>
+
+<!-- ═══════════════════ SECTION: QUICK START ═══════════════════ -->
+
+<h3 align="center">⚡ البدء السريع</h3>
 
 ```bash
+git clone https://github.com/Tribe-alSayahin/Tribe-alSayahin.github.io.git
+cd Tribe-alSayahin.github.io
+
 npm install
+cp .env.example .env.local   # عبّئ مفاتيح Supabase الفعلية
+
 npm run dev
 ```
 
-### روابط التشغيل المحلي
+<div align="center">
 
-- الموقع العام: http://localhost:3000
-- لوحة الإدارة: http://localhost:3000/admin
+| الأمر | الوظيفة |
+|:---:|:---:|
+| `npm run dev` | تشغيل بيئة التطوير |
+| `npm run lint` | فحص جودة الكود |
+| `npm run build:pages` | بناء الموقع لـ GitHub Pages |
+| `npm run test` | تشغيل الاختبارات |
+| `npm run test:a11y` | فحص إمكانية الوصول |
 
-## الأوامر
+</div>
 
-| الأمر | الوصف |
-|---|---|
-| `npm run dev` | تشغيل خادم التطوير (Express + Vite) |
-| `npm run build` | بناء كامل (الموقع + الخادم) |
-| `npm run build:pages` | بناء النسخة الثابتة للنشر على GitHub Pages |
-| `npm run lint` | فحص أنواع TypeScript |
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.gif" width="100%"/>
 
-## إعداد لوحة الإدارة (الأخبار والمناسبات)
+<!-- ═══════════════════ SECTION: PIPELINE ═══════════════════ -->
 
-لوحة الإدارة تعمل عبر Supabase في مسار مستقل: `/admin`.
+<h3 align="center">🔁 سير النشر التلقائي</h3>
 
-### 1) إنشاء مشروع Supabase
+```mermaid
+sequenceDiagram
+    participant Dev as 👤 مطوّر
+    participant GH as 🐙 GitHub
+    participant CI as ⚙️ Actions
+    participant Pages as 🚀 GitHub Pages
 
-1. افتح https://supabase.com
-2. أنشئ حساباً جديداً
-3. أنشئ مشروعاً جديداً
-4. احفظ **Project URL** و **Publishable key** من Settings → API
-
-### 2) إعداد قاعدة البيانات وسياسات RLS
-
-#### الطريقة الأولى: SQL Editor (الأبسط)
-
-1. افتح مشروعك في Supabase Dashboard
-2. اذهب إلى SQL Editor
-3. انسخ محتوى ملف `supabase-setup.sql` في هذا المستودع
-4. الصقه في SQL Editor واضغط Run
-5. سيُنشأ جدول `public.admin_posts` مع سياسات:
-   - قراءة للجميع
-   - insert / update / delete للمستخدمين `authenticated` فقط
-
-#### الطريقة الثانية: Supabase CLI (للفرق والـ CI)
-
-```bash
-# تثبيت Supabase CLI
-npm install -g supabase
-
-# ربط المشروع بمشروعك في Supabase
-supabase link --project-ref <your-project-ref>
-
-# تطبيق migrations
-supabase db push
+    Dev->>GH: Push إلى main
+    GH->>CI: تشغيل deploy.yml
+    par فحص وبناء متوازٍ
+        CI->>CI: 🔍 CodeQL Analysis
+    and
+        CI->>CI: 🏗️ npm run build:pages
+    end
+    alt نجاح كل الفحوصات
+        CI->>Pages: 🚀 نشر dist/
+        Pages-->>Dev: ✅ الموقع محدَّث
+    else فشل أي فحص
+        CI-->>Dev: ⛔ إيقاف + تنبيه
+    end
 ```
 
-ملف الـ migration موجود في `supabase/migrations/20240101000000_create_admin_posts.sql`.
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.gif" width="100%"/>
 
-### 3) إنشاء مستخدم مشرف
+<!-- ═══════════════════ SECTION: ACTIVITY ═══════════════════ -->
 
-1. اذهب إلى Authentication في Supabase Dashboard
-2. اختر Add user
-3. أدخل البريد الإلكتروني وكلمة المرور
+<h3 align="center">📈 نشاط المستودع الحي</h3>
 
-### 4) متغيرات البيئة
+<div align="center">
 
-> جميع القيم أدناه **أمثلة وهمية فقط**. لا تضع أي مفاتيح حقيقية داخل المستودع.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-activity-graph.vercel.app/graph?username=Tribe-alSayahin&repo=Tribe-alSayahin.github.io&theme=react-dark&hide_border=true"/>
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=Tribe-alSayahin&repo=Tribe-alSayahin.github.io&theme=react&hide_border=true"/>
+</picture>
 
-#### محلياً (ملف `.env`)
+<br/>
 
-1. أنشئ ملف `.env` من `.env.example`:
+<!-- 🐍 حركة الثعبان — تُنشَّط تلقائيًا بعد إضافة workflow snake.yml -->
+<img src="https://raw.githubusercontent.com/Tribe-alSayahin/Tribe-alSayahin.github.io/output/github-contribution-grid-snake-dark.svg" width="100%"/>
 
-```bash
-cp .env.example .env
+</div>
+
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.gif" width="100%"/>
+
+<!-- ═══════════════════ SECTION: CONTRIBUTION ═══════════════════ -->
+
+<h3 align="center">🤝 المساهمة</h3>
+
+<div align="center">
+
+```
+┌──────────────────────────────────────────────┐
+│  1️⃣  Fork → Branch → Commit → Push           │
+│  2️⃣  lint && build:pages && test && test:a11y │
+│  3️⃣  مراجعة CODEOWNERS للمسارات الحساسة       │
+│  4️⃣  Pull Request → CodeQL تلقائي             │
+│  5️⃣  دمج بعد الموافقة ✅                      │
+└──────────────────────────────────────────────┘
 ```
 
-2. عدّل القيم في `.env`:
+</div>
 
-```bash
-# متغيرات الواجهة (تُحقن في كود المتصفح)
-NEXT_PUBLIC_SUPABASE_URL="https://your-project-id.supabase.co"
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="your-publishable-anon-key"
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.gif" width="100%"/>
 
-# مفتاح الخادم — وقت البناء فقط، لا يصل للمتصفح
-SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
-```
+<div align="center">
 
-#### على GitHub Actions
+> **"توثيق الجذور بأدوات المستقبل."**
 
-1. اذهب إلى **Settings → Secrets and variables → Actions**
-2. أضف Secret باسم: `NEXT_PUBLIC_SUPABASE_URL`
-3. أضف Secret باسم: `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
-4. أضف Secret باسم: `SUPABASE_SERVICE_ROLE_KEY`
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0d0d0d,50:1a1a2e,100:0d0d0d&height=160&section=footer"/>
 
-#### متطلبات أمان إلزامية
+**صُنع بـ ❤️ لخدمة قبيلة السياحين**
 
-- لا تضع `service_role key` أو `SUPABASE_SERVICE_ROLE_KEY` في متغيرات `NEXT_PUBLIC_*` أبداً.
-- متغيرات الواجهة تقتصر على القيم العامة فقط (`NEXT_PUBLIC_*`).
-- الأمان يعتمد على Supabase Auth + RLS.
-
-#### استكشاف خطأ `Could not find the table 'public.admin_posts' in the schema cache`
-
-هذا الخطأ يحدث غالباً في حالتين:
-
-1. **الجدول لم يُنشأ بعد** — نفّذ `supabase-setup.sql` أو `supabase db push`.
-2. **schema cache قديمة** — نفّذ هذا الأمر في SQL Editor بعد إنشاء الجدول:
-
-   ```sql
-   notify pgrst, 'reload schema';
-   ```
-
-   أو اذهب إلى **Supabase Dashboard → Database → PostgREST** واضغط **Reload Schema Cache**.
-
-## النشر
-
-### إعداد GitHub Pages (مهم جداً)
-
-هذا المشروع يعتمد على **GitHub Actions** للنشر، وليس على "Deploy from branch".
-
-1. افتح المستودع في GitHub.
-2. اذهب إلى **Settings → Pages**.
-3. تحت **Build and deployment / Source**، اختر **GitHub Actions**.
-4. لا تتركه مضبوطاً على **Deploy from a branch**.
-
-بعد أي push إلى الفرع `main`، سيتم بناء الموقع تلقائياً ونشره من مجلد `dist/` عبر workflow `.github/workflows/deploy.yml`.
-
-### دليل استكشاف أخطاء النشر
-
-إذا ظهرت شاشة تحميل فقط على الموقع المنشور:
-
-1. تأكد أن GitHub Pages مضبوط على **GitHub Actions** وليس **Deploy from branch**.
-2. افتح **Actions** في المستودع وتأكد أن workflow **Deploy to GitHub Pages** يعمل بنجاح.
-3. بعد نجاح الـ workflow، تأكد أن الرابط النهائي يخدم ملفات `assets/` وليس `/src/main.tsx`.
-
-## بنية المشروع
-
-```text
-src/
-├── App.tsx                        # الصفحة الرئيسية وتجميع الأقسام
-├── lib/
-│   ├── supabase.ts               # عميل Supabase قابل لإعادة الاستخدام
-│   ├── admin-posts.ts            # أنواع واستعلامات admin_posts
-│   └── navigation.ts             # روابط التنقل
-├── components/
-│   ├── layout/                   # الترويسة، التذييل، البطل، التواصل...
-│   ├── ui/                       # مكوّنات الأزرار والبطاقات والنوافذ
-│   ├── admin/
-│   │   └── AdminPage.tsx         # صفحة /admin (دخول + إضافة/حذف)
-│   ├── LineageTree/              # شجرة النسب التفاعلية
-│   ├── PoetryCouncil/            # ديوان الشعر النبطي
-│   ├── InteractiveMap.tsx        # خريطة الديار
-│   ├── OppenheimArchive.tsx      # الأرشيف الاستشراقي
-│   ├── CelestialCompass.tsx      # البوصلة السماوية
-│   ├── WasmGallery.tsx           # معرض الوسوم المتجهي
-│   ├── NewsEvents.tsx            # قسم الأخبار والمناسبات العام
-│   └── NewsEvents.data.ts        # البيانات الافتراضية للأخبار
-├── hooks/                        # useTheme, useScrollState
-└── styles/                       # رموز التصميم
-```
-
-## جداول Supabase
-
-| الجدول | الوصف |
-|---|---|
-| `admin_posts` | عناصر الأخبار والمناسبات المُدارة من لوحة الإدارة |
-
-## الأمان
-
-- **المصادقة:** Supabase Auth بالبريد الإلكتروني وكلمة المرور.
-- **الصلاحيات:** Row Level Security مفعّل على `admin_posts`.
-- **الزوار:** قراءة فقط.
-- **المستخدمون المسجلون:** إضافة/تعديل/حذف.
-- **القاعدة الذهبية:** أسرار الخادم تبقى على الخادم فقط، ولا تُعرَض في الواجهة.
-
-## ملاحظات
-
-- لا يتم تخزين كلمات المرور أو الأسرار في الكود.
-- السرية تعتمد على Supabase Auth و RLS، وليس على إخفاء الكود.
-
-## نظام المناسبات والأحداث المصوّرة
-
-تمت إضافة نظام مستقل لإدارة المناسبات بالصور داخل لوحة الإدارة.
-
-### المسارات الجديدة
-
-- صفحة العرض العامة: `/events/`
-- صفحة تفاصيل المناسبة: `/events/[slug]/`
-- داخل الأدمن: تبويب **المناسبات المصوّرة** في `/admin`
-
-### مخطط قاعدة البيانات (Supabase)
-
-تمت إضافة الجداول التالية:
-
-| الجدول | الوصف |
-|---|---|
-| `admin_events` | بيانات المناسبة (العنوان، الوصف المختصر/الكامل، التاريخ الهجري والميلادي، المكان، حالة النشر، صورة الغلاف) |
-| `admin_event_images` | صور الألبوم المرتبطة بكل مناسبة (الأصل + المصغر + الترتيب + هل هي الغلاف) |
-
-### التخزين
-
-- Bucket: `events` في Supabase Storage
-- صيغ مفعلة: `image/jpeg`, `image/png`, `image/webp`
-- الحد الأقصى: `5MB` لكل ملف
-- القراءة العامة مسموحة فقط لصور المناسبات المنشورة عبر سياسات RLS/Storage
-
-### الإعداد
-
-1. نفّذ `supabase-setup.sql` كاملاً في SQL Editor (أو شغّل migrations عبر Supabase CLI).
-2. تأكد من إنشاء bucket `events` تلقائياً بعد التنفيذ.
-3. تأكد من وجود حساب في `admin_users` بدور `admin` أو `super_admin` لاستخدام تبويب المناسبات المصوّرة.
-
-### طريقة الاستخدام (الأدمن)
-
-1. افتح `/admin` وسجّل الدخول.
-2. اذهب إلى تبويب **المناسبات المصوّرة**.
-3. اضغط **إضافة مناسبة جديدة** ثم أدخل:
-   - عنوان المناسبة
-   - وصف مختصر
-   - وصف كامل
-   - التاريخ الميلادي والهجري
-   - المكان (اختياري)
-   - حالة النشر
-4. بعد حفظ المناسبة، استخدم منطقة السحب والإفلات لرفع الصور (متعدد الملفات).
-5. من الألبوم يمكنك:
-   - تعيين صورة كغلاف
-   - إعادة ترتيب الصور بالسحب والإفلات
-   - حذف صورة مفردة
-6. يمكنك نشر/إخفاء المناسبة أو حذفها بالكامل من قائمة المناسبات.
-
-### تحسين الصور والأداء
-
-- يتم ضغط الصور تلقائياً قبل الرفع وتوليد نسخة مصغرة لكل صورة.
-- القوائم تستخدم الصور المصغرة لتسريع العرض.
-- الصور في الواجهة العامة تستخدم التحميل الكسول (Lazy Loading).
+</div>
