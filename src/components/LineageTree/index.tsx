@@ -1,19 +1,43 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { GitMerge, Search } from 'lucide-react';
+import { GitMerge, Search, Download } from 'lucide-react';
 import { LINEAGE_DATA } from './LineageTree.data';
 import { TreeHierarchy } from './subcomponents/TreeHierarchy';
+import { searchNodes, exportAsJson, exportAsGedcom, getAncestorIds } from './LineageTree.utils';
 
 export default function LineageTree() {
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredBranches = LINEAGE_DATA.filter(
-    (node) => node.level === 1 && node.name.includes(searchQuery),
-  );
+  /**
+   * Improved search: searches across all levels (not just level 1).
+   * When a match is found at any level, the top-level ancestor (level 1)
+   * is included in the results so the card is always shown.
+   * Inspired by the multi-level search in family-organogram/src/utils/search.ts.
+   */
+  const filteredBranches = useMemo(() => {
+    const topLevel = LINEAGE_DATA.filter((n) => n.level === 1);
+    if (!searchQuery.trim()) return topLevel;
 
-  const allNodes = LINEAGE_DATA;
+    const matchedNodes = searchNodes(searchQuery, LINEAGE_DATA);
+    const includedTopIds = new Set<string>();
+
+    for (const node of matchedNodes) {
+      if (node.level === 1) {
+        includedTopIds.add(node.id);
+      } else {
+        // Climb ancestors to find the level-1 root
+        const ancestorIds = getAncestorIds(node.id, LINEAGE_DATA);
+        const level1Ancestor = ancestorIds.find(
+          (id) => LINEAGE_DATA.find((n) => n.id === id)?.level === 1,
+        );
+        if (level1Ancestor) includedTopIds.add(level1Ancestor);
+      }
+    }
+
+    return topLevel.filter((n) => includedTopIds.has(n.id));
+  }, [searchQuery]);
 
   return (
     <div className="editorial-card p-5 md:p-8 shadow-2xl" id="nasab-tree-interactive">
@@ -52,24 +76,40 @@ export default function LineageTree() {
         >
             {/* Search and Filters bar */}
             <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-              {/* Search */}
+              {/* Search — now covers all levels */}
               <div className="md:col-span-7 relative">
                 <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-sand-dim" />
                 <input
                   type="text"
-                  placeholder="ابحث في أسماء الشجرة..."
+                  placeholder="ابحث في كل مستويات الشجرة..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-4 pr-11 py-3 rounded-xl bg-ink/60 border border-brass/15 text-sand text-xs text-right placeholder-sand-dim/50 focus:border-brass/50 focus:ring-2 focus:ring-brass/20 focus:outline-none"
                 />
               </div>
 
-              <p className="md:col-span-5 text-right md:text-left text-xs text-sand-dim/80 font-kufi">
-                اختر فخذًا من القائمة
-              </p>
+              {/* Export buttons — inspired by FamilyBackup from family-organogram */}
+              <div className="md:col-span-5 flex items-center justify-end gap-2">
+                <button
+                  onClick={() => exportAsJson(LINEAGE_DATA)}
+                  title="تصدير بيانات الشجرة بصيغة JSON"
+                  className="flex items-center gap-1.5 rounded-xl border border-brass/20 bg-brass/5 px-3 py-2.5 font-kufi text-[0.65rem] text-sand-dim hover:border-brass/50 hover:text-brass transition-colors"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  JSON
+                </button>
+                <button
+                  onClick={() => exportAsGedcom(LINEAGE_DATA)}
+                  title="تصدير بيانات الشجرة بصيغة GEDCOM المعيارية"
+                  className="flex items-center gap-1.5 rounded-xl border border-brass/20 bg-brass/5 px-3 py-2.5 font-kufi text-[0.65rem] text-sand-dim hover:border-brass/50 hover:text-brass transition-colors"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  GEDCOM
+                </button>
+              </div>
             </div>
 
-            <TreeHierarchy filteredNodes={filteredBranches} allNodes={allNodes} />
+            <TreeHierarchy filteredNodes={filteredBranches} allNodes={LINEAGE_DATA} />
         </motion.div>
       </AnimatePresence>
     </div>
