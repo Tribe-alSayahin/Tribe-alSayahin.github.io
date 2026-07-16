@@ -18,24 +18,46 @@ export function VisitorAuthGuard({ children }: { children: ReactNode }) {
 
     let isMounted = true;
 
+    const clearHash = () => {
+      if (window.location.hash) {
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    };
+
+    const parseHashTokens = (): { access_token?: string; refresh_token?: string } => {
+      const hash = window.location.hash.replace(/^#/, '');
+      if (!hash) return {};
+      const params = new URLSearchParams(hash);
+      return {
+        access_token: params.get('access_token') ?? undefined,
+        refresh_token: params.get('refresh_token') ?? undefined,
+      };
+    };
+
     const handleSession = async () => {
-      const hasOAuthHash = window.location.hash.includes('access_token') ||
-                           window.location.hash.includes('refresh_token');
+      const tokens = parseHashTokens();
+      const hasOAuthHash = Boolean(tokens.access_token && tokens.refresh_token);
 
       if (hasOAuthHash) {
         setLoading(true);
       }
 
-      const { data: { session: s } } = await supabase.auth.getSession();
+      let s = (await supabase.auth.getSession()).data.session;
 
       if (!isMounted) return;
+
+      if (!s && hasOAuthHash) {
+        const { data, error } = await supabase.auth.setSession({
+          access_token: tokens.access_token!,
+          refresh_token: tokens.refresh_token!,
+        });
+        if (!error) s = data.session;
+      }
 
       if (s) {
         setSession(s);
         setLoading(false);
-        if (window.location.hash) {
-          window.history.replaceState(null, '', window.location.pathname);
-        }
+        clearHash();
         return;
       }
 
@@ -55,9 +77,7 @@ export function VisitorAuthGuard({ children }: { children: ReactNode }) {
                 setLoading(false);
               }
               clearInterval(checkInterval);
-              if (window.location.hash) {
-                window.history.replaceState(null, '', window.location.pathname);
-              }
+              clearHash();
               return;
             }
             if (checkCount > 30) {

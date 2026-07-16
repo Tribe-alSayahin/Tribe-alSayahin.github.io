@@ -290,6 +290,10 @@ interface SupabaseLike {
     }>;
     signOut(): Promise<{ error: SupabaseErrorLike }>;
     getSession(): Promise<{ data: { session: Session | null } }>;
+    setSession(credentials: { access_token: string; refresh_token: string }): Promise<{
+      data: { session: Session | null; user: User | null };
+      error: SupabaseErrorLike;
+    }>;
     getUser(): Promise<{ data: { user: User | null } }>;
     onAuthStateChange(
       callback: (event: AuthChangeEvent, session: Session | null) => void,
@@ -332,15 +336,16 @@ const SUPABASE_PUBLISHABLE_KEY =
 let client: SupabaseLike | null = null;
 
 try {
-  if (SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY) {
-    client = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-      },
-    }) as unknown as SupabaseLike;
-  }
-} catch (error) {
+    if (SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY) {
+      client = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+        },
+      }) as unknown as SupabaseLike;
+    }
+  } catch (error) {
   console.warn('Supabase initialization skipped:', error);
 }
 
@@ -398,6 +403,10 @@ const noopClient: SupabaseLike = {
       error: { message: 'Supabase is not configured' },
     }),
     getSession: () => Promise.resolve({ data: { session: null } }),
+    setSession: () => Promise.resolve({
+      data: { session: null, user: null },
+      error: { message: 'Supabase is not configured' },
+    }),
     getUser: () => Promise.resolve({ data: { user: null } }),
     onAuthStateChange: () => ({
       data: {
