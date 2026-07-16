@@ -38,29 +38,6 @@ const CORNER_PATH = `<path d="M0 0 L28 0 L28 4 L4 4 L4 28 L0 28 Z"/>
     <circle cx="22" cy="6" r="2.5"/>
     <circle cx="6" cy="22" r="2.5"/>`;
 
-/** Black seal with golden arch/gateway — returns an SVG string */
-function sealSvgString(size = 64): string {
-  return `<svg width="${size}" height="${size}" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
- <defs>
-   <linearGradient id="seal-gold" x1="0%" y1="0%" x2="100%" y2="100%">
-     <stop offset="0%" stop-color="#efd48a"/>
-     <stop offset="55%" stop-color="#c9a24b"/>
-     <stop offset="100%" stop-color="#8d6a2a"/>
-   </linearGradient>
- </defs>
- <circle cx="50" cy="50" r="48" fill="#090704" stroke="url(#seal-gold)" stroke-width="2.5"/>
- <circle cx="50" cy="50" r="42" fill="none" stroke="url(#seal-gold)" stroke-width="1.1"/>
- <circle cx="50" cy="50" r="33" fill="none" stroke="#c9a24b" stroke-width="0.9" opacity="0.5"/>
- <path d="M50 18c6 4 6 13 0 18c-6-5-6-14 0-18Z" fill="url(#seal-gold)"/>
- <path d="M50 22v9" stroke="#f0d88f" stroke-width="1.2" stroke-linecap="round"/>
- <path d="M37 71v-15h26v15" fill="none" stroke="url(#seal-gold)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
- <path d="M37 56h26" stroke="#e6c678" stroke-width="2" stroke-linecap="round"/>
- <path d="M30 75h40" stroke="url(#seal-gold)" stroke-width="2.2" stroke-linecap="round"/>
- <circle cx="28" cy="49" r="2.2" fill="#c9a24b" opacity="0.78"/>
- <circle cx="72" cy="49" r="2.2" fill="#c9a24b" opacity="0.78"/>
-</svg>`;
-}
-
 // ─── Shared letter CSS ────────────────────────────────────────────────────────
 
 const LETTER_CSS = `
@@ -92,9 +69,15 @@ const LETTER_CSS = `
     color-adjust: exact;
   }
 
+  img, svg {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
   .letter {
     background: linear-gradient(160deg, #ffffff 0%, #f7f1e6 100%);
     width: 210mm;
+    height: 297mm;
     min-height: 297mm;
     position: relative;
     padding: 0 0 28px;
@@ -141,7 +124,13 @@ const LETTER_CSS = `
 
   /* Header */
   .header { text-align: center; margin-bottom: 6mm; padding-top: 4mm; }
-  .logo-wrap { display: flex; justify-content: center; align-items: center; gap: 8mm; margin-bottom: 3mm; }
+  .logo-wrap { display: flex; justify-content: center; align-items: center; margin-bottom: 3mm; }
+  .official-seal {
+    width: 24mm;
+    height: 24mm;
+    object-fit: contain;
+    border-radius: 50%;
+  }
   .tribe-name {
     font-family: 'Aref Ruqaa', serif;
     font-size: 26pt;
@@ -257,7 +246,7 @@ const LETTER_CSS = `
 
   /* Closing & signature */
   .closing { margin-top: 7mm; font-family: 'Amiri', serif; font-size: 12pt; line-height: 2; color: #1a1408; }
-  .signature { margin-top: 8mm; display: flex; justify-content: space-between; align-items: flex-end; }
+  .signature { margin-top: 8mm; display: flex; justify-content: center; align-items: flex-end; }
   .sig-block { text-align: center; }
   .sig-label { font-family: 'IBM Plex Sans Arabic', sans-serif; font-size: 9pt; color: var(--gold-faint); }
   .sig-name  { font-family: 'Aref Ruqaa', serif; font-size: 13pt; color: var(--brass); margin-top: 1mm; }
@@ -275,8 +264,26 @@ const LETTER_CSS = `
   }
 
   @media print {
-    html, body { background: none; padding: 0; display: block; }
-    .letter { box-shadow: none; }
+    html, body {
+      width: 210mm;
+      height: 297mm;
+      min-height: 297mm;
+      background: none;
+      padding: 0;
+      display: block;
+      overflow: hidden;
+    }
+    .letter {
+      width: 210mm;
+      height: 297mm;
+      min-height: 297mm;
+      box-shadow: none;
+      overflow: hidden;
+      break-after: page;
+      page-break-after: always;
+    }
+    .letter-inner { padding: 6mm 22mm 8mm; }
+    .official-seal { width: 24mm; height: 24mm; }
     .no-print { display: none !important; }
   }
 `;
@@ -329,12 +336,11 @@ function structuralElements(): string {
   <svg class="corner corner-br" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">${CORNER_PATH}</svg>`;
 }
 
-/** Shared header block: logo + seal + tribe name */
+/** Shared header block: official tribal seal + tribe name */
 function letterHeader(): string {
   return `<div class="header">
     <div class="logo-wrap">
-      <img src="${OFFICIAL_LOGO_IMAGE_URL}" alt="شعار قبيلة السياحين" style="width:68px;height:68px;object-fit:cover;border-radius:50%;border:1.2px solid #c9a24b;"/>
-      ${sealSvgString(58)}
+      <img class="official-seal" src="${OFFICIAL_LOGO_IMAGE_URL}" alt="ختم قبيلة السياحين"/>
     </div>
     <div class="tribe-name">الموقع الرسمي لقبيلة السياحين</div>
     <div class="tribe-sub">توثيق الإرث والموروث التاريخي</div>
@@ -427,7 +433,6 @@ function buildLetterHtml(opts: {
         <div class="sig-label">إدارة الموقع الرسمي</div>
         <div class="sig-name">${esc(opts.signatureName)}</div>
       </div>
-      <div class="sig-block">${sealSvgString(50)}</div>
     </div>
 
     <div class="footer-wm">الموقع الرسمي لقبيلة السياحين — alsaihani.com</div>
@@ -479,7 +484,6 @@ function buildIndividualLetterHtml(opts: {
         <div class="sig-label">إدارة الموقع الرسمي</div>
         <div class="sig-name">${esc(opts.signatureName)}</div>
       </div>
-      <div class="sig-block">${sealSvgString(50)}</div>
     </div>
 
     <div class="footer-wm">الموقع الرسمي لقبيلة السياحين — alsaihani.com</div>
@@ -545,7 +549,7 @@ export function ThanksLetterGenerator() {
   const removeParagraph = (idx: number) =>
     setBodyParagraphs((prev) => prev.filter((_, i) => i !== idx));
 
-  const handlePrint = () => {
+  const handlePrint = async () => {
     const html =
       mode === 'individual'
         ? buildIndividualLetterHtml({
@@ -568,8 +572,18 @@ export function ThanksLetterGenerator() {
     if (!win) return;
     win.document.write(html);
     win.document.close();
+
+    const fontsReady = win.document.fonts?.ready ?? Promise.resolve();
+    const imagesReady = Promise.all(
+      Array.from(win.document.images, (image) => image.decode().catch(() => undefined)),
+    );
+    await Promise.race([
+      Promise.all([fontsReady, imagesReady]),
+      new Promise<void>((resolve) => window.setTimeout(resolve, 4000)),
+    ]);
+
     win.focus();
-    setTimeout(() => win.print(), 800);
+    win.print();
   };
 
   const handleReset = () => {
@@ -783,7 +797,7 @@ export function ThanksLetterGenerator() {
 
           <div className="flex gap-3 pt-2">
             <button
-              onClick={handlePrint}
+              onClick={() => { void handlePrint(); }}
               className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-brass/20 border border-brass/35 px-4 py-3 font-kufi text-sm text-brass-lt hover:bg-brass/30 transition-colors focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
             >
               <Printer className="w-4 h-4" aria-hidden="true" />
@@ -910,7 +924,7 @@ export function ThanksLetterGenerator() {
                 )}
 
                 {/* Signature */}
-                <div className="flex justify-between items-end mt-4">
+                <div className="flex justify-center items-end mt-4">
                   <div className="text-center">
                     <div className="w-28 h-px mb-1" style={{ background: '#c9a24b' }} />
                     <p className="text-[8px]" style={{ color: '#6b5a30', fontFamily: 'IBM Plex Sans Arabic, sans-serif' }}>
@@ -920,7 +934,6 @@ export function ThanksLetterGenerator() {
                       {signatureName}
                     </p>
                   </div>
-                  <img src={OFFICIAL_LOGO_IMAGE_URL} alt="" className="w-7 h-7 opacity-50 object-cover rounded-full border border-[#c9a24b]/50" />
                 </div>
 
                 {/* Watermark */}
