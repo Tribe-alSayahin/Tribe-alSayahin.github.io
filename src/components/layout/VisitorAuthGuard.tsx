@@ -16,13 +16,20 @@ export function VisitorAuthGuard({ children }: { children: ReactNode }) {
       return;
     }
 
-    const hasOAuthHash = window.location.hash.includes('access_token');
+    let isMounted = true;
 
-    if (hasOAuthHash) {
-      setLoading(true);
-    }
+    const handleSession = async () => {
+      const hasOAuthHash = window.location.hash.includes('access_token') ||
+                           window.location.hash.includes('refresh_token');
 
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
+      if (hasOAuthHash) {
+        setLoading(true);
+      }
+
+      const { data: { session: s } } = await supabase.auth.getSession();
+
+      if (!isMounted) return;
+
       if (s) {
         setSession(s);
         setLoading(false);
@@ -33,32 +40,42 @@ export function VisitorAuthGuard({ children }: { children: ReactNode }) {
       }
 
       if (hasOAuthHash) {
-        const checkInterval = setInterval(() => {
-          supabase.auth.getSession().then(({ data: { session: s2 } }) => {
-            if (s2) {
+        let checkCount = 0;
+        const checkInterval = setInterval(async () => {
+          if (!isMounted) {
+            clearInterval(checkInterval);
+            return;
+          }
+          checkCount++;
+          const { data: { session: s2 } } = await supabase.auth.getSession();
+          if (s2) {
+            if (isMounted) {
               setSession(s2);
               setLoading(false);
-              clearInterval(checkInterval);
+            }
+            clearInterval(checkInterval);
+            if (window.location.hash) {
               window.history.replaceState(null, '', window.location.pathname);
             }
-          }).catch(() => {});
-        }, 300);
-
-        setTimeout(() => {
-          clearInterval(checkInterval);
-          setLoading(false);
-        }, 10000);
+            return;
+          }
+          if (checkCount > 30) {
+            clearInterval(checkInterval);
+            if (isMounted) setLoading(false);
+          }
+        }, 200);
 
         return;
       }
 
-      setLoading(false);
-    }).catch(() => {
-      setLoading(false);
-    });
+      if (isMounted) setLoading(false);
+    };
+
+    handleSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, s) => {
+        if (!isMounted) return;
         setSession(s);
         if (s) {
           setLoading(false);
@@ -70,6 +87,7 @@ export function VisitorAuthGuard({ children }: { children: ReactNode }) {
     );
 
     return () => {
+      isMounted = false;
       subscription.unsubscribe();
     };
   }, []);
