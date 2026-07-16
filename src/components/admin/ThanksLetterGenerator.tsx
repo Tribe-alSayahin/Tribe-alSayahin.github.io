@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Printer, RefreshCw, Users, User, Plus, Trash2 } from 'lucide-react';
+import { BookOpenText, Printer, RefreshCw, Users, User, Plus, Trash2 } from 'lucide-react';
 import { SUPPORTERS_DATA } from '../layout/Supporters.data';
 import { OFFICIAL_LOGO_IMAGE_URL } from '../../lib/branding';
 
-type LetterMode = 'group' | 'individual';
+type LetterMode = 'group' | 'individual' | 'heritage-request';
 type SourceMode = 'list' | 'manual';
+type PersonalLetterKind = 'thanks' | 'heritage-request';
 
 const TODAY = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
   day: 'numeric',
@@ -198,6 +199,15 @@ const LETTER_CSS = `
     margin-bottom: 5mm;
   }
 
+  .compact-letter .header { margin-bottom: 3mm; padding-top: 2mm; }
+  .compact-letter .divider { margin: 3mm 0; }
+  .compact-letter .dates { margin-bottom: 3mm; line-height: 1.6; }
+  .compact-letter .letter-title { font-size: 17pt; margin-bottom: 3mm; }
+  .compact-letter .recipient-box { padding: 3mm 6mm; margin-bottom: 4mm; }
+  .compact-letter .body-text { font-size: 11pt; line-height: 1.75; margin-bottom: 3mm; }
+  .compact-letter .signature { margin-top: 4mm; }
+  .compact-letter .footer-wm { margin-top: 3mm; }
+
   /* Supporters table */
   .supporters-section { margin: 6mm 0; }
   .supporters-title {
@@ -368,6 +378,12 @@ const defaultIndividualParagraphs = (name: string) => [
   'وإننا إذ نُقدّم هذا الخطاب الخاص وفاءً بحقه وإقراراً بفضله، لنسأل الله العلي القدير أن يجزيه خير الجزاء، وأن يبارك في عمله وأهله وذريته، وأن يجعل هذا العمل صدقةً جاريةً في موازين حسناته. والله ولي التوفيق.',
 ];
 
+export const HERITAGE_REQUEST_PARAGRAPHS = [
+  'بسم الله الرحمن الرحيم، والصلاة والسلام على أشرف الأنبياء والمرسلين، أما بعد:\n\nيسر الموقع الرسمي لقبيلة السياحين أن يتوجه إلى مقامكم الكريم بهذه الدعوة؛ تقديراً لما عُرف عنكم من عناية بتاريخ القبيلة وموروثها، وإيماناً بأن ما لدى أهل المعرفة والرواية من محفوظات وشواهد يمثل أمانة ثمينة تستحق الجمع والصون للأجيال القادمة.',
+  'نأمل منكم التكرم بمشاركتنا ما يتوفر لديكم من قصص موثقة، أو قصائد نبطية، أو روايات تاريخية، أو وثائق وصور ومعلومات تتصل برجالات القبيلة وديارها ومواقفها. ونخص بهذه الدعوة أعيان القبيلة ورواتها، كما نرحب بإسهامات الباحثين والمؤرخين عامة، مع بيان المصدر واسم الراوي والتاريخ كلما أمكن؛ حفظاً للأمانة العلمية وحقوق أصحاب المادة.',
+  'ويمكنكم إرسال المادة والتواصل مع إدارة التوثيق من خلال قسم «تواصل معنا» في الموقع الرسمي: alsaihani.com/news/#contact. وستُراجع المشاركات بعناية قبل اعتمادها أو نشرها، مع حفظ نسبة المادة إلى صاحبها ومصدرها. شاكرين لكم تعاونكم، ومقدرين إسهامكم في خدمة تاريخ قبيلة السياحين وموروثها، والله ولي التوفيق.',
+];
+
 // ─── Letter HTML builders ─────────────────────────────────────────────────────
 
 function buildLetterHtml(opts: {
@@ -449,9 +465,18 @@ function buildIndividualLetterHtml(opts: {
   bodyParagraphs: string[];
   signatureName: string;
   referenceNumber?: string;
+  letterKind?: PersonalLetterKind;
 }): string {
-  return `${letterHead(`خطاب شكر خاص — ${esc(opts.recipientName)}`)}
-<div class="letter">
+  const isHeritageRequest = opts.letterKind === 'heritage-request';
+  const documentTitle = isHeritageRequest
+    ? `دعوة لتوثيق الموروث — ${esc(opts.recipientName)}`
+    : `خطاب شكر خاص — ${esc(opts.recipientName)}`;
+  const letterTitle = isHeritageRequest
+    ? 'دعوة للمساهمة في توثيق الموروث'
+    : 'خطاب شكر وعرفان خاص';
+
+  return `${letterHead(documentTitle)}
+<div class="letter${isHeritageRequest ? ' compact-letter' : ''}">
   ${structuralElements()}
 
   <div class="letter-inner">
@@ -465,7 +490,7 @@ function buildIndividualLetterHtml(opts: {
       <div>التاريخ الميلادي: ${esc(opts.gregorianDate)}</div>
     </div>
 
-    <div class="letter-title">خطاب شكر وعرفان خاص</div>
+    <div class="letter-title">${letterTitle}</div>
 
     <div class="recipient-box">
       <div style="flex:1;">
@@ -510,16 +535,27 @@ export function ThanksLetterGenerator() {
   const selectedSupporter = SUPPORTERS_DATA[selectedIdx] ?? SUPPORTERS_DATA[0];
 
   const getRecipientName = () =>
-    mode === 'individual' ? (sourceMode === 'list' ? selectedSupporter.name : freeFormName) : '';
+    mode === 'individual'
+      ? (sourceMode === 'list' ? selectedSupporter.name : freeFormName)
+      : mode === 'heritage-request'
+        ? freeFormName
+        : '';
 
   const getRecipientRole = () =>
-    mode === 'individual' ? (sourceMode === 'list' ? selectedSupporter.role : freeFormRole) : '';
+    mode === 'individual'
+      ? (sourceMode === 'list' ? selectedSupporter.role : freeFormRole)
+      : mode === 'heritage-request'
+        ? freeFormRole
+        : '';
 
   const handleModeChange = (newMode: LetterMode) => {
     setMode(newMode);
     if (newMode === 'individual') {
       const name = sourceMode === 'list' ? (SUPPORTERS_DATA[selectedIdx]?.name ?? '') : freeFormName;
       setBodyParagraphs(defaultIndividualParagraphs(name));
+    } else if (newMode === 'heritage-request') {
+      setSourceMode('manual');
+      setBodyParagraphs(HERITAGE_REQUEST_PARAGRAPHS);
     } else {
       setBodyParagraphs(DEFAULT_GROUP_PARAGRAPHS);
     }
@@ -551,7 +587,7 @@ export function ThanksLetterGenerator() {
 
   const handlePrint = async () => {
     const html =
-      mode === 'individual'
+      mode !== 'group'
         ? buildIndividualLetterHtml({
             hijriDate,
             gregorianDate,
@@ -560,6 +596,7 @@ export function ThanksLetterGenerator() {
             bodyParagraphs,
             signatureName,
             referenceNumber: referenceNumber || undefined,
+            letterKind: mode === 'heritage-request' ? 'heritage-request' : 'thanks',
           })
         : buildLetterHtml({
             hijriDate,
@@ -593,6 +630,8 @@ export function ThanksLetterGenerator() {
     if (mode === 'individual') {
       const name = sourceMode === 'list' ? selectedSupporter.name : freeFormName;
       setBodyParagraphs(defaultIndividualParagraphs(name));
+    } else if (mode === 'heritage-request') {
+      setBodyParagraphs(HERITAGE_REQUEST_PARAGRAPHS);
     } else {
       setBodyParagraphs(DEFAULT_GROUP_PARAGRAPHS);
     }
@@ -603,9 +642,9 @@ export function ThanksLetterGenerator() {
     <div className="space-y-6">
       {/* Header */}
       <div className="rounded-2xl border border-brass/20 bg-ink-2/60 p-6">
-        <h2 className="font-ruqaa text-3xl text-brass-lt mb-1">خطاب شكر وتقدير للداعمين</h2>
+        <h2 className="font-ruqaa text-3xl text-brass-lt mb-1">منشئ الخطابات الرسمية</h2>
         <p className="text-sm text-sand-dim">
-          أُنشئ تلقائياً من قائمة الداعمين المعتمدة — اختر النوع ثم قم بتخصيص النص واطبعه أو احفظه PDF.
+          أنشئ خطابات الشكر أو دعوات توثيق الموروث، ثم خصص النص واطبعه أو احفظه PDF.
         </p>
       </div>
 
@@ -634,6 +673,17 @@ export function ThanksLetterGenerator() {
           >
             <User className="w-4 h-4" aria-hidden="true" />
             شكر فردي خاص
+          </button>
+          <button
+            onClick={() => handleModeChange('heritage-request')}
+            className={`flex items-center gap-2 rounded-xl border px-5 py-3 font-kufi text-sm transition-colors focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none ${
+              mode === 'heritage-request'
+                ? 'bg-brass/25 border-brass/60 text-brass-lt'
+                : 'border-brass/20 text-sand-dim hover:bg-brass/10 hover:text-sand'
+            }`}
+          >
+            <BookOpenText className="w-4 h-4" aria-hidden="true" />
+            دعوة لتوثيق الموروث
           </button>
         </div>
 
@@ -714,6 +764,35 @@ export function ThanksLetterGenerator() {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {mode === 'heritage-request' && (
+          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="space-y-1">
+              <label htmlFor="heritage-recipient-name" className="font-kufi text-xs text-sand-dim">
+                اسم الموجّه إليه
+              </label>
+              <input
+                id="heritage-recipient-name"
+                value={freeFormName}
+                onChange={(e) => setFreeFormName(e.target.value)}
+                placeholder="مثال: الشيخ فلان بن فلان"
+                className="w-full rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sm text-sand focus:border-brass/50 focus:outline-none"
+              />
+            </div>
+            <div className="space-y-1">
+              <label htmlFor="heritage-recipient-role" className="font-kufi text-xs text-sand-dim">
+                صفته أو مجال معرفته
+              </label>
+              <input
+                id="heritage-recipient-role"
+                value={freeFormRole}
+                onChange={(e) => setFreeFormRole(e.target.value)}
+                placeholder="مثال: من أعيان القبيلة، أو باحث ومؤرخ"
+                className="w-full rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sm text-sand focus:border-brass/50 focus:outline-none"
+              />
+            </div>
           </div>
         )}
       </div>
@@ -869,11 +948,15 @@ export function ThanksLetterGenerator() {
 
                 {/* Title */}
                 <p className="text-center text-lg font-bold mb-3" style={{ fontFamily: 'Aref Ruqaa, serif', color: '#c9a24b' }}>
-                  {mode === 'individual' ? 'خطاب شكر وعرفان خاص' : 'خطاب شكر وعرفان'}
+                  {mode === 'heritage-request'
+                    ? 'دعوة للمساهمة في توثيق الموروث'
+                    : mode === 'individual'
+                      ? 'خطاب شكر وعرفان خاص'
+                      : 'خطاب شكر وعرفان'}
                 </p>
 
-                {/* Recipient box — individual mode only */}
-                {mode === 'individual' && (
+                {/* Recipient box — personal letters only */}
+                {mode !== 'group' && (
                   <div className="flex items-center gap-3 rounded-lg px-4 py-3 mb-3" style={{ border: '1px solid #c9a24b', background: '#e8dcc8' }}>
                     <div className="flex-1">
                       <p className="text-[8px] mb-1" style={{ color: '#6b5a30', fontFamily: 'IBM Plex Sans Arabic, sans-serif' }}>المُكرَّم</p>
@@ -959,14 +1042,18 @@ export function ThanksLetterGenerator() {
       {/* Note */}
       <div className="rounded-xl border border-brass/15 bg-brass/5 p-4 text-sm text-sand-dim font-sans">
         <span className="text-brass-lt font-kufi font-bold">ملاحظة: </span>
-        {mode === 'individual'
-          ? 'في وضع الشكر الفردي يُولَّد خطاب مخصص — اختر الاسم من القائمة أو أدخله يدوياً ثم اطبع.'
-          : (
+        {mode === 'heritage-request'
+          ? 'خطاب دعوة مخصص لأعيان القبيلة ورواتها والباحثين والمؤرخين؛ أدخل اسم الشخص وصفته، وراجع النص قبل الطباعة.'
+          : mode === 'individual'
+            ? 'في وضع الشكر الفردي يُولَّد خطاب مخصص — اختر الاسم من القائمة أو أدخله يدوياً ثم اطبع.'
+            : (
             <>الخطاب الجماعي مرتبط تلقائياً بقائمة الداعمين ويحتوي حالياً على{' '}
               <span className="text-brass-lt font-bold">{SUPPORTERS_DATA.length}</span> داعم.
             </>
-          )}
-        {' '}لتحديث الأسماء قم بتعديل ملف <code className="text-copper-lt text-xs">Supporters.data.ts</code>.
+            )}
+        {mode !== 'heritage-request' && (
+          <> لتحديث الأسماء قم بتعديل ملف <code className="text-copper-lt text-xs">Supporters.data.ts</code>.</>
+        )}
       </div>
     </div>
   );

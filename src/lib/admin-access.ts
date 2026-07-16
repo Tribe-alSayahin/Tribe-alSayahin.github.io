@@ -10,7 +10,7 @@ export const ADMIN_TAB_DEFINITIONS = [
   { id: 'media', label: 'الوسائط', superAdminOnly: false },
   { id: 'analytics', label: 'الإحصائيات', superAdminOnly: false },
   { id: 'activity', label: 'سجل النشاطات', superAdminOnly: false },
-  { id: 'thanks-letter', label: 'خطاب شكر الداعمين', superAdminOnly: false },
+  { id: 'thanks-letter', label: 'الخطابات الرسمية', superAdminOnly: false },
 ] as const;
 
 export type AdminTab = (typeof ADMIN_TAB_DEFINITIONS)[number]['id'];
