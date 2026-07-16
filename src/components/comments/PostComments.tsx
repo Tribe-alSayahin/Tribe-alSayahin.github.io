@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { createComment, fetchCommentsByPost, type Comment } from '../../lib/comments';
 import { isSupabaseConfigured, supabase } from '../../lib/supabase';
+import { getCleanCurrentUrl } from '../../lib/auth-redirect';
 
 interface PostCommentsProps {
   postId: string;
@@ -31,13 +32,14 @@ export function PostComments({ postId }: PostCommentsProps) {
   const [visitorName, setVisitorName] = useState('');
   const [visitorId, setVisitorId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [authChecked, setAuthChecked] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
   const canSubmit = useMemo(
-    () => Boolean(visitorId && visitorName && content.trim().length >= 3 && !submitting),
-    [content, submitting, visitorId, visitorName],
+    () => Boolean(authChecked && content.trim().length >= 3 && !submitting),
+    [authChecked, content, submitting],
   );
 
   useEffect(() => {
@@ -45,19 +47,21 @@ export function PostComments({ postId }: PostCommentsProps) {
 
     const load = async () => {
       if (!isSupabaseConfigured()) {
+        setAuthChecked(true);
         setLoading(false);
         return;
       }
 
       const [{ data: { session } }, commentsResult] = await Promise.all([
         supabase.auth.getSession(),
-        fetchCommentsByPost(postId, 'approved'),
+        fetchCommentsByPost(postId),
       ]);
 
       if (!mounted) return;
 
       setVisitorId(session?.user?.id ?? null);
       setVisitorName(getVisitorName(session?.user ?? null));
+      setAuthChecked(true);
       if (commentsResult.data) {
         setComments(commentsResult.data);
       }
@@ -67,12 +71,14 @@ export function PostComments({ postId }: PostCommentsProps) {
     void load().catch(() => {
       if (!mounted) return;
       setError('تعذر تحميل التعليقات الآن.');
+      setAuthChecked(true);
       setLoading(false);
     });
 
     const { data } = supabase.auth.onAuthStateChange((_event, session) => {
       setVisitorId(session?.user?.id ?? null);
       setVisitorName(getVisitorName(session?.user ?? null));
+      setAuthChecked(true);
     });
 
     return () => {
@@ -113,7 +119,24 @@ export function PostComments({ postId }: PostCommentsProps) {
 
     setContent('');
     setMessage('تم إرسال تعليقك، وسيظهر بعد مراجعته واعتماده.');
+    const commentsResult = await fetchCommentsByPost(postId);
+    if (commentsResult.data) {
+      setComments(commentsResult.data);
+    }
     setSubmitting(false);
+  };
+
+  const handleGoogleSignIn = async () => {
+    setError('');
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: getCleanCurrentUrl(),
+      },
+    });
+    if (error) {
+      setError(error.message || 'تعذر بدء تسجيل الدخول.');
+    }
   };
 
   return (
@@ -126,7 +149,9 @@ export function PostComments({ postId }: PostCommentsProps) {
       <form onSubmit={(event) => { void handleSubmit(event); }} className="rounded-2xl border border-brass/15 bg-ink-2/50 p-5 md:p-6 space-y-4">
         <div className="rounded-xl border border-brass/10 bg-ink/50 px-4 py-3">
           <p className="text-xs font-kufi text-sand-dim mb-1">سيظهر اسمك من حسابك الرسمي</p>
-          <p className="text-sm text-sand">{visitorName || 'جارٍ قراءة بيانات الحساب...'}</p>
+          <p className="text-sm text-sand">
+            {visitorName || (authChecked ? 'لم يتم تسجيل الدخول بعد' : 'جارٍ قراءة بيانات الحساب...')}
+          </p>
         </div>
 
         <label className="block">
@@ -148,13 +173,24 @@ export function PostComments({ postId }: PostCommentsProps) {
           <p className="rounded-lg border border-emerald/25 bg-emerald/10 px-3 py-2 text-xs font-kufi text-emerald-lt">{message}</p>
         )}
 
-        <button
-          type="submit"
-          disabled={!canSubmit}
-          className="rounded-lg bg-brass/20 border border-brass/35 px-5 py-2.5 text-sm font-kufi text-brass-lt hover:bg-brass/30 transition-colors disabled:opacity-60 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
-        >
-          {submitting ? 'جارٍ إرسال التعليق...' : 'إرسال التعليق'}
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="submit"
+            disabled={!canSubmit}
+            className="rounded-lg bg-brass/20 border border-brass/35 px-5 py-2.5 text-sm font-kufi text-brass-lt hover:bg-brass/30 transition-colors disabled:opacity-60 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
+          >
+            {submitting ? 'جارٍ إرسال التعليق...' : 'إرسال التعليق'}
+          </button>
+          {authChecked && !visitorId && (
+            <button
+              type="button"
+              onClick={() => { void handleGoogleSignIn(); }}
+              className="rounded-lg border border-brass/25 bg-sand px-5 py-2.5 text-sm font-kufi font-semibold text-ink hover:bg-sand/90 transition-colors focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
+            >
+              الدخول بحساب Google للتعليق
+            </button>
+          )}
+        </div>
       </form>
 
       <div className="mt-8 space-y-4">
@@ -166,7 +202,14 @@ export function PostComments({ postId }: PostCommentsProps) {
           comments.map((comment) => (
             <article key={comment.id} className="rounded-2xl border border-brass/10 bg-ink-2/35 p-4">
               <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                <p className="font-kufi text-sm text-sand">{comment.author_name || 'زائر'}</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="font-kufi text-sm text-sand">{comment.author_name || 'زائر'}</p>
+                  {comment.status === 'pending' && (
+                    <span className="rounded-full border border-brass/20 bg-brass/10 px-2 py-0.5 text-[10px] font-kufi text-brass-lt">
+                      بانتظار الاعتماد
+                    </span>
+                  )}
+                </div>
                 <time className="text-xs text-sand-dim" dateTime={comment.created_at}>
                   {new Date(comment.created_at).toLocaleDateString('ar-SA', {
                     year: 'numeric',

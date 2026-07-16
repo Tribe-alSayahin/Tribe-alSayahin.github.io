@@ -11,4 +11,11 @@ with check (
   and status = 'pending'
 );
 
+drop policy if exists "Users can read own comments" on public.comments;
+create policy "Users can read own comments"
+on public.comments
+for select
+to authenticated
+using (user_id = auth.uid());
+
 notify pgrst, 'reload schema';
