@@ -4,7 +4,7 @@ import { useState, useEffect, type ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 import { VisitorLogin } from './VisitorLogin';
-import { clearAuthCallbackParams, hasAuthCallbackParams } from '../../lib/auth-redirect';
+import { clearAuthCallbackParams, exchangeAuthCallbackCode, hasAuthCallbackParams } from '../../lib/auth-redirect';
 
 export function VisitorAuthGuard({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -37,11 +37,22 @@ export function VisitorAuthGuard({ children }: { children: ReactNode }) {
       clearAuthCallbackParams();
     };
 
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
+    const init = async () => {
+      if (isAuthCallback) {
+        const exchanged = await exchangeAuthCallbackCode();
+        if (exchanged.session) {
+          finish(exchanged.session);
+          return;
+        }
+      }
+
+      const { data: { session: s } } = await supabase.auth.getSession();
       if (s || !isAuthCallback) {
         finish(s);
       }
-    }).catch(() => {
+    };
+
+    void init().catch(() => {
       finish(null);
     });
 

@@ -294,6 +294,10 @@ interface SupabaseLike {
       data: { session: Session | null; user: User | null };
       error: SupabaseErrorLike;
     }>;
+    exchangeCodeForSession(code: string): Promise<{
+      data: { session: Session | null; user: User | null };
+      error: SupabaseErrorLike;
+    }>;
     getUser(): Promise<{ data: { user: User | null } }>;
     onAuthStateChange(
       callback: (event: AuthChangeEvent, session: Session | null) => void,
@@ -405,6 +409,10 @@ const noopClient: SupabaseLike = {
     }),
     getSession: () => Promise.resolve({ data: { session: null } }),
     setSession: () => Promise.resolve({
+      data: { session: null, user: null },
+      error: { message: 'Supabase is not configured' },
+    }),
+    exchangeCodeForSession: () => Promise.resolve({
       data: { session: null, user: null },
       error: { message: 'Supabase is not configured' },
     }),

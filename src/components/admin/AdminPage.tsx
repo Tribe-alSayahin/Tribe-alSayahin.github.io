@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, type FormEvent } from 'react';
 import type { Session } from '@supabase/supabase-js';
 
 import { isSupabaseConfigured, supabase } from '../../lib/supabase';
-import { clearAuthCallbackParams, getAdminRedirectUrl, hasAuthCallbackParams } from '../../lib/auth-redirect';
+import { clearAuthCallbackParams, exchangeAuthCallbackCode, getAdminRedirectUrl, hasAuthCallbackParams } from '../../lib/auth-redirect';
 import { setSeoMeta } from '../../lib/seo';
 import { logAdminAction } from '../../lib/admin-logs';
 import { fetchCurrentUserRole, type UserRole } from '../../lib/admin-users';
@@ -62,6 +62,17 @@ export default function AdminPage() {
         setAuthError('إعداد Supabase غير مكتمل في متغيرات البيئة.');
         setIsAuthLoading(false);
         return;
+      }
+
+      if (isAuthCallback) {
+        const exchanged = await exchangeAuthCallbackCode();
+        if (exchanged.session) {
+          finishAuth(exchanged.session);
+          return;
+        }
+        if (exchanged.error) {
+          setAuthError(exchanged.error);
+        }
       }
 
       const {

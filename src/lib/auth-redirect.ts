@@ -1,3 +1,6 @@
+import type { Session } from '@supabase/supabase-js';
+import { supabase } from './supabase';
+
 export const getCurrentOrigin = (): string => {
   if (typeof window === 'undefined') return '';
   return window.location.origin;
@@ -25,6 +28,25 @@ export const hasAuthCallbackParams = (): boolean => {
     url.hash.includes('access_token') ||
     url.hash.includes('refresh_token')
   );
+};
+
+export const getAuthCallbackCode = (): string | null => {
+  if (typeof window === 'undefined') return null;
+  return new URL(window.location.href).searchParams.get('code');
+};
+
+export const exchangeAuthCallbackCode = async (): Promise<{
+  session: Session | null;
+  error: string | null;
+}> => {
+  const code = getAuthCallbackCode();
+  if (!code) return { session: null, error: null };
+
+  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+  return {
+    session: data.session,
+    error: error?.message ?? null,
+  };
 };
 
 export const clearAuthCallbackParams = (): void => {
