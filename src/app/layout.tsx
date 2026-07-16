@@ -3,6 +3,7 @@ import Script from 'next/script';
 import { NavbarWrapper } from '../components/layout/NavbarWrapper';
 import { FooterWrapper } from '../components/layout/FooterWrapper';
 import { VisitorAuthGuard } from '../components/layout/VisitorAuthGuard';
+import { AnalyticsTracker } from '../components/analytics/AnalyticsTracker';
 import { OFFICIAL_LOGO_IMAGE_URL } from '../lib/branding';
 import '../index.css';
 
@@ -255,6 +256,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         `}
       </Script>
       <body className="antialiased">
+        <AnalyticsTracker />
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:right-4 focus:z-[9999] focus:bg-brass focus:text-ink focus:px-4 focus:py-2 focus:rounded focus:font-sans focus:font-bold"

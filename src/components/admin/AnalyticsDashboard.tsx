@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { BarChart3, Users, Eye, TrendingUp, Calendar } from 'lucide-react';
 import {
-  fetchEventCounts,
   fetchUniqueVisitors,
   fetchAnalyticsByDateRange,
   type AnalyticsEvent,
@@ -17,7 +16,6 @@ const PERIOD_OPTIONS = [
 ];
 
 export function AnalyticsDashboard() {
-  const [eventCounts, setEventCounts] = useState<Record<string, number>>({});
   const [uniqueVisitors, setUniqueVisitors] = useState(0);
   const [events, setEvents] = useState<AnalyticsEvent[]>([]);
   const [periodDays, setPeriodDays] = useState(30);
@@ -29,15 +27,10 @@ export function AnalyticsDashboard() {
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - days);
 
-    const [countsResult, visitorsResult, rangeResult] = await Promise.all([
-      fetchEventCounts(),
+    const [visitorsResult, rangeResult] = await Promise.all([
       fetchUniqueVisitors(days),
       fetchAnalyticsByDateRange(startDate, endDate),
     ]);
-
-    if (countsResult.data) {
-      setEventCounts(countsResult.data);
-    }
 
     if (visitorsResult.data !== null) {
       setUniqueVisitors(visitorsResult.data);
@@ -57,9 +50,9 @@ export function AnalyticsDashboard() {
   const topPosts = useMemo(() => {
     const counts: Record<string, number> = {};
     for (const event of events) {
-      const postId = event.event_data?.post_id;
-      if (event.event_type === 'post_click' && typeof postId === 'string') {
-        counts[postId] = (counts[postId] ?? 0) + 1;
+      const postSlug = event.event_data?.post_slug;
+      if (event.event_type === 'post_view' && typeof postSlug === 'string') {
+        counts[postSlug] = (counts[postSlug] ?? 0) + 1;
       }
     }
     return Object.entries(counts)
@@ -67,10 +60,32 @@ export function AnalyticsDashboard() {
       .slice(0, 5);
   }, [events]);
 
+  const topPages = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const event of events) {
+      const path = event.event_data?.path;
+      if (event.event_type === 'page_view' && typeof path === 'string') {
+        counts[path] = (counts[path] ?? 0) + 1;
+      }
+    }
+    return Object.entries(counts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8);
+  }, [events]);
+
+  const eventCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const event of events) {
+      counts[event.event_type] = (counts[event.event_type] ?? 0) + 1;
+    }
+    return counts;
+  }, [events]);
+
   const eventLabels: Record<string, { label: string; icon: typeof BarChart3 }> = {
     page_view: { label: 'مشاهدات الصفحة', icon: Eye },
     user_visit: { label: 'زيارات المستخدمين', icon: Users },
     post_click: { label: 'نقرات المنشورات', icon: TrendingUp },
+    post_view: { label: 'مشاهدات المنشورات', icon: TrendingUp },
   };
 
   const totalEvents = Object.values(eventCounts).reduce((sum, count) => sum + count, 0);
@@ -145,7 +160,7 @@ export function AnalyticsDashboard() {
                 <div className="space-y-3">
                   {Object.entries(eventCounts).map(([eventType, count]) => {
                     const eventInfo = eventLabels[eventType] || {
-                      label: eventType,
+                      label: 'نشاط آخر',
                       icon: BarChart3,
                     };
                     const Icon = eventInfo.icon;
@@ -178,24 +193,64 @@ export function AnalyticsDashboard() {
             <div className="rounded-2xl border border-brass/20 bg-ink-2/60 p-5">
               <h4 className="font-kufi text-lg text-brass-lt mb-4">أكثر المنشورات زيارة</h4>
               {topPosts.length === 0 ? (
-                <p className="text-sm text-sand-dim">لا توجد نقرات منشورات في هذه الفترة.</p>
+                <p className="text-sm text-sand-dim">لا توجد مشاهدات منشورات في هذه الفترة.</p>
               ) : (
                 <div className="space-y-3">
-                  {topPosts.map(([postId, count]) => (
+                  {topPosts.map(([postSlug, count]) => (
                     <div
-                      key={postId}
+                      key={postSlug}
                       className="flex items-center justify-between p-3 rounded-xl border border-brass/10 bg-ink/50"
                     >
                       <span className="text-sm text-sand truncate" dir="ltr">
-                        #{postId.slice(0, 8)}
+                        /news/{postSlug}
                       </span>
-                      <span className="text-sm font-kufi text-sand-dim">{count} نقر</span>
+                      <span className="text-sm font-kufi text-sand-dim">{count} مشاهدة</span>
                     </div>
                   ))}
                 </div>
               )}
             </div>
           </div>
+
+          <section className="rounded-2xl border border-brass/20 bg-ink-2/60 p-5">
+            <h4 className="font-kufi text-lg text-brass-lt mb-4">الصفحات الأكثر مشاهدة</h4>
+            {topPages.length === 0 ? (
+              <p className="text-sm text-sand-dim">لا توجد مشاهدات صفحات في هذه الفترة.</p>
+            ) : (
+              <div className="grid gap-3 sm:grid-cols-2">
+                {topPages.map(([path, count]) => (
+                  <div key={path} className="flex items-center justify-between rounded-xl border border-brass/10 bg-ink/50 p-3">
+                    <span className="truncate text-sm text-sand" dir="ltr">{path}</span>
+                    <span className="text-xs font-kufi text-sand-dim">{count} مشاهدة</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+
+          <section className="rounded-2xl border border-brass/20 bg-ink-2/60 p-5">
+            <h4 className="font-kufi text-lg text-brass-lt mb-4">آخر النشاطات المسجلة</h4>
+            {events.length === 0 ? (
+              <p className="text-sm text-sand-dim">لا توجد نشاطات مسجلة في هذه الفترة.</p>
+            ) : (
+              <div className="divide-y divide-brass/10">
+                {events.slice(0, 15).map((event) => {
+                  const path = typeof event.event_data?.path === 'string' ? event.event_data.path : '/';
+                  return (
+                    <div key={event.id} className="flex flex-wrap items-center justify-between gap-2 py-3">
+                      <div>
+                        <p className="text-sm text-sand">{eventLabels[event.event_type]?.label ?? 'نشاط آخر'}</p>
+                        <p className="mt-1 text-xs text-sand-dim" dir="ltr">{path}</p>
+                      </div>
+                      <time className="text-xs text-sand-dim" dateTime={event.created_at}>
+                        {new Date(event.created_at).toLocaleString('ar-SA')}
+                      </time>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </section>
         </>
       )}
     </div>

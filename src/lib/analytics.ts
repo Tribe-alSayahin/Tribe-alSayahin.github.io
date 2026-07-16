@@ -4,9 +4,11 @@
 
 import { supabase } from './supabase';
 
+export type AnalyticsEventType = 'page_view' | 'user_visit' | 'post_view' | 'post_click';
+
 export interface AnalyticsEvent {
   id: string;
-  event_type: string;
+  event_type: AnalyticsEventType;
   event_data: Record<string, unknown> | null;
   user_id: string | null;
   session_id: string | null;
@@ -14,7 +16,7 @@ export interface AnalyticsEvent {
 }
 
 export interface AnalyticsInsert {
-  event_type: string;
+  event_type: Exclude<AnalyticsEventType, 'post_click'>;
   event_data?: Record<string, unknown>;
   user_id?: string;
   session_id?: string;
@@ -57,10 +59,14 @@ export async function fetchAnalyticsByEventType(
 /**
  * جلب عدد الأحداث حسب النوع
  */
-export async function fetchEventCounts(): Promise<{ data: Record<string, number>; error: null } | { data: null; error: ApiError }> {
+export async function fetchEventCounts(days = 30): Promise<{ data: Record<string, number>; error: null } | { data: null; error: ApiError }> {
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - days);
+
   const { data, error } = await supabase
     .from('analytics')
     .select('event_type')
+    .gte('created_at', startDate.toISOString())
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -89,7 +95,8 @@ export async function fetchAnalyticsByDateRange(
     .select('*')
     .gte('created_at', startDate.toISOString())
     .lte('created_at', endDate.toISOString())
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .limit(5000);
 
   if (error) {
     return { data: null, error };

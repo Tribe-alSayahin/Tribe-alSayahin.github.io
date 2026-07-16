@@ -85,7 +85,7 @@ interface MediaInsertLike {
 
 interface AnalyticsRecordLike {
   id: string;
-  event_type: string;
+  event_type: 'page_view' | 'user_visit' | 'post_view' | 'post_click';
   event_data: Record<string, unknown> | null;
   user_id: string | null;
   session_id: string | null;
@@ -93,7 +93,7 @@ interface AnalyticsRecordLike {
 }
 
 interface AnalyticsInsertLike {
-  event_type: string;
+  event_type: 'page_view' | 'user_visit' | 'post_view' | 'post_click';
   event_data?: Record<string, unknown>;
   user_id?: string;
   session_id?: string;
