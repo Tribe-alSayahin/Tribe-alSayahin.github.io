@@ -471,7 +471,12 @@ create policy "Authenticated can insert comments"
 on public.comments
 for insert
 to authenticated
-with check (auth.uid() is not null or author_name is not null);
+with check (
+  auth.uid() is not null
+  and user_id = auth.uid()
+  and nullif(btrim(author_name), '') is not null
+  and status = 'pending'
+);
 
 drop policy if exists "Admin can manage comments" on public.comments;
 create policy "Admin can manage comments"

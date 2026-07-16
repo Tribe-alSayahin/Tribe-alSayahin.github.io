@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getAllPostSlugs, getPostBySlug } from '../../../lib/posts';
 import { buildSeoExcerpt } from '../../../lib/seo';
 import { OFFICIAL_LOGO_IMAGE_URL } from '../../../lib/branding';
+import { PostComments } from '../../../components/comments/PostComments';
 
 const siteUrl = 'https://alsaihani.com';
 
@@ -151,6 +152,8 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
           className="prose prose-lg max-w-none text-sand leading-loose font-sans"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
+
+        <PostComments postId={post.id} />
       </div>
 
       <script
