@@ -342,6 +342,7 @@ try {
           persistSession: true,
           autoRefreshToken: true,
           detectSessionInUrl: true,
+          flowType: 'pkce',
         },
       }) as unknown as SupabaseLike;
     }

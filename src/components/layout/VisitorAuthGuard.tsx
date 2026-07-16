@@ -17,93 +17,32 @@ export function VisitorAuthGuard({ children }: { children: ReactNode }) {
     }
 
     let isMounted = true;
+    let settled = false;
 
-    const clearHash = () => {
-      if (window.location.hash) {
-        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    const finish = (s: object | null) => {
+      if (!isMounted || settled) return;
+      settled = true;
+      setSession(s);
+      setLoading(false);
+      const url = new URL(window.location.href);
+      if (url.hash || url.searchParams.has('code')) {
+        url.hash = '';
+        url.searchParams.delete('code');
+        url.searchParams.delete('access_token');
+        url.searchParams.delete('refresh_token');
+        window.history.replaceState(null, '', url.pathname + url.search);
       }
     };
 
-    const parseHashTokens = (): { access_token: string; refresh_token: string } => {
-      const hash = window.location.hash.replace(/^#/, '');
-      const params = new URLSearchParams(hash);
-      return {
-        access_token: params.get('access_token') ?? '',
-        refresh_token: params.get('refresh_token') ?? '',
-      };
-    };
-
-    const handleSession = async () => {
-      const tokens = parseHashTokens();
-      const hasOAuthHash = Boolean(tokens.access_token && tokens.refresh_token);
-
-      if (hasOAuthHash) {
-        setLoading(true);
-      }
-
-      let s = (await supabase.auth.getSession()).data.session;
-
-      if (!isMounted) return;
-
-      if (!s && hasOAuthHash) {
-        const { data, error } = await supabase.auth.setSession({
-          access_token: tokens.access_token,
-          refresh_token: tokens.refresh_token,
-        });
-        if (!error) s = data.session;
-      }
-
-      if (s) {
-        setSession(s);
-        setLoading(false);
-        clearHash();
-        return;
-      }
-
-      if (hasOAuthHash) {
-        let checkCount = 0;
-        const checkInterval = setInterval(() => {
-          if (!isMounted) {
-            clearInterval(checkInterval);
-            return;
-          }
-          checkCount++;
-          void (async () => {
-            const { data: { session: s2 } } = await supabase.auth.getSession();
-            if (s2) {
-              if (isMounted) {
-                setSession(s2);
-                setLoading(false);
-              }
-              clearInterval(checkInterval);
-              clearHash();
-              return;
-            }
-            if (checkCount > 30) {
-              clearInterval(checkInterval);
-              if (isMounted) setLoading(false);
-            }
-          })();
-        }, 200);
-
-        return;
-      }
-
-      if (isMounted) setLoading(false);
-    };
-
-    void handleSession();
+    supabase.auth.getSession().then(({ data: { session: s } }) => {
+      finish(s);
+    }).catch(() => {
+      finish(null);
+    });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, s) => {
-        if (!isMounted) return;
-        setSession(s);
-        if (s) {
-          setLoading(false);
-          if (window.location.hash) {
-            window.history.replaceState(null, '', window.location.pathname);
-          }
-        }
+        finish(s);
       },
     );
 
