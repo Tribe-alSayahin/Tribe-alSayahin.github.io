@@ -1,16 +1,24 @@
 'use client';
 
 import { useState, useEffect, type ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 import { VisitorLogin } from './VisitorLogin';
 import { clearAuthCallbackParams, hasAuthCallbackParams } from '../../lib/auth-redirect';
 
 export function VisitorAuthGuard({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  const bypassVisitorAuth = pathname?.startsWith('/admin') || pathname?.startsWith('/preview');
   const [session, setSession] = useState<object | null>(null);
   const [loading, setLoading] = useState(true);
   const [configured, setConfigured] = useState(true);
 
   useEffect(() => {
+    if (bypassVisitorAuth) {
+      setLoading(false);
+      return;
+    }
+
     if (!isSupabaseConfigured()) {
       setConfigured(false);
       setLoading(false);
@@ -51,7 +59,11 @@ export function VisitorAuthGuard({ children }: { children: ReactNode }) {
       if (fallbackTimer) window.clearTimeout(fallbackTimer);
       subscription.unsubscribe();
     };
-  }, []);
+  }, [bypassVisitorAuth]);
+
+  if (bypassVisitorAuth) {
+    return <>{children}</>;
+  }
 
   if (!configured) {
     return <>{children}</>;
