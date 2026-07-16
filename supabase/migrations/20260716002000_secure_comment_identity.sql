@@ -63,13 +63,6 @@ with check (
   and status = 'pending'
 );
 
-drop policy if exists "Users can read own comments" on public.comments;
-create policy "Users can read own comments"
-on public.comments
-for select
-to authenticated
-using (user_id = auth.uid());
-
 revoke select on public.comments from anon;
 grant select (id, post_id, author_name, content, status, created_at, updated_at)
 on public.comments to anon;

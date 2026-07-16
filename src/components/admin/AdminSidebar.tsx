@@ -15,7 +15,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import type { UserRole } from '../../lib/admin-users';
-import { getAllowedAdminTabs, type AdminTab } from '../../lib/admin-access';
+import { ADMIN_TAB_DEFINITIONS, getAllowedAdminTabs, type AdminTab } from '../../lib/admin-access';
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -25,24 +25,23 @@ interface AdminSidebarProps {
   onSignOut: () => void;
 }
 
-interface NavItem {
-  id: AdminTab;
-  label: string;
-  icon: LucideIcon;
-}
+const NAV_ICONS: Record<AdminTab, LucideIcon> = {
+  dashboard: LayoutDashboard,
+  posts: Newspaper,
+  poetry: BookOpen,
+  events: CalendarDays,
+  users: Users,
+  comments: MessageSquare,
+  media: ImageIcon,
+  analytics: BarChart3,
+  activity: Activity,
+  'thanks-letter': ScrollText,
+};
 
-const NAV_ITEMS: NavItem[] = [
-  { id: 'dashboard', label: 'نظرة عامة', icon: LayoutDashboard },
-  { id: 'posts', label: 'الأخبار والمناسبات', icon: Newspaper },
-  { id: 'poetry', label: 'ديوان الشعر', icon: BookOpen },
-  { id: 'events', label: 'المناسبات المصوّرة', icon: CalendarDays },
-  { id: 'users', label: 'المستخدمين', icon: Users },
-  { id: 'comments', label: 'التعليقات', icon: MessageSquare },
-  { id: 'media', label: 'الوسائط', icon: ImageIcon },
-  { id: 'analytics', label: 'الإحصائيات', icon: BarChart3 },
-  { id: 'activity', label: 'سجل النشاطات', icon: Activity },
-  { id: 'thanks-letter', label: 'خطاب شكر الداعمين', icon: ScrollText },
-];
+const NAV_ITEMS = ADMIN_TAB_DEFINITIONS.map((item) => ({
+  ...item,
+  icon: NAV_ICONS[item.id],
+}));
 
 export function AdminSidebar({
   activeTab,

@@ -2,32 +2,25 @@
 
 import { useEffect, useState } from 'react';
 import { BookOpen } from 'lucide-react';
-import { baajPoemLines, baajStory } from './PoetryCouncil.data';
 import { fetchPublishedPoetryEntries, type PoetryEntry } from '../../lib/poetry';
 
-const fallbackEntry: PoetryEntry = {
-  id: 'baaj-fallback',
-  title: 'قصة الشيخ بعّاج بن علوش بن فرج بن مسيلم (مع القصيدة)',
-  poet_name: 'بعّاج بن علوش بن فرج بن مسيلم',
-  story: baajStory.join('\n\n'),
-  poem_text: baajPoemLines.join('\n'),
-  source: 'الموروث الشفهي لقبيلة السياحين',
-  status: 'published',
-  created_at: '',
-  updated_at: '',
-  created_by: null,
-};
-
 export default function PoetryCouncil() {
-  const [entries, setEntries] = useState<PoetryEntry[]>([fallbackEntry]);
+  const [entries, setEntries] = useState<PoetryEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadFailed, setLoadFailed] = useState(false);
 
   useEffect(() => {
     let mounted = true;
 
     const loadEntries = async () => {
       const result = await fetchPublishedPoetryEntries();
-      if (!mounted || !result.data || result.data.length === 0) return;
-      setEntries(result.data);
+      if (!mounted) return;
+      if (result.error) {
+        setLoadFailed(true);
+      } else {
+        setEntries(result.data ?? []);
+      }
+      setLoading(false);
     };
 
     void loadEntries();
@@ -47,6 +40,13 @@ export default function PoetryCouncil() {
           <h3 className="text-2xl md:text-3xl font-serif text-sand font-bold">ديوان الشعر النبطي الموثق</h3>
         </div>
 
+        {loading && <p className="text-center text-sm font-kufi text-sand-dim">جارٍ تحميل الديوان...</p>}
+        {!loading && loadFailed && (
+          <p className="text-center text-sm font-kufi text-sand-dim">تعذر تحميل الديوان الآن. حاول مرة أخرى لاحقًا.</p>
+        )}
+        {!loading && !loadFailed && entries.length === 0 && (
+          <p className="text-center text-sm font-kufi text-sand-dim">لا توجد قصائد منشورة حاليًا.</p>
+        )}
         {entries.map((entry) => {
           const storyParagraphs = (entry.story ?? '')
             .split(/\n{2,}/)

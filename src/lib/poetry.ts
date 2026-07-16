@@ -1,40 +1,7 @@
 import { supabase } from './supabase';
+import type { PoetryEntry } from './poetry-types';
 
-export type PoetryStatus = 'draft' | 'published';
-
-export interface PoetryEntry {
-  id: string;
-  title: string;
-  poet_name: string;
-  story: string | null;
-  poem_text: string;
-  source: string | null;
-  status: PoetryStatus;
-  created_at: string;
-  updated_at: string;
-  created_by: string | null;
-}
-
-export interface PoetryEntryInsert {
-  title: string;
-  poet_name: string;
-  story?: string | null;
-  poem_text: string;
-  source?: string | null;
-  status?: PoetryStatus;
-  created_by?: string | null;
-  updated_at?: string;
-}
-
-export interface PoetryEntryUpdate {
-  title?: string;
-  poet_name?: string;
-  story?: string | null;
-  poem_text?: string;
-  source?: string | null;
-  status?: PoetryStatus;
-  updated_at?: string;
-}
+export type { PoetryEntry, PoetryStatus } from './poetry-types';
 
 type ApiError = { message: string };
 type FetchListResult<T> = { data: T[]; error: null } | { data: null; error: ApiError };

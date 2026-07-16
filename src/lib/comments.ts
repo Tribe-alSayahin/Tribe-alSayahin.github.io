@@ -17,6 +17,8 @@ export interface Comment {
   updated_at: string;
 }
 
+export type PublicComment = Omit<Comment, 'user_id'>;
+
 export interface CommentInsert {
   post_id: string;
   user_id?: string;
@@ -33,10 +35,10 @@ type DeleteResult = { error: ApiError | null };
 /**
  * جلب تعليقات منشور معين
  */
-export async function fetchCommentsByPost(postId: string, status?: CommentStatus): Promise<FetchListResult<Comment>> {
+export async function fetchCommentsByPost(postId: string, status?: CommentStatus): Promise<FetchListResult<PublicComment>> {
   let query = supabase
     .from('comments')
-    .select('*')
+    .select('id,post_id,author_name,content,status,created_at,updated_at')
     .eq('post_id', postId);
 
   if (status) {
@@ -49,7 +51,7 @@ export async function fetchCommentsByPost(postId: string, status?: CommentStatus
     return { data: null, error };
   }
 
-  return { data: (data ?? []), error: null };
+  return { data: data ?? [], error: null };
 }
 
 /**
