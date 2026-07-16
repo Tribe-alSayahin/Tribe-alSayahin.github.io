@@ -41,28 +41,30 @@ export function VisitorAuthGuard({ children }: { children: ReactNode }) {
 
       if (hasOAuthHash) {
         let checkCount = 0;
-        const checkInterval = setInterval(async () => {
+        const checkInterval = setInterval(() => {
           if (!isMounted) {
             clearInterval(checkInterval);
             return;
           }
           checkCount++;
-          const { data: { session: s2 } } = await supabase.auth.getSession();
-          if (s2) {
-            if (isMounted) {
-              setSession(s2);
-              setLoading(false);
+          void (async () => {
+            const { data: { session: s2 } } = await supabase.auth.getSession();
+            if (s2) {
+              if (isMounted) {
+                setSession(s2);
+                setLoading(false);
+              }
+              clearInterval(checkInterval);
+              if (window.location.hash) {
+                window.history.replaceState(null, '', window.location.pathname);
+              }
+              return;
             }
-            clearInterval(checkInterval);
-            if (window.location.hash) {
-              window.history.replaceState(null, '', window.location.pathname);
+            if (checkCount > 30) {
+              clearInterval(checkInterval);
+              if (isMounted) setLoading(false);
             }
-            return;
-          }
-          if (checkCount > 30) {
-            clearInterval(checkInterval);
-            if (isMounted) setLoading(false);
-          }
+          })();
         }, 200);
 
         return;
@@ -71,7 +73,7 @@ export function VisitorAuthGuard({ children }: { children: ReactNode }) {
       if (isMounted) setLoading(false);
     };
 
-    handleSession();
+    void handleSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, s) => {
