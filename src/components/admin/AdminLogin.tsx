@@ -11,8 +11,10 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const [notConfigured, setNotConfigured] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
 
   useEffect(() => {
     if (!isSupabaseConfigured()) {
@@ -27,21 +29,31 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
   const doSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) {
-      setError(error.message || 'خطأ في تسجيل الدخول');
-      setLoading(false);
+    if (isSignUp) {
+      const { error } = await supabase.auth.signUp({ email, password });
+      if (error) {
+        setError(error.message || 'خطأ في إنشاء الحساب');
+        setLoading(false);
+      } else {
+        setSuccess('تم إنشاء الحساب بنجاح! تحقق من بريدك الإلكتروني لتأكيد الحساب.');
+        setLoading(false);
+      }
     } else {
-      onLoginSuccess();
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        setError(error.message || 'خطأ في تسجيل الدخول');
+        setLoading(false);
+      } else {
+        onLoginSuccess();
+      }
     }
   };
 
   const doGoogleSignIn = async () => {
     setError('');
+    setSuccess('');
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -86,8 +98,12 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
         <Card hoverGlow={false} className="border-brass/20 bg-ink-2/60 backdrop-blur-xl">
           <CardContent className="p-space-8">
             <div className="text-center mb-space-8">
-              <h1 className="font-serif text-2xl font-bold text-sand mb-2">تسجيل دخول الإدارة</h1>
-              <p className="text-sm text-sand-dim font-sans">قم بإدخال بيانات حسابك للوصول إلى لوحة التحكم</p>
+              <h1 className="font-serif text-2xl font-bold text-sand mb-2">
+                {isSignUp ? 'إنشاء حساب جديد' : 'تسجيل دخول الإدارة'}
+              </h1>
+              <p className="text-sm text-sand-dim font-sans">
+                {isSignUp ? 'أنشئ حساباً جديداً للوصول إلى لوحة التحكم' : 'قم بإدخال بيانات حسابك للوصول إلى لوحة التحكم'}
+              </p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-space-5">
               <div>
@@ -107,6 +123,7 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  minLength={6}
                   className="w-full bg-ink/60 border border-brass/20 rounded-xl px-space-4 py-space-3 text-sm text-sand font-sans focus:outline-none focus:border-brass/50 focus:ring-2 focus:ring-brass/20 transition-all"
                 />
               </div>
@@ -115,8 +132,13 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
                   {error}
                 </p>
               )}
+              {success && (
+                <p className="text-xs text-green-400 font-sans text-center bg-green-500/10 border border-green-500/20 rounded-lg px-space-3 py-space-2">
+                  {success}
+                </p>
+              )}
               <Button type="submit" variant="primary" size="lg" className="w-full" disabled={loading}>
-                {loading ? 'جارٍ التحقق...' : 'تسجيل الدخول'}
+                {loading ? 'جارٍ التحقق...' : isSignUp ? 'إنشاء حساب' : 'تسجيل الدخول'}
               </Button>
             </form>
             <div className="relative my-space-6">
@@ -141,8 +163,17 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
                 <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
               </svg>
-              تسجيل الدخول بواسطة Google
+              {isSignUp ? 'التسجيل بواسطة Google' : 'تسجيل الدخول بواسطة Google'}
             </Button>
+            <div className="text-center mt-space-6">
+              <button
+                type="button"
+                onClick={() => { setIsSignUp(!isSignUp); setError(''); setSuccess(''); }}
+                className="text-xs text-brass-lt hover:text-brass font-sans underline underline-offset-2 transition-colors"
+              >
+                {isSignUp ? 'لديك حساب بالفعل؟ تسجيل الدخول' : 'ليس لديك حساب؟ إنشاء حساب جديد'}
+              </button>
+            </div>
           </CardContent>
         </Card>
       </div>
