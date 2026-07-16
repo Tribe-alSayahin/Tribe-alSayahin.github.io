@@ -49,8 +49,9 @@ export default function AdminPage() {
     const isAuthCallback = hasAuthCallbackParams();
     let fallbackTimer: number | undefined;
 
-    const finishAuth = (nextSession: Session | null) => {
+    const finishAuth = (nextSession: Session | null, force = false) => {
       if (!mounted) return;
+      if (isAuthCallback && !nextSession && !force) return;
       setSession(nextSession);
       setIsAuthLoading(false);
       clearAuthCallbackParams();
@@ -79,7 +80,7 @@ export default function AdminPage() {
     });
 
     if (isAuthCallback) {
-      fallbackTimer = window.setTimeout(() => finishAuth(null), 5000);
+      fallbackTimer = window.setTimeout(() => finishAuth(null, true), 8000);
     }
 
     return () => {

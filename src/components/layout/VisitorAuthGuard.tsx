@@ -29,8 +29,9 @@ export function VisitorAuthGuard({ children }: { children: ReactNode }) {
     const isAuthCallback = hasAuthCallbackParams();
     let fallbackTimer: number | undefined;
 
-    const finish = (s: object | null) => {
+    const finish = (s: object | null, force = false) => {
       if (!isMounted) return;
+      if (isAuthCallback && !s && !force) return;
       setSession(s);
       setLoading(false);
       clearAuthCallbackParams();
@@ -51,7 +52,7 @@ export function VisitorAuthGuard({ children }: { children: ReactNode }) {
     );
 
     if (isAuthCallback) {
-      fallbackTimer = window.setTimeout(() => finish(null), 5000);
+      fallbackTimer = window.setTimeout(() => finish(null, true), 8000);
     }
 
     return () => {
