@@ -1,12 +1,11 @@
 'use client';
 
 import { useState, useEffect, type ReactNode } from 'react';
-import type { Session } from '@supabase/supabase-js';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 import { VisitorLogin } from './VisitorLogin';
 
 export function VisitorAuthGuard({ children }: { children: ReactNode }) {
-  const [session, setSession] = useState<Session | null>(null);
+  const [session, setSession] = useState<object | null>(null);
   const [loading, setLoading] = useState(true);
   const [configured, setConfigured] = useState(true);
 
