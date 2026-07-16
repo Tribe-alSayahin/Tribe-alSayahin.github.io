@@ -1,5 +1,6 @@
 import { useState, type FormEvent, useEffect } from 'react';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
+import { getAdminRedirectUrl } from '../../lib/auth-redirect';
 import { Button } from '../ui/Button';
 import { Card, CardContent } from '../ui/Card';
 
@@ -57,7 +58,7 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/admin`,
+        redirectTo: getAdminRedirectUrl(),
       },
     });
     if (error) {

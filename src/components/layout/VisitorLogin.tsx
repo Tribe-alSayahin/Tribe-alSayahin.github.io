@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { supabase } from '../../lib/supabase';
+import { getCleanCurrentUrl } from '../../lib/auth-redirect';
 
 export function VisitorLogin() {
   const [error, setError] = useState('');
@@ -13,7 +14,7 @@ export function VisitorLogin() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.href.split('#')[0],
+        redirectTo: getCleanCurrentUrl(),
       },
     });
     if (error) {

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, type FormEvent } from 'react';
 import type { Session } from '@supabase/supabase-js';
 
 import { isSupabaseConfigured, supabase } from '../../lib/supabase';
+import { clearAuthCallbackParams, getAdminRedirectUrl, hasAuthCallbackParams } from '../../lib/auth-redirect';
 import { setSeoMeta } from '../../lib/seo';
 import { logAdminAction } from '../../lib/admin-logs';
 import { fetchCurrentUserRole, type UserRole } from '../../lib/admin-users';
@@ -26,6 +27,7 @@ export default function AdminPage() {
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [isRoleLoading, setIsRoleLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
   const [authError, setAuthError] = useState('');
   const [roleError, setRoleError] = useState('');
   const [email, setEmail] = useState('');
@@ -44,6 +46,15 @@ export default function AdminPage() {
 
   useEffect(() => {
     let mounted = true;
+    const isAuthCallback = hasAuthCallbackParams();
+    let fallbackTimer: number | undefined;
+
+    const finishAuth = (nextSession: Session | null) => {
+      if (!mounted) return;
+      setSession(nextSession);
+      setIsAuthLoading(false);
+      clearAuthCallbackParams();
+    };
 
     const init = async () => {
       if (!isSupabaseConfigured()) {
@@ -56,22 +67,24 @@ export default function AdminPage() {
         data: { session: currentSession },
       } = await supabase.auth.getSession();
 
-      if (mounted) {
-        setSession(currentSession);
-        setIsAuthLoading(false);
+      if (currentSession || !isAuthCallback) {
+        finishAuth(currentSession);
       }
     };
 
     void init();
 
     const { data } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      if (mounted) {
-        setSession(nextSession);
-      }
+      finishAuth(nextSession);
     });
+
+    if (isAuthCallback) {
+      fallbackTimer = window.setTimeout(() => finishAuth(null), 5000);
+    }
 
     return () => {
       mounted = false;
+      if (fallbackTimer) window.clearTimeout(fallbackTimer);
       data.subscription.unsubscribe();
     };
   }, []);
@@ -142,6 +155,23 @@ export default function AdminPage() {
     }
 
     setIsSubmitting(false);
+  };
+
+  const handleGoogleSignIn = async () => {
+    setAuthError('');
+    setIsGoogleSubmitting(true);
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: getAdminRedirectUrl(),
+      },
+    });
+
+    if (error) {
+      setAuthError(error.message || 'خطأ في تسجيل الدخول عبر Google');
+      setIsGoogleSubmitting(false);
+    }
   };
 
   const handleSignOut = async () => {
@@ -229,10 +259,23 @@ export default function AdminPage() {
               />
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || isGoogleSubmitting}
                 className="rounded-lg bg-brass/20 border border-brass/35 px-4 py-2.5 text-base font-kufi text-brass-lt hover:bg-brass/30 transition-colors disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
               >
                 {isSubmitting ? 'جارٍ تسجيل الدخول...' : 'دخول'}
+              </button>
+              <div className="flex items-center gap-3">
+                <div className="h-px flex-1 bg-brass/15" />
+                <span className="text-xs text-sand-dim font-kufi">أو</span>
+                <div className="h-px flex-1 bg-brass/15" />
+              </div>
+              <button
+                type="button"
+                onClick={() => void handleGoogleSignIn()}
+                disabled={isSubmitting || isGoogleSubmitting}
+                className="rounded-lg border border-brass/25 bg-sand px-4 py-2.5 text-sm font-kufi font-semibold text-ink hover:bg-sand/90 transition-colors disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
+              >
+                {isGoogleSubmitting ? 'جارٍ التوجيه...' : 'الدخول بحساب Google'}
               </button>
               {authError && (
                 <p className="text-xs font-kufi text-copper">{authError}</p>

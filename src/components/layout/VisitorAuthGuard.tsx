@@ -3,6 +3,7 @@
 import { useState, useEffect, type ReactNode } from 'react';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 import { VisitorLogin } from './VisitorLogin';
+import { clearAuthCallbackParams, hasAuthCallbackParams } from '../../lib/auth-redirect';
 
 export function VisitorAuthGuard({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<object | null>(null);
@@ -17,25 +18,20 @@ export function VisitorAuthGuard({ children }: { children: ReactNode }) {
     }
 
     let isMounted = true;
-    let settled = false;
+    const isAuthCallback = hasAuthCallbackParams();
+    let fallbackTimer: number | undefined;
 
     const finish = (s: object | null) => {
-      if (!isMounted || settled) return;
-      settled = true;
+      if (!isMounted) return;
       setSession(s);
       setLoading(false);
-      const url = new URL(window.location.href);
-      if (url.hash || url.searchParams.has('code')) {
-        url.hash = '';
-        url.searchParams.delete('code');
-        url.searchParams.delete('access_token');
-        url.searchParams.delete('refresh_token');
-        window.history.replaceState(null, '', url.pathname + url.search);
-      }
+      clearAuthCallbackParams();
     };
 
     supabase.auth.getSession().then(({ data: { session: s } }) => {
-      finish(s);
+      if (s || !isAuthCallback) {
+        finish(s);
+      }
     }).catch(() => {
       finish(null);
     });
@@ -46,8 +42,13 @@ export function VisitorAuthGuard({ children }: { children: ReactNode }) {
       },
     );
 
+    if (isAuthCallback) {
+      fallbackTimer = window.setTimeout(() => finish(null), 5000);
+    }
+
     return () => {
       isMounted = false;
+      if (fallbackTimer) window.clearTimeout(fallbackTimer);
       subscription.unsubscribe();
     };
   }, []);
