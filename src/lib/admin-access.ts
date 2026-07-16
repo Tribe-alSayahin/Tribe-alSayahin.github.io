@@ -3,6 +3,7 @@ import type { UserRole } from './admin-users';
 export type AdminTab =
   | 'dashboard'
   | 'posts'
+  | 'poetry'
   | 'events'
   | 'users'
   | 'analytics'
@@ -14,6 +15,7 @@ export type AdminTab =
 const ALL_ADMIN_TABS: AdminTab[] = [
   'dashboard',
   'posts',
+  'poetry',
   'events',
   'users',
   'analytics',

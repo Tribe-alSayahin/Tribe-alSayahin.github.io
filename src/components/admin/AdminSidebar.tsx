@@ -11,6 +11,7 @@ import {
   LogOut,
   ScrollText,
   CalendarDays,
+  BookOpen,
   type LucideIcon,
 } from 'lucide-react';
 import type { UserRole } from '../../lib/admin-users';
@@ -33,6 +34,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { id: 'dashboard', label: 'نظرة عامة', icon: LayoutDashboard },
   { id: 'posts', label: 'الأخبار والمناسبات', icon: Newspaper },
+  { id: 'poetry', label: 'ديوان الشعر', icon: BookOpen },
   { id: 'events', label: 'المناسبات المصوّرة', icon: CalendarDays },
   { id: 'users', label: 'المستخدمين', icon: Users },
   { id: 'comments', label: 'التعليقات', icon: MessageSquare },

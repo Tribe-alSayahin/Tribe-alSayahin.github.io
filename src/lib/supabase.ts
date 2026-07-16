@@ -178,6 +178,30 @@ interface AdminEventImageInsertLike {
   uploaded_by?: string | null;
 }
 
+interface PoetryEntryRecordLike {
+  id: string;
+  title: string;
+  poet_name: string;
+  story: string | null;
+  poem_text: string;
+  source: string | null;
+  status: 'draft' | 'published';
+  created_at: string;
+  updated_at: string;
+  created_by: string | null;
+}
+
+interface PoetryEntryInsertLike {
+  title: string;
+  poet_name: string;
+  story?: string | null;
+  poem_text: string;
+  source?: string | null;
+  status?: 'draft' | 'published';
+  created_by?: string | null;
+  updated_at?: string;
+}
+
 interface QueryResult<T> {
   data: T | null;
   error: SupabaseErrorLike;
@@ -265,6 +289,13 @@ interface AdminEventImagesTable {
   delete(): MutationQuery<AdminEventImageRecordLike>;
 }
 
+interface PoetryEntriesTable {
+  select(columns?: string, options?: { count?: 'exact' | 'planned' | 'estimated' }): SelectQuery<PoetryEntryRecordLike>;
+  insert(payload: PoetryEntryInsertLike | PoetryEntryInsertLike[]): MutationQuery<PoetryEntryRecordLike>;
+  update(payload: Partial<PoetryEntryInsertLike>): MutationQuery<PoetryEntryRecordLike>;
+  delete(): MutationQuery<PoetryEntryRecordLike>;
+}
+
 interface StorageBucket {
   from(bucket: string): {
     upload(path: string, file: File | Blob, options?: { contentType?: string; upsert?: boolean }): Promise<{ data: { path: string } | null; error: SupabaseErrorLike }>;
@@ -315,6 +346,7 @@ interface SupabaseLike {
   from(table: 'admin_logs'): AdminLogsTable;
   from(table: 'admin_events'): AdminEventsTable;
   from(table: 'admin_event_images'): AdminEventImagesTable;
+  from(table: 'poetry_entries'): PoetryEntriesTable;
   storage: StorageBucket;
 }
 
@@ -470,6 +502,14 @@ const noopClient: SupabaseLike = {
           insert: () => createNoopMutationQuery<AdminEventImageRecordLike>(),
           update: () => createNoopMutationQuery<AdminEventImageRecordLike>(),
           delete: () => createNoopMutationQuery<AdminEventImageRecordLike>(),
+        };
+      }
+      if (table === 'poetry_entries') {
+        return {
+          select: () => createNoopSelectQuery<PoetryEntryRecordLike>(),
+          insert: () => createNoopMutationQuery<PoetryEntryRecordLike>(),
+          update: () => createNoopMutationQuery<PoetryEntryRecordLike>(),
+          delete: () => createNoopMutationQuery<PoetryEntryRecordLike>(),
         };
       }
       return createTable<AdminPostRecordLike>();

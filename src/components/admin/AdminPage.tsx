@@ -19,6 +19,7 @@ import { CommentManager } from './CommentManager';
 import { ActivityLog } from './ActivityLog';
 import { ThanksLetterGenerator } from './ThanksLetterGenerator';
 import { EventManager } from './EventManager';
+import { PoetryManager } from './PoetryManager';
 import { ToastContainer, type Toast } from './Toast';
 
 export default function AdminPage() {
@@ -211,6 +212,8 @@ export default function AdminPage() {
         return <DashboardOverview onTabChange={setActiveTab} />;
       case 'posts':
         return <PostManager onNotify={addToast} />;
+      case 'poetry':
+        return <PoetryManager onNotify={addToast} userId={session?.user?.id ?? null} />;
       case 'events':
         return <EventManager onNotify={addToast} canManage={canManageEvents} userId={session?.user?.id ?? null} />;
       case 'users':
