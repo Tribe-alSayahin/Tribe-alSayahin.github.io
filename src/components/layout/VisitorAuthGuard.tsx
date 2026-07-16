@@ -24,13 +24,12 @@ export function VisitorAuthGuard({ children }: { children: ReactNode }) {
       }
     };
 
-    const parseHashTokens = (): { access_token?: string; refresh_token?: string } => {
+    const parseHashTokens = (): { access_token: string; refresh_token: string } => {
       const hash = window.location.hash.replace(/^#/, '');
-      if (!hash) return {};
       const params = new URLSearchParams(hash);
       return {
-        access_token: params.get('access_token') ?? undefined,
-        refresh_token: params.get('refresh_token') ?? undefined,
+        access_token: params.get('access_token') ?? '',
+        refresh_token: params.get('refresh_token') ?? '',
       };
     };
 
@@ -48,8 +47,8 @@ export function VisitorAuthGuard({ children }: { children: ReactNode }) {
 
       if (!s && hasOAuthHash) {
         const { data, error } = await supabase.auth.setSession({
-          access_token: tokens.access_token!,
-          refresh_token: tokens.refresh_token!,
+          access_token: tokens.access_token,
+          refresh_token: tokens.refresh_token,
         });
         if (!error) s = data.session;
       }
