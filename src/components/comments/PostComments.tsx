@@ -9,6 +9,20 @@ interface PostCommentsProps {
   postId: string;
 }
 
+interface VisitorProfile {
+  name: string;
+  email: string;
+  avatarUrl: string;
+  provider: string;
+}
+
+const emptyVisitorProfile: VisitorProfile = {
+  name: '',
+  email: '',
+  avatarUrl: '',
+  provider: '',
+};
+
 const getVisitorName = (sessionUser: {
   email?: string;
   user_metadata?: Record<string, unknown>;
@@ -26,11 +40,40 @@ const getVisitorName = (sessionUser: {
   return metadataName.trim() || sessionUser.email?.split('@')[0]?.trim() || '';
 };
 
+const getVisitorProfile = (sessionUser: {
+  email?: string;
+  app_metadata?: Record<string, unknown>;
+  user_metadata?: Record<string, unknown>;
+} | null): VisitorProfile => {
+  if (!sessionUser) return emptyVisitorProfile;
+
+  const metadata = sessionUser.user_metadata ?? {};
+  const appMetadata = sessionUser.app_metadata ?? {};
+  const avatarUrl =
+    typeof metadata.avatar_url === 'string'
+      ? metadata.avatar_url
+      : typeof metadata.picture === 'string'
+        ? metadata.picture
+        : '';
+  const provider =
+    typeof appMetadata.provider === 'string'
+      ? appMetadata.provider
+      : 'google';
+
+  return {
+    name: getVisitorName(sessionUser),
+    email: sessionUser.email ?? '',
+    avatarUrl,
+    provider,
+  };
+};
+
 export function PostComments({ postId }: PostCommentsProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [content, setContent] = useState('');
   const [visitorName, setVisitorName] = useState('');
   const [visitorId, setVisitorId] = useState<string | null>(null);
+  const [visitorProfile, setVisitorProfile] = useState<VisitorProfile>(emptyVisitorProfile);
   const [loading, setLoading] = useState(true);
   const [authChecked, setAuthChecked] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -61,6 +104,7 @@ export function PostComments({ postId }: PostCommentsProps) {
 
       setVisitorId(session?.user?.id ?? null);
       setVisitorName(getVisitorName(session?.user ?? null));
+      setVisitorProfile(getVisitorProfile(session?.user ?? null));
       setAuthChecked(true);
       if (commentsResult.data) {
         setComments(commentsResult.data);
@@ -78,6 +122,7 @@ export function PostComments({ postId }: PostCommentsProps) {
     const { data } = supabase.auth.onAuthStateChange((_event, session) => {
       setVisitorId(session?.user?.id ?? null);
       setVisitorName(getVisitorName(session?.user ?? null));
+      setVisitorProfile(getVisitorProfile(session?.user ?? null));
       setAuthChecked(true);
     });
 
@@ -149,9 +194,31 @@ export function PostComments({ postId }: PostCommentsProps) {
       <form onSubmit={(event) => { void handleSubmit(event); }} className="rounded-2xl border border-brass/15 bg-ink-2/50 p-5 md:p-6 space-y-4">
         <div className="rounded-xl border border-brass/10 bg-ink/50 px-4 py-3">
           <p className="text-xs font-kufi text-sand-dim mb-1">سيظهر اسمك من حسابك الرسمي</p>
-          <p className="text-sm text-sand">
-            {visitorName || (authChecked ? 'لم يتم تسجيل الدخول بعد' : 'جارٍ قراءة بيانات الحساب...')}
-          </p>
+          {visitorId ? (
+            <div className="flex flex-wrap items-center gap-3">
+              {visitorProfile.avatarUrl && (
+                <img
+                  src={visitorProfile.avatarUrl}
+                  alt=""
+                  className="h-11 w-11 rounded-full border border-brass/20 object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              )}
+              <div className="min-w-0">
+                <p className="text-sm font-kufi text-sand">{visitorProfile.name || visitorName}</p>
+                <p className="mt-1 break-all text-xs text-sand-dim">
+                  الحساب: {visitorProfile.email || 'حساب Google موثق'}
+                </p>
+                <p className="mt-1 text-[11px] font-kufi text-brass-lt/80">
+                  طريقة الدخول: {visitorProfile.provider === 'google' ? 'Google' : visitorProfile.provider}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <p className="text-sm text-sand">
+              {authChecked ? 'لم يتم تسجيل الدخول بعد' : 'جارٍ قراءة بيانات الحساب...'}
+            </p>
+          )}
         </div>
 
         <label className="block">
