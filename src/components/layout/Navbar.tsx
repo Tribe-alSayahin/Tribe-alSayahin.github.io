@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Menu, X } from 'lucide-react';
+import { Menu, Search, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ThemeToggle } from './ThemeToggle';
@@ -82,6 +82,14 @@ export function Navbar() {
           </nav>
 
           <div className="flex items-center gap-2.5">
+            <Link
+              href="/search/"
+              className="flex items-center justify-center w-10 h-10 text-brass-lt hover:text-sand bg-transparent border-0 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-full transition-colors"
+              aria-label="البحث في الموقع"
+              title="البحث في الموقع"
+            >
+              <Search className="w-5 h-5" aria-hidden="true" />
+            </Link>
             <ThemeToggle />
 
             <button

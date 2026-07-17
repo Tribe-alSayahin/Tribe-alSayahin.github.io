@@ -1,0 +1,30 @@
+name: Lighthouse Quality Monitor
+
+on:
+  workflow_run:
+    workflows: ["Deploy to GitHub Pages"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Audit public pages
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            https://alsaihani.com/
+            https://alsaihani.com/nasab/
+            https://alsaihani.com/news/
+            https://alsaihani.com/search/
+          configPath: ./lighthouserc.json
+          uploadArtifacts: false
+          temporaryPublicStorage: false

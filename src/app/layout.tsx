@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import { NavbarWrapper } from '../components/layout/NavbarWrapper';
 import { FooterWrapper } from '../components/layout/FooterWrapper';
+import { SearchableMain } from '../components/layout/SearchableMain';
 import { AuthCallbackHandler } from '../components/auth/AuthCallbackHandler';
 import { AnalyticsTracker } from '../components/analytics/AnalyticsTracker';
 import { OFFICIAL_LOGO_IMAGE_URL } from '../lib/branding';
@@ -265,9 +266,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           انتقل إلى المحتوى الرئيسي
         </a>
         <NavbarWrapper />
-        <main id="main-content" className="relative">
-          {children}
-        </main>
+        <SearchableMain>{children}</SearchableMain>
         <FooterWrapper />
         <script
           type="application/ld+json"

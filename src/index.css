@@ -39,6 +39,42 @@
   --sadu: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='26' viewBox='0 0 44 26'%3E%3Cg fill='none' stroke='%23c9a24b' stroke-width='1.1'%3E%3Cpath d='M0 13 11 2 22 13 11 24Z'/%3E%3Cpath d='M22 13 33 2 44 13 33 24Z'/%3E%3C/g%3E%3Cg fill='%23c9a24b'%3E%3Ccircle cx='11' cy='13' r='1.7'/%3E%3Ccircle cx='33' cy='13' r='1.7'/%3E%3C/g%3E%3C/svg%3E");
 }
 
+/* Pagefind search adopts the site's editorial palette while retaining its accessible controls. */
+.site-search-tool {
+  --pagefind-ui-scale: 1;
+  --pagefind-ui-primary: var(--color-brass-lt, #d6b56d);
+  --pagefind-ui-text: var(--color-sand, #f4ead6);
+  --pagefind-ui-background: rgba(18, 17, 15, 0.72);
+  --pagefind-ui-border: rgba(192, 154, 81, 0.3);
+  --pagefind-ui-tag: rgba(192, 154, 81, 0.14);
+  --pagefind-ui-border-width: 1px;
+  --pagefind-ui-border-radius: 6px;
+  --pagefind-ui-image-border-radius: 4px;
+  --pagefind-ui-font: var(--font-sans);
+  min-height: 22rem;
+}
+
+.site-search-tool .pagefind-ui__search-input {
+  min-height: 3.5rem;
+  padding-inline: 3.25rem 1rem;
+  letter-spacing: 0;
+}
+
+.site-search-tool .pagefind-ui__search-clear {
+  color: var(--color-brass-lt, #d6b56d);
+}
+
+.site-search-tool .pagefind-ui__result-link {
+  color: var(--color-sand, #f4ead6);
+  letter-spacing: 0;
+}
+
+.site-search-tool .pagefind-ui__result-excerpt,
+.site-search-tool .pagefind-ui__message {
+  color: var(--color-sand-dim, #c9bea9);
+  letter-spacing: 0;
+}
+
 /* الوضع النهاري — «ورق المخطوطة في ضوء النهار» */
 :root.light {
   --ink: #f8f4eb;
