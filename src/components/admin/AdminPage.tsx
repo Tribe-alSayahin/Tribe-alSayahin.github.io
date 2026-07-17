@@ -325,9 +325,9 @@ export default function AdminPage() {
                 onSignOut={() => void handleSignOut()}
               />
             </div>
-            <main className="lg:col-span-9">
+            <section className="lg:col-span-9" aria-label="محتوى لوحة الإدارة">
               {renderContent()}
-            </main>
+            </section>
           </div>
         )}
       </div>

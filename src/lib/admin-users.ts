@@ -3,18 +3,13 @@
  */
 
 import { supabase } from './supabase';
+import type { Database } from './database.types';
 
 export type UserRole = 'super_admin' | 'admin' | 'editor';
 
-export interface AdminUser {
-  id: string;
-  user_id: string;
-  email: string | null;
-  role: UserRole;
-  full_name: string | null;
-  created_at: string;
-  updated_at: string;
-}
+type ListedAdminUser = Database['public']['Functions']['list_admin_users']['Returns'][number];
+
+export type AdminUser = Omit<ListedAdminUser, 'role'> & { role: UserRole };
 
 export interface AdminUserInsert {
   email: string;

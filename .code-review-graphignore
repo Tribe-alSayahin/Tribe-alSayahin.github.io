@@ -1,0 +1,10 @@
+# Generated documentation assets and build artefacts
+docs/assets/**
+dist/**
+.next/**
+node_modules/**
+coverage/**
+
+# Local agent and editor instruction bundles
+.agents/**
+.claude/**

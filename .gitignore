@@ -11,3 +11,5 @@ coverage/
 !.env.example
 supabase/.temp/
 supabase/.branches
+# Added by code-review-graph
+.code-review-graph/

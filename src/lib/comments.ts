@@ -3,29 +3,17 @@
  */
 
 import { supabase } from './supabase';
+import type { Tables, TablesInsert } from './database.types';
 
 export type CommentStatus = 'pending' | 'approved' | 'rejected';
 
-export interface Comment {
-  id: string;
-  post_id: string;
-  user_id: string | null;
-  author_name: string | null;
-  content: string;
-  status: CommentStatus;
-  created_at: string;
-  updated_at: string;
-}
+export type Comment = Omit<Tables<'comments'>, 'status'> & { status: CommentStatus };
 
 export type PublicComment = Omit<Comment, 'user_id'>;
 
-export interface CommentInsert {
-  post_id: string;
-  user_id?: string;
-  author_name?: string;
-  content: string;
+export type CommentInsert = Omit<TablesInsert<'comments'>, 'status'> & {
   status?: CommentStatus;
-}
+};
 
 type ApiError = { message: string };
 type FetchListResult<T> = { data: T[]; error: null } | { data: null; error: ApiError };

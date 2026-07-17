@@ -5,6 +5,7 @@ import { getAllPostSlugs, getPostBySlug } from '../../../lib/posts';
 import { buildSeoExcerpt } from '../../../lib/seo';
 import { OFFICIAL_LOGO_IMAGE_URL } from '../../../lib/branding';
 import { PostComments } from '../../../components/comments/PostComments';
+import { sanitizeNewsHtml } from '../../../lib/sanitize-news-html';
 
 const siteUrl = 'https://alsaihani.com';
 
@@ -74,6 +75,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
   const post = await getPostBySlug(slug);
   if (!post) notFound();
   const description = buildSeoExcerpt(post.content);
+  const sanitizedContent = sanitizeNewsHtml(post.content);
 
   const articleLd = {
     '@context': 'https://schema.org',
@@ -163,7 +165,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
 
         <div
           className="prose prose-lg max-w-none text-sand leading-loose font-sans"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: sanitizedContent }}
         />
 
         <PostComments postId={post.id} />

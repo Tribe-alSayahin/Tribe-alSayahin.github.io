@@ -3,24 +3,10 @@
  */
 
 import { supabase } from './supabase';
+import type { Tables, TablesInsert } from './database.types';
 
-export interface Media {
-  id: string;
-  file_name: string;
-  file_url: string;
-  file_type: string;
-  file_size: number | null;
-  uploaded_by: string;
-  created_at: string;
-}
-
-export interface MediaInsert {
-  file_name: string;
-  file_url: string;
-  file_type: string;
-  file_size?: number;
-  uploaded_by: string;
-}
+export type Media = Tables<'media'>;
+export type MediaInsert = TablesInsert<'media'>;
 
 type ApiError = { message: string };
 type FetchListResult<T> = { data: T[]; error: null } | { data: null; error: ApiError };
