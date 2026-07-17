@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { BadgeCheck } from 'lucide-react';
 import { NEWS_EVENTS_DATA, type NewsEntry, type NewsEntryType } from './NewsEvents.data';
 import { fetchAdminPosts, formatGregorianDateArabic, type AdminPostRecord } from '../lib/admin-posts';
 import { isSupabaseConfigured } from '../lib/supabase';
+import { VerifiedBadge } from './ui/VerifiedBadge';
 
 type FilterType = 'all' | NewsEntryType;
 
@@ -118,10 +118,7 @@ export default function NewsEvents() {
                   <p className="mb-2 inline-flex items-center gap-1.5 rounded-full border border-brass/25 bg-brass/8 px-2.5 py-1 text-[11px] font-kufi text-brass-lt">
                     <span>{entry.publisherName}</span>
                     {entry.isVerified && (
-                      <BadgeCheck
-                        aria-label="موثق"
-                        className="w-3.5 h-3.5 text-azure shrink-0"
-                      />
+                      <VerifiedBadge size="sm" />
                     )}
                   </p>
                 )}

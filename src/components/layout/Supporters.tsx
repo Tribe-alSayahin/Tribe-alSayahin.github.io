@@ -1,8 +1,9 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { Award, Users, ShieldCheck, HeartHandshake, BadgeCheck } from 'lucide-react';
+import { Award, Users, ShieldCheck, HeartHandshake } from 'lucide-react';
 import { SUPPORTERS_DATA } from './Supporters.data';
+import { VerifiedBadge } from '../ui/VerifiedBadge';
 
 export function Supporters() {
   return (
@@ -53,9 +54,12 @@ export function Supporters() {
               <span className="block font-kufi text-[9px] font-bold text-ink/75 tracking-wide mb-1.5">
                 داعم توثيق الإرث والموروث التاريخي
               </span>
-              <h4 className="text-xl font-serif font-bold text-ink">
-                {sup.name}
-              </h4>
+              <div className="flex items-center justify-center gap-1.5">
+                <h4 className="text-xl font-serif font-bold text-ink">
+                  {sup.name}
+                </h4>
+                {sup.verified && <VerifiedBadge size="sm" />}
+              </div>
               <p className="text-[10px] text-ink/70 font-sans mt-1">
                 {sup.role}
               </p>
@@ -92,7 +96,7 @@ export function Supporters() {
             <h4 className="text-3xl md:text-4xl font-serif font-extrabold text-sand leading-snug">
               حسين بن علي بن بعاج ابن مسيلم
             </h4>
-            <BadgeCheck className="w-7 h-7 md:w-8 md:h-8 text-brass-lt shrink-0" aria-label="موثّق" />
+            <VerifiedBadge size="lg" />
           </div>
           <p className="text-sm text-sand-dim mt-2.5 leading-relaxed font-sans">
             مدير الموقع والمشرف العام، والمسؤول المباشر عن تدقيق وجمع الوثائق والمقتبسات والمراجع التاريخية لنسب وقبيلة السياحين.
@@ -130,7 +134,7 @@ export function Supporters() {
             <h4 className="text-3xl md:text-4xl font-serif font-extrabold text-sand leading-snug">
               عبدالعزيز بن سلطان بن تركي ابن مسيلم
             </h4>
-            <BadgeCheck className="w-7 h-7 md:w-8 md:h-8 text-brass-lt shrink-0" aria-label="موثّق" />
+            <VerifiedBadge size="lg" />
           </div>
           <p className="text-sm text-sand-dim mt-2.5 leading-relaxed font-sans">
             المصمم والمطور والمشرف الفني العام على المنصة الرقمية والتنسيق الفني والتشغيلي لعرض إرث قبيلة السياحين بأسلوب عصري.

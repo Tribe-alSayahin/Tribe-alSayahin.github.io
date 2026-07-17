@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { ShieldCheck, BadgeCheck, BookOpen, Users, Award, FileText } from 'lucide-react';
+import { ShieldCheck, BookOpen, Users, Award, FileText } from 'lucide-react';
+import { VerifiedBadge } from '../../components/ui/VerifiedBadge';
 
 const siteUrl = 'https://alsaihani.com';
 
@@ -138,7 +139,7 @@ export default function HussainPage() {
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-extrabold text-sand leading-tight mb-4 flex items-center justify-center gap-3 flex-wrap">
             حسين بن علي بن بعاج ابن مسيلم
-            <BadgeCheck className="w-10 h-10 text-brass-lt shrink-0" aria-label="موثّق" />
+            <VerifiedBadge size="lg" />
           </h1>
 
           <p className="font-kufi text-sm text-brass-lt mb-2 tracking-wider">المشرف العام</p>
