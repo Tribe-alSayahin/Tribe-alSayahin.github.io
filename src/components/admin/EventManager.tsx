@@ -1,8 +1,12 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent, type DragEvent, type FormEvent } from 'react';
-import { CalendarDays, ImagePlus, MapPin, Pencil, Plus, Save, Trash2, UploadCloud, X } from 'lucide-react';
+import { CalendarDays, Plus, X } from 'lucide-react';
 import { ConfirmModal } from './ConfirmModal';
+import EventEditorForm from './EventManagerParts/EventEditorForm';
+import EventImageAlbum from './EventManagerParts/EventImageAlbum';
+import EventList from './EventManagerParts/EventList';
+import type { EventFormState } from './EventManagerParts/types';
 import { createSlug } from '../../lib/slug';
 import {
   type AdminEventImage,
@@ -12,7 +16,6 @@ import {
   deleteEventImage,
   fetchAdminEventImages,
   fetchAdminEvents,
-  formatEventDateArabic,
   optimizeEventImage,
   reorderEventImages,
   setCoverImage,
@@ -28,12 +31,7 @@ interface EventManagerProps {
   userId: string | null;
 }
 
-const STATUS_OPTIONS: Array<{ value: AdminEventStatus; label: string }> = [
-  { value: 'draft', label: 'مسودة' },
-  { value: 'published', label: 'منشور' },
-];
-
-const emptyForm = {
+const emptyForm: EventFormState = {
   title: '',
   slug: '',
   summary: '',
@@ -41,7 +39,7 @@ const emptyForm = {
   event_date_gregorian: '',
   event_date_hijri: '',
   location: '',
-  status: 'draft' as AdminEventStatus,
+  status: 'draft',
 };
 
 export function EventManager({ onNotify, canManage, userId }: EventManagerProps) {
@@ -395,65 +393,13 @@ export function EventManager({ onNotify, canManage, userId }: EventManagerProps)
         </button>
       </div>
 
-      <div className="rounded-2xl border border-brass/20 bg-ink-2/60 p-5">
-        {isLoading ? (
-          <p className="text-sm font-kufi text-sand-dim py-8 text-center">جارٍ تحميل المناسبات...</p>
-        ) : events.length === 0 ? (
-          <p className="text-sm font-kufi text-sand-dim py-8 text-center">لا توجد مناسبات حالياً.</p>
-        ) : (
-          <div className="grid gap-3">
-            {events.map((event) => (
-              <article key={event.id} className="rounded-xl border border-brass/15 bg-ink/45 p-4">
-                <div className="flex flex-col md:flex-row md:items-center gap-4">
-                  <div className="w-full md:w-40 h-24 rounded-lg overflow-hidden border border-brass/15 bg-ink/50">
-                    {event.cover_thumbnail_url ? (
-                      <img src={event.cover_thumbnail_url} alt={event.title} className="w-full h-full object-cover" loading="lazy" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-xs font-kufi text-sand-dim">بدون غلاف</div>
-                    )}
-                  </div>
-
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-serif text-base text-sand truncate">{event.title}</h4>
-                    <p className="text-xs font-kufi text-brass-lt mt-1">{formatEventDateArabic(event.event_date_gregorian)} • {event.event_date_hijri}</p>
-                    {event.location && (
-                      <p className="text-xs text-sand-dim mt-1 inline-flex items-center gap-1">
-                        <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
-                        {event.location}
-                      </p>
-                    )}
-                    <p className="text-sm text-sand-dim mt-2 line-clamp-2">{event.summary}</p>
-                    <p className="text-xs font-kufi text-sand-dim/80 mt-2">عدد الصور: {event.image_count ?? 0}</p>
-                  </div>
-
-                  <div className="flex items-center gap-2 shrink-0">
-                    <button
-                      onClick={() => void openEdit(event)}
-                      className="p-2 rounded-lg border border-brass/35 text-brass-lt hover:bg-brass/10 transition-colors"
-                      aria-label="تعديل المناسبة"
-                    >
-                      <Pencil className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => void handleToggleStatus(event)}
-                      className="px-3 py-2 rounded-lg border border-emerald/35 text-xs font-kufi text-emerald-lt hover:bg-emerald/10 transition-colors"
-                    >
-                      {event.status === 'published' ? 'إخفاء' : 'نشر'}
-                    </button>
-                    <button
-                      onClick={() => setDeleteTarget(event)}
-                      className="p-2 rounded-lg border border-copper/40 text-copper hover:bg-copper/10 transition-colors"
-                      aria-label="حذف المناسبة"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
-      </div>
+      <EventList
+        events={events}
+        isLoading={isLoading}
+        onEdit={(event) => { void openEdit(event); }}
+        onToggleStatus={(event) => { void handleToggleStatus(event); }}
+        onDelete={setDeleteTarget}
+      />
 
       {showEditor && (
         <section className="rounded-2xl border border-brass/20 bg-ink-2/60 p-5 space-y-5">
@@ -470,238 +416,32 @@ export function EventManager({ onNotify, canManage, userId }: EventManagerProps)
             </button>
           </div>
 
-          <form onSubmit={(event) => { void handleSaveEvent(event); }} className="grid gap-4">
-            {formError && (
-              <p className="rounded-lg border border-copper/30 bg-copper/10 px-3 py-2 text-sm font-kufi text-copper-lt">
-                {formError}
-              </p>
-            )}
+          <EventEditorForm
+            form={form}
+            formError={formError}
+            isSaving={isSaving}
+            onChange={onFormChange}
+            onSubmit={(event) => { void handleSaveEvent(event); }}
+          />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-kufi text-sand-dim mb-1.5">عنوان المناسبة</label>
-                <input
-                  value={form.title}
-                  onChange={(event) => onFormChange('title', event.target.value)}
-                  className="w-full rounded-lg border border-brass/20 bg-ink/70 px-3 py-2.5 text-sand focus:outline-none focus:border-brass/50"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-kufi text-sand-dim mb-1.5">Slug (اختياري)</label>
-                <input
-                  value={form.slug}
-                  onChange={(event) => onFormChange('slug', event.target.value)}
-                  placeholder="يولد تلقائياً عند تركه فارغاً"
-                  className="w-full rounded-lg border border-brass/20 bg-ink/70 px-3 py-2.5 text-sand focus:outline-none focus:border-brass/50 ltr"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-xs font-kufi text-sand-dim mb-1.5">التاريخ الميلادي</label>
-                <input
-                  type="date"
-                  value={form.event_date_gregorian}
-                  onChange={(event) => onFormChange('event_date_gregorian', event.target.value)}
-                  className="w-full rounded-lg border border-brass/20 bg-ink/70 px-3 py-2.5 text-sand focus:outline-none focus:border-brass/50"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-kufi text-sand-dim mb-1.5">التاريخ الهجري</label>
-                <input
-                  value={form.event_date_hijri}
-                  onChange={(event) => onFormChange('event_date_hijri', event.target.value)}
-                  placeholder="مثال: ١٥ محرّم ١٤٤٨هـ"
-                  className="w-full rounded-lg border border-brass/20 bg-ink/70 px-3 py-2.5 text-sand focus:outline-none focus:border-brass/50"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-kufi text-sand-dim mb-1.5">حالة النشر</label>
-                <select
-                  value={form.status}
-                  onChange={(event) => onFormChange('status', event.target.value)}
-                  className="w-full rounded-lg border border-brass/20 bg-ink/70 px-3 py-2.5 text-sand focus:outline-none focus:border-brass/50"
-                >
-                  {STATUS_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>{option.label}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-kufi text-sand-dim mb-1.5">الموقع/المكان (اختياري)</label>
-              <input
-                value={form.location}
-                onChange={(event) => onFormChange('location', event.target.value)}
-                className="w-full rounded-lg border border-brass/20 bg-ink/70 px-3 py-2.5 text-sand focus:outline-none focus:border-brass/50"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-kufi text-sand-dim mb-1.5">وصف مختصر</label>
-              <textarea
-                rows={3}
-                value={form.summary}
-                onChange={(event) => onFormChange('summary', event.target.value)}
-                className="w-full rounded-lg border border-brass/20 bg-ink/70 px-3 py-2.5 text-sand focus:outline-none focus:border-brass/50"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-kufi text-sand-dim mb-1.5">الوصف الكامل</label>
-              <textarea
-                rows={6}
-                value={form.description}
-                onChange={(event) => onFormChange('description', event.target.value)}
-                className="w-full rounded-lg border border-brass/20 bg-ink/70 px-3 py-2.5 text-sand focus:outline-none focus:border-brass/50"
-                required
-              />
-            </div>
-
-            <div className="flex items-center gap-3">
-              <button
-                type="submit"
-                disabled={isSaving}
-                className="inline-flex items-center gap-2 rounded-lg bg-brass/20 border border-brass/35 px-5 py-2.5 text-sm font-kufi text-brass-lt hover:bg-brass/30 disabled:opacity-60 transition-colors"
-              >
-                <Save className="w-4 h-4" />
-                {isSaving ? 'جارٍ الحفظ...' : 'حفظ المناسبة'}
-              </button>
-            </div>
-          </form>
-
-          {!editingEvent ? (
-            <p className="text-xs font-kufi text-sand-dim rounded-lg border border-brass/15 bg-ink/40 px-3 py-2">
-              بعد حفظ المناسبة لأول مرة سيظهر قسم ألبوم الصور.
-            </p>
-          ) : (
-            <div className="space-y-4 border-t border-brass/15 pt-4">
-              <h5 className="font-kufi text-base text-sand">ألبوم الصور</h5>
-
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                multiple
-                onChange={handleInputFiles}
-                className="hidden"
-              />
-
-              <div
-                onDragOver={(event) => { event.preventDefault(); setIsDropActive(true); }}
-                onDragLeave={() => setIsDropActive(false)}
-                onDrop={handleDrop}
-                className={`rounded-xl border-2 border-dashed p-5 text-center transition-colors ${
-                  isDropActive ? 'border-brass/60 bg-brass/8' : 'border-brass/25 bg-ink/40'
-                }`}
-              >
-                <UploadCloud className="w-6 h-6 text-brass-lt mx-auto mb-2" aria-hidden="true" />
-                <p className="text-sm font-kufi text-sand">اسحب الصور هنا أو اخترها من جهازك</p>
-                <p className="text-xs text-sand-dim mt-1">JPG / PNG / WEBP — الحد الأقصى 5MB لكل صورة</p>
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="mt-3 inline-flex items-center gap-2 rounded-lg border border-brass/30 px-4 py-2 text-xs font-kufi text-brass-lt hover:bg-brass/10 transition-colors"
-                >
-                  <ImagePlus className="w-4 h-4" />
-                  اختيار صور متعددة
-                </button>
-              </div>
-
-              {pendingFiles.length > 0 && (
-                <div className="rounded-xl border border-brass/15 bg-ink/40 p-4 space-y-3">
-                  <p className="text-xs font-kufi text-sand-dim">ملفات جاهزة للرفع: {pendingFiles.length}</p>
-                  <div className="grid gap-2">
-                    {pendingFiles.map((file) => (
-                      <div key={`${file.name}-${file.lastModified}`} className="flex items-center justify-between rounded-lg border border-brass/10 bg-ink/50 px-3 py-2">
-                        <span className="text-xs text-sand truncate max-w-[70%]">{file.name}</span>
-                        <button
-                          type="button"
-                          onClick={() => removePendingFile(file)}
-                          className="text-copper text-xs font-kufi hover:text-copper-lt transition-colors"
-                        >
-                          إزالة
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => void handleUpload()}
-                    disabled={isUploading}
-                    className="rounded-lg bg-brass/20 border border-brass/35 px-4 py-2 text-sm font-kufi text-brass-lt hover:bg-brass/30 disabled:opacity-60 transition-colors"
-                  >
-                    {isUploading ? 'جارٍ رفع الصور...' : 'رفع الصور'}
-                  </button>
-
-                  {isUploading && (
-                    <div className="space-y-1">
-                      <div className="h-2 rounded-full bg-ink overflow-hidden">
-                        <div className="h-full bg-brass transition-all" style={{ width: `${uploadProgress}%` }} />
-                      </div>
-                      <p className="text-xs text-sand-dim">نسبة التقدّم: {uploadProgress}%</p>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {orderedImages.length === 0 ? (
-                <p className="text-sm font-kufi text-sand-dim py-4 text-center border border-brass/10 rounded-xl bg-ink/40">
-                  لا توجد صور مرفوعة لهذه المناسبة.
-                </p>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {orderedImages.map((image) => (
-                    <article
-                      key={image.id}
-                      draggable
-                      onDragStart={() => setDraggingImageId(image.id)}
-                      onDragEnd={() => setDraggingImageId(null)}
-                      onDragOver={(event) => event.preventDefault()}
-                      onDrop={() => { void onImageDrop(image.id); }}
-                      className="rounded-xl border border-brass/15 bg-ink/45 p-3 space-y-3"
-                    >
-                      <img
-                        src={image.thumbnail_url}
-                        alt={image.file_name}
-                        className="w-full h-36 object-cover rounded-lg border border-brass/10"
-                        loading="lazy"
-                      />
-                      <p className="text-xs text-sand truncate" title={image.file_name}>{image.file_name}</p>
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => void handleSetCover(image)}
-                          className={`flex-1 rounded-lg border px-2 py-1.5 text-xs font-kufi transition-colors ${
-                            image.is_cover
-                              ? 'border-emerald/40 text-emerald-lt bg-emerald/10'
-                              : 'border-brass/25 text-brass-lt hover:bg-brass/10'
-                          }`}
-                        >
-                          {image.is_cover ? 'صورة الغلاف' : 'تعيين كغلاف'}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setDeleteImageTarget(image)}
-                          className="rounded-lg border border-copper/35 px-2 py-1.5 text-copper hover:bg-copper/10 transition-colors"
-                          aria-label="حذف الصورة"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
+          <EventImageAlbum
+            eventExists={Boolean(editingEvent)}
+            images={orderedImages}
+            pendingFiles={pendingFiles}
+            isDropActive={isDropActive}
+            isUploading={isUploading}
+            uploadProgress={uploadProgress}
+            inputRef={fileInputRef}
+            onInputFiles={handleInputFiles}
+            onDropFiles={handleDrop}
+            onDropActiveChange={setIsDropActive}
+            onRemovePendingFile={removePendingFile}
+            onUpload={() => { void handleUpload(); }}
+            onDraggingImageChange={setDraggingImageId}
+            onImageDrop={(id) => { void onImageDrop(id); }}
+            onSetCover={(image) => { void handleSetCover(image); }}
+            onDeleteImage={setDeleteImageTarget}
+          />
         </section>
       )}
 
