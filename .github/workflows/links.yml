@@ -36,5 +36,5 @@ jobs:
       - name: Check links in generated pages
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --root-dir './dist' --verbose --no-progress --exclude-mail './dist/**/*.html'
+          args: --root-dir './dist' --verbose --no-progress './dist/**/*.html'
           fail: true

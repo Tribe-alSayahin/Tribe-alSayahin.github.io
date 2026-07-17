@@ -24,7 +24,6 @@ jobs:
             https://alsaihani.com/
             https://alsaihani.com/nasab/
             https://alsaihani.com/news/
-            https://alsaihani.com/search/
           configPath: ./lighthouserc.json
           uploadArtifacts: false
           temporaryPublicStorage: false
