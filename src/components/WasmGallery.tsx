@@ -216,45 +216,6 @@ export function WasmGallery() {
                   </div>
                 </div>
 
-                {/* Interactive Camel Diagram positioning blueprint */}
-                <div className="border-t border-brass/10 pt-space-4 mt-space-4">
-                  <span className="font-kufi text-[10px] text-brass-lt block mb-space-2 font-bold">
-                    مخطط الموضع التشريحي على المطية:
-                  </span>
-                  <div className="relative h-28 bg-ink-2/80 rounded-xl border border-brass/10 flex items-center justify-center overflow-hidden">
-                    {/* Camel Silhouette SVG */}
-                    <svg viewBox="0 0 300 120" className="w-full h-full opacity-35 max-w-[200px]" fill="currentColor">
-                      <path
-                        d="M 50 100 Q 40 90 40 70 Q 40 40 45 30 Q 50 20 60 10 Q 70 5 80 15 Q 85 20 90 35 L 95 60 Q 110 50 130 50 Q 150 48 180 52 Q 210 55 230 60 Q 250 65 255 75 Q 260 85 255 95 L 250 115 L 240 115 L 245 95 Q 240 85 220 85 Q 195 85 180 90 L 175 115 L 165 115 L 172 90 Q 150 90 130 90 L 125 115 L 115 115 L 122 85 Q 100 85 85 90 L 80 115 L 70 115 L 78 85 Q 60 85 50 100 Z"
-                        fill="var(--sand-dim)"
-                      />
-                    </svg>
-
-                    {/* Glowing Spot */}
-                    <div
-                      className="absolute w-4 h-4 rounded-full bg-brass border border-sand animate-ping pointer-events-none"
-                      style={{
-                        left: `${selectedVar.camelSpot.x}%`,
-                        top: `${selectedVar.camelSpot.y}%`,
-                        transform: 'translate(-50%, -50%)',
-                      }}
-                    />
-                    <div
-                      className="absolute w-2.5 h-2.5 rounded-full bg-brass shadow-[0_0_10px_#c9973e] border border-white pointer-events-none"
-                      style={{
-                        left: `${selectedVar.camelSpot.x}%`,
-                        top: `${selectedVar.camelSpot.y}%`,
-                        transform: 'translate(-50%, -50%)',
-                      }}
-                    />
-
-                    {/* Label Overlay */}
-                    <div className="absolute bottom-2 right-2 bg-ink/90 border border-brass/20 rounded-md px-2 py-0.5 text-[9px] text-sand font-kufi">
-                      {selectedVar.camelSpot.label}
-                    </div>
-                  </div>
-                </div>
-
               </motion.div>
             </AnimatePresence>
 
