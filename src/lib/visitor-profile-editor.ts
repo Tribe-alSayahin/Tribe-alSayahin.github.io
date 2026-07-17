@@ -54,13 +54,30 @@ export async function saveVisitorProfile(
     avatarUrl = `${publicUrl}?v=${Date.now()}`;
   }
 
-  const { error: updateError } = await supabase.auth.updateUser({
+  const { data: updateData, error: updateError } = await supabase.auth.updateUser({
     data: { full_name: nameResult.value, name: nameResult.value, avatar_url: avatarUrl },
   });
   if (updateError) return { data: null, error: 'تعذر حفظ الملف التعريفي. حاول مرة أخرى.' };
 
   const synced = await syncCurrentVisitorProfile();
-  return synced.error
-    ? { data: null, error: 'حُفظت البيانات، لكن تعذر تحديث عرض الملف الآن.' }
-    : { data: synced.data, error: '' };
+  if (!synced.error && synced.data) return { data: synced.data, error: '' };
+
+  const savedAt = new Date().toISOString();
+  const savedUser = updateData.user;
+  const provider = typeof savedUser?.app_metadata.provider === 'string'
+    ? savedUser.app_metadata.provider
+    : 'unknown';
+
+  return {
+    data: {
+      userId: savedUser?.id ?? userId,
+      fullName: nameResult.value,
+      email: savedUser?.email ?? '',
+      avatarUrl,
+      provider,
+      createdAt: savedUser?.created_at ?? savedAt,
+      lastSeenAt: savedAt,
+    },
+    error: '',
+  };
 }
