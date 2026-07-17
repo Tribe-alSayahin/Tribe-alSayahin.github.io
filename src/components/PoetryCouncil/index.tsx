@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { BookOpen } from 'lucide-react';
 import { fetchPublishedPoetryEntries, type PoetryEntry } from '../../lib/poetry';
 
@@ -38,6 +39,12 @@ export default function PoetryCouncil() {
             <BookOpen className="w-8 h-8" aria-hidden="true" />
           </div>
           <h3 className="text-2xl md:text-3xl font-serif text-sand font-bold">ديوان الشعر النبطي الموثق</h3>
+          <Link
+            href="/poetry/"
+            className="inline-flex items-center justify-center rounded-lg border border-brass/35 px-4 py-2 text-sm font-kufi text-brass-lt hover:bg-brass/10 transition-colors"
+          >
+            تصفح الديوان المفهرس
+          </Link>
         </div>
 
         {loading && <p className="text-center text-sm font-kufi text-sand-dim">جارٍ تحميل الديوان...</p>}
@@ -60,7 +67,9 @@ export default function PoetryCouncil() {
           return (
             <article key={entry.id} className="space-y-space-5">
               <header className="text-center space-y-space-2">
-                <h4 className="font-serif text-2xl text-brass-lt font-bold">{entry.title}</h4>
+                <h4 className="font-serif text-2xl text-brass-lt font-bold">
+                  <Link href={`/poetry/${entry.id}/`} className="hover:text-sand transition-colors">{entry.title}</Link>
+                </h4>
                 <p className="text-sm font-kufi text-sand-dim">الشاعر: {entry.poet_name}</p>
               </header>
 
@@ -78,8 +87,8 @@ export default function PoetryCouncil() {
               <section className="rounded-2xl border border-brass/20 bg-ink/70 p-space-5 md:p-space-7">
                 <h5 className="font-serif text-xl text-brass-lt font-bold mb-space-4">القصيدة</h5>
                 <div className="space-y-space-2 text-sand leading-loose text-base md:text-lg font-serif">
-                  {poemLines.map((line) => (
-                    <p key={line} className="text-center">
+                  {poemLines.map((line, index) => (
+                    <p key={`${entry.id}-line-${index}`} className="text-center">
                       {line}
                     </p>
                   ))}

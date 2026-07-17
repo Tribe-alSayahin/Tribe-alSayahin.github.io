@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { getAllPostsForSitemap } from '../lib/posts';
 import { getAllEventsForSitemap } from '../lib/events-server';
+import { getAllPoetryForSitemap } from '../lib/poetry-server';
 import { STATIC_ROUTE_PATHS } from '../lib/navigation';
 
 export const dynamic = 'force-static';
@@ -44,5 +45,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     alternates: buildAlternates(`/events/${event.slug}/`),
   }));
 
-  return [...staticEntries, ...newsEntries, ...eventEntries];
+  const poetry = await getAllPoetryForSitemap();
+  const poetryEntries: MetadataRoute.Sitemap = poetry.map((entry) => ({
+    url: `${siteUrl}/poetry/${entry.id}/`,
+    lastModified: new Date(entry.updated_at),
+    changeFrequency: 'weekly',
+    priority: 0.75,
+    alternates: buildAlternates(`/poetry/${entry.id}/`),
+  }));
+
+  return [...staticEntries, ...newsEntries, ...eventEntries, ...poetryEntries];
 }

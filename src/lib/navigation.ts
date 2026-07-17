@@ -111,6 +111,7 @@ export const STATIC_ROUTE_PATHS = [
   '/tarikh/',
   '/news/',
   '/events/',
+  '/poetry/',
   '/hussain/',
 ];
 
