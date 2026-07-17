@@ -13,6 +13,7 @@ import { AdminSidebar } from './AdminSidebar';
 import { DashboardOverview } from './DashboardOverview';
 import { PostManager } from './PostManager';
 import { UserManagement } from './UserManagement';
+import { VisitorDirectory } from './VisitorDirectory';
 import { AnalyticsDashboard } from './AnalyticsDashboard';
 import { MediaManager } from './MediaManager';
 import { CommentManager } from './CommentManager';
@@ -218,6 +219,8 @@ export default function AdminPage() {
         return <EventManager onNotify={addToast} canManage={canManageEvents} userId={session?.user?.id ?? null} />;
       case 'users':
         return <UserManagement onNotify={addToast} />;
+      case 'visitors':
+        return <VisitorDirectory />;
       case 'analytics':
         return <AnalyticsDashboard />;
       case 'media':

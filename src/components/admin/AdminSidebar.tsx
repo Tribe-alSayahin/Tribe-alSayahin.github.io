@@ -31,6 +31,7 @@ const NAV_ICONS: Record<AdminTab, LucideIcon> = {
   poetry: BookOpen,
   events: CalendarDays,
   users: Users,
+  visitors: Users,
   comments: MessageSquare,
   media: ImageIcon,
   analytics: BarChart3,

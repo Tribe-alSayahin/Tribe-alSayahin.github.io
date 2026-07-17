@@ -17,7 +17,9 @@ describe('admin access permissions', () => {
   it('allows admin without user management access', () => {
     expect(isAdminPanelRole('admin')).toBe(true);
     expect(getAllowedAdminTabs('admin')).not.toContain('users');
+    expect(getAllowedAdminTabs('admin')).toContain('visitors');
     expect(isAdminTabAllowed('admin', 'posts')).toBe(true);
+    expect(isAdminTabAllowed('admin', 'visitors')).toBe(true);
     expect(isAdminTabAllowed('admin', 'users')).toBe(false);
     expect(canManageAdminUsers('admin')).toBe(false);
   });

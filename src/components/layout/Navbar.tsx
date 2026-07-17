@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ThemeToggle } from './ThemeToggle';
 import { MobileMenu } from './MobileMenu';
+import { VisitorProfileButton } from './VisitorProfileButton';
 import { SITE_ROUTES } from '../../lib/navigation';
 import { OFFICIAL_LOGO_IMAGE_PATH } from '../../lib/branding';
 import { useScrollState } from '../../hooks/useScrollState';
@@ -93,6 +94,7 @@ export function Navbar() {
             >
               <Search className="w-5 h-5" aria-hidden="true" />
             </Link>
+            <VisitorProfileButton />
             <ThemeToggle />
 
             <button

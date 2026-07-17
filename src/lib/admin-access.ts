@@ -6,6 +6,7 @@ export const ADMIN_TAB_DEFINITIONS = [
   { id: 'poetry', label: 'ديوان الشعر', superAdminOnly: false },
   { id: 'events', label: 'المناسبات المصوّرة', superAdminOnly: false },
   { id: 'users', label: 'المستخدمين', superAdminOnly: true },
+  { id: 'visitors', label: 'الزوار المسجلون', superAdminOnly: false },
   { id: 'comments', label: 'التعليقات', superAdminOnly: false },
   { id: 'media', label: 'الوسائط', superAdminOnly: false },
   { id: 'analytics', label: 'الإحصائيات', superAdminOnly: false },
