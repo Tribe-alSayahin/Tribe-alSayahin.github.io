@@ -76,13 +76,20 @@ export function Supporters() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="editorial-card interactive-lift p-6 md:p-8 shadow-xl"
+          className="group relative isolate overflow-hidden rounded-2xl border border-brass/35 bg-gradient-to-br from-brass/10 via-coffee to-ink-2 p-6 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-brass/60 hover:shadow-glow-md md:p-8"
         >
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 rounded-full border border-brass/35 flex items-center justify-center text-brass-lt bg-brass/10">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 -z-10 bg-repeat opacity-[0.035]"
+            style={{ backgroundImage: 'var(--sadu)', backgroundSize: '44px 26px' }}
+          />
+          <div aria-hidden="true" className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-brass-lt to-transparent" />
+
+          <div className="mb-5 flex items-center gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-brass/45 bg-brass/10 text-brass-lt shadow-[inset_0_0_0_4px_color-mix(in_srgb,var(--brass)_6%,transparent)]">
               <ShieldCheck className="w-6 h-6 text-brass-lt" />
             </div>
-            <div>
+            <div className="min-w-0">
               <span className="inline-block px-3 py-0.5 rounded-full text-brass-lt font-kufi text-[10px] font-bold tracking-wider border border-brass/20 bg-brass/5">
                 إدارة وبناء المنصة الموثقة
               </span>
@@ -92,11 +99,13 @@ export function Supporters() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 flex-wrap">
-            <h4 className="text-3xl md:text-4xl font-serif font-extrabold text-sand leading-snug">
+          <div className="relative border-y border-brass/15 bg-ink/20 px-2 py-4 sm:px-4">
+            <h4 className="whitespace-nowrap text-center text-xs font-serif font-extrabold leading-snug text-sand sm:text-xl lg:text-[1.35rem]">
               حسين بن علي بن بعاج ابن مسيلم
             </h4>
-            <VerifiedBadge size="lg" />
+            <div className="absolute -top-4 left-3 rounded-full border border-brass/25 bg-ink-2 p-1 shadow-glow-sm">
+              <VerifiedBadge size="lg" />
+            </div>
           </div>
           <p className="text-sm text-sand-dim mt-2.5 leading-relaxed font-sans">
             مدير الموقع والمشرف العام، والمسؤول المباشر عن تدقيق وجمع الوثائق والمقتبسات والمراجع التاريخية لنسب وقبيلة السياحين.
@@ -114,13 +123,20 @@ export function Supporters() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="editorial-card interactive-lift p-6 md:p-8 shadow-xl"
+          className="group relative isolate overflow-hidden rounded-2xl border border-brass/35 bg-gradient-to-bl from-brass/10 via-coffee to-ink-2 p-6 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-brass/60 hover:shadow-glow-md md:p-8"
         >
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 rounded-full border border-brass/35 flex items-center justify-center text-brass-lt bg-brass/10">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 -z-10 bg-repeat opacity-[0.035]"
+            style={{ backgroundImage: 'var(--sadu)', backgroundSize: '44px 26px' }}
+          />
+          <div aria-hidden="true" className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-brass-lt to-transparent" />
+
+          <div className="mb-5 flex items-center gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-brass/45 bg-brass/10 text-brass-lt shadow-[inset_0_0_0_4px_color-mix(in_srgb,var(--brass)_6%,transparent)]">
               <Users className="w-6 h-6 text-brass-lt" />
             </div>
-            <div>
+            <div className="min-w-0">
               <span className="inline-block px-3 py-0.5 rounded-full text-brass-lt font-kufi text-[10px] font-bold tracking-wider border border-brass/20 bg-brass/5">
                 تصميم وتطوير البوابة الرقمية
               </span>
@@ -130,11 +146,13 @@ export function Supporters() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 flex-wrap">
-            <h4 className="text-3xl md:text-4xl font-serif font-extrabold text-sand leading-snug">
+          <div className="relative border-y border-brass/15 bg-ink/20 px-2 py-4 sm:px-4">
+            <h4 className="whitespace-nowrap text-center text-xs font-serif font-extrabold leading-snug text-sand sm:text-xl lg:text-[1.35rem]">
               عبدالعزيز بن سلطان بن تركي ابن مسيلم
             </h4>
-            <VerifiedBadge size="lg" />
+            <div className="absolute -top-4 left-3 rounded-full border border-brass/25 bg-ink-2 p-1 shadow-glow-sm">
+              <VerifiedBadge size="lg" />
+            </div>
           </div>
           <p className="text-sm text-sand-dim mt-2.5 leading-relaxed font-sans">
             المصمم والمطور والمشرف الفني العام على المنصة الرقمية والتنسيق الفني والتشغيلي لعرض إرث قبيلة السياحين بأسلوب عصري.
