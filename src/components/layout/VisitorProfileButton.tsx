@@ -12,6 +12,7 @@ import {
   type StoredVisitorProfile,
 } from '../../lib/visitor-directory';
 import { Modal } from '../ui/Modal';
+import VisitorProfileEditor from './VisitorProfileEditor';
 
 const PRESENCE_INTERVAL_MS = 60_000;
 
@@ -178,6 +179,18 @@ export function VisitorProfileButton() {
               </dd>
             </div>
           </dl>
+
+          {session && (
+            <div className="border-t border-brass/10 pt-5">
+              <h4 className="mb-4 font-serif text-lg text-sand">تخصيص الملف التعريفي</h4>
+              <VisitorProfileEditor
+                userId={session.user.id}
+                initialName={displayName}
+                avatarUrl={avatarUrl}
+                onSaved={setProfile}
+              />
+            </div>
+          )}
 
           {error && <p className="text-xs font-kufi text-copper" role="alert">{error}</p>}
 

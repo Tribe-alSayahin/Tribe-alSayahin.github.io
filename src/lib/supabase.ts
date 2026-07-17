@@ -307,6 +307,10 @@ interface SupabaseLike {
       error: SupabaseErrorLike;
     }>;
     getUser(): Promise<{ data: { user: User | null } }>;
+    updateUser(attributes: { data: Record<string, string> }): Promise<{
+      data: { user: User | null };
+      error: SupabaseErrorLike;
+    }>;
     onAuthStateChange(
       callback: (event: AuthChangeEvent, session: Session | null) => void,
     ): { data: { subscription: { unsubscribe(): void } } };
@@ -426,6 +430,10 @@ const noopClient: SupabaseLike = {
       error: { message: 'Supabase is not configured' },
     }),
     getUser: () => Promise.resolve({ data: { user: null } }),
+    updateUser: () => Promise.resolve({
+      data: { user: null },
+      error: { message: 'Supabase is not configured' },
+    }),
     onAuthStateChange: () => ({
       data: {
         subscription: {
