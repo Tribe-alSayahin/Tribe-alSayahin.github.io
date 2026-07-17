@@ -2,8 +2,6 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { trackEvent } from '../../lib/analytics';
-import { isSupabaseConfigured } from '../../lib/supabase';
 
 const SESSION_ID_KEY = 'siyahin-analytics-session-id';
 const SESSION_VISIT_KEY = 'siyahin-analytics-visit-recorded';
@@ -39,46 +37,56 @@ export function AnalyticsTracker() {
     if (
       !pathname
       || !shouldTrackAnalyticsPath(pathname)
-      || !isSupabaseConfigured()
       || navigator.doNotTrack === '1'
       || lastTrackedPath === pathname
     ) {
       return;
     }
 
-    lastTrackedPath = pathname;
-    const sessionId = getSessionId();
-    const eventData = {
-      path: pathname.slice(0, 256),
-      title: document.title.slice(0, 160),
-    };
-    const events = [
-      trackEvent({
-        event_type: 'page_view',
-        event_data: eventData,
-        session_id: sessionId,
-      }),
-    ];
+    const timer = window.setTimeout(() => {
+      void Promise.all([
+        import('../../lib/analytics'),
+        import('../../lib/supabase'),
+      ]).then(([{ trackEvent }, { isSupabaseConfigured }]) => {
+        if (!isSupabaseConfigured() || lastTrackedPath === pathname) return;
 
-    if (!sessionStorage.getItem(SESSION_VISIT_KEY)) {
-      sessionStorage.setItem(SESSION_VISIT_KEY, '1');
-      events.push(trackEvent({
-        event_type: 'user_visit',
-        event_data: eventData,
-        session_id: sessionId,
-      }));
-    }
+        lastTrackedPath = pathname;
+        const sessionId = getSessionId();
+        const eventData = {
+          path: pathname.slice(0, 256),
+          title: document.title.slice(0, 160),
+        };
+        const events = [
+          trackEvent({
+            event_type: 'page_view',
+            event_data: eventData,
+            session_id: sessionId,
+          }),
+        ];
 
-    const postSlug = pathname.match(/^\/news\/([^/]+)\/?$/)?.[1];
-    if (postSlug && postSlug !== 'no-posts') {
-      events.push(trackEvent({
-        event_type: 'post_view',
-        event_data: { ...eventData, post_slug: postSlug.slice(0, 160) },
-        session_id: sessionId,
-      }));
-    }
+        if (!sessionStorage.getItem(SESSION_VISIT_KEY)) {
+          sessionStorage.setItem(SESSION_VISIT_KEY, '1');
+          events.push(trackEvent({
+            event_type: 'user_visit',
+            event_data: eventData,
+            session_id: sessionId,
+          }));
+        }
 
-    void Promise.allSettled(events);
+        const postSlug = pathname.match(/^\/news\/([^/]+)\/?$/)?.[1];
+        if (postSlug && postSlug !== 'no-posts') {
+          events.push(trackEvent({
+            event_type: 'post_view',
+            event_data: { ...eventData, post_slug: postSlug.slice(0, 160) },
+            session_id: sessionId,
+          }));
+        }
+
+        void Promise.allSettled(events);
+      });
+    }, 3000);
+
+    return () => window.clearTimeout(timer);
   }, [pathname]);
 
   return null;

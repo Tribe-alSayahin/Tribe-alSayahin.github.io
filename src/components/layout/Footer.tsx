@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { BookOpen, Mail } from 'lucide-react';
 import { LOCAL_REFS } from '../../lib/references';
 import { SITE_ROUTES } from '../../lib/navigation';
-import { OFFICIAL_LOGO_IMAGE_URL } from '../../lib/branding';
+import { OFFICIAL_LOGO_IMAGE_PATH } from '../../lib/branding';
 
 export function Footer() {
   return (
@@ -50,6 +50,7 @@ export function Footer() {
             <Link
               key={link.id}
               href={link.href}
+              prefetch={false}
             >
               {link.label}
             </Link>
@@ -81,12 +82,17 @@ export function Footer() {
 
         <Link
           href="/"
+          prefetch={false}
           className="logo flex items-center justify-center gap-3 text-lg font-bold font-serif text-sand hover:text-brass-lt transition-colors mb-4 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-lg p-1 w-fit mx-auto"
         >
           <div className="w-10 h-10 rounded-lg border border-brass/50 bg-ink/70 flex items-center justify-center shadow-glow-sm overflow-hidden">
             <img
-              src={OFFICIAL_LOGO_IMAGE_URL}
+              src={OFFICIAL_LOGO_IMAGE_PATH}
               alt="شعار قبيلة السياحين"
+              width={40}
+              height={40}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover"
             />
           </div>

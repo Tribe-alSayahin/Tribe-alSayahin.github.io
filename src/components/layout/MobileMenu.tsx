@@ -76,6 +76,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         <div key={link.id} className="flex flex-col">
           <Link
             href={link.href}
+            prefetch={false}
             onClick={onClose}
             className={`w-full text-center py-3 rounded-xl font-semibold text-sm transition-all border focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none ${
               isActiveLink(pathname, link.href)
@@ -92,6 +93,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 <Link
                   key={section.id}
                   href={section.href}
+                  prefetch={false}
                   onClick={onClose}
                   className={`text-center py-2 rounded-lg text-xs font-kufi transition-colors focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none ${
                     isActiveSub(pathname, section.href)

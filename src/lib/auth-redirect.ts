@@ -1,5 +1,4 @@
 import type { Session } from '@supabase/supabase-js';
-import { supabase } from './supabase';
 
 export const getCurrentOrigin = (): string => {
   if (typeof window === 'undefined') return '';
@@ -42,6 +41,7 @@ export const exchangeAuthCallbackCode = async (): Promise<{
   const code = getAuthCallbackCode();
   if (!code) return { session: null, error: null };
 
+  const { supabase } = await import('./supabase');
   const { data, error } = await supabase.auth.exchangeCodeForSession(code);
   return {
     session: data.session,

@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { Hero } from '../components/layout/Hero';
-import ScrollFilmCanvas from '../components/ScrollFilmCanvas';
+import DeferredScrollFilmCanvas from '../components/DeferredScrollFilmCanvas';
 import Link from 'next/link';
 import { SITE_ROUTES, SECTION_TO_ROUTE } from '../lib/navigation';
 
@@ -17,7 +17,7 @@ export default function HomePage() {
   return (
     <>
       <Hero scrollToSection={scrollToSection} />
-      <ScrollFilmCanvas />
+      <DeferredScrollFilmCanvas />
       <section className="bg-ink py-20 md:py-28 lg:py-32 px-5 md:px-8 relative z-10">
         <div className="max-w-[1160px] mx-auto text-center">
           <span className="font-kufi text-xs md:text-sm text-brass-lt font-semibold tracking-widest">استكشف الديوان</span>
@@ -32,6 +32,7 @@ export default function HomePage() {
               <Link
                 key={route.id}
                 href={route.href}
+                prefetch={false}
                 className="group editorial-card interactive-lift rounded-2xl p-6 text-right transition-all duration-300 hover:border-brass/40 hover:shadow-glow-sm"
               >
                 <span className="font-kufi text-xs text-brass-lt/80 tracking-wider">فصل {route.chapter ?? '—'}</span>

@@ -2,6 +2,12 @@
 @import "tailwindcss";
 @import "./styles/design-tokens.css";
 
+#lineage,
+#constellation {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1100px;
+}
+
 /* ————————————————————————————————————————————————
    لوحة «مخطوطة الليل النجدية» — الوضع الليلي (الافتراضي)
    ليل صحراوي عميق بلمسة نيلية + ذهب شمبانيا مصقول

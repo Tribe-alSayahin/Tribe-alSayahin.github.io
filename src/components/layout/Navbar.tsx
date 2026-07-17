@@ -1,14 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'motion/react';
 import { Menu, Search, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ThemeToggle } from './ThemeToggle';
 import { MobileMenu } from './MobileMenu';
 import { SITE_ROUTES } from '../../lib/navigation';
-import { OFFICIAL_LOGO_IMAGE_URL } from '../../lib/branding';
+import { OFFICIAL_LOGO_IMAGE_PATH } from '../../lib/branding';
 import { useScrollState } from '../../hooks/useScrollState';
 
 function isLinkActive(linkHref: string, pathname: string): boolean {
@@ -41,12 +40,16 @@ export function Navbar() {
           />
           <Link
             href="/"
+            prefetch={false}
             className="flex items-center gap-3 text-lg font-bold font-serif text-sand hover:text-brass-lt transition-colors focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-xl p-1"
           >
             <div className="w-11 h-11 rounded-xl border border-brass/50 bg-ink/70 flex items-center justify-center shadow-glow-sm overflow-hidden">
               <img
-                src={OFFICIAL_LOGO_IMAGE_URL}
+                src={OFFICIAL_LOGO_IMAGE_PATH}
                 alt="شعار قبيلة السياحين"
+                width={44}
+                height={44}
+                decoding="async"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -63,6 +66,7 @@ export function Navbar() {
               <Link
                 key={link.id}
                 href={link.href}
+                prefetch={false}
                 className={`relative px-3.5 py-2 font-kufi font-semibold text-xs md:text-sm transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-full ${
                   isLinkActive(link.href, pathname)
                     ? 'text-brass-lt bg-brass/10'
@@ -71,10 +75,8 @@ export function Navbar() {
               >
                 <span className="relative">{link.label}</span>
                 {isLinkActive(link.href, pathname) && (
-                  <motion.span
-                    layoutId="nav-active-line"
+                  <span
                     className="absolute bottom-1 inset-x-3 h-px bg-brass-lt rounded-full"
-                    transition={{ type: 'spring', stiffness: 420, damping: 36 }}
                   />
                 )}
               </Link>
@@ -84,6 +86,7 @@ export function Navbar() {
           <div className="flex items-center gap-2.5">
             <Link
               href="/search/"
+              prefetch={false}
               className="flex items-center justify-center w-10 h-10 text-brass-lt hover:text-sand bg-transparent border-0 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none rounded-full transition-colors"
               aria-label="البحث في الموقع"
               title="البحث في الموقع"
