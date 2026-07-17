@@ -111,7 +111,7 @@ export const STATIC_ROUTE_PATHS = [
   '/tarikh/',
   '/news/',
   '/events/',
-  '/admin/',
+  '/hussain/',
 ];
 
 /** أقسام الموقع لمعايير الأقسام الفردية (Metadata) */

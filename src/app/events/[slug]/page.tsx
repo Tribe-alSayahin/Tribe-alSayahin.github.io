@@ -33,24 +33,42 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const event = await getPublishedEventBySlug(slug);
 
   if (!event) {
-    return { title: 'المناسبة غير موجودة' };
+    return { title: 'المناسبة غير موجودة', robots: { index: false, follow: false } };
   }
+
+  const canonicalUrl = `${siteUrl}/events/${slug}/`;
 
   return {
     title: event.title,
     description: event.summary,
-    alternates: { canonical: `/events/${slug}/` },
+    robots: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+    alternates: {
+      canonical: canonicalUrl,
+      languages: { 'ar-SA': canonicalUrl, 'x-default': canonicalUrl },
+    },
     openGraph: {
       type: 'article',
       locale: 'ar_SA',
       title: event.title,
       description: event.summary,
-      url: `/events/${slug}/`,
+      url: canonicalUrl,
       images: event.cover_image_url ? [event.cover_image_url] : ['/og-image.png'],
       publishedTime: event.created_at,
       modifiedTime: event.updated_at,
       section: 'المناسبات والأحداث',
       tags: [event.title, 'المناسبات والأحداث', 'الموقع الرسمي لقبيلة السياحين'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: event.title,
+      description: event.summary,
+      images: event.cover_image_url ? [event.cover_image_url] : [`${siteUrl}/og-image.png`],
     },
   };
 }
@@ -90,6 +108,16 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ s
       url: siteUrl,
     },
     url: `${siteUrl}/events/${slug}/`,
+  };
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'الرئيسية', item: `${siteUrl}/` },
+      { '@type': 'ListItem', position: 2, name: 'المناسبات', item: `${siteUrl}/events/` },
+      { '@type': 'ListItem', position: 3, name: event.title, item: `${siteUrl}/events/${slug}/` },
+    ],
   };
 
   return (
@@ -132,6 +160,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ s
       </div>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(eventLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
     </article>
   );
 }

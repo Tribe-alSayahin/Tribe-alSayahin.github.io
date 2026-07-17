@@ -2,17 +2,36 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { CalendarDays, MapPin } from 'lucide-react';
 import { getPublishedEvents } from '../../lib/events-server';
+import { buildPublicPageMetadata, SITE_URL } from '../../lib/site-metadata';
 
-export const metadata: Metadata = {
+const description =
+  'أرشيف مناسبات قبيلة السياحين المصوّر: اللقاءات القبلية والاحتفالات الموسمية والتكريمات والفعاليات التراثية التي تجمع أبناء القبيلة.';
+
+export const metadata: Metadata = buildPublicPageMetadata({
   title: 'المناسبات والأحداث',
-  description: 'أرشيف مناسبات قبيلة السياحين المصوّر: اللقاءات القبلية والاحتفالات الموسمية والتكريمات والفعاليات التراثية التي تجمع أبناء القبيلة.',
-  alternates: { canonical: 'https://alsaihani.com/events/' },
-  openGraph: {
-    title: 'المناسبات والأحداث | قبيلة السياحين',
-    description: 'أرشيف مناسبات قبيلة السياحين المصوّر: اللقاءات القبلية والاحتفالات الموسمية والتكريمات والفعاليات التراثية التي تجمع أبناء القبيلة.',
-    url: 'https://alsaihani.com/events/',
-    locale: 'ar_SA',
-  },
+  description,
+  path: '/events/',
+  keywords: ['مناسبات قبيلة السياحين', 'فعاليات السياحين', 'ألبوم مناسبات السياحين'],
+});
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'الرئيسية', item: `${SITE_URL}/` },
+    { '@type': 'ListItem', position: 2, name: 'المناسبات والأحداث', item: `${SITE_URL}/events/` },
+  ],
+};
+
+const webPageLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': `${SITE_URL}/events/#webpage`,
+  url: `${SITE_URL}/events/`,
+  name: 'المناسبات والأحداث | الموقع الرسمي لقبيلة السياحين',
+  description,
+  inLanguage: 'ar-SA',
+  isPartOf: { '@id': `${SITE_URL}/#website` },
 };
 
 const formatGregorianDateArabic = (value: string) => {
@@ -87,6 +106,8 @@ export default async function EventsPage() {
           </section>
         )}
       </div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
     </main>
   );
 }

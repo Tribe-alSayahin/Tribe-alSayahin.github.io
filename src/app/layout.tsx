@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import { NavbarWrapper } from '../components/layout/NavbarWrapper';
 import { FooterWrapper } from '../components/layout/FooterWrapper';
-import { VisitorAuthGuard } from '../components/layout/VisitorAuthGuard';
+import { AuthCallbackHandler } from '../components/auth/AuthCallbackHandler';
 import { AnalyticsTracker } from '../components/analytics/AnalyticsTracker';
 import { OFFICIAL_LOGO_IMAGE_URL } from '../lib/branding';
 import '../index.css';
@@ -256,6 +256,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         `}
       </Script>
       <body className="antialiased">
+        <AuthCallbackHandler />
         <AnalyticsTracker />
         <a
           href="#main-content"
@@ -263,13 +264,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           انتقل إلى المحتوى الرئيسي
         </a>
-        <VisitorAuthGuard>
-          <NavbarWrapper />
-          <main id="main-content" className="relative">
-            {children}
-          </main>
-          <FooterWrapper />
-        </VisitorAuthGuard>
+        <NavbarWrapper />
+        <main id="main-content" className="relative">
+          {children}
+        </main>
+        <FooterWrapper />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }}

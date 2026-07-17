@@ -3,24 +3,17 @@ import { ChapterDivider } from '../../components/layout/ChapterDivider';
 import { Section } from '../../components/layout/Section';
 import WasmGallery from '../../components/WasmGallery';
 import PoetryCouncil from '../../components/PoetryCouncil';
+import { buildPublicPageMetadata, SITE_URL } from '../../lib/site-metadata';
 
-const siteUrl = 'https://alsaihani.com';
+const siteUrl = SITE_URL;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
   title: 'الهوية ووسم الإبل والشعر',
   description:
     'وسم الإبل «الباب» الفريد وديوان الشعر النبطي لقبيلة السياحين: كنوز الهوية القبلية الأصيلة من شعر عتيبة وعلامات الانتساب.',
   keywords: ['وسم السياحين', 'وسم الإبل الباب', 'شعر قبيلة السياحين', 'ديوان الشعر النبطي', 'هوية السياحين'],
-  robots: { index: true, follow: true },
-  alternates: { canonical: 'https://alsaihani.com/hawiya/' },
-  openGraph: {
-    title: 'الهوية ووسم الإبل والشعر | قبيلة السياحين',
-    description:
-      'وسم الإبل «الباب» الشهير لقبيلة السياحين وديوان الشعر النبطي الأصيل: علامات الهوية القبلية الموروثة والإبداع التليد من عتيبة.',
-    locale: 'ar_SA',
-    url: 'https://alsaihani.com/hawiya/',
-  },
-};
+  path: '/hawiya/',
+});
 
 const breadcrumbLd = {
   '@context': 'https://schema.org',

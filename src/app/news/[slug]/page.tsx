@@ -20,7 +20,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-  if (!post) return { title: 'الخبر غير موجود' };
+  if (!post) return { title: 'الخبر غير موجود', robots: { index: false, follow: false } };
 
   const description = buildSeoExcerpt(post.content);
   const keywords = [
@@ -30,18 +30,29 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     'قبيلة السياحين',
     'الموقع الرسمي لقبيلة السياحين',
   ];
+  const canonicalUrl = `${siteUrl}/news/${slug}/`;
 
   return {
     title: post.title,
     description,
     keywords,
-    alternates: { canonical: `/news/${slug}/` },
+    robots: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+    alternates: {
+      canonical: canonicalUrl,
+      languages: { 'ar-SA': canonicalUrl, 'x-default': canonicalUrl },
+    },
     openGraph: {
       type: 'article',
       locale: 'ar_SA',
       title: post.title,
       description,
-      url: `/news/${slug}/`,
+      url: canonicalUrl,
       images: post.featured_image ? [post.featured_image] : ['/og-image.png'],
       publishedTime: post.created_at,
       modifiedTime: post.updated_at,
@@ -90,6 +101,8 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
       '@id': `${siteUrl}/news/${slug}/`,
     },
     articleSection: post.kind === 'event' ? 'المناسبات' : 'الأخبار',
+    inLanguage: 'ar-SA',
+    isAccessibleForFree: true,
     keywords: [
       post.kind === 'event' ? 'مناسبات قبيلة السياحين' : 'أخبار قبيلة السياحين',
       post.title,

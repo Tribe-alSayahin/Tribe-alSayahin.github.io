@@ -4,24 +4,17 @@ import { Section } from '../../components/layout/Section';
 import JathumMonument from '../../components/JathumMonument';
 import LineageTree from '../../components/LineageTree';
 import ConstellationDiagram from '../../components/ConstellationDiagram';
+import { buildPublicPageMetadata, SITE_URL } from '../../lib/site-metadata';
 
-const siteUrl = 'https://alsaihani.com';
+const siteUrl = SITE_URL;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
   title: 'النسب والفخوذ',
   description:
     'توثيق نسب قبيلة السياحين (السيحاني) من المزاحمة من الروقة من عتيبة: هجرة الجثوم وشجرة النسب والأنساب الكوكبية المفصّلة لفخوذ القبيلة.',
   keywords: ['نسب قبيلة السياحين', 'فخوذ السياحين', 'السيحاني', 'الروقة من عتيبة', 'هجرة الجثوم'],
-  robots: { index: true, follow: true },
-  alternates: { canonical: 'https://alsaihani.com/nasab/' },
-  openGraph: {
-    title: 'النسب والفخوذ | قبيلة السياحين',
-    description:
-      'توثيق نسب قبيلة السياحين (السيحاني) من المزاحمة من الروقة من عتيبة: هجرة الجثوم وشجرة النسب والأنساب الكوكبية المفصّلة لفخوذ القبيلة.',
-    locale: 'ar_SA',
-    url: 'https://alsaihani.com/nasab/',
-  },
-};
+  path: '/nasab/',
+});
 
 const breadcrumbLd = {
   '@context': 'https://schema.org',

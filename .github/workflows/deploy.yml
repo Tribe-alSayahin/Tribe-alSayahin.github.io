@@ -50,6 +50,11 @@ jobs:
       - name: Accessibility check
         run: npm run test:a11y
 
+      - name: Prepare IndexNow verification key
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY || '6d3e7f1a9b2c4d8e5f0a6b3c7d1e2f4a' }}
+        run: printf '%s' "$INDEXNOW_KEY" > "public/${INDEXNOW_KEY}.txt"
+
       - name: Build
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
@@ -78,35 +83,11 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v5
 
-      - name: Ping search engines (sitemap + IndexNow)
+      - name: Checkout indexing notifier
+        uses: actions/checkout@v7
+
+      - name: Notify IndexNow from the deployed sitemap
         env:
-          # INDEXNOW_KEY is public by design (stored in public/<key>.txt for verification).
-          # Store it in GitHub Secrets → INDEXNOW_KEY to allow key rotation without editing this file.
           INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY || '6d3e7f1a9b2c4d8e5f0a6b3c7d1e2f4a' }}
-        run: |
-          SITEMAP="https://alsaihani.com/sitemap.xml"
-          SITE="https://alsaihani.com"
-
-          echo "→ Bing sitemap ping"
-          curl -sf "https://www.bing.com/ping?sitemap=${SITEMAP}" -o /dev/null && echo "  ✓ Bing" || echo "  ✗ Bing (non-fatal)"
-
-          echo "→ Yandex sitemap ping"
-          curl -sf "https://yandex.com/ping?sitemap=${SITEMAP}" -o /dev/null && echo "  ✓ Yandex" || echo "  ✗ Yandex (non-fatal)"
-
-          echo "→ IndexNow batch (all static URLs)"
-          curl -sf -X POST "https://api.indexnow.org/indexnow" \
-            -H "Content-Type: application/json; charset=utf-8" \
-            -d "{
-              \"host\": \"alsaihani.com\",
-              \"key\": \"${INDEXNOW_KEY}\",
-              \"keyLocation\": \"${SITE}/${INDEXNOW_KEY}.txt\",
-              \"urlList\": [
-                \"${SITE}/\",
-                \"${SITE}/nasab/\",
-                \"${SITE}/diyar/\",
-                \"${SITE}/hawiya/\",
-                \"${SITE}/tarikh/\",
-                \"${SITE}/news/\"
-              ]
-            }" -o /dev/null && echo "  ✓ IndexNow batch" || echo "  ✗ IndexNow batch (non-fatal)"
+        run: node .github/scripts/notify-indexnow.mjs
         continue-on-error: true

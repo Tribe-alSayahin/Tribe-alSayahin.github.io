@@ -4,24 +4,17 @@ import { Section } from '../../components/layout/Section';
 import NewsEvents from '../../components/NewsEvents';
 import { Supporters } from '../../components/layout/Supporters';
 import { Contact } from '../../components/layout/Contact';
+import { buildPublicPageMetadata, SITE_URL } from '../../lib/site-metadata';
 
-const siteUrl = 'https://alsaihani.com';
+const siteUrl = SITE_URL;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
   title: 'الأخبار والمناسبات',
   description:
     'آخر الأخبار والمناسبات والفعاليات الرسمية لقبيلة السياحين: تغطية مستمرة للحاضر القبلي وتواصل الأجيال وإحياء الموروث الثقافي.',
   keywords: ['أخبار قبيلة السياحين', 'مناسبات قبيلة السياحين', 'فعاليات السياحين', 'أخبار القبائل', 'الموقع الرسمي لقبيلة السياحين'],
-  robots: { index: true, follow: true },
-  alternates: { canonical: 'https://alsaihani.com/news/' },
-  openGraph: {
-    title: 'الأخبار والمناسبات | قبيلة السياحين',
-    description:
-      'آخر الأخبار والمناسبات والفعاليات الرسمية لقبيلة السياحين: تغطية مستمرة للحاضر القبلي وتواصل الأجيال وإحياء الموروث الثقافي.',
-    locale: 'ar_SA',
-    url: 'https://alsaihani.com/news/',
-  },
-};
+  path: '/news/',
+});
 
 const breadcrumbLd = {
   '@context': 'https://schema.org',

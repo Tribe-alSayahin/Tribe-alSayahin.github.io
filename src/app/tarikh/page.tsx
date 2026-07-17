@@ -3,24 +3,17 @@ import { ChapterDivider } from '../../components/layout/ChapterDivider';
 import { Section } from '../../components/layout/Section';
 import { Timeline } from '../../components/layout/Timeline';
 import OppenheimArchive from '../../components/OppenheimArchive';
+import { buildPublicPageMetadata, SITE_URL } from '../../lib/site-metadata';
 
-const siteUrl = 'https://alsaihani.com';
+const siteUrl = SITE_URL;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
   title: 'التاريخ والأرشيف الاستشراقي',
   description:
     'الخط الزمني الكامل لقبيلة السياحين والأرشيف الاستشراقي النادر: وثائق ماكس فون أوبنهايم وشهادات الرحّالة ومخطوطات نجد التاريخية.',
   keywords: ['تاريخ قبيلة السياحين', 'الأرشيف الاستشراقي', 'وثائق السياحين', 'تاريخ عتيبة', 'الخط الزمني للسياحين'],
-  robots: { index: true, follow: true },
-  alternates: { canonical: 'https://alsaihani.com/tarikh/' },
-  openGraph: {
-    title: 'التاريخ والأرشيف الاستشراقي | قبيلة السياحين',
-    description:
-      'الخط الزمني الكامل لقبيلة السياحين والأرشيف الاستشراقي النادر: وثائق ماكس فون أوبنهايم وشهادات الرحّالة ومخطوطات نجد التاريخية.',
-    locale: 'ar_SA',
-    url: 'https://alsaihani.com/tarikh/',
-  },
-};
+  path: '/tarikh/',
+});
 
 const breadcrumbLd = {
   '@context': 'https://schema.org',

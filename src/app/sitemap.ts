@@ -1,21 +1,11 @@
 import { MetadataRoute } from 'next';
 import { getAllPostsForSitemap } from '../lib/posts';
 import { getAllEventsForSitemap } from '../lib/events-server';
+import { STATIC_ROUTE_PATHS } from '../lib/navigation';
 
 export const dynamic = 'force-static';
 
 const siteUrl = 'https://alsaihani.com';
-
-const staticPaths = [
-  '',
-  '/nasab/',
-  '/diyar/',
-  '/hawiya/',
-  '/tarikh/',
-  '/news/',
-  '/events/',
-  '/hussain/',
-];
 
 /** hreflang alternates لصفحة واحدة (عربية فقط) */
 function buildAlternates(path: string) {
@@ -29,13 +19,10 @@ function buildAlternates(path: string) {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const lastModified = new Date();
-
-  const staticEntries: MetadataRoute.Sitemap = staticPaths.map((path) => ({
+  const staticEntries: MetadataRoute.Sitemap = STATIC_ROUTE_PATHS.map((path) => ({
     url: `${siteUrl}${path}`,
-    lastModified,
-    changeFrequency: path === '' || path === '/news/' || path === '/events/' ? 'daily' : 'weekly',
-    priority: path === '' ? 1.0 : path === '/news/' || path === '/events/' ? 0.9 : path === '/hussain/' ? 0.85 : 0.8,
+    changeFrequency: path === '/' || path === '/news/' || path === '/events/' ? 'daily' : 'weekly',
+    priority: path === '/' ? 1.0 : path === '/news/' || path === '/events/' ? 0.9 : path === '/hussain/' ? 0.85 : 0.8,
     alternates: buildAlternates(path),
   }));
 

@@ -3,24 +3,17 @@ import { ChapterDivider } from '../../components/layout/ChapterDivider';
 import { Section } from '../../components/layout/Section';
 import InteractiveMap from '../../components/InteractiveMap';
 import HeritageGallery from '../../components/HeritageGallery';
+import { buildPublicPageMetadata, SITE_URL } from '../../lib/site-metadata';
 
-const siteUrl = 'https://alsaihani.com';
+const siteUrl = SITE_URL;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicPageMetadata({
   title: 'الديار والهجرات',
   description:
     'استكشف ديار قبيلة السياحين ومنازلها التاريخية في عالية نجد ومنازل الاستقرار والهجرات وهجرها المعتمدة ومناهل المياه القديمة.',
   keywords: ['ديار قبيلة السياحين', 'هجرات السياحين', 'منازل السياحين', 'ديار عتيبة', 'نجد'],
-  robots: { index: true, follow: true },
-  alternates: { canonical: 'https://alsaihani.com/diyar/' },
-  openGraph: {
-    title: 'الديار والهجرات | قبيلة السياحين',
-    description:
-      'استكشف ديار قبيلة السياحين ومنازلها التاريخية في عالية نجد ومنازل الاستقرار والهجرات وهجرها المعتمدة ومناهل المياه القديمة.',
-    locale: 'ar_SA',
-    url: 'https://alsaihani.com/diyar/',
-  },
-};
+  path: '/diyar/',
+});
 
 const breadcrumbLd = {
   '@context': 'https://schema.org',
