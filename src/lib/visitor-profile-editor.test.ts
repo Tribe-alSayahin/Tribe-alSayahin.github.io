@@ -1,14 +1,35 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
+const { updateUserMock, syncCurrentVisitorProfileMock } = vi.hoisted(() => ({
+  updateUserMock: vi.fn(),
+  syncCurrentVisitorProfileMock: vi.fn(),
+}));
+
+vi.mock('./supabase', () => ({
+  supabase: {
+    auth: { updateUser: updateUserMock },
+    storage: { from: vi.fn() },
+  },
+}));
+
+vi.mock('./visitor-directory', () => ({
+  syncCurrentVisitorProfile: syncCurrentVisitorProfileMock,
+}));
+
 import {
   getAvatarExtension,
+  saveVisitorProfile,
   validateAvatarFile,
   validateVisitorName,
 } from './visitor-profile-editor';
 
 describe('visitor profile editor validation', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('trims a valid visitor name', () => {
     expect(validateVisitorName('  زائر السياحين  ')).toEqual({
       value: 'زائر السياحين',
@@ -50,5 +71,40 @@ describe('visitor profile editor validation', () => {
         /create policy "Visitors can read own avatar metadata"[\s\S]*?for select[\s\S]*?bucket_id = 'visitor-avatars'[\s\S]*?storage\.foldername\(name\)\)\[1\] = auth\.uid\(\)::text/,
       );
     }
+  });
+
+  it('updates the displayed profile when auth saves but directory sync temporarily fails', async () => {
+    updateUserMock.mockResolvedValue({
+      data: {
+        user: {
+          id: 'visitor-1',
+          email: 'visitor@example.com',
+          created_at: '2026-07-17T12:00:00.000Z',
+          app_metadata: { provider: 'google' },
+          user_metadata: { full_name: 'الاسم الجديد', avatar_url: 'https://example.com/avatar.png' },
+        },
+      },
+      error: null,
+    });
+    syncCurrentVisitorProfileMock.mockResolvedValue({
+      data: null,
+      error: { message: 'temporary rpc failure' },
+    });
+
+    const result = await saveVisitorProfile(
+      'visitor-1',
+      'الاسم الجديد',
+      null,
+      'https://example.com/avatar.png',
+    );
+
+    expect(result.error).toBe('');
+    expect(result.data).toMatchObject({
+      userId: 'visitor-1',
+      fullName: 'الاسم الجديد',
+      email: 'visitor@example.com',
+      avatarUrl: 'https://example.com/avatar.png',
+      provider: 'google',
+    });
   });
 });
