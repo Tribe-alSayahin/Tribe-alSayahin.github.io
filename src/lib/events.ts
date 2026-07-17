@@ -1,66 +1,22 @@
 import { supabase } from './supabase';
+import type { Tables, TablesInsert, TablesUpdate } from './database.types';
 
 export type AdminEventStatus = 'draft' | 'published';
 
-export interface AdminEventRecord {
-  id: string;
-  title: string;
-  slug: string;
-  summary: string;
-  description: string;
-  event_date_gregorian: string;
-  event_date_hijri: string;
-  location: string | null;
+export type AdminEventRecord = Omit<Tables<'admin_events'>, 'status'> & {
   status: AdminEventStatus;
-  cover_image_url: string | null;
-  cover_thumbnail_url: string | null;
-  created_at: string;
-  updated_at: string;
-  created_by: string | null;
   image_count?: number;
-}
+};
 
-export interface AdminEventImage {
-  id: string;
-  event_id: string;
-  file_name: string;
-  storage_path: string;
-  public_url: string;
-  thumbnail_path: string;
-  thumbnail_url: string;
-  mime_type: string;
-  size_bytes: number;
-  sort_order: number;
-  is_cover: boolean;
-  uploaded_by: string | null;
-  created_at: string;
-}
+export type AdminEventImage = Tables<'admin_event_images'>;
 
-export interface AdminEventInsert {
-  title: string;
-  slug: string;
-  summary: string;
-  description: string;
-  event_date_gregorian: string;
-  event_date_hijri: string;
-  location?: string | null;
+export type AdminEventInsert = Omit<TablesInsert<'admin_events'>, 'status'> & {
   status?: AdminEventStatus;
-  created_by?: string | null;
-}
+};
 
-export interface AdminEventUpdate {
-  title?: string;
-  slug?: string;
-  summary?: string;
-  description?: string;
-  event_date_gregorian?: string;
-  event_date_hijri?: string;
-  location?: string | null;
+export type AdminEventUpdate = Omit<TablesUpdate<'admin_events'>, 'status'> & {
   status?: AdminEventStatus;
-  cover_image_url?: string | null;
-  cover_thumbnail_url?: string | null;
-  updated_at?: string;
-}
+};
 
 export const EVENTS_BUCKET = 'events';
 export const MAX_EVENT_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
@@ -76,7 +32,12 @@ const SAFE_FILE_NAME_REGEX = /[^\p{L}\p{N}\-_.]/gu;
 
 export const sanitizeFileName = (name: string): string => {
   const [rawBase, rawExt] = name.split(/\.(?=[^.]+$)/);
-  const base = (rawBase || 'image').trim().replace(SAFE_FILE_NAME_REGEX, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
+  const base = (rawBase || 'image')
+    .trim()
+    .replace(SAFE_FILE_NAME_REGEX, '-')
+    .replace(/-+/g, '-')
+    .replace(/^[.-]+|[.-]+$/g, '')
+    .slice(0, 60);
   const ext = (rawExt || 'jpg').trim().replace(/[^a-zA-Z0-9]/g, '').toLowerCase().slice(0, 8);
   return `${base || 'image'}.${ext || 'jpg'}`;
 };

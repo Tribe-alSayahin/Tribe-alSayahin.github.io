@@ -3,24 +3,19 @@
  */
 
 import { supabase } from './supabase';
+import type { Json, Tables, TablesInsert } from './database.types';
 
 export type AnalyticsEventType = 'page_view' | 'user_visit' | 'post_view' | 'post_click';
 
-export interface AnalyticsEvent {
-  id: string;
+export type AnalyticsEvent = Omit<Tables<'analytics'>, 'event_type' | 'event_data'> & {
   event_type: AnalyticsEventType;
   event_data: Record<string, unknown> | null;
-  user_id: string | null;
-  session_id: string | null;
-  created_at: string;
-}
+};
 
-export interface AnalyticsInsert {
+export type AnalyticsInsert = Omit<TablesInsert<'analytics'>, 'event_type' | 'event_data'> & {
   event_type: Exclude<AnalyticsEventType, 'post_click'>;
-  event_data?: Record<string, unknown>;
-  user_id?: string;
-  session_id?: string;
-}
+  event_data?: Record<string, unknown> & Json;
+};
 
 type ApiError = { message: string };
 

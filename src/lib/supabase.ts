@@ -1,183 +1,57 @@
 import { createClient, type AuthChangeEvent, type Session, type User } from '@supabase/supabase-js';
+import type { Database } from './database.types';
 import type { PoetryEntry, PoetryEntryWrite } from './poetry-types';
 
 type SupabaseErrorLike = { message: string } | null;
+type PublicTables = Database['public']['Tables'];
+type TableRow<Name extends keyof PublicTables> = PublicTables[Name]['Row'];
+type TableInsert<Name extends keyof PublicTables> = PublicTables[Name]['Insert'];
+type Narrow<Base, Keys extends keyof Base, Fields> = Omit<Base, Keys> & Fields;
 
-interface AdminPostRecordLike {
-  id: string;
-  title: string;
-  slug: string | null;
-  content: string;
+type AdminPostRecordLike = Narrow<TableRow<'admin_posts'>, 'kind' | 'status', {
   kind: 'news' | 'event';
   status: 'draft' | 'published';
-  featured_image: string | null;
-  event_date: string | null;
-  created_at: string;
-  updated_at: string;
-  created_by: string | null;
-}
-
-interface AdminPostInsertLike {
-  title: string;
-  slug?: string;
-  content: string;
+}>;
+type AdminPostInsertLike = Narrow<TableInsert<'admin_posts'>, 'kind' | 'status', {
   kind: 'news' | 'event';
   status?: 'draft' | 'published';
-  featured_image?: string | null;
-  event_date?: string | null;
-  created_by?: string | null;
-  updated_at?: string;
-}
-
-interface AdminUserRecordLike {
-  id: string;
-  user_id: string;
+}>;
+type AdminUserRecordLike = Narrow<TableRow<'admin_users'>, 'role', {
   role: 'super_admin' | 'admin' | 'editor';
-  full_name: string | null;
-  created_at: string;
-  updated_at: string;
-}
-
-interface AdminUserInsertLike {
-  user_id: string;
+}>;
+type AdminUserInsertLike = Narrow<TableInsert<'admin_users'>, 'role', {
   role?: 'super_admin' | 'admin' | 'editor';
-  full_name?: string;
-  updated_at?: string;
-}
-
-interface CommentRecordLike {
-  id: string;
-  post_id: string;
-  user_id: string | null;
-  author_name: string | null;
-  content: string;
+}>;
+type CommentRecordLike = Narrow<TableRow<'comments'>, 'status', {
   status: 'pending' | 'approved' | 'rejected';
-  created_at: string;
-  updated_at: string;
-}
-
-interface CommentInsertLike {
-  post_id: string;
-  user_id?: string;
-  author_name?: string;
-  content: string;
+}>;
+type CommentInsertLike = Narrow<TableInsert<'comments'>, 'status', {
   status?: 'pending' | 'approved' | 'rejected';
-  updated_at?: string;
-}
-
-interface MediaRecordLike {
-  id: string;
-  file_name: string;
-  file_url: string;
-  file_type: string;
-  file_size: number | null;
-  uploaded_by: string;
-  created_at: string;
-}
-
-interface MediaInsertLike {
-  file_name: string;
-  file_url: string;
-  file_type: string;
-  file_size?: number;
-  uploaded_by: string;
-}
-
-interface AnalyticsRecordLike {
-  id: string;
+}>;
+type MediaRecordLike = TableRow<'media'>;
+type MediaInsertLike = TableInsert<'media'>;
+type AnalyticsRecordLike = Narrow<TableRow<'analytics'>, 'event_type' | 'event_data', {
   event_type: 'page_view' | 'user_visit' | 'post_view' | 'post_click';
   event_data: Record<string, unknown> | null;
-  user_id: string | null;
-  session_id: string | null;
-  created_at: string;
-}
-
-interface AnalyticsInsertLike {
+}>;
+type AnalyticsInsertLike = Narrow<TableInsert<'analytics'>, 'event_type' | 'event_data', {
   event_type: 'page_view' | 'user_visit' | 'post_view' | 'post_click';
   event_data?: Record<string, unknown>;
-  user_id?: string;
-  session_id?: string;
-}
-
-interface AdminLogRecordLike {
-  id: string;
-  user_id: string | null;
-  action: string;
-  target_type: string;
-  target_id: string | null;
+}>;
+type AdminLogRecordLike = Narrow<TableRow<'admin_logs'>, 'details', {
   details: Record<string, unknown> | null;
-  created_at: string;
-}
-
-interface AdminLogInsertLike {
-  user_id?: string | null;
-  action: string;
-  target_type: string;
-  target_id?: string | null;
+}>;
+type AdminLogInsertLike = Narrow<TableInsert<'admin_logs'>, 'details', {
   details?: Record<string, unknown>;
-}
-
-interface AdminEventRecordLike {
-  id: string;
-  title: string;
-  slug: string;
-  summary: string;
-  description: string;
-  event_date_gregorian: string;
-  event_date_hijri: string;
-  location: string | null;
+}>;
+type AdminEventRecordLike = Narrow<TableRow<'admin_events'>, 'status', {
   status: 'draft' | 'published';
-  cover_image_url: string | null;
-  cover_thumbnail_url: string | null;
-  created_at: string;
-  updated_at: string;
-  created_by: string | null;
-}
-
-interface AdminEventInsertLike {
-  title: string;
-  slug: string;
-  summary: string;
-  description: string;
-  event_date_gregorian: string;
-  event_date_hijri: string;
-  location?: string | null;
+}>;
+type AdminEventInsertLike = Narrow<TableInsert<'admin_events'>, 'status', {
   status?: 'draft' | 'published';
-  created_by?: string | null;
-  cover_image_url?: string | null;
-  cover_thumbnail_url?: string | null;
-  updated_at?: string;
-}
-
-interface AdminEventImageRecordLike {
-  id: string;
-  event_id: string;
-  file_name: string;
-  storage_path: string;
-  public_url: string;
-  thumbnail_path: string;
-  thumbnail_url: string;
-  mime_type: string;
-  size_bytes: number;
-  sort_order: number;
-  is_cover: boolean;
-  uploaded_by: string | null;
-  created_at: string;
-}
-
-interface AdminEventImageInsertLike {
-  event_id: string;
-  file_name: string;
-  storage_path: string;
-  public_url: string;
-  thumbnail_path: string;
-  thumbnail_url: string;
-  mime_type: string;
-  size_bytes: number;
-  sort_order: number;
-  is_cover?: boolean;
-  uploaded_by?: string | null;
-}
+}>;
+type AdminEventImageRecordLike = TableRow<'admin_event_images'>;
+type AdminEventImageInsertLike = TableInsert<'admin_event_images'>;
 
 interface QueryResult<T> {
   data: T | null;
@@ -354,7 +228,7 @@ let client: SupabaseLike | null = null;
 
 try {
     if (SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY) {
-      client = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+      client = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
         auth: {
           persistSession: true,
           autoRefreshToken: true,

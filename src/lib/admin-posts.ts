@@ -1,44 +1,23 @@
 import { supabase } from './supabase';
+import type { Tables, TablesInsert, TablesUpdate } from './database.types';
 
 export type AdminPostKind = 'news' | 'event';
 export type AdminPostStatus = 'draft' | 'published';
 
-export interface AdminPostRecord {
-  id: string;
-  title: string;
-  slug: string | null;
-  content: string;
+export type AdminPostRecord = Omit<Tables<'admin_posts'>, 'kind' | 'status'> & {
   kind: AdminPostKind;
   status: AdminPostStatus;
-  featured_image: string | null;
-  event_date: string | null;
-  created_at: string;
-  updated_at: string;
-  created_by: string | null;
-}
+};
 
-export interface AdminPostInsert {
-  title: string;
-  slug?: string;
-  content: string;
+export type AdminPostInsert = Omit<TablesInsert<'admin_posts'>, 'kind' | 'status'> & {
   kind: AdminPostKind;
   status?: AdminPostStatus;
-  featured_image?: string | null;
-  event_date?: string | null;
-  created_by?: string | null;
-  updated_at?: string;
-}
+};
 
-export interface AdminPostUpdate {
-  title?: string;
-  slug?: string;
-  content?: string;
+export type AdminPostUpdate = Omit<TablesUpdate<'admin_posts'>, 'kind' | 'status'> & {
   kind?: AdminPostKind;
   status?: AdminPostStatus;
-  featured_image?: string | null;
-  event_date?: string | null;
-  updated_at?: string;
-}
+};
 
 export interface FetchPostsOptions {
   kind?: AdminPostKind | 'all';

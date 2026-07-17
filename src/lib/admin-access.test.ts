@@ -29,5 +29,9 @@ describe('admin access permissions', () => {
     expect(isAdminPanelRole(null)).toBe(false);
     expect(getAllowedAdminTabs('editor')).toEqual([]);
     expect(getAllowedAdminTabs(null)).toEqual([]);
+    expect(isAdminTabAllowed('editor', 'dashboard')).toBe(false);
+    expect(isAdminTabAllowed(null, 'posts')).toBe(false);
+    expect(canManageAdminUsers('editor')).toBe(false);
+    expect(canManageAdminUsers(null)).toBe(false);
   });
 });
