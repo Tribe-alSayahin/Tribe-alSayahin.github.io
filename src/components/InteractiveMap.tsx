@@ -267,6 +267,16 @@ export default function InteractiveMap() {
                   {loc.name}
                 </Button>
               ))}
+              {SAYAHIN_VILLAGES.map((village) => (
+                <Badge
+                  key={village}
+                  variant="brass"
+                  showDot={true}
+                  className="font-kufi text-xs px-space-4 py-space-2 bg-brass/10"
+                >
+                  {village}
+                </Badge>
+              ))}
             </div>
           </div>
 
@@ -450,39 +460,6 @@ export default function InteractiveMap() {
           </div>
         </div>
       </div>
-
-      {/* SAYAHIN VILLAGES — names only */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="bg-gradient-to-br from-ink-2 to-[#120c06] border border-brass/15 rounded-2xl p-space-5 md:p-space-6"
-      >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-4 text-right">
-          <div className="flex items-center gap-space-3">
-            <div className="w-10 h-10 rounded-lg bg-brass/10 flex items-center justify-center text-brass-lt border border-brass/20 shrink-0">
-              <MapPin className="w-5 h-5" />
-            </div>
-            <div>
-              <h4 className="font-serif text-xl text-sand font-bold">قرى وهجر السياحين</h4>
-              <p className="text-xs text-sand-dim font-sans">من القرى والهجر التي استوطنها أبناء القبيلة</p>
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-space-2.5">
-            {SAYAHIN_VILLAGES.map((village) => (
-              <Badge
-                key={village}
-                variant="brass"
-                showDot={true}
-                className="font-kufi text-sm px-space-4 py-space-2 bg-brass/10"
-              >
-                {village}
-              </Badge>
-            ))}
-          </div>
-        </div>
-      </motion.div>
 
       {/* NEW GEOGRAPHICAL & AGRICULTURAL STATISTICS SUB-SECTION */}
       <motion.div 
