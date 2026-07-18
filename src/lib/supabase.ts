@@ -246,6 +246,8 @@ const createQueryResult = <T>(data: T | null = null, error: SupabaseErrorLike = 
   error,
 });
 
+const unavailableError = { message: 'Supabase is not configured' } as const;
+
 const createNoopSelectQuery = <T>(): SelectQuery<T> => {
   const query = Promise.resolve(
     createQueryResult<T[]>([]),
@@ -271,7 +273,7 @@ const createNoopSelectQuery = <T>(): SelectQuery<T> => {
 
 const createNoopMutationQuery = <T>(): MutationQuery<T> => {
   const query = Promise.resolve(
-    createQueryResult<null>(null),
+    createQueryResult<null>(null, unavailableError),
   ) as unknown as MutationQuery<T>;
 
   query.eq = () => createNoopMutationQuery<T>();
@@ -286,27 +288,27 @@ const noopClient: SupabaseLike = {
   auth: {
     signInWithPassword: () => Promise.resolve({
       data: { user: null, session: null },
-      error: { message: 'Supabase is not configured' },
+      error: unavailableError,
     }),
     signOut: () => Promise.resolve({ error: null }),
-    signInWithOAuth: () => Promise.resolve({ data: { url: null, provider: null }, error: { message: 'Supabase is not configured' } }),
+    signInWithOAuth: () => Promise.resolve({ data: { url: null, provider: null }, error: unavailableError }),
     signUp: () => Promise.resolve({
       data: { user: null, session: null },
-      error: { message: 'Supabase is not configured' },
+      error: unavailableError,
     }),
     getSession: () => Promise.resolve({ data: { session: null } }),
     setSession: () => Promise.resolve({
       data: { session: null, user: null },
-      error: { message: 'Supabase is not configured' },
+      error: unavailableError,
     }),
     exchangeCodeForSession: () => Promise.resolve({
       data: { session: null, user: null },
-      error: { message: 'Supabase is not configured' },
+      error: unavailableError,
     }),
     getUser: () => Promise.resolve({ data: { user: null } }),
     updateUser: () => Promise.resolve({
       data: { user: null },
-      error: { message: 'Supabase is not configured' },
+      error: unavailableError,
     }),
     onAuthStateChange: () => ({
       data: {
@@ -319,11 +321,11 @@ const noopClient: SupabaseLike = {
       getUserById: () => Promise.resolve({ data: { user: null } }),
     },
   },
-  rpc: () => Promise.resolve(createQueryResult(null)),
+  rpc: () => Promise.resolve(createQueryResult(null, unavailableError)),
   from: (() => {
     const createTable = <T>(): { select: () => SelectQuery<T>; insert: () => Promise<QueryResult<T[]>>; update: () => MutationQuery<T>; delete: () => MutationQuery<T> } => ({
       select: () => createNoopSelectQuery<T>(),
-      insert: () => Promise.resolve(createQueryResult<T[]>([])),
+      insert: () => Promise.resolve(createQueryResult<T[]>(null, unavailableError)),
       update: () => createNoopMutationQuery<T>(),
       delete: () => createNoopMutationQuery<T>(),
     });
@@ -336,13 +338,13 @@ const noopClient: SupabaseLike = {
       if (table === 'analytics') {
         return {
           select: () => createNoopSelectQuery<AnalyticsRecordLike>(),
-          insert: () => Promise.resolve(createQueryResult<AnalyticsRecordLike[]>([])),
+          insert: () => Promise.resolve(createQueryResult<AnalyticsRecordLike[]>(null, unavailableError)),
         };
       }
       if (table === 'admin_logs') {
         return {
           select: () => createNoopSelectQuery<AdminLogRecordLike>(),
-          insert: () => Promise.resolve(createQueryResult<AdminLogRecordLike[]>([])),
+          insert: () => Promise.resolve(createQueryResult<AdminLogRecordLike[]>(null, unavailableError)),
           update: () => createNoopMutationQuery<AdminLogRecordLike>(),
           delete: () => createNoopMutationQuery<AdminLogRecordLike>(),
         };
@@ -376,9 +378,9 @@ const noopClient: SupabaseLike = {
   })() as unknown as SupabaseLike['from'],
   storage: {
     from: () => ({
-      upload: () => Promise.resolve({ data: null, error: { message: 'Supabase is not configured' } }),
+      upload: () => Promise.resolve({ data: null, error: unavailableError }),
       getPublicUrl: () => ({ data: { publicUrl: '' } }),
-      remove: () => Promise.resolve({ error: null }),
+      remove: () => Promise.resolve({ error: unavailableError }),
       list: () => Promise.resolve({ data: [], error: null }),
     }),
   },
