@@ -94,7 +94,7 @@ export const LINEAGE_DATA: TreeNode[] = [
     parent_id: 'siyahin', 
     level: 1, 
     source: 'موسوعة البدو لأوبنهايم (ج3، ص262)، كتب الرحالة فيلبي', 
-    reliability: 2, 
+    reliability: 1,
     note: 'فخذ عريق يضم بيت المشيخة التاريخي (آل مسيلم) وأصحاب هجرة الجثوم.' 
   },
   { 
@@ -103,7 +103,7 @@ export const LINEAGE_DATA: TreeNode[] = [
     parent_id: 'zamayemah', 
     level: 2, 
     source: 'أوبنهايم (البدو ج3)، شجرة عتيبة النبطية', 
-    reliability: 2, 
+    reliability: 1,
     note: 'من فروع الزمايمة ذوي زميم.' 
   },
   { 
@@ -130,7 +130,7 @@ export const LINEAGE_DATA: TreeNode[] = [
     parent_id: 'faraj_mosailem', 
     level: 4, 
     source: 'أوبنهايم (البدو ج3، ص262)', 
-    reliability: 2, 
+    reliability: 1,
     note: 'ابن الشيخ فرج بن مسيلم التاريخي الموثق في كتابات المستشرقين.' 
   },
   { 
@@ -139,7 +139,7 @@ export const LINEAGE_DATA: TreeNode[] = [
     parent_id: 'faraj_mosailem', 
     level: 4, 
     source: 'أوبنهايم (البدو ج3، ص262)', 
-    reliability: 2, 
+    reliability: 1,
     note: 'ابن الشيخ فرج بن مسيلم التاريخي الموثق في جداول أوبنهايم.' 
   },
   { 
@@ -148,7 +148,7 @@ export const LINEAGE_DATA: TreeNode[] = [
     parent_id: 'faraj_mosailem', 
     level: 4, 
     source: 'أوبنهايم (البدو ج3، ص262)', 
-    reliability: 2, 
+    reliability: 1,
     note: 'ابن الشيخ فرج بن مسيلم المذكور في المصادر الألمانية.' 
   },
   { 
@@ -157,7 +157,7 @@ export const LINEAGE_DATA: TreeNode[] = [
     parent_id: 'zamayemah', 
     level: 2, 
     source: 'شجرة الأنساب المعتمدة لدى ديوان عتيبة والهيلا', 
-    reliability: 2, 
+    reliability: 1,
     note: 'من فروع الزمايمة.' 
   },
 
