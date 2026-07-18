@@ -84,11 +84,11 @@ export default function JathumMonument({ scrollToSection }: JathumMonumentProps)
 
   return (
     <div className="relative">
-      {/* ——— البانوراما السينمائية: جبل الجثوم الأسود والهجرة في حضنه ——— */}
+      {/* ——— البانوراما السينمائية: هضاب الجثوم والهجرة بجوارها ——— */}
       <div
         ref={sceneRef}
         role="img"
-        aria-label="مشهد بانورامي لجبل الجثوم الأسود وهجرة الجثوم عند سفحه ليلاً تحت نجوم نجد"
+        aria-label="مشهد بانورامي لهضاب الجثوم وهجرة الجثوم بجوارها ليلاً تحت نجوم نجد"
         className="relative overflow-hidden rounded-2xl border border-brass/15 shadow-glow-sm"
       >
         <svg
@@ -103,7 +103,7 @@ export default function JathumMonument({ scrollToSection }: JathumMonumentProps)
               <stop offset="70%" stopColor="var(--ink-2)" />
               <stop offset="100%" stopColor="var(--ink)" />
             </linearGradient>
-            {/* الجبل الأسود يبقى داكناً في الثيمين عمداً — فهو «الجثوم الأسود» */}
+            {/* هضاب الجثوم تبقى داكنة في الثيمين لإبراز المشهد الليلي */}
             <linearGradient id="jathum-mountain" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#2b2113" />
               <stop offset="45%" stopColor="#16100a" />
@@ -176,7 +176,7 @@ export default function JathumMonument({ scrollToSection }: JathumMonumentProps)
             />
           </motion.g>
 
-          {/* جبل الجثوم الأسود — شامخاً على يمين الهجرة */}
+          {/* هضاب الجثوم — شامخة بجوار الهجرة */}
           <motion.g style={reducedMotion ? undefined : { y: mountainDrift }}>
             <path
               d="M560 460 L640 330 L700 360 L780 220 L840 260 L920 150 L1000 230 L1060 190 L1130 280 L1200 250 V 460 Z"
@@ -294,7 +294,7 @@ export default function JathumMonument({ scrollToSection }: JathumMonumentProps)
             مِن هنا كانت <span className="text-gold-gradient">البداية</span>
           </h4>
           <p className="text-sand-dim leading-loose text-sm md:text-base mb-4">
-            في عالية نجد، وفي حضن جبل الجثوم الأسود العظيم، أسّس الشيخ
+            في عالية نجد، وبجوار هضاب الجثوم الشامخة، أسّس الشيخ
             <span className="text-brass-lt font-semibold"> فرج بن مسيلم السيحاني </span>
             أول هجرة رسمية لقبيلة السياحين — لتكون المعقل الرئيس ومقر الاستقرار،
             وبداية تحوّل أبناء البادية إلى تشييد المنازل والمزارع وحفر الآبار وتأمين موارد الماء.
