@@ -100,36 +100,34 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="home-story-parchment" aria-labelledby="place-story-title">
-        <div className="home-story-place-map" aria-hidden="true">
-          <span className="home-story-map-ring" />
-          <span className="home-story-map-line" />
-          <MapPin />
-        </div>
-        <div className="home-story-place-copy">
-          <p className="home-story-paper-kicker">وثيقة المكان</p>
-          <h2 id="place-story-title" className="font-ruqaa">سيرة المكان</h2>
-          <p>
-            الجثوم هجرة موثّقة للسياحين والجذعان من الروقة في عالية نجد ضمن محافظة عفيف.
-            وورد اسم «هضب الجثوم» في كتب البلدان القديمة، كما عُرفت الجثوم ماءً وجبلًا.
-          </p>
-          <p className="home-story-source">
-            المصدر: حمد الجاسر، المعجم الجغرافي للبلاد العربية السعودية؛ وياقوت الحموي، معجم البلدان.
-          </p>
-          <Link href="/diyar/" className="home-story-paper-link">استكشف الديار <ArrowLeft aria-hidden="true" /></Link>
-        </div>
-      </section>
+      <div className="home-story-paper-grid">
+        <section className="home-story-parchment" aria-labelledby="place-story-title">
+          <div className="home-story-place-map" aria-hidden="true">
+            <span className="home-story-map-ring" />
+            <span className="home-story-map-line" />
+            <MapPin />
+          </div>
+          <div className="home-story-place-copy">
+            <p className="home-story-paper-kicker">وثيقة المكان</p>
+            <h2 id="place-story-title" className="font-ruqaa">سيرة المكان</h2>
+            <p className="home-story-source">
+              المصدر: حمد الجاسر، المعجم الجغرافي للبلاد العربية السعودية؛ وياقوت الحموي، معجم البلدان.
+            </p>
+            <Link href="/diyar/" className="home-story-paper-link">استكشف الديار <ArrowLeft aria-hidden="true" /></Link>
+          </div>
+        </section>
 
-      <section className="home-story-poetry" aria-labelledby="poetry-entry-title">
-        <Feather aria-hidden="true" />
-        <p className="home-story-paper-kicker">من الديوان الموثّق</p>
-        <h2 id="poetry-entry-title" className="font-ruqaa">الشعر ذاكرة الديار</h2>
-        <p>
-          تُعرض القصائد في ديوان الشعر مع اسم الشاعر وسياق الرواية ومصدرها،
-          حفاظًا على النص الموروث ونسبته الصحيحة.
-        </p>
-        <Link href="/hawiya/" className="home-story-paper-link">دخول ديوان الشعر <ArrowLeft aria-hidden="true" /></Link>
-      </section>
+        <section className="home-story-poetry" aria-labelledby="poetry-entry-title">
+          <Feather aria-hidden="true" />
+          <p className="home-story-paper-kicker">من الديوان الموثّق</p>
+          <h2 id="poetry-entry-title" className="font-ruqaa">الشعر ذاكرة الديار</h2>
+          <p>
+            تُعرض القصائد في ديوان الشعر مع اسم الشاعر وسياق الرواية ومصدرها،
+            حفاظًا على النص الموروث ونسبته الصحيحة.
+          </p>
+          <Link href="/hawiya/" className="home-story-paper-link">دخول ديوان الشعر <ArrowLeft aria-hidden="true" /></Link>
+        </section>
+      </div>
     </main>
   );
 }
