@@ -280,6 +280,54 @@ export default function JathumMonument({ scrollToSection }: JathumMonumentProps)
         </div>
       </div>
 
+      {/* ——— الصورة الميدانية: هضاب الجثوم والهجرة في عالية نجد ——— */}
+      <motion.figure
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.75 }}
+        className="group relative mt-6 overflow-hidden rounded-2xl border border-brass/20 bg-ink-2 shadow-glow-sm"
+      >
+        <div className="relative aspect-[4/3] md:aspect-[16/9]">
+          <img
+            src="/images/jathum-hills-diyar.webp"
+            alt="هضاب الجثوم وهجرة الجثوم الممتدة أمامها في عالية نجد"
+            width={1536}
+            height={1024}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 motion-safe:group-hover:scale-[1.015]"
+          />
+          <div
+            className="absolute inset-0 bg-gradient-to-t from-ink/90 via-transparent to-ink/15"
+            aria-hidden="true"
+          />
+          <div
+            className="absolute inset-3 rounded-xl border border-sand/10 md:inset-5"
+            aria-hidden="true"
+          />
+
+          <span className="absolute right-5 top-5 rounded-full border border-brass/30 bg-ink/75 px-4 py-2 font-kufi text-[10px] tracking-[0.16em] text-brass-lt backdrop-blur-sm md:right-8 md:top-8 md:text-xs">
+            مشهد من عالية نجد
+          </span>
+
+          <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-5 p-6 text-right md:p-10">
+            <div>
+              <p className="font-ruqaa text-3xl text-sand drop-shadow-lg md:text-5xl">
+                هضاب الجثوم
+              </p>
+              <p className="mt-1 font-serif text-sm text-sand/80 md:text-lg">
+                الهجرة التي كانت أساس الديار ومنطلق الاستقرار
+              </p>
+            </div>
+            <span
+              className="hidden h-px flex-1 bg-gradient-to-l from-brass/60 to-transparent sm:block"
+              aria-hidden="true"
+            />
+          </figcaption>
+        </div>
+      </motion.figure>
+
       {/* ——— قصة التأسيس + لوحات الحقائق ——— */}
       <div className="grid md:grid-cols-[1.15fr_1fr] gap-8 md:gap-10 mt-10 items-start">
         {/* السرد التأسيسي */}
