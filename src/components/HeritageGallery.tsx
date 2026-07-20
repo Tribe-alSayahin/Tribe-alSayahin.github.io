@@ -120,11 +120,16 @@ export default function HeritageGallery() {
       </Card>
 
       {/* Gallery Tabs / Filters */}
-      <div className="flex flex-wrap justify-center gap-space-2.5 max-w-2xl mx-auto">
+      <div
+        className="flex flex-wrap justify-center gap-space-2.5 max-w-2xl mx-auto"
+        role="group"
+        aria-label="تصفية الديار والمواطن"
+      >
         <Button
           variant={filter === 'all' ? 'primary' : 'secondary'}
           size="sm"
           onClick={() => setFilter('all')}
+          aria-pressed={filter === 'all'}
         >
           كل الديار والمواطن
         </Button>
@@ -132,6 +137,7 @@ export default function HeritageGallery() {
           variant={filter === 'settlements' ? 'primary' : 'secondary'}
           size="sm"
           onClick={() => setFilter('settlements')}
+          aria-pressed={filter === 'settlements'}
         >
           الحواضر والبلدات
         </Button>
@@ -139,6 +145,7 @@ export default function HeritageGallery() {
           variant={filter === 'wells' ? 'primary' : 'secondary'}
           size="sm"
           onClick={() => setFilter('wells')}
+          aria-pressed={filter === 'wells'}
         >
           المناهل وموارد المياه
         </Button>
@@ -146,89 +153,87 @@ export default function HeritageGallery() {
           variant={filter === 'regions' ? 'primary' : 'secondary'}
           size="sm"
           onClick={() => setFilter('regions')}
+          aria-pressed={filter === 'regions'}
         >
           الأقاليم التاريخية
         </Button>
       </div>
 
       {/* Gallery Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-space-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-space-6">
         {filteredItems.map((item) => (
           <Card
             key={item.id}
-            onClick={() => openLightbox(item.id)}
-            className="group relative h-[310px] p-0 rounded-2xl overflow-hidden border border-brass/15 cursor-pointer bg-ink-2 shadow-glow-sm hover:shadow-glow-md hover:border-brass hover:-translate-y-1.5 transition-all duration-base text-right"
+            hoverGlow={false}
+            className="group relative flex min-h-96 flex-col overflow-hidden border border-brass/15 bg-ink-2 p-0 shadow-glow-sm transition-all duration-base hover:-translate-y-1 hover:border-brass/40 hover:shadow-glow-md"
           >
-            {/* Beautiful, authentic vector placeholder instead of images */}
-            <div className="w-full h-full bg-gradient-to-br from-[#1f160d] via-[#110d07] to-ink flex flex-col items-center justify-center p-space-6 text-center relative overflow-hidden group-hover:from-[#2a1d0f] transition-all duration-base">
-              {/* Decorative radial compass background pattern */}
-              <div className="absolute inset-0 opacity-[0.03] flex items-center justify-center pointer-events-none scale-150">
-                <Compass className="w-full h-full text-brass" />
-              </div>
-              <div className="absolute inset-4 border border-brass/10 rounded-xl pointer-events-none group-hover:border-brass/30 transition-colors duration-base" />
-              
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="w-12 h-12 rounded-full bg-brass/10 border border-brass/25 flex items-center justify-center text-brass-lt mb-space-4 group-hover:scale-110 transition-transform duration-base shadow-[0_0_15px_rgba(201,151,62,0.15)]">
-                  <Compass className="w-6 h-6 text-brass-lt animate-pulse" />
-                </div>
-                <Badge variant="brass" showDot={true} className="mb-space-1">
-                  {item.categoryLabel}
-                </Badge>
-                <h4 className="text-base font-serif font-bold text-sand mt-space-2 group-hover:text-brass-lt transition-colors">
-                  {item.title}
-                </h4>
-                {item.coords && (
-                  <span className="text-[10px] text-sand-dim/70 font-mono mt-space-2">
-                    {item.coords}
-                  </span>
-                )}
-              </div>
-            </div>
+            <div className="relative flex h-32 shrink-0 items-center justify-center overflow-hidden border-b border-brass/10 bg-ink">
+              <div className="absolute inset-0 bg-grid-pattern opacity-30" aria-hidden="true" />
+              <div className="absolute size-40 rounded-full border border-brass/10" aria-hidden="true" />
+              <div className="absolute size-28 rotate-45 border border-brass/10" aria-hidden="true" />
+              <Compass className="relative size-12 text-brass/80 transition-transform duration-slow group-hover:rotate-12 group-hover:scale-105" aria-hidden="true" />
 
-            {/* Coordinates Overlay Badge */}
-            {item.coords && (
-              <div className="absolute top-4 right-4 bg-ink/80 backdrop-blur-md border border-brass/20 text-brass-lt font-mono text-[10px] px-space-2.5 py-space-1 rounded-lg z-10 flex items-center gap-space-1">
-                <Compass className="w-3.5 h-3.5 text-brass" />
-                {item.coords}
-              </div>
-            )}
-
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent opacity-90 group-hover:via-ink/20 transition-all duration-base" />
-
-            {/* Card Content */}
-            <div className="absolute inset-x-0 bottom-0 p-space-5 flex flex-col justify-end text-right space-y-space-2">
-              <Badge variant="brass" showDot={false} className="self-start">
+              <span className="absolute top-space-4 right-space-4 font-kufi text-[10px] text-brass-lt/70">
+                الموضع {String(item.id).padStart(2, '0')}
+              </span>
+              <Badge variant="brass" showDot={false} className="absolute bottom-space-3 left-space-4 bg-ink/85">
                 {item.categoryLabel}
               </Badge>
-              <h4 className="text-lg md:text-xl font-serif text-sand font-bold tracking-wide group-hover:text-brass-lt transition-colors">
-                {item.title}
-              </h4>
-              <p className="text-sand-dim text-xs leading-relaxed opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-[80px] transition-all duration-base overflow-hidden">
+            </div>
+
+            <div className="flex flex-1 flex-col p-space-5">
+              <div className="mb-space-3 flex items-start justify-between gap-space-3">
+                <h3 className="font-serif text-xl font-bold leading-snug text-sand transition-colors group-hover:text-brass-lt">
+                  {item.title}
+                </h3>
+                <span className="mt-space-1 size-2 shrink-0 rounded-full bg-brass shadow-glow-sm" aria-hidden="true" />
+              </div>
+
+              <p className="mb-space-4 text-sm leading-7 text-sand-dim">
                 {item.description}
               </p>
 
-              <div className="flex items-center justify-between pt-space-1 border-t border-brass/5 mt-space-1">
+              {item.coords && (
+                <div className="mb-space-4 flex items-center gap-space-2 border-y border-brass/10 py-space-2 font-mono text-[10px] text-brass-lt/80" dir="ltr">
+                  <MapPin className="size-3.5 shrink-0 text-brass" aria-hidden="true" />
+                  <span>{item.coords}</span>
+                </div>
+              )}
+
+              <div className="mt-auto flex items-center justify-between gap-space-3">
                 {item.locationId ? (
                   <button
                     onClick={(e) => handleLocateOnMap(e, item.locationId)}
-                    className="text-[10px] bg-brass/10 hover:bg-brass/25 border border-brass/35 text-brass-lt font-semibold px-space-2.5 py-space-1 rounded-lg flex items-center gap-space-1 cursor-pointer transition-colors"
+                    className="inline-flex items-center gap-space-1.5 rounded-lg border border-brass/30 bg-brass/10 px-space-3 py-space-1.5 font-kufi text-[10px] font-semibold text-brass-lt transition-colors hover:border-brass/60 hover:bg-brass/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
                   >
-                    <MapPin className="w-3 h-3 text-brass" />
-                    تحديد على الخريطة
+                    <MapPin className="size-3.5 text-brass" aria-hidden="true" />
+                    عرض على الخريطة
                   </button>
                 ) : (
                   <span className="text-[9px] text-sand-dim/60 font-mono">موقع إقليمي عام</span>
                 )}
-                <span className="text-[10px] text-brass-lt/70 font-semibold group-hover:underline underline-offset-4 flex items-center gap-space-1.5">
-                  قصة الموروث
-                  <ChevronLeft className="w-3 h-3 group-hover:translate-x-[-3px] transition-transform" />
-                </span>
+                <button
+                  type="button"
+                  onClick={() => openLightbox(item.id)}
+                  className="inline-flex items-center gap-space-1.5 rounded-lg px-space-2 py-space-1.5 font-kufi text-[10px] font-semibold text-brass-lt/80 transition-colors hover:bg-brass/10 hover:text-brass-lt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+                  aria-label={`قراءة قصة ${item.title}`}
+                >
+                  اقرأ القصة
+                  <ChevronLeft className="size-3.5 transition-transform group-hover:-translate-x-1" aria-hidden="true" />
+                </button>
               </div>
             </div>
           </Card>
         ))}
       </div>
+
+      {filteredItems.length === 0 && (
+        <div className="rounded-2xl border border-dashed border-brass/20 bg-brass/5 px-space-6 py-space-10 text-center" role="status">
+          <MapPin className="mx-auto mb-space-3 size-8 text-brass/70" aria-hidden="true" />
+          <h3 className="font-serif text-lg font-bold text-sand">لا توجد مواقع ضمن هذا التصنيف حالياً</h3>
+          <p className="mt-space-1 text-sm text-sand-dim">ستُضاف المناهل وموارد المياه بعد اكتمال توثيقها.</p>
+        </div>
+      )}
 
       {/* LIGHTBOX MODAL */}
       <Modal
