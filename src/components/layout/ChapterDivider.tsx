@@ -52,9 +52,9 @@ export function ChapterDivider({ id, number, title, description }: ChapterDivide
           الفصل {toArabicNumeral(number)}
         </motion.span>
 
-        <h2 className="chapter-divider-title">
+        <h1 className="chapter-divider-title" data-pagefind-weight="3">
           {title}
-        </h2>
+        </h1>
 
         <p className="chapter-divider-desc">
           {description}

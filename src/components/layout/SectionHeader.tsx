@@ -3,6 +3,7 @@
 import { motion } from 'motion/react';
 
 interface SectionHeaderProps {
+  id: string;
   serialNumber: string; // e.g., "٠١", "٠٢", "٠٣"
   badgeText: string;    // e.g., "النسب والجذر", "الخلاصة الكوكبية"
   title: string;
@@ -21,6 +22,7 @@ function toArabicNumeral(n: number): string {
 }
 
 export function SectionHeader({
+  id,
   serialNumber,
   badgeText,
   title,
@@ -70,7 +72,11 @@ export function SectionHeader({
           <span className="gold-hairline-start flex-1 min-w-8 mt-0.5 opacity-60" aria-hidden="true" />
         </div>
 
-        <h2 className="font-ruqaa text-2xl sm:text-3xl md:text-5xl lg:text-6xl text-sand leading-[1.35] sm:leading-[1.4] tracking-tight max-w-[780px]">
+        <h2
+          id={id}
+          className="font-ruqaa text-2xl sm:text-3xl md:text-5xl lg:text-6xl text-sand leading-[1.35] sm:leading-[1.4] tracking-tight max-w-[780px]"
+          data-pagefind-weight="2"
+        >
           {title}
         </h2>
 

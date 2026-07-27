@@ -2,8 +2,8 @@
 @import "tailwindcss";
 @import "./styles/design-tokens.css";
 
-#lineage,
-#constellation {
+[data-section-id="lineage"],
+[data-section-id="constellation"] {
   content-visibility: auto;
   contain-intrinsic-size: auto 1100px;
 }

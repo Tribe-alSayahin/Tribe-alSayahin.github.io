@@ -22,9 +22,14 @@ const adminCards = [
 
 export function Administration() {
   return (
-    <section id="administration" className="section bg-ink px-6 relative z-10 py-20 md:py-28">
+    <section
+      data-section-id="administration"
+      aria-labelledby="administration"
+      className="section bg-ink px-6 relative z-10 py-20 md:py-28"
+    >
       <div className="max-w-[1160px] mx-auto">
         <SectionHeader
+          id="administration"
           serialNumber="١٠"
           badgeText="قسم الإدارة"
           title="الإدارة والتنظيم"

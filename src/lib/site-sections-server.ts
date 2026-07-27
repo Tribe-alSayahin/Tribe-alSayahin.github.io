@@ -56,3 +56,25 @@ export async function getPublishedSiteSections(
 
   return fallback;
 }
+
+export interface SiteSectionUpdate {
+  section_key: SiteSectionKey;
+  updated_at: string;
+}
+
+export async function getPublishedSiteSectionUpdates(): Promise<SiteSectionUpdate[]> {
+  const client = getServerClient();
+  if (!client) return [];
+
+  const { data, error } = await client
+    .from('site_sections')
+    .select('section_key,updated_at')
+    .eq('status', 'published');
+
+  if (error) {
+    console.error('[site-sections] Failed to fetch section update dates:', error.message);
+    return [];
+  }
+
+  return data ?? [];
+}

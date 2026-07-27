@@ -75,12 +75,14 @@ export function Section({
 
   return (
     <section
-      id={id}
+      data-section-id={id}
+      aria-labelledby={noHeader ? undefined : id}
       className={`section ${surfaceClass} px-6 relative z-10 ${borderClass} ${SECTION_PADDING}`}
     >
       <div className="max-w-[1160px] mx-auto">
         {!noHeader && (
           <SectionHeader
+            id={id}
             chapterNumber={chapterNumber}
             serialNumber={serialNumber}
             badgeText={badgeText}

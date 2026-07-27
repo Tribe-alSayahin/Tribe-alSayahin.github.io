@@ -1,17 +1,20 @@
 import type { Metadata } from 'next';
 import { ChapterDivider } from '../../components/layout/ChapterDivider';
 import { Section } from '../../components/layout/Section';
+import { SectionIndex } from '../../components/layout/SectionIndex';
 import { Timeline } from '../../components/layout/Timeline';
 import OppenheimArchive from '../../components/OppenheimArchive';
+import { buildSectionedWebPageJsonLd } from '../../lib/section-indexing';
 import { buildPublicPageMetadata, SITE_URL } from '../../lib/site-metadata';
 import { getPublishedSiteSections } from '../../lib/site-sections-server';
 
 const siteUrl = SITE_URL;
+const pageDescription =
+  'الخط الزمني الكامل لقبيلة السياحين والأرشيف الاستشراقي النادر: وثائق ماكس فون أوبنهايم وشهادات الرحّالة ومخطوطات نجد التاريخية.';
 
 export const metadata: Metadata = buildPublicPageMetadata({
   title: 'التاريخ والأرشيف الاستشراقي',
-  description:
-    'الخط الزمني الكامل لقبيلة السياحين والأرشيف الاستشراقي النادر: وثائق ماكس فون أوبنهايم وشهادات الرحّالة ومخطوطات نجد التاريخية.',
+  description: pageDescription,
   keywords: ['تاريخ قبيلة السياحين', 'الأرشيف الاستشراقي', 'وثائق السياحين', 'تاريخ عتيبة', 'الخط الزمني للسياحين'],
   path: '/tarikh/',
 });
@@ -35,21 +38,18 @@ const breadcrumbLd = {
   ],
 };
 
-const webPageLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  '@id': `${siteUrl}/tarikh/#webpage`,
-  url: `${siteUrl}/tarikh/`,
-  name: 'التاريخ والأرشيف الاستشراقي | الموقع الرسمي لقبيلة السياحين',
-  description: 'الخط الزمني الكامل لقبيلة السياحين والأرشيف الاستشراقي النادر: وثائق ماكس فون أوبنهايم وشهادات الرحّالة ومخطوطات نجد التاريخية.',
-  inLanguage: 'ar-SA',
-  isPartOf: {
-    '@id': `${siteUrl}/#website`,
-  },
-};
-
 export default async function TarikhPage() {
   const sections = await getPublishedSiteSections(['timeline', 'archive']);
+  const indexedSections = [
+    { id: 'timeline', title: sections.timeline.title, description: sections.timeline.description },
+    { id: 'archive', title: sections.archive.title, description: sections.archive.description },
+  ];
+  const webPageLd = buildSectionedWebPageJsonLd({
+    path: '/tarikh/',
+    name: 'التاريخ والأرشيف الاستشراقي | الموقع الرسمي لقبيلة السياحين',
+    description: pageDescription,
+    sections: indexedSections,
+  });
 
   return (
     <>
@@ -59,6 +59,8 @@ export default async function TarikhPage() {
         title="التاريخ"
         description="الخط الزمني والأرشيف الاستشراقي: شهادات الماضي وتوثيقاته."
       />
+
+      <SectionIndex sections={indexedSections} />
 
       <Section
         id="timeline"
