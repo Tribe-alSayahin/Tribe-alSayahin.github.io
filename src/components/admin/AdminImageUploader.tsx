@@ -2,6 +2,7 @@
 
 import { useRef, useState, type ChangeEvent } from 'react';
 import { ImagePlus, LoaderCircle, Trash2, Upload } from 'lucide-react';
+import Image from 'next/image';
 import { uploadSiteImage } from '../../lib/site-sections';
 import type { SiteSectionKey } from '../../lib/site-sections-shared';
 
@@ -56,7 +57,14 @@ export function AdminImageUploader({
 
       {value && (
         <div className="relative overflow-hidden rounded-xl border border-brass/15 bg-ink aspect-[16/7]">
-          <img src={value} alt={alt || 'معاينة الصورة المختارة'} className="h-full w-full object-cover" />
+          <Image
+            src={value}
+            alt={alt || 'معاينة الصورة المختارة'}
+            fill
+            sizes="(min-width: 1280px) 700px, 90vw"
+            unoptimized
+            className="object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-ink/70 to-transparent" aria-hidden="true" />
         </div>
       )}
