@@ -27,6 +27,8 @@ interface SectionProps {
   badgeText: string;
   title: string;
   description: string;
+  imageUrl?: string | null;
+  imageAlt?: string | null;
   /** نص حالة التحميل؛ عند وجوده يُلَفّ المحتوى بـ Suspense */
   loaderLabel?: string;
   /** إخفاء الفاصل العلوي (للقسم الأول بعد الشعار) */
@@ -51,6 +53,8 @@ export function Section({
   badgeText,
   title,
   description,
+  imageUrl,
+  imageAlt,
   loaderLabel,
   noBorder = false,
   narrow = false,
@@ -83,6 +87,15 @@ export function Section({
             title={title}
             description={description}
           />
+        )}
+        {imageUrl && (
+          <figure className="mb-10 overflow-hidden rounded-2xl border border-brass/20 bg-ink shadow-elev-2">
+            <img
+              src={imageUrl}
+              alt={imageAlt || ''}
+              className="aspect-[16/7] w-full object-cover"
+            />
+          </figure>
         )}
         <div className="opacity-100 translate-y-0 transition-all duration-800">
           {narrow ? <div className="max-w-[720px] mx-auto">{body}</div> : body}

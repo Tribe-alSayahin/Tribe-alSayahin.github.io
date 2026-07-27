@@ -12,6 +12,7 @@ import {
   ScrollText,
   CalendarDays,
   BookOpen,
+  LayoutTemplate,
   type LucideIcon,
 } from 'lucide-react';
 import type { UserRole } from '../../lib/admin-users';
@@ -27,6 +28,7 @@ interface AdminSidebarProps {
 
 const NAV_ICONS: Record<AdminTab, LucideIcon> = {
   dashboard: LayoutDashboard,
+  sections: LayoutTemplate,
   posts: Newspaper,
   poetry: BookOpen,
   events: CalendarDays,

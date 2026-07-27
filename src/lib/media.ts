@@ -64,13 +64,22 @@ export async function createMedia(media: MediaInsert): Promise<FetchItemResult<M
 /**
  * حذف وسائط
  */
-export async function deleteMedia(id: string): Promise<DeleteResult> {
+export async function deleteMedia(media: Media): Promise<DeleteResult> {
   const { error } = await supabase
     .from('media')
     .delete()
-    .eq('id', id);
+    .eq('id', media.id);
 
-  return { error: error };
+  if (error) return { error };
+
+  const publicMarker = '/storage/v1/object/public/site-media/';
+  const markerIndex = media.file_url.indexOf(publicMarker);
+  if (markerIndex >= 0) {
+    const storagePath = decodeURIComponent(media.file_url.slice(markerIndex + publicMarker.length));
+    await supabase.storage.from('site-media').remove([storagePath]);
+  }
+
+  return { error: null };
 }
 
 /**

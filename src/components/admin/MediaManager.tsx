@@ -12,6 +12,7 @@ import {
 } from '../../lib/media';
 import { supabase } from '../../lib/supabase';
 import { ConfirmModal } from './ConfirmModal';
+import { validateSiteImage } from '../../lib/site-sections';
 
 interface MediaManagerProps {
   onNotify?: (message: string, type: 'success' | 'error') => void;
@@ -60,7 +61,17 @@ export function MediaManager({ onNotify }: MediaManagerProps = {}) {
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0]);
+      const file = e.target.files[0];
+      const validationError = validateSiteImage(file);
+      if (validationError) {
+        setSelectedFile(null);
+        setError(validationError);
+        onNotify?.(validationError, 'error');
+        e.target.value = '';
+        return;
+      }
+      setSelectedFile(file);
+      setError('');
     }
   };
 
@@ -83,10 +94,10 @@ export function MediaManager({ onNotify }: MediaManagerProps = {}) {
       }
 
       const userId = sessionData.session.user.id;
-      const fileName = `${Date.now()}-${selectedFile.name}`;
-      const filePath = `uploads/${fileName}`;
+      const extension = selectedFile.name.split('.').pop()?.toLowerCase() || 'jpg';
+      const filePath = `library/${crypto.randomUUID()}.${extension}`;
 
-      const { error: uploadError } = await uploadFile('media', filePath, selectedFile);
+      const { error: uploadError } = await uploadFile('site-media', filePath, selectedFile);
 
       if (uploadError) {
         setError(uploadError.message);
@@ -95,7 +106,7 @@ export function MediaManager({ onNotify }: MediaManagerProps = {}) {
         return;
       }
 
-      const { publicUrl } = getPublicUrl('media', filePath);
+      const { publicUrl } = getPublicUrl('site-media', filePath);
 
       const { error: insertError } = await createMedia({
         file_name: selectedFile.name,
@@ -124,7 +135,7 @@ export function MediaManager({ onNotify }: MediaManagerProps = {}) {
   };
 
   const handleDelete = async (item: Media) => {
-    const { error } = await deleteMedia(item.id);
+    const { error } = await deleteMedia(item);
     if (error) {
       setError(error.message);
       onNotify?.(error.message, 'error');
@@ -170,7 +181,7 @@ export function MediaManager({ onNotify }: MediaManagerProps = {}) {
             type="file"
             onChange={handleFileSelect}
             className="rounded-lg border border-brass/20 bg-ink/70 px-3 py-2 text-sand focus:outline-none focus:border-brass/50"
-            accept="image/*,.pdf,.doc,.docx"
+            accept="image/jpeg,image/png,image/webp"
           />
           {selectedFile && (
             <div className="flex items-center justify-between p-3 bg-ink/50 rounded-lg">

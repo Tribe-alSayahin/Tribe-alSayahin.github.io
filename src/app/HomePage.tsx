@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Archive, ArrowLeft, Compass, Feather, GitBranch, MapPin, TreePine } from 'lucide-react';
 import { SITE_ROUTES } from '../lib/navigation';
+import { mergeSiteSection, type SiteSectionContent } from '../lib/site-sections-shared';
 
 const PLACES = [
   { name: 'الجثوم', x: 18, y: 14 },
@@ -23,14 +24,18 @@ const ICONS = {
   tarikh: Archive,
 } as const;
 
-export default function HomePage() {
+interface HomePageProps {
+  hero?: SiteSectionContent;
+}
+
+export default function HomePage({ hero = mergeSiteSection('home') }: HomePageProps) {
   return (
     <main className="home-story bg-ink text-sand">
       <section className="home-story-hero" aria-labelledby="home-story-title">
         <div className="home-story-map" aria-label="مسار فني يربط مواطن قبيلة السياحين">
           <img
-            src="/images/jathum-hills-hussain-alsaihani.jpg"
-            alt="هضب الجثوم والسهول المحيطة به في عالية نجد"
+            src={hero.image_url || '/images/jathum-hills-hussain-alsaihani.jpg'}
+            alt={hero.image_alt || 'هضب الجثوم والسهول المحيطة به في عالية نجد'}
             className="home-story-photo"
           />
           <div className="home-story-map-shade" aria-hidden="true" />
@@ -57,12 +62,9 @@ export default function HomePage() {
 
         <div className="home-story-intro">
           <p className="home-story-kicker">الموقع الرسمي لقبيلة السياحين</p>
-          <h1 id="home-story-title" className="font-ruqaa">قبيلة السياحين</h1>
+          <h1 id="home-story-title" className="font-ruqaa">{hero.title}</h1>
           <div className="home-story-rule" aria-hidden="true"><span /></div>
-          <p className="font-serif">
-            ديوان رقمي موثّق يجمع الديار والنسب والشعر والتاريخ في سيرة واحدة،
-            تبدأ من الجثوم وتمتد في ذاكرة المكان.
-          </p>
+          <p className="font-serif">{hero.description}</p>
           <div className="home-story-actions">
             <Link href="/diyar/" className="home-story-primary">
               <Compass aria-hidden="true" /> استكشف الديار

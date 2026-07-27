@@ -56,4 +56,20 @@ describe('Supabase security migrations', () => {
     expect(sql).toContain('on conflict on constraint visitor_profiles_pkey do update');
     expect(sql).not.toContain('on conflict (user_id) do update');
   });
+
+  it('restricts site section and image writes to administrators', () => {
+    const sql = migration('20260727010000_create_site_sections_and_media.sql');
+
+    expect(sql).toMatch(/site_sections enable row level security/i);
+    expect(sql).toMatch(/for select[\s\S]*status\s*=\s*'published'/i);
+    expect(sql).toContain("bucket_id = 'site-media'");
+    expect(sql).toContain("array['image/jpeg', 'image/png', 'image/webp']");
+    expect(sql).toMatch(
+      /for insert[\s\S]*bucket_id = 'site-media'[\s\S]*has_admin_role\(array\['super_admin', 'admin'\]\)/i,
+    );
+    expect(sql).toMatch(
+      /for delete[\s\S]*bucket_id = 'site-media'[\s\S]*has_admin_role\(array\['super_admin', 'admin'\]\)/i,
+    );
+    expect(sql).not.toMatch(/with check\s*\(\s*true\s*\)/i);
+  });
 });

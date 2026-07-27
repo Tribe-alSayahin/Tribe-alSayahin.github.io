@@ -359,6 +359,48 @@ export type Database = {
         }
         Relationships: []
       }
+      site_sections: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          image_alt: string | null
+          image_url: string | null
+          section_key: string
+          sort_order: number
+          status: string
+          title: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          image_alt?: string | null
+          image_url?: string | null
+          section_key: string
+          sort_order?: number
+          status?: string
+          title: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          image_alt?: string | null
+          image_url?: string | null
+          section_key?: string
+          sort_order?: number
+          status?: string
+          title?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       visitor_profiles: {
         Row: {
           avatar_url: string | null

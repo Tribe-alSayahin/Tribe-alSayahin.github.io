@@ -52,6 +52,12 @@ type AdminEventInsertLike = Narrow<TableInsert<'admin_events'>, 'status', {
 }>;
 type AdminEventImageRecordLike = TableRow<'admin_event_images'>;
 type AdminEventImageInsertLike = TableInsert<'admin_event_images'>;
+type SiteSectionRecordLike = Narrow<TableRow<'site_sections'>, 'status', {
+  status: 'draft' | 'published';
+}>;
+type SiteSectionInsertLike = Narrow<TableInsert<'site_sections'>, 'status', {
+  status?: 'draft' | 'published';
+}>;
 
 interface QueryResult<T> {
   data: T | null;
@@ -147,6 +153,13 @@ interface PoetryEntriesTable {
   delete(): MutationQuery<PoetryEntry>;
 }
 
+interface SiteSectionsTable {
+  select(columns?: string, options?: { count?: 'exact' | 'planned' | 'estimated' }): SelectQuery<SiteSectionRecordLike>;
+  insert(payload: SiteSectionInsertLike | SiteSectionInsertLike[]): MutationQuery<SiteSectionRecordLike>;
+  update(payload: Partial<SiteSectionInsertLike>): MutationQuery<SiteSectionRecordLike>;
+  delete(): MutationQuery<SiteSectionRecordLike>;
+}
+
 interface StorageBucket {
   from(bucket: string): {
     upload(path: string, file: File | Blob, options?: { contentType?: string; upsert?: boolean }): Promise<{ data: { path: string } | null; error: SupabaseErrorLike }>;
@@ -202,6 +215,7 @@ interface SupabaseLike {
   from(table: 'admin_events'): AdminEventsTable;
   from(table: 'admin_event_images'): AdminEventImagesTable;
   from(table: 'poetry_entries'): PoetryEntriesTable;
+  from(table: 'site_sections'): SiteSectionsTable;
   storage: StorageBucket;
 }
 

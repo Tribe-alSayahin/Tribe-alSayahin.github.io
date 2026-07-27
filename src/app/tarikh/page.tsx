@@ -4,6 +4,7 @@ import { Section } from '../../components/layout/Section';
 import { Timeline } from '../../components/layout/Timeline';
 import OppenheimArchive from '../../components/OppenheimArchive';
 import { buildPublicPageMetadata, SITE_URL } from '../../lib/site-metadata';
+import { getPublishedSiteSections } from '../../lib/site-sections-server';
 
 const siteUrl = SITE_URL;
 
@@ -47,7 +48,9 @@ const webPageLd = {
   },
 };
 
-export default function TarikhPage() {
+export default async function TarikhPage() {
+  const sections = await getPublishedSiteSections(['timeline', 'archive']);
+
   return (
     <>
       <ChapterDivider
@@ -64,8 +67,10 @@ export default function TarikhPage() {
         chapterNumber={4}
         serialNumber="٠٨"
         badgeText="من تاريخ القبيلة"
-        title="صفحات من مآثر وإرث القبيلة"
-        description="تسلسل زمني يوثق أبرز المحطات التاريخية لفروسية ومواقف قبيلة السياحين وإسهامها الوطني المعتمد."
+        title={sections.timeline.title}
+        description={sections.timeline.description}
+        imageUrl={sections.timeline.image_url}
+        imageAlt={sections.timeline.image_alt}
       >
         <Timeline />
       </Section>
@@ -76,8 +81,10 @@ export default function TarikhPage() {
         chapterNumber={4}
         serialNumber="٠٩"
         badgeText="الأرشيف والمصادر"
-        title="التوثيق الاستشراقي والمدونات التاريخية"
-        description="شهادات وملاحظات المستشرقين والرحالة الغربيين حول نسب وقوة ومواقف السياحين في تاريخ الجزيرة العربية."
+        title={sections.archive.title}
+        description={sections.archive.description}
+        imageUrl={sections.archive.image_url}
+        imageAlt={sections.archive.image_alt}
       >
         <OppenheimArchive />
       </Section>
