@@ -21,6 +21,7 @@ import { ActivityLog } from './ActivityLog';
 import { ThanksLetterGenerator } from './ThanksLetterGenerator';
 import { EventManager } from './EventManager';
 import { PoetryManager } from './PoetryManager';
+import { SiteSectionsManager } from './SiteSectionsManager';
 import { ToastContainer, type Toast } from './Toast';
 
 export default function AdminPage() {
@@ -211,6 +212,8 @@ export default function AdminPage() {
     switch (activeTab) {
       case 'dashboard':
         return <DashboardOverview onTabChange={setActiveTab} />;
+      case 'sections':
+        return <SiteSectionsManager onNotify={addToast} userId={session?.user?.id ?? null} />;
       case 'posts':
         return <PostManager onNotify={addToast} />;
       case 'poetry':
@@ -251,7 +254,7 @@ export default function AdminPage() {
           <p className="font-kufi text-xs text-brass-lt/80 mb-2">الموقع الرسمي لقبيلة السياحين</p>
           <h1 className="font-ruqaa text-4xl md:text-5xl text-brass-lt mb-2">لوحة الإدارة الشاملة</h1>
           <p className="text-sm text-sand-dim">
-            مركز إدارة محتوى الموقع الرسمي لقبيلة السياحين — الأخبار والمناسبات والمستخدمين والتعليقات والوسائط والإحصائيات.
+            مركز إدارة محتوى الموقع الرسمي لقبيلة السياحين — أقسام النسب والديار والهوية والتاريخ والأخبار والصور.
           </p>
         </header>
 

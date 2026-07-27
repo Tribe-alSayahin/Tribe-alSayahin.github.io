@@ -4,6 +4,7 @@ import { Section } from '../../components/layout/Section';
 import WasmGallery from '../../components/WasmGallery';
 import PoetryCouncil from '../../components/PoetryCouncil';
 import { buildPublicPageMetadata, SITE_URL } from '../../lib/site-metadata';
+import { getPublishedSiteSections } from '../../lib/site-sections-server';
 
 const siteUrl = SITE_URL;
 
@@ -47,7 +48,9 @@ const webPageLd = {
   },
 };
 
-export default function HawiyaPage() {
+export default async function HawiyaPage() {
+  const sections = await getPublishedSiteSections(['wasm', 'poetry']);
+
   return (
     <>
       <ChapterDivider
@@ -65,8 +68,10 @@ export default function HawiyaPage() {
         narrow
         serialNumber="٠٦"
         badgeText="علامات الوسم"
-        title="وسم الإبل وعلامة الباب"
-        description="وسم «الباب» الشهير للسياحين على الرقبة من الجهة اليسرى، رمز الهوية والأصالة في البادية."
+        title={sections.wasm.title}
+        description={sections.wasm.description}
+        imageUrl={sections.wasm.image_url}
+        imageAlt={sections.wasm.image_alt}
       >
         <WasmGallery />
       </Section>
@@ -77,8 +82,10 @@ export default function HawiyaPage() {
         chapterNumber={3}
         serialNumber="٠٧"
         badgeText="مجلس الشعراء"
-        title="ديوان الشعر النبطي"
-        description="مساحة مخصصة للقصائد الموثقة وشواهد الشعر النبطي بعد مراجعتها وإسنادها إلى مصادر واضحة."
+        title={sections.poetry.title}
+        description={sections.poetry.description}
+        imageUrl={sections.poetry.image_url}
+        imageAlt={sections.poetry.image_alt}
       >
         <PoetryCouncil />
       </Section>

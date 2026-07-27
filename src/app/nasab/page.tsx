@@ -5,6 +5,7 @@ import JathumMonument from '../../components/JathumMonument';
 import LineageTree from '../../components/LineageTree';
 import ConstellationDiagram from '../../components/ConstellationDiagram';
 import { buildPublicPageMetadata, SITE_URL } from '../../lib/site-metadata';
+import { getPublishedSiteSections } from '../../lib/site-sections-server';
 
 const siteUrl = SITE_URL;
 
@@ -49,7 +50,9 @@ const webPageLd = {
   },
 };
 
-export default function NasabPage() {
+export default async function NasabPage() {
+  const sections = await getPublishedSiteSections(['jathum', 'lineage', 'constellation']);
+
   return (
     <>
       <ChapterDivider
@@ -66,8 +69,10 @@ export default function NasabPage() {
         chapterNumber={1}
         serialNumber="٠١"
         badgeText="الأساس والمنطلق"
-        title="هجرة الجثوم — أساس الديار"
-        description="قبل كل الأقسام تأتي الجثوم: أول هجرة رسمية أسسها السياحين في عالية نجد، ومنها انطلق الاستقرار والتحضر وامتدت بقية الديار."
+        title={sections.jathum.title}
+        description={sections.jathum.description}
+        imageUrl={sections.jathum.image_url}
+        imageAlt={sections.jathum.image_alt}
       >
         <JathumMonument />
       </Section>
@@ -78,8 +83,10 @@ export default function NasabPage() {
         chapterNumber={1}
         serialNumber="٠٢"
         badgeText="النسب والجذر"
-        title="ديوان نسب القبيلة الأصيل"
-        description="التوثيق المتسلسل لعمود نسب فخذ السياحين من المزاحمة من الروقة من عتيبة الهيلا، وصولاً لعدنان."
+        title={sections.lineage.title}
+        description={sections.lineage.description}
+        imageUrl={sections.lineage.image_url}
+        imageAlt={sections.lineage.image_alt}
       >
         <LineageTree />
       </Section>
@@ -90,8 +97,10 @@ export default function NasabPage() {
         chapterNumber={1}
         serialNumber="٠٣"
         badgeText="الأنساب السبعة"
-        title="الخلاصة الكوكبية للأنساب"
-        description="تمثيل فلكي رمزي يربط الأنساب السبعة الكبرى في فضاء كوكبي مترابط يبرز التلاحم والأصل المشترك للقبيلة."
+        title={sections.constellation.title}
+        description={sections.constellation.description}
+        imageUrl={sections.constellation.image_url}
+        imageAlt={sections.constellation.image_alt}
       >
         <ConstellationDiagram />
       </Section>

@@ -10,6 +10,7 @@ import {
   Eye,
   TrendingUp,
   AlertCircle,
+  LayoutTemplate,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { fetchAdminPosts, type AdminPostRecord } from '../../lib/admin-posts';
@@ -17,9 +18,10 @@ import { fetchAdminUsers } from '../../lib/admin-users';
 import { fetchAllComments, type Comment } from '../../lib/comments';
 import { fetchMedia } from '../../lib/media';
 import { fetchUniqueVisitors, fetchEventCounts } from '../../lib/analytics';
+import { fetchSiteSections } from '../../lib/site-sections';
 
 interface DashboardOverviewProps {
-  onTabChange: (tab: 'posts' | 'comments' | 'users' | 'media' | 'analytics') => void;
+  onTabChange: (tab: 'sections' | 'posts' | 'comments' | 'users' | 'media' | 'analytics') => void;
 }
 
 interface Stats {
@@ -30,6 +32,7 @@ interface Stats {
   media: number;
   visitors: number;
   totalEvents: number;
+  sections: number;
 }
 
 function StatCard({
@@ -79,6 +82,7 @@ export function DashboardOverview({ onTabChange }: DashboardOverviewProps) {
     media: 0,
     visitors: 0,
     totalEvents: 0,
+    sections: 0,
   });
   const [recentPosts, setRecentPosts] = useState<AdminPostRecord[]>([]);
   const [pendingCommentsList, setPendingCommentsList] = useState<Comment[]>([]);
@@ -87,7 +91,7 @@ export function DashboardOverview({ onTabChange }: DashboardOverviewProps) {
   useEffect(() => {
     const load = async () => {
       setIsLoading(true);
-      const [postsResult, usersResult, commentsResult, mediaResult, visitorsResult, eventsResult] =
+      const [postsResult, usersResult, commentsResult, mediaResult, visitorsResult, eventsResult, sectionsResult] =
         await Promise.all([
           fetchAdminPosts(),
           fetchAdminUsers(),
@@ -95,6 +99,7 @@ export function DashboardOverview({ onTabChange }: DashboardOverviewProps) {
           fetchMedia(),
           fetchUniqueVisitors(30),
           fetchEventCounts(),
+          fetchSiteSections(),
         ]);
 
       const posts = postsResult.data ?? [];
@@ -112,6 +117,7 @@ export function DashboardOverview({ onTabChange }: DashboardOverviewProps) {
         media: media.length,
         visitors,
         totalEvents: Object.values(eventCounts).reduce((a, b) => a + b, 0),
+        sections: sectionsResult.data?.length ?? 0,
       });
 
       setRecentPosts(posts.slice(0, 5));
@@ -133,6 +139,13 @@ export function DashboardOverview({ onTabChange }: DashboardOverviewProps) {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <StatCard
+          icon={LayoutTemplate}
+          label="أقسام الموقع"
+          value={stats.sections}
+          onClick={() => onTabChange('sections')}
+          tone="sunset"
+        />
         <StatCard
           icon={Newspaper}
           label="الأخبار"

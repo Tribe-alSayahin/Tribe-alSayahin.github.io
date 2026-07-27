@@ -8,6 +8,7 @@ import {
   AdminPostUpdate,
 } from '../../lib/admin-posts';
 import { createSlug } from '../../lib/slug';
+import { AdminImageUploader } from './AdminImageUploader';
 
 interface PostFormProps {
   initial?: {
@@ -155,6 +156,13 @@ export function PostForm({
           className="w-full rounded-lg border border-brass/20 bg-ink/70 px-3 py-2.5 text-sand placeholder:text-sand-dim/60 focus:outline-none focus:border-brass/50 ltr"
         />
       </div>
+
+      <AdminImageUploader
+        value={featuredImage}
+        alt={title}
+        folder="posts"
+        onChange={setFeaturedImage}
+      />
 
       <div>
         <label className="block text-xs font-kufi text-sand-dim mb-1.5">المحتوى</label>

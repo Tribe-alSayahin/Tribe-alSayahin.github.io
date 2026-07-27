@@ -4,6 +4,7 @@ import { Section } from '../../components/layout/Section';
 import InteractiveMap from '../../components/InteractiveMap';
 import HeritageGallery from '../../components/HeritageGallery';
 import { buildPublicPageMetadata, SITE_URL } from '../../lib/site-metadata';
+import { getPublishedSiteSections } from '../../lib/site-sections-server';
 
 const siteUrl = SITE_URL;
 
@@ -48,7 +49,9 @@ const webPageLd = {
   },
 };
 
-export default function DiyarPage() {
+export default async function DiyarPage() {
+  const sections = await getPublishedSiteSections(['map', 'gallery']);
+
   return (
     <>
       <ChapterDivider
@@ -65,8 +68,10 @@ export default function DiyarPage() {
         chapterNumber={2}
         serialNumber="٠٤"
         badgeText="الديار والهجرات"
-        title="الديار ومنازل الاستقرار"
-        description="استكشف التوزيع الجغرافي لديار السياحين التاريخية، من منازلهم في نجد العذية وهجرهم المعتمدة ومناهل المياه القديمة."
+        title={sections.map.title}
+        description={sections.map.description}
+        imageUrl={sections.map.image_url}
+        imageAlt={sections.map.image_alt}
       >
         <InteractiveMap />
       </Section>
@@ -77,8 +82,10 @@ export default function DiyarPage() {
         chapterNumber={2}
         serialNumber="٠٥"
         badgeText="الشاهد البصري"
-        title="معرض التراث والمقتنيات"
-        description="شواهد بصرية ومقتنيات تراثية تعكس تاريخ القبيلة العريق وصوراً من ذاكرة الصحراء والديار المأهولة."
+        title={sections.gallery.title}
+        description={sections.gallery.description}
+        imageUrl={sections.gallery.image_url}
+        imageAlt={sections.gallery.image_alt}
       >
         <HeritageGallery />
       </Section>

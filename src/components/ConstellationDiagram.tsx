@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles, Scroll, BookOpen, Star } from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { BookOpen, Compass, Scroll, Sparkles, Star } from 'lucide-react';
 
 interface ConstellationStar {
   id: string;
@@ -98,182 +98,176 @@ const SEVEN_LINEAGES: ConstellationStar[] = [
 
 export default function ConstellationDiagram() {
   const [activeStarId, setActiveStarId] = useState<string>('siyahin');
+  const prefersReducedMotion = useReducedMotion();
 
   const activeStar = SEVEN_LINEAGES.find(s => s.id === activeStarId) || SEVEN_LINEAGES[6];
+  const activeStarIndex = SEVEN_LINEAGES.findIndex(star => star.id === activeStar.id);
+  const constellationPoints = SEVEN_LINEAGES.map(star => `${star.x},${star.y}`).join(' ');
 
   return (
-    <div className="relative bg-gradient-to-b from-ink to-ink-2/40 border border-brass/15 rounded-3xl p-6 md:p-8 lg:p-10 shadow-2xl overflow-hidden min-h-[500px] lg:min-h-[580px] flex flex-col lg:flex-row gap-8 items-stretch">
-      {/* Ghost Background Folio Numeral */}
-      <div className="absolute right-6 bottom-4 text-9xl font-serif font-extrabold text-brass/3 select-none pointer-events-none tracking-tighter">
-        ٠٧
-      </div>
+    <div className="relative isolate overflow-hidden border-y border-brass/20 bg-ink-2/75 shadow-glow-sm">
+      <div
+        className="pointer-events-none absolute inset-0 bg-repeat opacity-[0.035]"
+        style={{ backgroundImage: 'var(--sadu)', backgroundSize: '88px 52px' }}
+      />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_32%,color-mix(in_srgb,var(--indigo)_42%,transparent),transparent_38%)]" />
 
-      {/* Title & Info on Left */}
-      <div className="w-full lg:w-2/5 flex flex-col justify-between z-10 space-y-6">
-        <div>
-          <div className="flex items-center gap-2 text-brass-lt font-kufi text-xs font-semibold">
-            <Sparkles className="w-4 h-4 text-brass-lt" />
-            <span>خارطة النجوم التاريخية</span>
+      <div className="relative grid gap-8 border-b border-brass/15 px-5 py-8 md:px-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:px-12">
+        <div className="max-w-3xl">
+          <div className="mb-3 flex items-center gap-3 font-kufi text-xs text-brass-lt">
+            <Compass className="h-4 w-4" aria-hidden="true" />
+            <span>مرصد السلالة · سجل الأنساب السبعة</span>
           </div>
-          <h3 className="text-2xl md:text-3xl font-serif font-bold text-sand mt-2">
-            مخطط كوكبة النسب الصاعد
+          <h3 className="font-ruqaa text-3xl leading-tight text-sand md:text-5xl">
+            من الجذر العدناني
+            <span className="text-gold-gradient block">إلى نجمة السياحين</span>
           </h3>
-          <p className="text-sand-dim/80 text-sm mt-3 leading-relaxed">
-            مخطط فلكي فني يحاكي قبة السماء النجدية، يربط السلسلة الذهبية لنسب قبيلة السياحين في شكل كوكبة صاعدة من جذورها العدنانية الغائرة في التاريخ إلى فرعها المعاصر المشرق.
+          <p className="mt-4 max-w-2xl font-sans text-sm leading-8 text-sand-dim md:text-base">
+            اقرأ النسب كمسار في سماء نجد؛ سبع محطات متصلة بخيط واحد، من عدنان حتى الفرع الذي أسس الجثوم وصان الموروث.
           </p>
         </div>
 
-        {/* Selected Star Details Card (Interactive) */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeStar.id}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.35 }}
-            className="bg-ink/90 border-r-4 border-r-brass border border-brass/10 rounded-2xl p-5 md:p-6 space-y-3 relative shadow-xl"
-          >
-            <div className="absolute top-4 left-4">
-              <Scroll className="w-5 h-5 text-brass/40" />
-            </div>
-
-            <span className="text-[10px] uppercase tracking-widest font-mono text-brass-lt font-bold bg-brass/10 px-2 py-0.5 rounded">
-              مرحلة: {activeStar.title}
-            </span>
-            <h4 className="text-xl md:text-2xl font-serif font-bold text-sand-dim">
-              {activeStar.name}
-            </h4>
-            <div className="text-xs font-kufi text-brass/80 flex items-center gap-1.5">
-              <BookOpen className="w-3.5 h-3.5 text-brass" />
-              <span>الحقبة: {activeStar.era}</span>
-            </div>
-            
-            <p className="text-xs md:text-sm text-sand/90 leading-relaxed font-sans pt-1">
-              {activeStar.description}
-            </p>
-
-            <div className="text-[11px] text-sand-dim leading-relaxed border-t border-brass/10 pt-2.5 italic">
-              {activeStar.details}
-            </div>
-          </motion.div>
-        </AnimatePresence>
+        <div className="grid grid-cols-2 border border-brass/15 bg-ink/45 text-center">
+          <div className="border-l border-brass/15 px-5 py-4">
+            <span className="block font-ruqaa text-3xl text-brass-lt">٠٧</span>
+            <span className="font-kufi text-[10px] text-sand-dim">محطات النسب</span>
+          </div>
+          <div className="px-5 py-4">
+            <span className="block font-ruqaa text-3xl text-brass-lt">٠١</span>
+            <span className="font-kufi text-[10px] text-sand-dim">أصل متصل</span>
+          </div>
+        </div>
       </div>
 
-      {/* Constellation Sky on Right */}
-      <div className="w-full lg:w-3/5 min-h-[320px] lg:min-h-full bg-ink/80 border border-brass/10 rounded-2xl relative overflow-hidden flex items-center justify-center p-4">
-        {/* Sky Dust & Grid */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(58,88,114,0.12),transparent_70%)] pointer-events-none" />
-        <div className="absolute inset-0 bg-repeat opacity-[0.03] pointer-events-none select-none" style={{ backgroundImage: 'var(--sadu)', backgroundSize: '44px 26px' }} />
+      <div className="relative min-h-[30rem] overflow-hidden border-b border-brass/15 bg-ink/55 md:min-h-[36rem]">
+        <div className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[42rem] max-w-[92%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-brass/10" />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[30rem] max-w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-brass/10" />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-48 -translate-x-1/2 -translate-y-1/2 rounded-full border border-brass/10" />
+        <div className="pointer-events-none absolute inset-x-0 top-1/2 border-t border-brass/5" />
+        <div className="pointer-events-none absolute inset-y-0 left-1/2 border-l border-brass/5" />
 
-        {/* SVG Drawing Lines */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
-          {/* Constellation Connecting Lines */}
-          <g>
-            {SEVEN_LINEAGES.map((star, idx) => {
-              if (idx === SEVEN_LINEAGES.length - 1) return null;
-              const nextStar = SEVEN_LINEAGES[idx + 1];
-              return (
-                <line
-                  key={`line-${star.id}-${nextStar.id}`}
-                  x1={`${star.x}%`}
-                  y1={`${star.y}%`}
-                  x2={`${nextStar.x}%`}
-                  y2={`${nextStar.y}%`}
-                  stroke="url(#lineGradient)"
-                  strokeWidth="1.5"
-                  strokeDasharray="4,4"
-                  className="animate-[dash_10s_linear_infinite]"
-                />
-              );
-            })}
-          </g>
-
-          {/* Glowing Gradients */}
+        <svg
+          className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
           <defs>
-            <linearGradient id="lineGradient" x1="0%" y1="100%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#3a5872" stopOpacity="0.3" />
-              <stop offset="50%" stopColor="#c9973e" stopOpacity="0.75" />
-              <stop offset="100%" stopColor="#edc978" stopOpacity="0.3" />
+            <linearGradient id="lineage-path" x1="90%" y1="80%" x2="10%" y2="10%">
+              <stop offset="0%" stopColor="var(--brass)" stopOpacity="0.24" />
+              <stop offset="48%" stopColor="var(--brass-lt)" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="var(--brass)" stopOpacity="0.36" />
             </linearGradient>
-            
-            <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#edc978" stopOpacity="1" />
-              <stop offset="30%" stopColor="#c9973e" stopOpacity="0.5" />
-              <stop offset="100%" stopColor="#0a0703" stopOpacity="0" />
-            </radialGradient>
           </defs>
+          <polyline
+            points={constellationPoints}
+            fill="none"
+            stroke="url(#lineage-path)"
+            strokeWidth="0.34"
+            strokeDasharray="1.2 1.1"
+            vectorEffect="non-scaling-stroke"
+          />
         </svg>
 
-        {/* Interactive Stars */}
-        <div className="absolute inset-0 w-full h-full">
-          {/* Render background glow circles for active star */}
-          <div
-            className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none transition-all duration-500 bg-gradient-radial from-brass/20 via-brass/5 to-transparent"
-            style={{
-              left: `${activeStar.x}%`,
-              top: `${activeStar.y}%`,
-              width: '120px',
-              height: '120px',
-            }}
-          />
+        <div
+          className="pointer-events-none absolute h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brass/10 blur-2xl transition-[left,top] duration-500 motion-reduce:transition-none"
+          style={{ left: `${activeStar.x}%`, top: `${activeStar.y}%` }}
+        />
 
-          {SEVEN_LINEAGES.map((star, index) => {
-            const isActive = star.id === activeStarId;
-            return (
-              <button
-                key={star.id}
-                onClick={() => setActiveStarId(star.id)}
-                className="absolute -translate-x-1/2 -translate-y-1/2 group cursor-pointer focus:outline-none z-20 border-0 bg-transparent"
-                style={{
-                  left: `${star.x}%`,
-                  top: `${star.y}%`,
-                }}
+        {SEVEN_LINEAGES.map((star, index) => {
+          const isActive = star.id === activeStar.id;
+
+          return (
+            <button
+              key={star.id}
+              type="button"
+              aria-label={`عرض نسب ${star.name}: المحطة ${index + 1} من 7`}
+              aria-pressed={isActive}
+              aria-controls="lineage-reading"
+              onClick={() => setActiveStarId(star.id)}
+              className="group absolute z-10 -translate-x-1/2 -translate-y-1/2 bg-transparent p-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+              style={{ left: `${star.x}%`, top: `${star.y}%` }}
+            >
+              <span
+                className={`relative flex h-5 w-5 items-center justify-center rounded-full border transition duration-300 motion-reduce:transition-none ${
+                  isActive
+                    ? 'scale-125 border-sand bg-brass shadow-glow-md'
+                    : 'border-brass/60 bg-ink group-hover:scale-110 group-hover:border-brass-lt'
+                }`}
               >
-                {/* Pulsing Aura */}
-                <div
-                  className={`absolute -inset-4 rounded-full transition-all duration-300 ${
-                    isActive 
-                      ? 'bg-brass/15 animate-ping opacity-70 scale-100' 
-                      : 'bg-transparent group-hover:bg-indigo/10 scale-75'
-                  }`}
-                />
+                <span className={`h-1.5 w-1.5 rounded-full ${isActive ? 'bg-ink' : 'bg-brass-lt'}`} />
+                {isActive && !prefersReducedMotion && (
+                  <motion.span
+                    className="absolute inset-[-0.7rem] rounded-full border border-brass/35"
+                    initial={{ opacity: 0.75, scale: 0.6 }}
+                    animate={{ opacity: 0, scale: 1.55 }}
+                    transition={{ duration: 1.8, repeat: Infinity }}
+                  />
+                )}
+              </span>
+              <span
+                className={`absolute right-1/2 top-full mt-1 translate-x-1/2 whitespace-nowrap border px-2 py-1 font-kufi text-[10px] transition duration-300 motion-reduce:transition-none ${
+                  isActive
+                    ? 'border-brass bg-brass text-ink'
+                    : 'border-transparent bg-ink/75 text-sand-dim group-hover:border-brass/20 group-hover:text-sand'
+                }`}
+              >
+                <span className="ml-1 opacity-65">{String(index + 1).padStart(2, '0')}</span>
+                {star.name}
+              </span>
+            </button>
+          );
+        })}
 
-                {/* Star Point Graphic */}
-                <div
-                  className={`relative w-4 h-4 rounded-full border flex items-center justify-center shadow-lg transition-all duration-400 ${
-                    isActive
-                      ? 'bg-gradient-to-r from-brass to-brass-lt border-sand scale-125'
-                      : 'bg-[#121820] border-brass/55 group-hover:border-sand group-hover:scale-110'
-                  }`}
-                >
-                  {/* Innermost hot-spot */}
-                  <div className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-ink' : 'bg-brass-lt'}`} />
-                  
-                  {/* Mini labels on top */}
-                  <span className={`absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-[11px] font-kufi font-bold px-1.5 py-0.5 rounded-md transition-all duration-300 ${
-                    isActive 
-                      ? 'bg-brass text-ink font-extrabold shadow-md scale-105' 
-                      : 'text-sand-dim group-hover:text-sand'
-                  }`}>
-                    {star.name}
-                  </span>
-
-                  {/* Node Order Number (faint) */}
-                  <span className="absolute -top-5 left-1/2 -translate-x-1/2 font-mono text-[9px] text-brass/60 font-bold select-none">
-                    {`0${index + 1}`}
-                  </span>
-                </div>
-              </button>
-            );
-          })}
+        <div className="pointer-events-none absolute bottom-5 left-5 hidden items-center gap-2 font-kufi text-[10px] text-brass/65 md:flex">
+          <Star className="h-3.5 w-3.5" aria-hidden="true" />
+          <span>اتجاه القراءة: من الجذر إلى الفرع</span>
         </div>
-
-        {/* Small Compass Arrow Deco in bottom left of the sky */}
-        <div className="absolute bottom-4 left-4 p-2 bg-ink/40 border border-brass/10 rounded-xl text-[9px] text-brass/70 font-mono flex items-center gap-1.5 select-none z-10">
-          <Star className="w-3 h-3 text-brass animate-spin-slow" />
-          <span>ASCENDING LINEAGE MAP · 34° N</span>
+        <div className="pointer-events-none absolute right-5 top-5 font-ruqaa text-7xl text-brass/5 md:text-9xl">
+          {String(activeStarIndex + 1).padStart(2, '0')}
         </div>
       </div>
+
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          id="lineage-reading"
+          key={activeStar.id}
+          role="region"
+          aria-live="polite"
+          aria-label={`تفاصيل ${activeStar.name}`}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
+          className="relative grid gap-0 bg-ink/35 lg:grid-cols-[minmax(15rem,0.7fr)_minmax(0,1.3fr)]"
+        >
+          <div className="border-b border-brass/15 px-5 py-7 md:px-8 lg:border-b-0 lg:border-l lg:px-10">
+            <div className="flex items-center gap-2 font-kufi text-[11px] text-brass-lt">
+              <Sparkles className="h-4 w-4" aria-hidden="true" />
+              <span>المحطة {String(activeStarIndex + 1).padStart(2, '0')} من 07</span>
+            </div>
+            <h4 className="mt-3 font-ruqaa text-4xl text-sand md:text-5xl">{activeStar.name}</h4>
+            <p className="mt-2 font-serif text-lg text-brass-lt">{activeStar.title}</p>
+            <div className="mt-5 flex items-start gap-2 border-r border-brass/30 pr-3 font-kufi text-xs leading-6 text-sand-dim">
+              <BookOpen className="mt-1 h-4 w-4 shrink-0 text-brass" aria-hidden="true" />
+              <span>{activeStar.era}</span>
+            </div>
+          </div>
+
+          <div className="px-5 py-7 md:px-8 lg:px-10">
+            <div className="mb-4 flex items-center gap-3 font-kufi text-[11px] text-brass">
+              <Scroll className="h-4 w-4" aria-hidden="true" />
+              <span>{activeStar.role}</span>
+            </div>
+            <p className="max-w-4xl font-sans text-sm leading-8 text-sand md:text-base">
+              {activeStar.description}
+            </p>
+            <p className="mt-5 max-w-4xl border-t border-brass/10 pt-4 font-serif text-sm italic leading-8 text-sand-dim">
+              {activeStar.details}
+            </p>
+          </div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
