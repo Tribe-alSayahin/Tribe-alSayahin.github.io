@@ -1,17 +1,20 @@
 import type { Metadata } from 'next';
 import { ChapterDivider } from '../../components/layout/ChapterDivider';
 import { Section } from '../../components/layout/Section';
+import { SectionIndex } from '../../components/layout/SectionIndex';
 import WasmGallery from '../../components/WasmGallery';
 import PoetryCouncil from '../../components/PoetryCouncil';
+import { buildSectionedWebPageJsonLd } from '../../lib/section-indexing';
 import { buildPublicPageMetadata, SITE_URL } from '../../lib/site-metadata';
 import { getPublishedSiteSections } from '../../lib/site-sections-server';
 
 const siteUrl = SITE_URL;
+const pageDescription =
+  'وسم الإبل «الباب» الفريد وديوان الشعر النبطي لقبيلة السياحين: كنوز الهوية القبلية الأصيلة من شعر عتيبة وعلامات الانتساب.';
 
 export const metadata: Metadata = buildPublicPageMetadata({
   title: 'الهوية ووسم الإبل والشعر',
-  description:
-    'وسم الإبل «الباب» الفريد وديوان الشعر النبطي لقبيلة السياحين: كنوز الهوية القبلية الأصيلة من شعر عتيبة وعلامات الانتساب.',
+  description: pageDescription,
   keywords: ['وسم السياحين', 'وسم الإبل الباب', 'شعر قبيلة السياحين', 'ديوان الشعر النبطي', 'هوية السياحين'],
   path: '/hawiya/',
 });
@@ -35,21 +38,18 @@ const breadcrumbLd = {
   ],
 };
 
-const webPageLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  '@id': `${siteUrl}/hawiya/#webpage`,
-  url: `${siteUrl}/hawiya/`,
-  name: 'الهوية ووسم الإبل والشعر | الموقع الرسمي لقبيلة السياحين',
-  description: 'وسم الإبل «الباب» الشهير لقبيلة السياحين وديوان الشعر النبطي الأصيل: علامات الهوية القبلية الموروثة والإبداع التليد من عتيبة.',
-  inLanguage: 'ar-SA',
-  isPartOf: {
-    '@id': `${siteUrl}/#website`,
-  },
-};
-
 export default async function HawiyaPage() {
   const sections = await getPublishedSiteSections(['wasm', 'poetry']);
+  const indexedSections = [
+    { id: 'wasm', title: sections.wasm.title, description: sections.wasm.description },
+    { id: 'poetry', title: sections.poetry.title, description: sections.poetry.description },
+  ];
+  const webPageLd = buildSectionedWebPageJsonLd({
+    path: '/hawiya/',
+    name: 'الهوية ووسم الإبل والشعر | الموقع الرسمي لقبيلة السياحين',
+    description: pageDescription,
+    sections: indexedSections,
+  });
 
   return (
     <>
@@ -59,6 +59,8 @@ export default async function HawiyaPage() {
         title="الهوية"
         description="وسم الإبل وديوان الشعر: علامات الهوية والإبداع القبلي."
       />
+
+      <SectionIndex sections={indexedSections} />
 
       <Section
         id="wasm"

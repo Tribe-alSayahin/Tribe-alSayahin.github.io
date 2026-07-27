@@ -1,17 +1,20 @@
 import type { Metadata } from 'next';
 import { ChapterDivider } from '../../components/layout/ChapterDivider';
 import { Section } from '../../components/layout/Section';
+import { SectionIndex } from '../../components/layout/SectionIndex';
 import InteractiveMap from '../../components/InteractiveMap';
 import HeritageGallery from '../../components/HeritageGallery';
+import { buildSectionedWebPageJsonLd } from '../../lib/section-indexing';
 import { buildPublicPageMetadata, SITE_URL } from '../../lib/site-metadata';
 import { getPublishedSiteSections } from '../../lib/site-sections-server';
 
 const siteUrl = SITE_URL;
+const pageDescription =
+  'استكشف ديار قبيلة السياحين ومنازلها التاريخية في عالية نجد ومنازل الاستقرار والهجرات وهجرها المعتمدة ومناهل المياه القديمة.';
 
 export const metadata: Metadata = buildPublicPageMetadata({
   title: 'الديار والهجرات',
-  description:
-    'استكشف ديار قبيلة السياحين ومنازلها التاريخية في عالية نجد ومنازل الاستقرار والهجرات وهجرها المعتمدة ومناهل المياه القديمة.',
+  description: pageDescription,
   keywords: ['ديار قبيلة السياحين', 'هجرات السياحين', 'منازل السياحين', 'ديار عتيبة', 'نجد'],
   path: '/diyar/',
 });
@@ -35,22 +38,18 @@ const breadcrumbLd = {
   ],
 };
 
-const webPageLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  '@id': `${siteUrl}/diyar/#webpage`,
-  url: `${siteUrl}/diyar/`,
-  name: 'الديار والهجرات | الموقع الرسمي لقبيلة السياحين',
-  description:
-    'استكشف ديار قبيلة السياحين ومنازلها التاريخية في عالية نجد ومنازل الاستقرار والهجرات وهجرها المعتمدة ومناهل المياه القديمة.',
-  inLanguage: 'ar-SA',
-  isPartOf: {
-    '@id': `${siteUrl}/#website`,
-  },
-};
-
 export default async function DiyarPage() {
   const sections = await getPublishedSiteSections(['map', 'gallery']);
+  const indexedSections = [
+    { id: 'map', title: sections.map.title, description: sections.map.description },
+    { id: 'gallery', title: sections.gallery.title, description: sections.gallery.description },
+  ];
+  const webPageLd = buildSectionedWebPageJsonLd({
+    path: '/diyar/',
+    name: 'الديار والهجرات | الموقع الرسمي لقبيلة السياحين',
+    description: pageDescription,
+    sections: indexedSections,
+  });
 
   return (
     <>
@@ -60,6 +59,8 @@ export default async function DiyarPage() {
         title="الديار"
         description="منازل الاستقرار والهجرات: خريطة الديار ومعرض التراث البصري."
       />
+
+      <SectionIndex sections={indexedSections} />
 
       <Section
         id="map"

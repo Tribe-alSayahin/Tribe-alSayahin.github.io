@@ -1,17 +1,38 @@
 import type { Metadata } from 'next';
 import { ChapterDivider } from '../../components/layout/ChapterDivider';
 import { Section } from '../../components/layout/Section';
+import { SectionIndex } from '../../components/layout/SectionIndex';
 import NewsEvents from '../../components/NewsEvents';
 import { Supporters } from '../../components/layout/Supporters';
 import { Contact } from '../../components/layout/Contact';
+import { buildSectionedWebPageJsonLd } from '../../lib/section-indexing';
 import { buildPublicPageMetadata, SITE_URL } from '../../lib/site-metadata';
 
 const siteUrl = SITE_URL;
+const pageDescription =
+  'آخر الأخبار والمناسبات والفعاليات الرسمية لقبيلة السياحين: تغطية مستمرة للحاضر القبلي وتواصل الأجيال وإحياء الموروث الثقافي.';
+const indexedSections = [
+  {
+    id: 'news',
+    title: 'الأخبار والمناسبات',
+    description: 'قسم القراءة العامة لعناصر الأخبار والمناسبات المنشورة من لوحة الإدارة.',
+  },
+  {
+    id: 'supporters',
+    title: 'داعمو وثيقة وإرث القبيلة',
+    description:
+      'تقديراً وعرفاناً لرجالات وأبناء قبيلة السياحين الذين ساهموا في توثيق هذا الإرث التاريخي وصونه للأجيال.',
+  },
+  {
+    id: 'contact',
+    title: 'تواصل معنا',
+    description: 'لأي استفسار أو إضافة معلومة موثّقة عن القبيلة، يسعدنا تواصلكم.',
+  },
+];
 
 export const metadata: Metadata = buildPublicPageMetadata({
   title: 'الأخبار والمناسبات',
-  description:
-    'آخر الأخبار والمناسبات والفعاليات الرسمية لقبيلة السياحين: تغطية مستمرة للحاضر القبلي وتواصل الأجيال وإحياء الموروث الثقافي.',
+  description: pageDescription,
   keywords: ['أخبار قبيلة السياحين', 'مناسبات قبيلة السياحين', 'فعاليات السياحين', 'أخبار القبائل', 'الموقع الرسمي لقبيلة السياحين'],
   path: '/news/',
 });
@@ -35,18 +56,12 @@ const breadcrumbLd = {
   ],
 };
 
-const webPageLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  '@id': `${siteUrl}/news/#webpage`,
-  url: `${siteUrl}/news/`,
+const webPageLd = buildSectionedWebPageJsonLd({
+  path: '/news/',
   name: 'الأخبار والمناسبات | الموقع الرسمي لقبيلة السياحين',
-  description: 'آخر الأخبار والمناسبات والفعاليات الرسمية لقبيلة السياحين: تغطية مستمرة للحاضر القبلي وتواصل الأجيال وإحياء الموروث الثقافي.',
-  inLanguage: 'ar-SA',
-  isPartOf: {
-    '@id': `${siteUrl}/#website`,
-  },
-};
+  description: pageDescription,
+  sections: indexedSections,
+});
 
 export default function NewsPage() {
   return (
@@ -57,6 +72,8 @@ export default function NewsPage() {
         title="المجتمع"
         description="الأخبار والداعمين والتواصل: حاضر القبيلة وتواصلها مع الأجيال."
       />
+
+      <SectionIndex sections={indexedSections} />
 
       <Section
         id="news"
