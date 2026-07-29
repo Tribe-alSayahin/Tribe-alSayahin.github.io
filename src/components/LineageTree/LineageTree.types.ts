@@ -12,7 +12,7 @@ export interface TreeNode {
 export const RELIABILITY_LABELS: Record<1 | 2 | 3, string> = {
   1: 'موثق',
   2: 'محتمل',
-  3: 'غير مؤكد',
+  3: 'غير موثق',
 };
 
 /** Tailwind colour tokens for each reliability level. */
