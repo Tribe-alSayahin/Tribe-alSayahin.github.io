@@ -22,7 +22,7 @@ export function Timeline() {
     {
       title: 'المشاركة التاريخية في توحيد البلاد وضمّ القصيم',
       description: 'شارك السياحين — ومنهم جماعة وربع ابن مسيلم — ضمن جيش الملك عبد العزيز آل سعود (طيب الله ثراه) في حملات ضمّ منطقة القصيم المباركة سنة ١٣٢١–١٣٢٢هـ، وشهدوا وقائع حاسمة منها غزوة الشنانة الشهيرة، مساهمين بدمائهم وأرواحهم في تأسيس وتوحيد المملكة العربية السعودية العظمى.',
-      reference: `${LOCAL_REFS[0].author}، ${LOCAL_REFS[0].bookTitle}، ${LOCAL_REFS[0].publisher}، ${LOCAL_REFS[0].year}، ${LOCAL_REFS[0].pages}.`,
+      reference: `${LOCAL_REFS[0].author}، ${LOCAL_REFS[0].bookTitle}، ${LOCAL_REFS[0].publicationDetails}، ${LOCAL_REFS[0].year}، ${LOCAL_REFS[0].pages}.`,
     },
     {
       title: 'الحاضر المشرق والعهد الزاهر',

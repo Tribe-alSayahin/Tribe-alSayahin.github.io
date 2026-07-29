@@ -16,7 +16,7 @@ export const TreeHierarchy: React.FC<TreeHierarchyProps> = ({ filteredNodes, all
       <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-l from-transparent via-brass to-transparent opacity-60" aria-hidden="true" />
 
       <div className="flex items-center justify-between gap-4 mb-6">
-        <span className="font-kufi text-xs text-sand-dim">الأفخاذ الرئيسية وفروعها</span>
+        <span className="font-kufi text-xs text-sand-dim">الفروع الواردة في المصادر</span>
         <GitBranch className="w-5 h-5 text-brass" aria-hidden="true" />
       </div>
 
