@@ -36,10 +36,28 @@ export function Footer() {
                 <span className="absolute top-4 right-4 w-7 h-7 rounded-lg bg-brass/12 text-brass-lt border border-brass/25 flex items-center justify-center font-kufi text-xs font-semibold">
                   {['١', '٢', '٣', '٤', '٥'][index] ?? index + 1}
                 </span>
-                {ref.author}، {ref.bookTitle}، الصفحات: {ref.pages}.
+                {ref.author}،{' '}
+                {ref.url ? (
+                  <a
+                    href={ref.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-brass-lt underline decoration-brass/40 underline-offset-4 hover:decoration-brass"
+                  >
+                    {ref.bookTitle}
+                  </a>
+                ) : (
+                  ref.bookTitle
+                )}
+                ، الصفحات: {ref.pages}.
                 <span className="block text-sand-dim text-xs mt-2 opacity-80">
-                  {ref.publisher}، الطبعة الأولى {ref.year}.
+                  {ref.publicationDetails}، {ref.edition}، {ref.year}.
                 </span>
+                {ref.verificationNote ? (
+                  <span className="block text-amber-300 text-xs mt-2">
+                    تنبيه توثيقي: {ref.verificationNote}
+                  </span>
+                ) : null}
               </li>
             ))}
           </ol>

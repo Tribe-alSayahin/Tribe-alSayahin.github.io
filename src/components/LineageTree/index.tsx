@@ -56,7 +56,8 @@ export default function LineageTree() {
             فخوذ السياحين من عتيبة
           </h3>
           <p className="text-xs md:text-sm text-sand-dim leading-relaxed max-w-2xl font-sans">
-            الأفخاذ الرئيسية لقبيلة السياحين من عتيبة، مع فروعها وبطونها المتوارثة.
+            الفروع الخمسة المثبتة في المرجع المطبوع، واسمان إضافيان وردا في
+            منتدى الهيلا وتظهر بوسم «غير مؤكد» حتى يؤيدها مصدر مستقل.
           </p>
         </div>
 
