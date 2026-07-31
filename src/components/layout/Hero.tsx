@@ -32,7 +32,7 @@ const PANEL_CORNERS = [
 
 const CHAPTERS = [
   { id: 'jathum', label: 'الأصول' },
-  { id: 'map', label: 'الديار' },
+  { id: 'gallery', label: 'الديار' },
   { id: 'wasm', label: 'الهوية' },
   { id: 'timeline', label: 'التاريخ' },
   { id: 'news', label: 'المجتمع' },

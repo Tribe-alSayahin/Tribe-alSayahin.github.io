@@ -55,17 +55,6 @@ export const SITE_SECTION_DEFINITIONS = [
     sortOrder: 30,
   },
   {
-    key: 'map',
-    page: 'الديار والهجرات',
-    label: 'خريطة الديار',
-    title: 'الديار ومنازل الاستقرار',
-    description:
-      'استكشف التوزيع الجغرافي لديار السياحين التاريخية، من منازلهم في نجد العذية وهجرهم المعتمدة ومناهل المياه القديمة.',
-    imageUrl: null,
-    imageAlt: null,
-    sortOrder: 40,
-  },
-  {
     key: 'gallery',
     page: 'الديار والهجرات',
     label: 'معرض التراث',

@@ -35,9 +35,8 @@ export const SITE_ROUTES: NavLinkItem[] = [
     label: 'الديار',
     href: '/diyar/',
     chapter: 2,
-    description: 'خريطة تفاعلية لديار القبيلة وهجراتها التاريخية ومناهل المياه القديمة وصور التراث.',
+    description: 'معرض التراث البصري لديار القبيلة وهجراتها التاريخية ومناهل المياه القديمة.',
     sections: [
-      { id: 'map', label: 'الخريطة', href: '/diyar/#map' },
       { id: 'gallery', label: 'التراث', href: '/diyar/#gallery' },
     ],
   },
@@ -89,7 +88,6 @@ export const SECTION_TO_ROUTE: Record<string, string> = {
   jathum: '/nasab/',
   lineage: '/nasab/#lineage',
   constellation: '/nasab/#constellation',
-  map: '/diyar/',
   gallery: '/diyar/#gallery',
   wasm: '/hawiya/',
   poetry: '/hawiya/#poetry',

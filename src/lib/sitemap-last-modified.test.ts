@@ -7,7 +7,7 @@ describe('sitemap static update dates', () => {
       sections: [
         { section_key: 'jathum', updated_at: '2026-07-20T08:00:00.000Z' },
         { section_key: 'lineage', updated_at: '2026-07-22T08:00:00.000Z' },
-        { section_key: 'map', updated_at: '2026-07-21T08:00:00.000Z' },
+        { section_key: 'gallery', updated_at: '2026-07-21T08:00:00.000Z' },
       ],
       posts: [],
       events: [],

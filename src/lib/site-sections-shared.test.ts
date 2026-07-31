@@ -14,7 +14,6 @@ describe('site sections', () => {
       'jathum',
       'lineage',
       'constellation',
-      'map',
       'gallery',
       'wasm',
       'poetry',
@@ -34,15 +33,15 @@ describe('site sections', () => {
 
   it('merges stored content without allowing the section key to drift', () => {
     expect(
-      mergeSiteSection('map', {
+      mergeSiteSection('gallery', {
         section_key: 'archive',
         title: 'عنوان محدث',
-        image_url: 'https://example.com/map.webp',
+        image_url: 'https://example.com/gallery.webp',
       }),
     ).toMatchObject({
-      section_key: 'map',
+      section_key: 'gallery',
       title: 'عنوان محدث',
-      image_url: 'https://example.com/map.webp',
+      image_url: 'https://example.com/gallery.webp',
     });
   });
 });

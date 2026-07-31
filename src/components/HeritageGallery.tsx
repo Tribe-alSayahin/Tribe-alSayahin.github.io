@@ -9,12 +9,9 @@ import { Modal } from './ui/Modal';
 
 interface GalleryItem {
   id: number;
-  locationId?: string; // Links directly to the InteractiveMap location id
   title: string;
   category: 'settlements' | 'wells' | 'regions';
   categoryLabel: string;
-  imgUrl: string;
-  satelliteUrl: string; // Real satellite/map layout image
   coords?: string; // Coordinates to display on card
   description: string;
   story: string;
@@ -23,39 +20,21 @@ interface GalleryItem {
 const GALLERY_ITEMS: GalleryItem[] = [
   {
     id: 2,
-    locationId: 'jathum',
     title: 'هجرة الجثوم (عالية نجد)',
     category: 'settlements',
     categoryLabel: 'الهجر والبلدات القديمة',
-    imgUrl: 'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?auto=format&fit=crop&w=1200&q=80',
-    satelliteUrl: 'https://images.unsplash.com/photo-1547989453-11e67ffb3885?auto=format&fit=crop&w=1200&q=80',
     coords: '24.5822° N, 44.6053° E',
     description: 'أولى هجر السياحين في نجد، وتتميز بوقوعها بجوار هضاب الجثوم الشامخة.',
     story: 'تأسست هجرة الجثوم التاريخية في عالية نجد على يد الشيخ فرج بن مسيلم السيحاني، لتكون أولى ديار واستقرار قبيلة السياحين في نجد. تظهر معالم الهجرة الفريدة بجوار هضاب الجثوم الشامخة، وتتوزع بيوتها الطينية والحديثة البسيطة على رمال نجد الذهبية، ويقطعها طريق إسفلتي ممتد يعبر بالزائرين إلى معقل الأصالة والكرامة التاريخية للقبيلة. وقد ورد ذكرها في المصادر المعجمية والموسوعية المعتمدة كـ«معجم عالية نجد» لسعد الجنيدل كمعقل رئيسي وهجرة عامرة، وما زالت الجثوم تحتفظ برمزيتها التراثية العميقة كمنطلق للاستقرار والتحضر المعاصر.'
   },
   {
     id: 4,
-    locationId: 'rahat',
     title: 'وادي رهاط الأثري بالحجاز',
     category: 'regions',
     categoryLabel: 'الأقاليم والأراضي التاريخية',
-    imgUrl: 'https://images.unsplash.com/photo-1516690561799-46d8f74f90f6?auto=format&fit=crop&w=1200&q=80',
-    satelliteUrl: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80', // Volcanic canyon aerial rugged mountains
     coords: '22.0125° N, 39.8114° E',
     description: 'الموطن الحجازي القديم شمال شرق مكة المكرمة الذي يمثل جذور القبيلة الحجازية.',
     story: 'يقع وادي رهاط العتيق في منطقة الحجاز، وهو من المناهل والبلدات القديمة جداً التي سكنتها فروع قبيلة السياحين قبل امتدادها الواسع صوب هضاب نجد. يمثل رهاط حلقة الوصل التاريخية والاجتماعية التي تربط فروع السياحين الحجازية بنجد، ويسجل الجذور الأولى للقبيلة مع فروع روقة الحجاز وبيئتهم الجبلية والزراعية العتيقة.'
-  },
-  {
-    id: 5,
-    locationId: 'aliyat-najd',
-    title: 'عالية نجد (مواطن ورعي القبيلة)',
-    category: 'regions',
-    categoryLabel: 'الأقاليم والأراضي التاريخية',
-    imgUrl: 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=1200&q=80',
-    satelliteUrl: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80', // Plateau aerial view
-    coords: 'المنطقة الوسطى، عالية نجد',
-    description: 'المدى الرعوي الشاسع الذي شهد وقائع القبيلة التاريخية ونزل بيوت الشعر لفرسانها.',
-    story: 'تمثل عالية نجد المسرح الجغرافي الأوسع لغالبية قبيلة السياحين وفروع الروقة من عتيبة. هذه السهول والمراعي الشاسعة شهدت معارك تاريخية وبها تركزت حركة الروقة ومضارب خيامهم ومراعي إبلهم، وهي البيئة التي استلهم منها شعراء القبيلة قصائدهم العتيقة، ووثق فيها المستشرق ماكس فون أوبنهايم جداول القبيلة وقياس نزل البادية.'
   }
 ];
 
@@ -93,12 +72,6 @@ export default function HeritageGallery() {
     }
   };
 
-  const handleLocateOnMap = (e: React.MouseEvent, locationId: string) => {
-    e.stopPropagation(); // Prevent opening lightbox
-    const event = new CustomEvent('select-map-location', { detail: { id: locationId } });
-    window.dispatchEvent(event);
-  };
-
   const currentItem = activeItemIndex !== null ? GALLERY_ITEMS[activeItemIndex] : null;
 
   return (
@@ -110,8 +83,8 @@ export default function HeritageGallery() {
             <Globe className="w-5 h-5 animate-pulse" />
           </div>
           <div>
-            <h4 className="font-serif text-lg text-sand font-bold">تصفح الديار المدمج مع الخرائط</h4>
-            <p className="text-xs text-sand-dim font-sans">تتكامل عناصر المعرض أدناه مباشرة مع خريطة الديار التفاعلية لتحديد المواقع وتصفحها بنظام الأقمار الصناعية.</p>
+            <h4 className="font-serif text-lg text-sand font-bold">تصفح شواهد الديار</h4>
+            <p className="text-xs text-sand-dim font-sans">يعرض المعرض شواهد الديار وقصصها التراثية الموثقة.</p>
           </div>
         </div>
         <div className="text-xs text-brass-lt font-mono bg-brass/5 px-space-3 py-space-1.5 rounded-lg border border-brass/15">
@@ -200,18 +173,7 @@ export default function HeritageGallery() {
                 </div>
               )}
 
-              <div className="mt-auto flex items-center justify-between gap-space-3">
-                {item.locationId ? (
-                  <button
-                    onClick={(e) => handleLocateOnMap(e, item.locationId)}
-                    className="inline-flex items-center gap-space-1.5 rounded-lg border border-brass/30 bg-brass/10 px-space-3 py-space-1.5 font-kufi text-[10px] font-semibold text-brass-lt transition-colors hover:border-brass/60 hover:bg-brass/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
-                  >
-                    <MapPin className="size-3.5 text-brass" aria-hidden="true" />
-                    عرض على الخريطة
-                  </button>
-                ) : (
-                  <span className="text-[9px] text-sand-dim/60 font-mono">موقع إقليمي عام</span>
-                )}
+              <div className="mt-auto flex items-center justify-end gap-space-3">
                 <button
                   type="button"
                   onClick={() => openLightbox(item.id)}
@@ -361,19 +323,6 @@ export default function HeritageGallery() {
               </div>
 
               <div className="space-y-space-4 pt-space-4 border-t border-brass/10">
-                {currentItem.locationId && (
-                  <Button
-                    onClick={(e) => {
-                      handleLocateOnMap(e, currentItem.locationId);
-                      closeLightbox();
-                    }}
-                    className="w-full"
-                  >
-                    <MapPin className="w-4 h-4" />
-                    عرض على الخريطة المباشرة والتحليلات الجغرافية
-                  </Button>
-                )}
-
                 <div className="flex items-center justify-between text-xs text-sand-dim">
                   <span>الديار {activeItemIndex + 1} من {GALLERY_ITEMS.length}</span>
                   <div className="flex gap-space-2">

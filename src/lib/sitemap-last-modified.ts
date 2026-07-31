@@ -20,7 +20,6 @@ const SECTION_PATHS: Partial<Record<SiteSectionKey, string>> = {
   jathum: '/nasab/',
   lineage: '/nasab/',
   constellation: '/nasab/',
-  map: '/diyar/',
   gallery: '/diyar/',
   wasm: '/hawiya/',
   poetry: '/hawiya/',
