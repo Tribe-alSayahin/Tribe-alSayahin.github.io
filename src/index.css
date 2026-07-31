@@ -662,20 +662,6 @@ body::after {
   background-size: 24px 24px;
 }
 
-/* Leaflet style overrides */
-.leaflet-container {
-  background: var(--ink-2) !important;
-  font-family: inherit !important;
-}
-.custom-leaflet-tooltip {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-.custom-leaflet-tooltip::before {
-  display: none !important;
-}
-
 /* scaleIn animation keyframes */
 @keyframes scaleIn {
   from {

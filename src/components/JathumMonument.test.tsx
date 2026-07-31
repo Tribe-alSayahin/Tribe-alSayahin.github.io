@@ -51,11 +51,11 @@ describe('JathumMonument', () => {
     const scrollToSection = vi.fn();
     render(<JathumMonument scrollToSection={scrollToSection} />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'موقعها على خريطة الديار' }));
+    expect(screen.queryByRole('button', { name: 'موقعها على خريطة الديار' })).toBeNull();
     fireEvent.click(screen.getByRole('button', { name: 'شواهدها في معرض التراث' }));
 
-    expect(scrollToSection).toHaveBeenNthCalledWith(1, 'map');
-    expect(scrollToSection).toHaveBeenNthCalledWith(2, 'gallery');
+    expect(scrollToSection).toHaveBeenCalledOnce();
+    expect(scrollToSection).toHaveBeenCalledWith('gallery');
     expect(pushMock).not.toHaveBeenCalled();
   });
 
@@ -64,10 +64,9 @@ describe('JathumMonument', () => {
 
     expect(pushMock).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByRole('button', { name: 'موقعها على خريطة الديار' }));
     fireEvent.click(screen.getByRole('button', { name: 'شواهدها في معرض التراث' }));
 
-    expect(pushMock).toHaveBeenNthCalledWith(1, '/diyar/');
-    expect(pushMock).toHaveBeenNthCalledWith(2, '/diyar/#gallery');
+    expect(pushMock).toHaveBeenCalledOnce();
+    expect(pushMock).toHaveBeenCalledWith('/diyar/#gallery');
   });
 });

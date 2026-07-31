@@ -16,7 +16,7 @@ const CHAPTER_META: Record<string, { desc: string; updated: string; count: strin
     count: '٣ وثائق',
   },
   diyar: {
-    desc: 'الخريطة التفاعلية لمواطن القبيلة في عالية نجد، الصور الأثرية، ومعالم الهجر والديار.',
+    desc: 'الصور الأثرية وشواهد الاستقرار ومعالم الهجر والديار.',
     updated: 'آخر تحديث: صفر ١٤٤٦',
     count: '٢ وثائق',
   },

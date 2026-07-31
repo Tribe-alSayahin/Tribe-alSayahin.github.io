@@ -136,14 +136,8 @@ export default function JathumMonument({ scrollToSection }: JathumMonumentProps)
           {/* أزرار الاستكشاف */}
           <div className="flex flex-wrap gap-3 mt-7">
             <button
-              onClick={() => navigate('map')}
-              className="font-kufi text-sm font-semibold px-6 py-2.5 rounded-full bg-gradient-to-l from-brass to-brass-lt text-ink shadow-glow-sm hover:-translate-y-0.5 hover:shadow-glow-md transition-all cursor-pointer border-0 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
-            >
-              موقعها على خريطة الديار
-            </button>
-            <button
               onClick={() => navigate('gallery')}
-              className="font-kufi text-sm font-semibold px-6 py-2.5 rounded-full bg-transparent text-brass-lt border border-brass/35 hover:bg-brass/10 hover:-translate-y-0.5 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
+              className="font-kufi text-sm font-semibold px-6 py-2.5 rounded-full bg-gradient-to-l from-brass to-brass-lt text-ink shadow-glow-sm hover:-translate-y-0.5 hover:shadow-glow-md transition-all cursor-pointer border-0 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
             >
               شواهدها في معرض التراث
             </button>

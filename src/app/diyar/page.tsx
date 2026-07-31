@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { ChapterDivider } from '../../components/layout/ChapterDivider';
 import { Section } from '../../components/layout/Section';
 import { SectionIndex } from '../../components/layout/SectionIndex';
-import InteractiveMap from '../../components/InteractiveMap';
 import HeritageGallery from '../../components/HeritageGallery';
 import { buildSectionedWebPageJsonLd } from '../../lib/section-indexing';
 import { buildPublicPageMetadata, SITE_URL } from '../../lib/site-metadata';
@@ -39,9 +38,8 @@ const breadcrumbLd = {
 };
 
 export default async function DiyarPage() {
-  const sections = await getPublishedSiteSections(['map', 'gallery']);
+  const sections = await getPublishedSiteSections(['gallery']);
   const indexedSections = [
-    { id: 'map', title: sections.map.title, description: sections.map.description },
     { id: 'gallery', title: sections.gallery.title, description: sections.gallery.description },
   ];
   const webPageLd = buildSectionedWebPageJsonLd({
@@ -57,31 +55,16 @@ export default async function DiyarPage() {
         id="chapter-diyar"
         number={2}
         title="الديار"
-        description="منازل الاستقرار والهجرات: خريطة الديار ومعرض التراث البصري."
+        description="منازل الاستقرار والهجرات ومعرض التراث البصري."
       />
 
       <SectionIndex sections={indexedSections} />
 
       <Section
-        id="map"
-        tone="ink-2"
-        noBorder
-        chapterNumber={2}
-        serialNumber="٠٤"
-        badgeText="الديار والهجرات"
-        title={sections.map.title}
-        description={sections.map.description}
-        imageUrl={sections.map.image_url}
-        imageAlt={sections.map.image_alt}
-      >
-        <InteractiveMap />
-      </Section>
-
-      <Section
         id="gallery"
         tone="ink"
         chapterNumber={2}
-        serialNumber="٠٥"
+        serialNumber="٠٤"
         badgeText="الشاهد البصري"
         title={sections.gallery.title}
         description={sections.gallery.description}
