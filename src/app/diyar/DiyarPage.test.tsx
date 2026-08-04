@@ -46,7 +46,7 @@ vi.mock('../../lib/site-sections-server', () => ({
       image_alt: null,
     },
     gallery: {
-      title: 'شواهد الديار',
+      title: 'الديار التابعة للقبيلة',
       description: 'معرض التراث البصري',
       image_url: null,
       image_alt: null,
@@ -64,5 +64,6 @@ describe('صفحة الديار', () => {
     expect(screen.getByTestId('heritage-gallery')).toBeTruthy();
     expect(screen.queryByText('خريطة مواطن وديار القبيلة')).toBeNull();
     expect(screen.getByRole('link', { name: 'أساس الديار — الجثوم' })).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'الديار التابعة للقبيلة' })).toBeTruthy();
   });
 });

@@ -17,7 +17,7 @@ describe('التنقل السريع', () => {
     ]);
     expect(sectionsByRoute.diyar).toEqual([
       { label: 'أساس الديار — الجثوم', href: '/diyar/#jathum' },
-      { label: 'معرض التراث والمقتنيات', href: '/diyar/#gallery' },
+      { label: 'الديار التابعة للقبيلة', href: '/diyar/#gallery' },
     ]);
     expect(sectionsByRoute.hawiya).toEqual([
       { label: 'وسم الإبل وعلامة الباب', href: '/hawiya/#wasm' },
@@ -35,7 +35,7 @@ describe('التنقل السريع', () => {
       { label: 'المناسبات', href: '/events/' },
       { label: 'داعمو وثيقة وإرث القبيلة', href: '/news/#supporters' },
       { label: 'تواصل معنا', href: '/news/#contact' },
-      { label: 'الإدارة', href: '/admin/' },
+      { label: 'قسم الإدارة', href: '/admin/' },
     ]);
   });
 });

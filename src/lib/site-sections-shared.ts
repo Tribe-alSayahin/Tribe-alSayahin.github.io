@@ -57,8 +57,8 @@ export const SITE_SECTION_DEFINITIONS = [
   {
     key: 'gallery',
     page: 'الديار والهجرات',
-    label: 'معرض التراث',
-    title: 'معرض التراث والمقتنيات',
+    label: 'ديار القبيلة',
+    title: 'الديار التابعة للقبيلة',
     description:
       'شواهد بصرية ومقتنيات تراثية تعكس تاريخ القبيلة العريق وصوراً من ذاكرة الصحراء والديار المأهولة.',
     imageUrl: null,
@@ -128,6 +128,7 @@ export const SITE_SECTION_KEYS = SITE_SECTION_DEFINITIONS.map(({ key }) => key);
 const LEGACY_SECTION_TITLES: Partial<Record<SiteSectionKey, readonly string[]>> = {
   lineage: ['ديوان نسب القبيلة الأصيل'],
   jathum: ['هجرة الجثوم — أساس الديار'],
+  gallery: ['معرض التراث والمقتنيات'],
 };
 
 export function getDefaultSiteSection(key: SiteSectionKey): SiteSectionContent {

@@ -25,7 +25,6 @@ export function SectionIndex({ sections }: SectionIndexProps) {
               <a
                 href={`#${section.id}`}
                 className="group flex h-full items-start gap-3 rounded-2xl border border-brass/15 bg-ink/60 p-4 transition-colors hover:border-brass/45 hover:bg-brass/[0.06] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brass"
-                aria-label={`انتقل إلى قسم ${section.title}`}
               >
                 <span className="font-ruqaa text-lg text-brass" aria-hidden="true">
                   {String(index + 1).padStart(2, '0')}
@@ -34,6 +33,7 @@ export function SectionIndex({ sections }: SectionIndexProps) {
                   <span className="block font-serif text-lg text-sand transition-colors group-hover:text-brass-lt">
                     {section.title}
                   </span>
+                  {' '}
                   <span className="mt-1 line-clamp-2 block font-sans text-xs leading-6 text-sand-dim">
                     {section.description}
                   </span>

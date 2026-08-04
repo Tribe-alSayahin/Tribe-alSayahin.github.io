@@ -41,7 +41,7 @@ describe('JathumMonument', () => {
   it('يعرض معلم الجثوم ومحتواه الأساسي بصورة وصفية', () => {
     render(<JathumMonument />);
 
-    expect(screen.getByRole('heading', { name: /مِن هنا كانت البداية/ })).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /مِن هنا كانت البداية/, level: 3 })).toBeTruthy();
     expect(screen.getByRole('img', { name: /هضاب الجثوم وهجرة الجثوم/ })).toBeTruthy();
     expect(screen.getByText('الشيخ فرج بن مسيلم السيحاني')).toBeTruthy();
     expect(screen.getByText(/هاري سانت جون فيلبي/)).toBeTruthy();
@@ -53,7 +53,9 @@ describe('JathumMonument', () => {
     render(<JathumMonument scrollToSection={scrollToSection} />);
 
     expect(screen.queryByRole('button', { name: 'موقعها على خريطة الديار' })).toBeNull();
-    fireEvent.click(screen.getByRole('button', { name: 'شواهدها في معرض التراث' }));
+    const galleryButton = screen.getByRole('button', { name: 'شواهدها في معرض التراث' });
+    expect(galleryButton.className).toContain('min-h-11');
+    fireEvent.click(galleryButton);
 
     expect(scrollToSection).toHaveBeenCalledOnce();
     expect(scrollToSection).toHaveBeenCalledWith('gallery');

@@ -79,7 +79,7 @@ export default function JathumWeatherCard() {
             <CloudSun className="h-3.5 w-3.5" />
             الطقس الحالي في الجثوم
           </span>
-          <h5 className="font-serif text-xl font-bold text-sand">رصد مباشر لهواء الهجرة اليوم</h5>
+          <h4 className="font-serif text-xl font-bold text-sand">رصد مباشر لهواء الهجرة اليوم</h4>
           <p className="mt-1 text-xs leading-relaxed text-sand-dim">
             قراءة حيّة لحرارة الجثوم ورطوبتها والرياح المحيطة بها من خدمة مناخية مفتوحة.
           </p>

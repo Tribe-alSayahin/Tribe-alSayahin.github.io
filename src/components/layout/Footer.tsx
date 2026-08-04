@@ -76,7 +76,7 @@ export function Footer() {
           <a
             href="mailto:admin@alsaihani.com"
             className="inline-flex items-center gap-1.5 text-brass-lt hover:text-brass"
-            aria-label="مراسلة إدارة الموقع"
+            aria-label="مراسلة إدارة الموقع: admin@alsaihani.com"
           >
             <Mail className="w-4 h-4" aria-hidden="true" />
             admin@alsaihani.com
@@ -88,7 +88,7 @@ export function Footer() {
             href="https://snapchat.com/t/Ohhqg5X1"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="حساب القبيلة على سناب شات"
+            aria-label="حساب القبيلة على سناب شات: live.asya7een"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#FFFC00]/10 border border-[#FFFC00]/30 text-[#FFFC00] hover:bg-[#FFFC00]/20 hover:border-[#FFFC00]/60 transition-all duration-300 font-kufi text-sm"
           >
             <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">

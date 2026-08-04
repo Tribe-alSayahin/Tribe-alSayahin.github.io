@@ -12,7 +12,7 @@
   - [الخلاصة الكوكبية للأنساب](https://alsaihani.com/nasab/#constellation)
 - [الديار](https://alsaihani.com/diyar/): الجثوم أساس الديار، والهجرات والمعالم والشواهد البصرية.
   - [أساس الديار — الجثوم](https://alsaihani.com/diyar/#jathum)
-  - [معرض التراث والمقتنيات](https://alsaihani.com/diyar/#gallery)
+  - [الديار التابعة للقبيلة](https://alsaihani.com/diyar/#gallery)
 - [الهوية](https://alsaihani.com/hawiya/): وسم القبيلة وديوان الشعر ومظاهر الهوية.
   - [وسم الإبل](https://alsaihani.com/hawiya/#wasm)
   - [ديوان الشعر في صفحة الهوية](https://alsaihani.com/hawiya/#poetry)

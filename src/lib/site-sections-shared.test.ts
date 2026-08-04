@@ -36,6 +36,14 @@ describe('site sections', () => {
       title: 'أساس الديار — الجثوم',
       sortOrder: 40,
     });
+    expect(
+      SITE_SECTION_DEFINITIONS.find(({ key }) => key === 'gallery'),
+    ).toMatchObject({
+      page: 'الديار والهجرات',
+      label: 'ديار القبيلة',
+      title: 'الديار التابعة للقبيلة',
+      sortOrder: 50,
+    });
   });
 
   it('merges stored content without allowing the section key to drift', () => {
@@ -64,6 +72,12 @@ describe('site sections', () => {
         title: 'هجرة الجثوم — أساس الديار',
       }),
     ).toMatchObject({ title: 'أساس الديار — الجثوم' });
+
+    expect(
+      mergeSiteSection('gallery', {
+        title: 'معرض التراث والمقتنيات',
+      }),
+    ).toMatchObject({ title: 'الديار التابعة للقبيلة' });
 
     expect(
       mergeSiteSection('lineage', {
