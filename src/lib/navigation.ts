@@ -83,7 +83,7 @@ export const SITE_ROUTES: NavLinkItem[] = [
       { id: 'events', label: 'المناسبات', href: '/events/' },
       { id: 'supporters', label: 'داعمو وثيقة وإرث القبيلة', href: '/news/#supporters' },
       { id: 'contact', label: 'تواصل معنا', href: '/news/#contact' },
-      { id: 'admin', label: 'الإدارة', href: '/admin/' },
+      { id: 'admin', label: 'قسم الإدارة', href: '/admin/' },
     ],
   },
   { id: 'home', label: 'الرئيسية', href: '/' },

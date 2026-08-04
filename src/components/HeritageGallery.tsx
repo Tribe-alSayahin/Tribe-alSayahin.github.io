@@ -107,7 +107,7 @@ export default function HeritageGallery() {
             <Globe className="w-5 h-5 animate-pulse" />
           </div>
           <div>
-            <h4 className="font-serif text-lg text-sand font-bold">تصفح شواهد الديار</h4>
+            <h3 className="font-serif text-lg text-sand font-bold">تصفح شواهد الديار</h3>
             <p className="text-xs text-sand-dim font-sans">يعرض المعرض شواهد الديار وقصصها التراثية الموثقة.</p>
           </div>
         </div>
@@ -125,6 +125,7 @@ export default function HeritageGallery() {
         <Button
           variant={filter === 'all' ? 'primary' : 'secondary'}
           size="sm"
+          className="min-h-11"
           onClick={() => setFilter('all')}
           aria-pressed={filter === 'all'}
         >
@@ -133,6 +134,7 @@ export default function HeritageGallery() {
         <Button
           variant={filter === 'settlements' ? 'primary' : 'secondary'}
           size="sm"
+          className="min-h-11"
           onClick={() => setFilter('settlements')}
           aria-pressed={filter === 'settlements'}
         >
@@ -141,6 +143,7 @@ export default function HeritageGallery() {
         <Button
           variant={filter === 'wells' ? 'primary' : 'secondary'}
           size="sm"
+          className="min-h-11"
           onClick={() => setFilter('wells')}
           aria-pressed={filter === 'wells'}
         >
@@ -149,6 +152,7 @@ export default function HeritageGallery() {
         <Button
           variant={filter === 'regions' ? 'primary' : 'secondary'}
           size="sm"
+          className="min-h-11"
           onClick={() => setFilter('regions')}
           aria-pressed={filter === 'regions'}
         >
@@ -201,7 +205,7 @@ export default function HeritageGallery() {
                 <button
                   type="button"
                   onClick={() => openLightbox(item.id)}
-                  className="inline-flex items-center gap-space-1.5 rounded-lg px-space-2 py-space-1.5 font-kufi text-[10px] font-semibold text-brass-lt/80 transition-colors hover:bg-brass/10 hover:text-brass-lt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+                  className="inline-flex min-h-11 items-center gap-space-1.5 rounded-lg px-3 py-2 font-kufi text-[10px] font-semibold text-brass-lt/80 transition-colors hover:bg-brass/10 hover:text-brass-lt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
                   aria-label={`قراءة قصة ${item.title}`}
                 >
                   اقرأ القصة
@@ -226,9 +230,10 @@ export default function HeritageGallery() {
         isOpen={activeItemIndex !== null}
         onClose={closeLightbox}
         size="xl"
+        ariaLabel={currentItem ? `قصة ${currentItem.title}` : undefined}
       >
         {currentItem && (
-          <div className="grid grid-cols-1 md:grid-cols-12 -m-space-6 h-full text-right" dir="rtl">
+          <div className="-m-4 grid h-full grid-cols-1 text-right sm:-m-space-6 md:grid-cols-12" dir="rtl">
             {/* Left Column: Cartography Vector Block */}
             <div className="md:col-span-7 relative h-[250px] md:h-[480px] bg-[#0c0804] overflow-hidden flex flex-col items-center justify-center p-space-6 md:p-space-10 border-b md:border-b-0 md:border-l border-brass/10">
               {/* Large ambient glowing pattern */}
@@ -265,14 +270,14 @@ export default function HeritageGallery() {
               {/* Image Navigation inside picture area */}
               <button
                 onClick={handlePrev}
-                className="absolute left-4 top-1/2 -translate-y-1/2 p-space-2 rounded-full bg-ink/75 text-sand hover:text-brass-lt border border-brass/10 hover:border-brass/40 transition-all cursor-pointer"
+                className="absolute left-4 top-1/2 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-ink/75 text-sand hover:text-brass-lt border border-brass/10 hover:border-brass/40 transition-all cursor-pointer"
                 aria-label="الصورة السابقة"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button
                 onClick={handleNext}
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-space-2 rounded-full bg-ink/75 text-sand hover:text-brass-lt border border-brass/10 hover:border-brass/40 transition-all cursor-pointer"
+                className="absolute right-4 top-1/2 inline-flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-ink/75 text-sand hover:text-brass-lt border border-brass/10 hover:border-brass/40 transition-all cursor-pointer"
                 aria-label="الصورة التالية"
               >
                 <ChevronRight className="w-5 h-5" />
@@ -300,7 +305,7 @@ export default function HeritageGallery() {
                   <div className="flex items-center gap-space-1 bg-ink/50 p-space-1 rounded-lg border border-brass/10">
                     <button
                       onClick={() => setModalFontSize('normal')}
-                      className={`flex-1 py-space-1 rounded text-[10px] font-bold font-sans transition-all cursor-pointer text-center ${
+                      className={`min-h-11 flex-1 rounded px-2 py-2 text-[10px] font-bold font-sans transition-all cursor-pointer text-center ${
                         modalFontSize === 'normal'
                           ? 'bg-brass text-ink shadow-sm font-black'
                           : 'text-sand-dim hover:text-sand hover:bg-brass/5'
@@ -310,7 +315,7 @@ export default function HeritageGallery() {
                     </button>
                     <button
                       onClick={() => setModalFontSize('large')}
-                      className={`flex-1 py-space-1 rounded text-[10px] font-bold font-sans transition-all cursor-pointer text-center ${
+                      className={`min-h-11 flex-1 rounded px-2 py-2 text-[10px] font-bold font-sans transition-all cursor-pointer text-center ${
                         modalFontSize === 'large'
                           ? 'bg-brass text-ink shadow-sm font-black'
                           : 'text-sand-dim hover:text-sand hover:bg-brass/5'
@@ -320,7 +325,7 @@ export default function HeritageGallery() {
                     </button>
                     <button
                       onClick={() => setModalFontSize('huge')}
-                      className={`flex-1 py-space-1 rounded text-[10px] font-bold font-sans transition-all cursor-pointer text-center ${
+                      className={`min-h-11 flex-1 rounded px-2 py-2 text-[10px] font-bold font-sans transition-all cursor-pointer text-center ${
                         modalFontSize === 'huge'
                           ? 'bg-brass text-ink shadow-sm font-black'
                           : 'text-sand-dim hover:text-sand hover:bg-brass/5'
@@ -352,13 +357,13 @@ export default function HeritageGallery() {
                   <div className="flex gap-space-2">
                     <button
                       onClick={handlePrev}
-                      className="p-space-1.5 rounded-lg border border-brass/10 hover:border-brass text-sand hover:text-brass-lt transition-colors cursor-pointer text-xs"
+                      className="min-h-11 rounded-lg border border-brass/10 px-4 py-2 hover:border-brass text-sand hover:text-brass-lt transition-colors cursor-pointer text-xs"
                     >
                       السابق
                     </button>
                     <button
                       onClick={handleNext}
-                      className="p-space-1.5 rounded-lg border border-brass/10 hover:border-brass text-sand hover:text-brass-lt transition-colors cursor-pointer text-xs"
+                      className="min-h-11 rounded-lg border border-brass/10 px-4 py-2 hover:border-brass text-sand hover:text-brass-lt transition-colors cursor-pointer text-xs"
                     >
                       التالي
                     </button>

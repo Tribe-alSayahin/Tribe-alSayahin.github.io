@@ -117,9 +117,9 @@ export default function JathumMonument({ scrollToSection }: JathumMonumentProps)
           transition={{ duration: 0.7 }}
           className="relative pr-5 border-r-2 border-brass/25"
         >
-          <h4 className="font-serif font-bold text-2xl md:text-3xl text-sand mb-4 leading-snug">
+          <h3 className="font-serif font-bold text-2xl md:text-3xl text-sand mb-4 leading-snug">
             مِن هنا كانت <span className="text-gold-gradient">البداية</span>
-          </h4>
+          </h3>
           <p className="text-sand-dim leading-loose text-sm md:text-base mb-4">
             في عالية نجد، وبجوار هضاب الجثوم الشامخة، أسّس الشيخ
             <span className="text-brass-lt font-semibold"> فرج بن مسيلم السيحاني </span>
@@ -137,7 +137,7 @@ export default function JathumMonument({ scrollToSection }: JathumMonumentProps)
           <div className="flex flex-wrap gap-3 mt-7">
             <button
               onClick={() => navigate('gallery')}
-              className="font-kufi text-sm font-semibold px-6 py-2.5 rounded-full bg-gradient-to-l from-brass to-brass-lt text-ink shadow-glow-sm hover:-translate-y-0.5 hover:shadow-glow-md transition-all cursor-pointer border-0 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
+              className="min-h-11 font-kufi text-sm font-semibold px-6 py-2.5 rounded-full bg-gradient-to-l from-brass to-brass-lt text-ink shadow-glow-sm hover:-translate-y-0.5 hover:shadow-glow-md transition-all cursor-pointer border-0 focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none"
             >
               شواهدها في معرض التراث
             </button>
