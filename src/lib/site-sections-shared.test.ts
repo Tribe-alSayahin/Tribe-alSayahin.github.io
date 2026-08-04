@@ -11,9 +11,9 @@ describe('site sections', () => {
 
     expect(keys).toEqual([
       'home',
-      'jathum',
       'lineage',
       'constellation',
+      'jathum',
       'gallery',
       'wasm',
       'poetry',
@@ -26,8 +26,15 @@ describe('site sections', () => {
   it('uses the existing content as a safe build fallback', () => {
     expect(getDefaultSiteSection('lineage')).toMatchObject({
       section_key: 'lineage',
-      title: 'ديوان نسب القبيلة الأصيل',
+      title: 'نسب القبيلة الأصيل',
       status: 'published',
+    });
+    expect(
+      SITE_SECTION_DEFINITIONS.find(({ key }) => key === 'jathum'),
+    ).toMatchObject({
+      page: 'الديار والهجرات',
+      title: 'أساس الديار — الجثوم',
+      sortOrder: 40,
     });
   });
 
@@ -43,5 +50,25 @@ describe('site sections', () => {
       title: 'عنوان محدث',
       image_url: 'https://example.com/gallery.webp',
     });
+  });
+
+  it('normalizes legacy stored titles to the canonical panel titles', () => {
+    expect(
+      mergeSiteSection('lineage', {
+        title: 'ديوان نسب القبيلة الأصيل',
+      }),
+    ).toMatchObject({ title: 'نسب القبيلة الأصيل' });
+
+    expect(
+      mergeSiteSection('jathum', {
+        title: 'هجرة الجثوم — أساس الديار',
+      }),
+    ).toMatchObject({ title: 'أساس الديار — الجثوم' });
+
+    expect(
+      mergeSiteSection('lineage', {
+        title: 'عنوان مخصص من لوحة الإدارة',
+      }),
+    ).toMatchObject({ title: 'عنوان مخصص من لوحة الإدارة' });
   });
 });

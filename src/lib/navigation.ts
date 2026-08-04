@@ -1,3 +1,5 @@
+import { getDefaultSiteSection, type SiteSectionKey } from './site-sections-shared';
+
 export interface NavSection {
   id: string;
   label: string;
@@ -17,17 +19,24 @@ export interface NavLinkItem {
   sections?: NavSection[];
 }
 
+function getSectionTitle(key: SiteSectionKey): string {
+  return getDefaultSiteSection(key).title;
+}
+
 export const SITE_ROUTES: NavLinkItem[] = [
   {
     id: 'nasab',
     label: 'الأصول',
     href: '/nasab/',
     chapter: 1,
-    description: 'تعقّب الجذور من السياحين عبر الجثوم إلى المزاحمة — شجرة النسب الموثّقة والفخوذ الكاملة.',
+    description: 'نسب القبيلة الأصيل من السياحين إلى المزاحمة — شجرة النسب الموثّقة والفخوذ الكاملة.',
     sections: [
-      { id: 'jathum', label: 'الجثوم', href: '/nasab/#jathum' },
-      { id: 'lineage', label: 'النسب', href: '/nasab/#lineage' },
-      { id: 'constellation', label: 'الأنساب', href: '/nasab/#constellation' },
+      { id: 'lineage', label: getSectionTitle('lineage'), href: '/nasab/#lineage' },
+      {
+        id: 'constellation',
+        label: getSectionTitle('constellation'),
+        href: '/nasab/#constellation',
+      },
     ],
   },
   {
@@ -35,9 +44,10 @@ export const SITE_ROUTES: NavLinkItem[] = [
     label: 'الديار',
     href: '/diyar/',
     chapter: 2,
-    description: 'معرض التراث البصري لديار القبيلة وهجراتها التاريخية ومناهل المياه القديمة.',
+    description: 'الجثوم أساس الديار، ومعرض التراث البصري لمواطن القبيلة وهجراتها التاريخية.',
     sections: [
-      { id: 'gallery', label: 'التراث', href: '/diyar/#gallery' },
+      { id: 'jathum', label: getSectionTitle('jathum'), href: '/diyar/#jathum' },
+      { id: 'gallery', label: getSectionTitle('gallery'), href: '/diyar/#gallery' },
     ],
   },
   {
@@ -47,8 +57,8 @@ export const SITE_ROUTES: NavLinkItem[] = [
     chapter: 3,
     description: 'وسم الإبل «الباب» الفريد وديوان الشعر النبطي — علامات الهوية القبلية الأصيلة.',
     sections: [
-      { id: 'wasm', label: 'الوسم', href: '/hawiya/#wasm' },
-      { id: 'poetry', label: 'الشعر', href: '/hawiya/#poetry' },
+      { id: 'wasm', label: getSectionTitle('wasm'), href: '/hawiya/#wasm' },
+      { id: 'poetry', label: getSectionTitle('poetry'), href: '/hawiya/#poetry' },
     ],
   },
   {
@@ -58,8 +68,8 @@ export const SITE_ROUTES: NavLinkItem[] = [
     chapter: 4,
     description: 'الخط الزمني للقبيلة والأرشيف الاستشراقي النادر — وثائق تاريخية لم تُجمع من قبل.',
     sections: [
-      { id: 'timeline', label: 'الخط الزمني', href: '/tarikh/#timeline' },
-      { id: 'archive', label: 'الأرشيف', href: '/tarikh/#archive' },
+      { id: 'timeline', label: getSectionTitle('timeline'), href: '/tarikh/#timeline' },
+      { id: 'archive', label: getSectionTitle('archive'), href: '/tarikh/#archive' },
     ],
   },
   {
@@ -69,10 +79,10 @@ export const SITE_ROUTES: NavLinkItem[] = [
     chapter: 5,
     description: 'آخر أخبار القبيلة ومناسباتها وأسماء الداعمين — تواصل مع أبناء السياحين في كل مكان.',
     sections: [
-      { id: 'news', label: 'الأخبار', href: '/news/' },
+      { id: 'news', label: 'الأخبار والمناسبات', href: '/news/' },
       { id: 'events', label: 'المناسبات', href: '/events/' },
-      { id: 'supporters', label: 'الداعمين', href: '/news/#supporters' },
-      { id: 'contact', label: 'التواصل', href: '/news/#contact' },
+      { id: 'supporters', label: 'داعمو وثيقة وإرث القبيلة', href: '/news/#supporters' },
+      { id: 'contact', label: 'تواصل معنا', href: '/news/#contact' },
       { id: 'admin', label: 'الإدارة', href: '/admin/' },
     ],
   },
@@ -85,13 +95,13 @@ export const NAV_LINKS = SITE_ROUTES.filter((link) => link.id !== 'home');
 /** خريطة من معرّف القسم إلى مساره (للانتقال من Hero وغيره) */
 export const SECTION_TO_ROUTE: Record<string, string> = {
   home: '/',
-  jathum: '/nasab/',
+  jathum: '/diyar/#jathum',
   lineage: '/nasab/#lineage',
   constellation: '/nasab/#constellation',
   gallery: '/diyar/#gallery',
-  wasm: '/hawiya/',
+  wasm: '/hawiya/#wasm',
   poetry: '/hawiya/#poetry',
-  timeline: '/tarikh/',
+  timeline: '/tarikh/#timeline',
   archive: '/tarikh/#archive',
   news: '/news/',
   events: '/events/',

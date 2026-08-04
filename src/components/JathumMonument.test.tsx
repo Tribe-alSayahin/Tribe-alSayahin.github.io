@@ -45,6 +45,7 @@ describe('JathumMonument', () => {
     expect(screen.getByRole('img', { name: /هضاب الجثوم وهجرة الجثوم/ })).toBeTruthy();
     expect(screen.getByText('الشيخ فرج بن مسيلم السيحاني')).toBeTruthy();
     expect(screen.getByText(/هاري سانت جون فيلبي/)).toBeTruthy();
+    expect(screen.getByText('أساس الديار · ٠٣')).toBeTruthy();
   });
 
   it('يفوض إجراءات الاستكشاف إلى scrollToSection عند توفيرها', () => {

@@ -88,14 +88,14 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             {link.label}
           </Link>
           {link.sections && link.sections.length > 0 && (
-            <div className="grid grid-cols-2 gap-2 px-3 pb-2 pt-1">
+            <div className="grid grid-cols-1 gap-2 px-3 pb-2 pt-1 sm:grid-cols-2">
               {link.sections.map((section) => (
                 <Link
                   key={section.id}
                   href={section.href}
                   prefetch={false}
                   onClick={onClose}
-                  className={`text-center py-2 rounded-lg text-xs font-kufi transition-colors focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none ${
+                  className={`px-2 py-2.5 text-center font-kufi text-xs leading-5 rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-brass focus-visible:outline-none ${
                     isActiveSub(pathname, section.href)
                       ? 'text-brass-lt bg-brass/10 border border-brass/20'
                       : 'text-sand-dim hover:text-brass-lt hover:bg-brass/5 border border-transparent'

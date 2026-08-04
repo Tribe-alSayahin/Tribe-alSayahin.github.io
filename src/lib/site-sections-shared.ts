@@ -22,26 +22,15 @@ export const SITE_SECTION_DEFINITIONS = [
     sortOrder: 0,
   },
   {
-    key: 'jathum',
-    page: 'النسب والفخوذ',
-    label: 'هجرة الجثوم',
-    title: 'هجرة الجثوم — أساس الديار',
-    description:
-      'قبل كل الأقسام تأتي الجثوم: أول هجرة رسمية أسسها السياحين في عالية نجد، ومنها انطلق الاستقرار والتحضر وامتدت بقية الديار.',
-    imageUrl: null,
-    imageAlt: null,
-    sortOrder: 10,
-  },
-  {
     key: 'lineage',
     page: 'النسب والفخوذ',
     label: 'شجرة النسب',
-    title: 'ديوان نسب القبيلة الأصيل',
+    title: 'نسب القبيلة الأصيل',
     description:
       'التوثيق المتسلسل لعمود نسب فخذ السياحين من المزاحمة من الروقة من عتيبة الهيلا، وصولاً لعدنان.',
     imageUrl: null,
     imageAlt: null,
-    sortOrder: 20,
+    sortOrder: 10,
   },
   {
     key: 'constellation',
@@ -52,7 +41,18 @@ export const SITE_SECTION_DEFINITIONS = [
       'تمثيل فلكي رمزي يربط الأنساب السبعة الكبرى في فضاء كوكبي مترابط يبرز التلاحم والأصل المشترك للقبيلة.',
     imageUrl: null,
     imageAlt: null,
-    sortOrder: 30,
+    sortOrder: 20,
+  },
+  {
+    key: 'jathum',
+    page: 'الديار والهجرات',
+    label: 'أساس الديار — الجثوم',
+    title: 'أساس الديار — الجثوم',
+    description:
+      'قبل كل الأقسام تأتي الجثوم: أول هجرة رسمية أسسها السياحين في عالية نجد، ومنها انطلق الاستقرار والتحضر وامتدت بقية الديار.',
+    imageUrl: null,
+    imageAlt: null,
+    sortOrder: 40,
   },
   {
     key: 'gallery',
@@ -125,6 +125,11 @@ export interface SiteSectionContent {
 
 export const SITE_SECTION_KEYS = SITE_SECTION_DEFINITIONS.map(({ key }) => key);
 
+const LEGACY_SECTION_TITLES: Partial<Record<SiteSectionKey, readonly string[]>> = {
+  lineage: ['ديوان نسب القبيلة الأصيل'],
+  jathum: ['هجرة الجثوم — أساس الديار'],
+};
+
 export function getDefaultSiteSection(key: SiteSectionKey): SiteSectionContent {
   const definition: SiteSectionDefinition | undefined = SITE_SECTION_DEFINITIONS.find(
     (item) => item.key === key,
@@ -148,5 +153,11 @@ export function mergeSiteSection(
   key: SiteSectionKey,
   stored?: Partial<SiteSectionContent> | null,
 ): SiteSectionContent {
-  return { ...getDefaultSiteSection(key), ...stored, section_key: key };
+  const defaultSection = getDefaultSiteSection(key);
+  const merged = { ...defaultSection, ...stored, section_key: key };
+  const legacyTitles = LEGACY_SECTION_TITLES[key];
+
+  return legacyTitles?.includes(merged.title)
+    ? { ...merged, title: defaultSection.title }
+    : merged;
 }
