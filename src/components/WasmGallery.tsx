@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, ReactNode } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { Sparkles, Shield, Activity, Info } from 'lucide-react';
 import { Card } from './ui/Card';
 import { Badge } from './ui/Badge';
@@ -78,10 +78,13 @@ export function WasmGallery() {
             {WASM_VARIATIONS.map((item) => {
               const isSelected = selectedVar.id === item.id;
               return (
-                <Card
+                <button
+                  type="button"
                   key={item.id}
                   onClick={() => setSelectedVar(item)}
-                  className={`relative flex flex-col justify-between p-space-5 rounded-2xl border text-right transition-all duration-base cursor-pointer ${
+                  aria-label={`عرض وسم ${item.name}`}
+                  aria-pressed={isSelected}
+                  className={`editorial-card group interactive-lift relative flex flex-col justify-between p-space-5 rounded-2xl border text-right transition-all duration-base cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-2 focus-visible:ring-offset-ink ${
                     isSelected
                       ? 'bg-[#18283a] border-brass shadow-glow-md'
                       : 'bg-ink-2/40 border-brass/10 hover:border-brass/40 hover:bg-[#132030]/60'
@@ -95,7 +98,7 @@ export function WasmGallery() {
                   <div className="flex justify-between items-start gap-space-3 w-full mb-space-3">
                     {/* SVG thumbnail of the Wasm */}
                     <div className="w-16 h-16 rounded-xl bg-[#0e1622] border border-brass/15 p-space-2 flex items-center justify-center shrink-0">
-                      <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-[0_0_4px_rgba(201,151,62,0.2)]">
+                      <svg aria-hidden="true" viewBox="0 0 200 200" className="w-full h-full drop-shadow-[0_0_4px_rgba(201,151,62,0.2)]">
                         <path
                           d={item.path}
                           fill="none"
@@ -127,7 +130,7 @@ export function WasmGallery() {
                       <Activity className="w-3 h-3 opacity-70" /> {item.location.split(' ')[0] || 'الرقبة'}
                     </span>
                   </div>
-                </Card>
+                </button>
               );
             })}
           </div>
@@ -137,15 +140,13 @@ export function WasmGallery() {
             {/* Ambient background grid pattern */}
             <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(rgba(201,151,62,0.15)_1px,transparent_1px),linear-gradient(90deg,rgba(201,151,62,0.15)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
             
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedVar.id}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.3 }}
-                className="space-y-space-6 relative z-10"
-              >
+            <motion.div
+              key={selectedVar.id}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-space-6 relative z-10"
+            >
                 {/* Header Info */}
                 <div className="border-b border-brass/10 pb-space-4">
                   <div className="mb-space-1.5">
@@ -166,7 +167,12 @@ export function WasmGallery() {
                 <div className="flex justify-center items-center py-space-4 relative group">
                   <div className="absolute -inset-4 bg-radial from-brass/5 to-transparent blur-lg rounded-full pointer-events-none" />
                   <div className="w-40 h-40 bg-[#0c121d] rounded-2xl border border-brass/15 p-space-4 flex items-center justify-center relative shadow-inner">
-                    <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-[0_0_12px_rgba(201,151,62,0.4)]">
+                    <svg
+                      role="img"
+                      aria-label={`رسم وسم ${selectedVar.name}`}
+                      viewBox="0 0 200 200"
+                      className="w-full h-full drop-shadow-[0_0_12px_rgba(201,151,62,0.4)]"
+                    >
                       <motion.path
                         d={selectedVar.path}
                         fill="none"
@@ -216,8 +222,7 @@ export function WasmGallery() {
                   </div>
                 </div>
 
-              </motion.div>
-            </AnimatePresence>
+            </motion.div>
 
             <div className="flex items-center gap-space-2 text-[10px] text-brass-lt/60 justify-center border-t border-brass/5 pt-space-4 mt-space-6">
               <Info className="w-3.5 h-3.5" />

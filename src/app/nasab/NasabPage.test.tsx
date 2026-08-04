@@ -2,14 +2,18 @@ import { cleanup, render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import DiyarPage from './page';
-
-vi.mock('../../components/HeritageGallery', () => ({
-  default: () => <div data-testid="heritage-gallery">معرض الديار</div>,
-}));
+import NasabPage from './page';
 
 vi.mock('../../components/JathumMonument', () => ({
   default: () => <div data-testid="jathum-monument">أساس الديار</div>,
+}));
+
+vi.mock('../../components/LineageTree', () => ({
+  default: () => <div data-testid="lineage-tree">شجرة النسب</div>,
+}));
+
+vi.mock('../../components/ConstellationDiagram', () => ({
+  default: () => <div data-testid="constellation">الأنساب الكوكبية</div>,
 }));
 
 vi.mock('../../components/layout/ChapterDivider', () => ({
@@ -45,9 +49,15 @@ vi.mock('../../lib/site-sections-server', () => ({
       image_url: null,
       image_alt: null,
     },
-    gallery: {
-      title: 'شواهد الديار',
-      description: 'معرض التراث البصري',
+    lineage: {
+      title: 'نسب القبيلة الأصيل',
+      description: 'عمود نسب القبيلة',
+      image_url: null,
+      image_alt: null,
+    },
+    constellation: {
+      title: 'الخلاصة الكوكبية للأنساب',
+      description: 'تمثيل كوكبي للأنساب',
       image_url: null,
       image_alt: null,
     },
@@ -56,13 +66,14 @@ vi.mock('../../lib/site-sections-server', () => ({
 
 afterEach(cleanup);
 
-describe('صفحة الديار', () => {
-  it('تعرض أساس الديار ومعرض الديار من دون قسم الخريطة', async () => {
-    render(await DiyarPage());
+describe('صفحة النسب', () => {
+  it('تجعل فصل 1 لنسب القبيلة وتنقل الجثوم إلى الديار', async () => {
+    render(await NasabPage());
 
-    expect(screen.getByTestId('jathum-monument')).toBeTruthy();
-    expect(screen.getByTestId('heritage-gallery')).toBeTruthy();
-    expect(screen.queryByText('خريطة مواطن وديار القبيلة')).toBeNull();
-    expect(screen.getByRole('link', { name: 'أساس الديار — الجثوم' })).toBeTruthy();
+    expect(screen.getByTestId('lineage-tree')).toBeTruthy();
+    expect(screen.getByTestId('constellation')).toBeTruthy();
+    expect(screen.queryByTestId('jathum-monument')).toBeNull();
+    expect(screen.getByRole('link', { name: 'نسب القبيلة الأصيل' })).toBeTruthy();
+    expect(screen.queryByRole('link', { name: 'أساس الديار — الجثوم' })).toBeNull();
   });
 });

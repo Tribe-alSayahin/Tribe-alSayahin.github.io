@@ -7,13 +7,12 @@
 
 ## الأقسام الأساسية
 
-- [الأصول والنسب](https://alsaihani.com/nasab/): مدخل موثّق إلى هجرة الجثوم وشجرة النسب والخلاصة الكوكبية للأنساب.
-  - [هجرة الجثوم](https://alsaihani.com/nasab/#jathum)
-  - [شجرة النسب](https://alsaihani.com/nasab/#lineage)
-  - [الخلاصة الكوكبية](https://alsaihani.com/nasab/#constellation)
-- [الديار](https://alsaihani.com/diyar/): الديار التاريخية والهجرات والمعالم والشواهد البصرية.
-  - [خريطة الديار](https://alsaihani.com/diyar/#map)
-  - [معرض التراث](https://alsaihani.com/diyar/#gallery)
+- [الأصول والنسب](https://alsaihani.com/nasab/): نسب القبيلة الأصيل والخلاصة الكوكبية للأنساب.
+  - [نسب القبيلة الأصيل](https://alsaihani.com/nasab/#lineage)
+  - [الخلاصة الكوكبية للأنساب](https://alsaihani.com/nasab/#constellation)
+- [الديار](https://alsaihani.com/diyar/): الجثوم أساس الديار، والهجرات والمعالم والشواهد البصرية.
+  - [أساس الديار — الجثوم](https://alsaihani.com/diyar/#jathum)
+  - [معرض التراث والمقتنيات](https://alsaihani.com/diyar/#gallery)
 - [الهوية](https://alsaihani.com/hawiya/): وسم القبيلة وديوان الشعر ومظاهر الهوية.
   - [وسم الإبل](https://alsaihani.com/hawiya/#wasm)
   - [ديوان الشعر في صفحة الهوية](https://alsaihani.com/hawiya/#poetry)

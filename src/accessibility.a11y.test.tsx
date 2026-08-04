@@ -3,6 +3,7 @@ import axe from 'axe-core';
 import { afterEach, describe, expect, it } from 'vitest';
 import { Button } from './components/ui/Button';
 import { Modal } from './components/ui/Modal';
+import WasmGallery from './components/WasmGallery';
 
 afterEach(cleanup);
 
@@ -44,6 +45,12 @@ describe('real axe-core accessibility checks', () => {
         <Button type="button">تأكيد</Button>
       </Modal>,
     );
+
+    await expectNoSeriousAxeViolations(container);
+  });
+
+  it('finds no serious violations in the camel-brand selector', async () => {
+    const { container } = render(<WasmGallery />);
 
     await expectNoSeriousAxeViolations(container);
   });

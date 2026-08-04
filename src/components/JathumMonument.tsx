@@ -100,7 +100,7 @@ export default function JathumMonument({ scrollToSection }: JathumMonumentProps)
             <div className="hidden min-w-44 items-center gap-3 sm:flex" aria-hidden="true">
               <span className="gold-hairline h-px flex-1" />
               <span className="font-kufi text-xs tracking-[0.16em] text-brass-lt">
-                أساس الديار · ٠١
+                أساس الديار · ٠٣
               </span>
             </div>
           </figcaption>
