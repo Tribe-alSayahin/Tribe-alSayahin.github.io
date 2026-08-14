@@ -1,12 +1,13 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react';
-import { Eye, EyeOff, LayoutTemplate, Save } from 'lucide-react';
+import { ExternalLink, Eye, EyeOff, LayoutTemplate, Save } from 'lucide-react';
 import {
   fetchSiteSections,
   updateSiteSection,
   type SiteSectionRecord,
 } from '../../lib/site-sections';
+import { SECTION_TO_ROUTE } from '../../lib/navigation';
 import {
   SITE_SECTION_DEFINITIONS,
   mergeSiteSection,
@@ -128,28 +129,45 @@ export function SiteSectionsManager({ onNotify, userId }: SiteSectionsManagerPro
           aria-label="أقسام الموقع القابلة للتحرير"
           className="rounded-2xl border border-brass/20 bg-ink-2/60 p-3 space-y-1"
         >
-          {sections.map(({ definition, content }) => (
-            <button
-              key={definition.key}
-              type="button"
-              onClick={() => setSelectedKey(definition.key)}
-              className={`w-full rounded-xl px-3 py-3 text-right transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass ${
-                selectedKey === definition.key
-                  ? 'border border-brass/30 bg-brass/15 text-brass-lt'
-                  : 'border border-transparent text-sand-dim hover:bg-brass/5 hover:text-sand'
-              }`}
-            >
-              <span className="block text-[10px] font-kufi opacity-70">{definition.page}</span>
-              <span className="mt-1 flex items-center justify-between gap-2 text-sm font-kufi">
-                {definition.label}
-                {content.status === 'published' ? (
-                  <Eye className="w-3.5 h-3.5" aria-label="منشور" />
-                ) : (
-                  <EyeOff className="w-3.5 h-3.5" aria-label="مسودة" />
-                )}
-              </span>
-            </button>
-          ))}
+          {sections.map(({ definition, content }) => {
+            const publicHref = SECTION_TO_ROUTE[definition.key] ?? '/';
+
+            return (
+              <div
+                key={definition.key}
+                className={`rounded-xl border transition-colors ${
+                  selectedKey === definition.key
+                    ? 'border-brass/30 bg-brass/15 text-brass-lt'
+                    : 'border-transparent text-sand-dim hover:bg-brass/5 hover:text-sand'
+                }`}
+              >
+                <button
+                  type="button"
+                  onClick={() => setSelectedKey(definition.key)}
+                  className="w-full px-3 pb-2 pt-3 text-right focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+                >
+                  <span className="block text-[10px] font-kufi opacity-70">{definition.page}</span>
+                  <span className="mt-1 flex items-center justify-between gap-2 text-sm font-kufi">
+                    {definition.label}
+                    {content.status === 'published' ? (
+                      <Eye className="w-3.5 h-3.5" aria-label="منشور" />
+                    ) : (
+                      <EyeOff className="w-3.5 h-3.5" aria-label="مسودة" />
+                    )}
+                  </span>
+                </button>
+                <a
+                  href={publicHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mx-3 mb-3 inline-flex items-center gap-1.5 rounded-lg border border-brass/15 px-2.5 py-1.5 text-[11px] font-kufi text-brass-lt/90 transition-colors hover:bg-brass/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+                >
+                  <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                  عرض القسم
+                </a>
+              </div>
+            );
+          })}
         </nav>
 
         <form
@@ -164,6 +182,15 @@ export function SiteSectionsManager({ onNotify, userId }: SiteSectionsManagerPro
               <h4 className="font-ruqaa text-2xl text-sand">
                 {sections.find((item) => item.definition.key === selectedKey)?.definition.label}
               </h4>
+              <a
+                href={SECTION_TO_ROUTE[selectedKey] ?? '/'}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-2 inline-flex items-center gap-1.5 text-xs font-kufi text-brass-lt hover:text-brass focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+              >
+                <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                فتح موضع هذا القسم في الموقع
+              </a>
             </div>
             <select
               value={form.status}
