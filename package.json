@@ -27,7 +27,7 @@
     "next": "^15.5.20",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
-    "sanitize-html": "^2.17.6"
+    "sanitize-html": "^2.17.7"
   },
   "overrides": {
     "postcss": ">=8.5.10"
