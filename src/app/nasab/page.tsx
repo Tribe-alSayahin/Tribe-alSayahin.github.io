@@ -4,8 +4,6 @@ import { Section } from '../../components/layout/Section';
 import { SectionIndex } from '../../components/layout/SectionIndex';
 import LineageTree from '../../components/LineageTree';
 import ConstellationDiagram from '../../components/ConstellationDiagram';
-import SheikhdomGallery from '../../components/SheikhdomGallery';
-import { SHEIKHDOM_SECTION } from '../../components/SheikhdomGallery.data';
 import { buildSectionedWebPageJsonLd } from '../../lib/section-indexing';
 import { buildPublicPageMetadata, SITE_URL } from '../../lib/site-metadata';
 import { getPublishedSiteSections } from '../../lib/site-sections-server';
@@ -48,10 +46,6 @@ export default async function NasabPage() {
       id: 'constellation',
       title: sections.constellation.title,
       description: sections.constellation.description,
-    },
-    {
-      id: 'sheikhdom',
-      ...SHEIKHDOM_SECTION,
     },
   ];
   const webPageLd = buildSectionedWebPageJsonLd({
@@ -99,18 +93,6 @@ export default async function NasabPage() {
         imageAlt={sections.constellation.image_alt}
       >
         <ConstellationDiagram />
-      </Section>
-
-      <Section
-        id="sheikhdom"
-        tone="ink-2"
-        chapterNumber={1}
-        serialNumber="٠٣"
-        badgeText="شواهد ووثائق"
-        title={SHEIKHDOM_SECTION.title}
-        description={SHEIKHDOM_SECTION.description}
-      >
-        <SheikhdomGallery />
       </Section>
 
       <script

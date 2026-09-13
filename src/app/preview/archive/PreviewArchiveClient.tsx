@@ -6,7 +6,7 @@ import { X } from 'lucide-react';
 import { useReducedMotion } from '../../../hooks/useReducedMotion';
 import { SITE_ROUTES } from '../../../lib/navigation';
 
-const CHAPTERS = SITE_ROUTES.filter((r) => r.id !== 'home');
+const CHAPTERS = SITE_ROUTES.filter((route) => route.chapter !== undefined);
 const CHAPTER_NUMS = ['١', '٢', '٣', '٤', '٥'];
 
 const CHAPTER_META: Record<string, { desc: string; updated: string; count: string }> = {

@@ -26,6 +26,7 @@ describe('التنقل السريع على الجوال', () => {
       'min-h-11',
     );
     expect(screen.getByRole('link', { name: 'قسم الإدارة' }).className).toContain('min-h-11');
+    expect(screen.getByRole('link', { name: 'المشيخة' }).className).not.toContain('bg-brass/12');
     expect(screen.getByRole('heading', { name: 'التنقل السريع' }).className).toContain('sticky');
     expect(dialog.scrollTop).toBe(0);
     expect(document.body.style.overflow).toBe('hidden');

@@ -12,10 +12,8 @@ import { OFFICIAL_LOGO_IMAGE_PATH } from '../../lib/branding';
 import { useScrollState } from '../../hooks/useScrollState';
 
 function isLinkActive(linkHref: string, pathname: string): boolean {
-  if (linkHref === '/') {
-    return pathname === '/';
-  }
-  return pathname.startsWith(linkHref.replace(/#$/, ''));
+  const base = linkHref.split('#')[0] || '/';
+  return base === '/' ? pathname === '/' : pathname.startsWith(base.replace(/\/$/, ''));
 }
 
 export function Navbar() {

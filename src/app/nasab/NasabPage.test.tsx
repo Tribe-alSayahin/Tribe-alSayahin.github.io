@@ -16,10 +16,6 @@ vi.mock('../../components/ConstellationDiagram', () => ({
   default: () => <div data-testid="constellation">الأنساب الكوكبية</div>,
 }));
 
-vi.mock('../../components/SheikhdomGallery', () => ({
-  default: () => <div data-testid="sheikhdom-gallery">صور المشيخة</div>,
-}));
-
 vi.mock('../../components/layout/ChapterDivider', () => ({
   ChapterDivider: ({ description }: { description: string }) => <p>{description}</p>,
 }));
@@ -76,10 +72,8 @@ describe('صفحة النسب', () => {
 
     expect(screen.getByTestId('lineage-tree')).toBeTruthy();
     expect(screen.getByTestId('constellation')).toBeTruthy();
-    expect(screen.getByTestId('sheikhdom-gallery')).toBeTruthy();
     expect(screen.queryByTestId('jathum-monument')).toBeNull();
     expect(screen.getByRole('link', { name: 'نسب القبيلة الأصيل' })).toBeTruthy();
-    expect(screen.getByRole('link', { name: 'المشيخة' })).toBeTruthy();
     expect(screen.queryByRole('link', { name: 'أساس الديار — الجثوم' })).toBeNull();
   });
 });

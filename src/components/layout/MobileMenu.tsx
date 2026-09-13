@@ -11,13 +11,13 @@ interface MobileMenuProps {
 }
 
 function isActiveLink(pathname: string, href: string): boolean {
-  if (href === '/') return pathname === '/';
-  return pathname.startsWith(href.replace(/#.*$/, '').replace(/\/$/, ''));
+  const base = href.split('#')[0] || '/';
+  return base === '/' ? pathname === '/' : pathname.startsWith(base.replace(/\/$/, ''));
 }
 
 function isActiveSub(pathname: string, href: string): boolean {
-  const base = href.replace(/#.*$/, '');
-  return pathname === base || pathname.startsWith(base);
+  const base = href.split('#')[0] || '/';
+  return base === '/' ? pathname === '/' : pathname.startsWith(base);
 }
 
 export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
