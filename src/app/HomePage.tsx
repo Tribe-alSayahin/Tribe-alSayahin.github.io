@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { Archive, ArrowLeft, Compass, Feather, GitBranch, MapPin, TreePine } from 'lucide-react';
 import { SITE_ROUTES } from '../lib/navigation';
 import { mergeSiteSection, type SiteSectionContent } from '../lib/site-sections-shared';
+import SheikhdomGallery from '../components/SheikhdomGallery';
+import { SHEIKHDOM_SECTION } from '../components/SheikhdomGallery.data';
 
 const PLACES = [
   { name: 'الجثوم', x: 18, y: 14 },
@@ -99,6 +101,25 @@ export default function HomePage({ hero = mergeSiteSection('home') }: HomePagePr
               );
             })}
           </div>
+        </div>
+      </section>
+
+      <section
+        id="sheikhdom"
+        aria-labelledby="sheikhdom-title"
+        className="scroll-mt-24 border-y border-brass/15 bg-ink-2 px-6 py-16 md:py-24"
+      >
+        <div className="mx-auto max-w-[1160px]">
+          <div className="mb-10 text-center">
+            <p className="mb-3 font-kufi text-xs text-brass-lt">شواهد ووثائق</p>
+            <h2 id="sheikhdom-title" className="font-ruqaa text-4xl text-sand md:text-5xl">
+              {SHEIKHDOM_SECTION.title}
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl font-sans leading-8 text-sand-dim">
+              {SHEIKHDOM_SECTION.description}
+            </p>
+          </div>
+          <SheikhdomGallery />
         </div>
       </section>
 

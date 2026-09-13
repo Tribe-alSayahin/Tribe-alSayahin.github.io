@@ -14,7 +14,6 @@ describe('التنقل السريع', () => {
     expect(sectionsByRoute.nasab).toEqual([
       { label: 'نسب القبيلة الأصيل', href: '/nasab/#lineage' },
       { label: 'الخلاصة الكوكبية للأنساب', href: '/nasab/#constellation' },
-      { label: 'المشيخة', href: '/nasab/#sheikhdom' },
     ]);
     expect(sectionsByRoute.diyar).toEqual([
       { label: 'أساس الديار — الجثوم', href: '/diyar/#jathum' },

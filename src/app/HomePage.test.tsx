@@ -49,4 +49,11 @@ describe('HomePage', () => {
     expect(creditLink.getAttribute('target')).toBe('_blank');
     expect(creditLink.getAttribute('rel')?.split(/\s+/)).toContain('noreferrer');
   });
+
+  it('يعرض قسم المشيخة وصوره في الصفحة الرئيسية', () => {
+    render(<HomePage />);
+
+    expect(screen.getByRole('heading', { name: 'المشيخة' })).toBeTruthy();
+    expect(screen.getAllByRole('img').filter((image) => image.getAttribute('src')?.includes('/images/sheikhdom/'))).toHaveLength(4);
+  });
 });
