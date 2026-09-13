@@ -37,6 +37,7 @@ export const SITE_ROUTES: NavLinkItem[] = [
         label: getSectionTitle('constellation'),
         href: '/nasab/#constellation',
       },
+      { id: 'sheikhdom', label: 'المشيخة', href: '/nasab/#sheikhdom' },
     ],
   },
   {
@@ -98,6 +99,7 @@ export const SECTION_TO_ROUTE: Record<string, string> = {
   jathum: '/diyar/#jathum',
   lineage: '/nasab/#lineage',
   constellation: '/nasab/#constellation',
+  sheikhdom: '/nasab/#sheikhdom',
   gallery: '/diyar/#gallery',
   wasm: '/hawiya/#wasm',
   poetry: '/hawiya/#poetry',
