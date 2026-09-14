@@ -7,41 +7,52 @@ import {
   updateSiteSection,
   type SiteSectionRecord,
 } from '../../lib/site-sections';
-import { SECTION_TO_ROUTE } from '../../lib/navigation';
 import {
   SITE_SECTION_DEFINITIONS,
   mergeSiteSection,
+  validateSiteSectionGallery,
   type SiteSectionContent,
   type SiteSectionKey,
+  type SiteSectionGalleryImage,
 } from '../../lib/site-sections-shared';
+import { SECTION_TO_ROUTE } from '../../lib/navigation';
 import { AdminImageUploader } from './AdminImageUploader';
+import SheikhdomGalleryEditor from './SheikhdomGalleryEditor';
+import { SHEIKHDOM_IMAGES } from '../SheikhdomGallery.data';
 
 interface SiteSectionsManagerProps {
   onNotify: (message: string, type: 'success' | 'error') => void;
   userId: string | null;
+  initialSectionKey?: SiteSectionKey;
 }
 
 type EditableSection = SiteSectionContent & { id?: string };
 
-export function SiteSectionsManager({ onNotify, userId }: SiteSectionsManagerProps) {
+export function SiteSectionsManager({ onNotify, userId, initialSectionKey = 'home' }: SiteSectionsManagerProps) {
   const [records, setRecords] = useState<SiteSectionRecord[]>([]);
-  const [selectedKey, setSelectedKey] = useState<SiteSectionKey>('home');
-  const [form, setForm] = useState<EditableSection>(mergeSiteSection('home'));
+  const [selectedKey, setSelectedKey] = useState<SiteSectionKey>(initialSectionKey);
+  const [form, setForm] = useState<EditableSection>(mergeSiteSection(initialSectionKey));
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [loadFailed, setLoadFailed] = useState(false);
   const [error, setError] = useState('');
 
   const loadSections = useCallback(async () => {
     setIsLoading(true);
-    const result = await fetchSiteSections();
-    if (result.error) {
+    try {
+      const result = await fetchSiteSections();
+      if (result.error) throw new Error('load failed');
+      setRecords(result.data ?? []);
+      setLoadFailed(false);
+      setError('');
+    } catch {
+      setLoadFailed(true);
       setError('تعذر تحميل أقسام الموقع. تأكد من تطبيق ترحيل قاعدة البيانات الجديد.');
       onNotify('تعذر تحميل أقسام الموقع.', 'error');
-    } else {
-      setRecords(result.data ?? []);
-      setError('');
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, [onNotify]);
 
   useEffect(() => {
@@ -71,6 +82,7 @@ export function SiteSectionsManager({ onNotify, userId }: SiteSectionsManagerPro
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (isSaving || isUploading || loadFailed) return;
     setError('');
 
     if (!form.title.trim() || !form.description.trim()) {
@@ -82,24 +94,41 @@ export function SiteSectionsManager({ onNotify, userId }: SiteSectionsManagerPro
       return;
     }
 
-    setIsSaving(true);
-    const result = await updateSiteSection(selectedKey, {
-      title: form.title.trim(),
-      description: form.description.trim(),
-      image_url: form.image_url?.trim() || null,
-      image_alt: form.image_url ? form.image_alt?.trim() || null : null,
-      status: form.status,
-      updated_by: userId,
-    });
-
-    if (result.error) {
-      setError(result.error.message);
-      onNotify('تعذر حفظ القسم.', 'error');
-    } else {
-      onNotify('تم حفظ القسم. سيظهر التعديل بعد إعادة بناء الموقع.', 'success');
-      await loadSections();
+    const sourceGallery: readonly SiteSectionGalleryImage[] = form.gallery_images ?? SHEIKHDOM_IMAGES;
+    const galleryImages = selectedKey === 'sheikhdom'
+      ? sourceGallery.map((image) => ({ ...image, alt: image.alt.trim(), caption: image.caption.trim() }))
+      : undefined;
+    if (galleryImages) {
+      const validationError = validateSiteSectionGallery(galleryImages);
+      if (validationError) { setError(validationError); return; }
     }
-    setIsSaving(false);
+
+    setIsSaving(true);
+    try {
+      const result = await updateSiteSection(selectedKey, {
+        title: form.title.trim(),
+        description: form.description.trim(),
+        image_url: form.image_url?.trim() || null,
+        image_alt: form.image_url ? form.image_alt?.trim() || null : null,
+        status: form.status,
+        updated_by: userId,
+        ...(galleryImages ? { gallery_images: galleryImages } : {}),
+      });
+
+      if (result.error) {
+        setError(result.error.message);
+        onNotify('تعذر حفظ القسم.', 'error');
+      } else {
+        onNotify('تم حفظ القسم. سيظهر التعديل بعد إعادة بناء الموقع.', 'success');
+        await loadSections();
+      }
+    } catch {
+      const message = 'تعذر حفظ القسم. حاول مرة أخرى.';
+      setError(message);
+      onNotify(message, 'error');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   if (isLoading) {
@@ -143,7 +172,7 @@ export function SiteSectionsManager({ onNotify, userId }: SiteSectionsManagerPro
               >
                 <button
                   type="button"
-                  onClick={() => setSelectedKey(definition.key)}
+                  disabled={isSaving || isUploading} onClick={() => { setSelectedKey(definition.key); setError(''); }}
                   className="w-full px-3 pb-2 pt-3 text-right focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass"
                 >
                   <span className="block text-[10px] font-kufi opacity-70">{definition.page}</span>
@@ -171,9 +200,11 @@ export function SiteSectionsManager({ onNotify, userId }: SiteSectionsManagerPro
         </nav>
 
         <form
+          aria-label="تحرير القسم"
           onSubmit={(event) => void handleSubmit(event)}
           className="rounded-2xl border border-brass/20 bg-ink-2/60 p-5 space-y-5"
         >
+          <fieldset disabled={isSaving || isUploading || loadFailed} className="space-y-5 min-w-0">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-brass/10 pb-4">
             <div>
               <p className="text-xs font-kufi text-brass-lt/80">
@@ -238,9 +269,11 @@ export function SiteSectionsManager({ onNotify, userId }: SiteSectionsManagerPro
           </div>
 
           <AdminImageUploader
+            key={selectedKey}
             value={form.image_url ?? ''}
             alt={form.image_alt ?? ''}
             folder={selectedKey}
+            onUploadingChange={setIsUploading}
             onChange={(imageUrl) =>
               setForm((current) => ({ ...current, image_url: imageUrl || null }))
             }
@@ -268,8 +301,17 @@ export function SiteSectionsManager({ onNotify, userId }: SiteSectionsManagerPro
             </div>
           )}
 
+          {selectedKey === 'sheikhdom' && (
+            <SheikhdomGalleryEditor
+              images={form.gallery_images ?? [...SHEIKHDOM_IMAGES]}
+              onChange={(gallery_images) => setForm((current) => ({ ...current, gallery_images }))}
+              onUploadingChange={setIsUploading}
+              onError={(message) => { setError(message); onNotify(message, 'error'); }}
+            />
+          )}
+
           {error && (
-            <p className="rounded-lg border border-copper/30 bg-copper/10 px-3 py-2 text-sm font-kufi text-copper-lt">
+            <p role="alert" className="rounded-lg border border-copper/30 bg-copper/10 px-3 py-2 text-sm font-kufi text-copper-lt">
               {error}
             </p>
           )}
@@ -287,6 +329,8 @@ export function SiteSectionsManager({ onNotify, userId }: SiteSectionsManagerPro
               {isSaving ? 'جارٍ الحفظ...' : 'حفظ القسم'}
             </button>
           </div>
+          </fieldset>
+          {loadFailed && <button type="button" onClick={() => void loadSections()} className="text-brass-lt underline focus-visible:ring-2 focus-visible:ring-brass">إعادة محاولة التحميل</button>}
         </form>
       </div>
     </div>

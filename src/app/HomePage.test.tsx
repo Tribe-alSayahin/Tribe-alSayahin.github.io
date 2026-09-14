@@ -2,6 +2,7 @@ import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import HomePage from './HomePage';
+import { mergeSiteSection } from '../lib/site-sections-shared';
 
 afterEach(cleanup);
 
@@ -55,5 +56,18 @@ describe('HomePage', () => {
 
     expect(screen.getByRole('heading', { name: 'المشيخة' })).toBeTruthy();
     expect(screen.getAllByRole('img').filter((image) => image.getAttribute('src')?.includes('/images/sheikhdom/'))).toHaveLength(4);
+  });
+});
+
+describe('saved sheikhdom content', () => {
+  it('renders saved text and gallery instead of the fallback images', () => {
+    render(<HomePage sheikhdom={mergeSiteSection('sheikhdom', {
+      title: 'عنوان المشيخة المحفوظ', description: 'نص المشيخة المحفوظ',
+      gallery_images: [{ src: 'https://example.com/saved.webp', alt: 'صورة محفوظة', caption: 'تعليق محفوظ' }],
+    })} />);
+    expect(screen.getByRole('heading', { name: 'عنوان المشيخة المحفوظ' })).toBeTruthy();
+    expect(screen.getByText('نص المشيخة المحفوظ')).toBeTruthy();
+    expect(screen.getByRole('img', { name: 'صورة محفوظة' }).getAttribute('src')).toBe('https://example.com/saved.webp');
+    expect(screen.getAllByRole('img').filter((image) => image.getAttribute('src')?.includes('/images/sheikhdom/'))).toHaveLength(0);
   });
 });

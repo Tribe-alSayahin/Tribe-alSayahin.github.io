@@ -15,6 +15,6 @@ export const metadata: Metadata = buildPublicPageMetadata({
 });
 
 export default async function Page() {
-  const sections = await getPublishedSiteSections(['home']);
-  return <HomePage hero={sections.home} />;
+  const sections = await getPublishedSiteSections(['home', 'sheikhdom']);
+  return <HomePage hero={sections.home} sheikhdom={sections.sheikhdom} />;
 }

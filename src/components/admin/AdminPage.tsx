@@ -213,7 +213,9 @@ export default function AdminPage() {
       case 'dashboard':
         return <DashboardOverview onTabChange={setActiveTab} />;
       case 'sections':
-        return <SiteSectionsManager onNotify={addToast} userId={session?.user?.id ?? null} />;
+        return <SiteSectionsManager key="sections" onNotify={addToast} userId={session?.user?.id ?? null} />;
+      case 'sheikhdom':
+        return <SiteSectionsManager key="sheikhdom" initialSectionKey="sheikhdom" onNotify={addToast} userId={session?.user?.id ?? null} />;
       case 'posts':
         return <PostManager onNotify={addToast} />;
       case 'poetry':

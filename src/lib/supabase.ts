@@ -154,6 +154,7 @@ interface PoetryEntriesTable {
 }
 
 interface SiteSectionsTable {
+  upsert(payload: SiteSectionInsertLike, options: { onConflict: string; ignoreDuplicates?: boolean }): MutationQuery<SiteSectionRecordLike>;
   select(columns?: string, options?: { count?: 'exact' | 'planned' | 'estimated' }): SelectQuery<SiteSectionRecordLike>;
   insert(payload: SiteSectionInsertLike | SiteSectionInsertLike[]): MutationQuery<SiteSectionRecordLike>;
   update(payload: Partial<SiteSectionInsertLike>): MutationQuery<SiteSectionRecordLike>;

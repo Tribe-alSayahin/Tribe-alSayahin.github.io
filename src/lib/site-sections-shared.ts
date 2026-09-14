@@ -44,6 +44,16 @@ export const SITE_SECTION_DEFINITIONS = [
     sortOrder: 20,
   },
   {
+    key: 'sheikhdom',
+    page: 'الرئيسية',
+    label: 'المشيخة',
+    title: 'المشيخة',
+    description: 'مجموعة الصور التي أرفقها مالك الموقع لقسم المشيخة.',
+    imageUrl: null,
+    imageAlt: null,
+    sortOrder: 30,
+  },
+  {
     key: 'jathum',
     page: 'الديار والهجرات',
     label: 'أساس الديار — الجثوم',
@@ -113,12 +123,57 @@ export const SITE_SECTION_DEFINITIONS = [
 
 export type SiteSectionKey = (typeof SITE_SECTION_DEFINITIONS)[number]['key'];
 
+export type SiteSectionGalleryImage = {
+  src: string;
+  alt: string;
+  caption: string;
+  width?: number;
+  height?: number;
+};
+
+export const MAX_SITE_GALLERY_IMAGES = 30;
+
+export function validateSiteSectionGallery(value: unknown): string | null {
+  if (value == null) return null;
+  if (!Array.isArray(value) || value.length > MAX_SITE_GALLERY_IMAGES) {
+    return 'يمكن إضافة ٣٠ صورة كحد أقصى.';
+  }
+  for (const candidate of value as unknown[]) {
+    if (!candidate || typeof candidate !== 'object') {
+      return 'بيانات الصورة غير صالحة.';
+    }
+    const image = candidate as Record<string, unknown>;
+    if (
+      typeof image.src !== 'string' || !isSafeGalleryUrl(image.src) ||
+      typeof image.alt !== 'string' || !image.alt.trim() || image.alt.length > 500 ||
+      typeof image.caption !== 'string' || image.caption.length > 2000 ||
+      [image.width, image.height].some((size) => size !== undefined &&
+        (typeof size !== 'number' || !Number.isInteger(size) || size < 1 || size > 20000))) {
+      return 'تحقق من رابط الصورة ووصفها؛ الحد الأقصى للنص البديل ٥٠٠ حرف وللتعليق ٢٠٠٠ حرف.';
+    }
+  }
+  return null;
+}
+
+function isSafeGalleryUrl(src: string): boolean {
+  if (!src || src.length > 2048 || /[\\\s]/u.test(src) ||
+    Array.from(src).some((character) => character.charCodeAt(0) < 32 || character.charCodeAt(0) === 127)) return false;
+  if (src.startsWith('/') && !src.startsWith('//')) return true;
+  try {
+    const url = new URL(src);
+    return src.startsWith('https://') && url.protocol === 'https:' && !!url.hostname && !url.username && !url.password;
+  } catch {
+    return false;
+  }
+}
+
 export interface SiteSectionContent {
   section_key: SiteSectionKey;
   title: string;
   description: string;
   image_url: string | null;
   image_alt: string | null;
+  gallery_images?: SiteSectionGalleryImage[] | null;
   status: 'draft' | 'published';
   sort_order: number;
 }
@@ -155,7 +210,7 @@ export function mergeSiteSection(
   stored?: Partial<SiteSectionContent> | null,
 ): SiteSectionContent {
   const defaultSection = getDefaultSiteSection(key);
-  const merged = { ...defaultSection, ...stored, section_key: key };
+  const merged = { ...defaultSection, ...stored, section_key: key, gallery_images: validateSiteSectionGallery(stored?.gallery_images) ? null : stored?.gallery_images };
   const legacyTitles = LEGACY_SECTION_TITLES[key];
 
   return legacyTitles?.includes(merged.title)

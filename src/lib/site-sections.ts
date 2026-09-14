@@ -2,11 +2,20 @@
 
 import { supabase } from './supabase';
 import type { Tables, TablesUpdate } from './database.types';
-import type { SiteSectionKey } from './site-sections-shared';
+import {
+  getDefaultSiteSection,
+  SITE_SECTION_KEYS,
+  validateSiteSectionGallery,
+  type SiteSectionGalleryImage,
+  type SiteSectionKey,
+} from './site-sections-shared';
 
-export type SiteSectionRecord = Tables<'site_sections'>;
-export type SiteSectionUpdate = Omit<TablesUpdate<'site_sections'>, 'status'> & {
+export type SiteSectionRecord = Omit<Tables<'site_sections'>, 'gallery_images'> & {
+  gallery_images?: SiteSectionGalleryImage[] | null;
+};
+export type SiteSectionUpdate = Omit<TablesUpdate<'site_sections'>, 'status' | 'gallery_images'> & {
   status?: 'draft' | 'published';
+  gallery_images?: SiteSectionGalleryImage[] | null;
 };
 
 type ApiError = { message: string };
@@ -20,19 +29,40 @@ export async function fetchSiteSections(): Promise<{
     .select('*')
     .order('sort_order', { ascending: true });
 
-  return { data, error };
+  return {
+    data: data?.map((row) => ({
+      ...row,
+      gallery_images: validateSiteSectionGallery(row.gallery_images)
+        ? null
+        : row.gallery_images as SiteSectionGalleryImage[] | null,
+    })) ?? null,
+    error,
+  };
 }
 
 export async function updateSiteSection(
   key: SiteSectionKey,
   payload: SiteSectionUpdate,
-): Promise<{ error: ApiError | null }> {
-  const { error } = await supabase
-    .from('site_sections')
-    .update({ ...payload, updated_at: new Date().toISOString() })
-    .eq('section_key', key);
-
-  return { error };
+): Promise<{ data: SiteSectionRecord | null; error: ApiError | null }> {
+  const validationError = validateSiteSectionGallery(payload.gallery_images);
+  if (!SITE_SECTION_KEYS.includes(key) || validationError) {
+    return { data: null, error: { message: validationError || 'القسم غير معروف.' } };
+  }
+  const failure = { data: null, error: { message: 'تعذر حفظ القسم. تحقق من صلاحياتك واتصالك وتجهيز قاعدة البيانات ثم حاول مجدداً.' } };
+  try {
+    const changes = { ...payload, section_key: key, updated_at: new Date().toISOString() };
+    const updated = await supabase.from('site_sections').update(changes)
+      .eq('section_key', key).select('*').maybeSingle();
+    if (updated.error) return failure;
+    if (updated.data) return { data: updated.data as SiteSectionRecord, error: null };
+    const inserted = await supabase.from('site_sections')
+      .upsert({ ...getDefaultSiteSection(key), ...changes }, { onConflict: 'section_key', ignoreDuplicates: true })
+      .select('*').single();
+    if (inserted.error || !inserted.data) return failure;
+    return { data: inserted.data as SiteSectionRecord, error: null };
+  } catch {
+    return failure;
+  }
 }
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;

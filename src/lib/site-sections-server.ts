@@ -38,7 +38,7 @@ export async function getPublishedSiteSections(
 
   const { data, error } = await client
     .from('site_sections')
-    .select('section_key,title,description,image_url,image_alt,status,sort_order')
+    .select('*')
     .in('section_key', keys)
     .eq('status', 'published');
 

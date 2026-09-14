@@ -17,6 +17,7 @@ interface SitemapUpdateSources {
 
 const SECTION_PATHS: Partial<Record<SiteSectionKey, string>> = {
   home: '/',
+  sheikhdom: '/',
   jathum: '/diyar/',
   lineage: '/nasab/',
   constellation: '/nasab/',

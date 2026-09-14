@@ -6,6 +6,13 @@ import SheikhdomGallery from './SheikhdomGallery';
 afterEach(cleanup);
 
 describe('معرض المشيخة', () => {
+  it('يعرض صور الإدارة ويحتفظ باختيار حذف جميع الصور', () => {
+    const { rerender } = render(<SheikhdomGallery images={[{ src: '/images/new.png', alt: 'صورة جديدة', caption: 'وصف جديد' }]} />);
+    expect(screen.getAllByRole('img')).toHaveLength(1);
+    expect(screen.getByText('وصف جديد')).toBeTruthy();
+    rerender(<SheikhdomGallery images={[]} />);
+    expect(screen.queryAllByRole('img')).toHaveLength(0);
+  });
   it('يعرض الصور الأربع المرفقة بروابطها وبدائلها النصية', () => {
     render(<SheikhdomGallery />);
 
