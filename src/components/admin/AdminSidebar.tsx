@@ -29,6 +29,7 @@ interface AdminSidebarProps {
 const NAV_ICONS: Record<AdminTab, LucideIcon> = {
   dashboard: LayoutDashboard,
   sections: LayoutTemplate,
+  sheikhdom: BookOpen,
   posts: Newspaper,
   poetry: BookOpen,
   events: CalendarDays,

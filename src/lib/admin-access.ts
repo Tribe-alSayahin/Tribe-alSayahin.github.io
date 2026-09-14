@@ -3,6 +3,7 @@ import type { UserRole } from './admin-users';
 export const ADMIN_TAB_DEFINITIONS = [
   { id: 'dashboard', label: 'نظرة عامة', superAdminOnly: false },
   { id: 'sections', label: 'أقسام الموقع', superAdminOnly: false },
+  { id: 'sheikhdom', label: 'المشيخة', superAdminOnly: false },
   { id: 'posts', label: 'الأخبار والمناسبات', superAdminOnly: false },
   { id: 'poetry', label: 'ديوان الشعر', superAdminOnly: false },
   { id: 'events', label: 'المناسبات المصوّرة', superAdminOnly: false },

@@ -5,7 +5,6 @@ import { Archive, ArrowLeft, Compass, Feather, GitBranch, MapPin, TreePine } fro
 import { SITE_ROUTES } from '../lib/navigation';
 import { mergeSiteSection, type SiteSectionContent } from '../lib/site-sections-shared';
 import SheikhdomGallery from '../components/SheikhdomGallery';
-import { SHEIKHDOM_SECTION } from '../components/SheikhdomGallery.data';
 
 const PLACES = [
   { name: 'الجثوم', x: 18, y: 14 },
@@ -28,9 +27,10 @@ const ICONS = {
 
 interface HomePageProps {
   hero?: SiteSectionContent;
+  sheikhdom?: SiteSectionContent;
 }
 
-export default function HomePage({ hero = mergeSiteSection('home') }: HomePageProps) {
+export default function HomePage({ hero = mergeSiteSection('home'), sheikhdom = mergeSiteSection('sheikhdom') }: HomePageProps) {
   return (
     <main className="home-story bg-ink text-sand">
       <section className="home-story-hero" aria-labelledby="home-story-title">
@@ -113,13 +113,16 @@ export default function HomePage({ hero = mergeSiteSection('home') }: HomePagePr
           <div className="mb-10 text-center">
             <p className="mb-3 font-kufi text-xs text-brass-lt">شواهد ووثائق</p>
             <h2 id="sheikhdom-title" className="font-ruqaa text-4xl text-sand md:text-5xl">
-              {SHEIKHDOM_SECTION.title}
+              {sheikhdom.title}
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl font-sans leading-8 text-sand-dim">
-              {SHEIKHDOM_SECTION.description}
+            <p className="mx-auto mt-4 max-w-2xl whitespace-pre-line font-sans leading-8 text-sand-dim">
+              {sheikhdom.description}
             </p>
           </div>
-          <SheikhdomGallery />
+          {sheikhdom.image_url && (
+            <img src={sheikhdom.image_url} alt={sheikhdom.image_alt ?? sheikhdom.title} loading="lazy" className="mx-auto mb-8 h-auto max-w-full rounded-2xl" />
+          )}
+          <SheikhdomGallery images={sheikhdom.gallery_images} />
         </div>
       </section>
 

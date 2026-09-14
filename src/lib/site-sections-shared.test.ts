@@ -13,6 +13,7 @@ describe('site sections', () => {
       'home',
       'lineage',
       'constellation',
+      'sheikhdom',
       'jathum',
       'gallery',
       'wasm',

@@ -3,6 +3,8 @@ import type { ReactNode } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import NasabPage from './page';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { getPublishedSiteSections } from '../../lib/site-sections-server';
 
 vi.mock('../../components/JathumMonument', () => ({
   default: () => <div data-testid="jathum-monument">أساس الديار</div>,
@@ -76,4 +78,15 @@ describe('صفحة النسب', () => {
     expect(screen.getByRole('link', { name: 'نسب القبيلة الأصيل' })).toBeTruthy();
     expect(screen.queryByRole('link', { name: 'أساس الديار — الجثوم' })).toBeNull();
   });
+});
+
+it('escapes editable section text in structured data', async () => {
+  const sections = await getPublishedSiteSections(['lineage', 'constellation']);
+  const payload = '</script><script>alert(1)</script>';
+  vi.mocked(getPublishedSiteSections).mockResolvedValueOnce({
+    ...sections, lineage: { ...sections.lineage, description: payload },
+  });
+  const html = renderToStaticMarkup(await NasabPage());
+  expect(html).not.toContain(payload);
+  expect(html).toContain('\\u003c/script>');
 });

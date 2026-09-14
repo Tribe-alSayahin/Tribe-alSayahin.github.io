@@ -1,11 +1,13 @@
 import { SHEIKHDOM_IMAGES } from './SheikhdomGallery.data';
+import type { SiteSectionGalleryImage } from '../lib/site-sections-shared';
 
-export default function SheikhdomGallery() {
+export default function SheikhdomGallery({ images }: { images?: readonly SiteSectionGalleryImage[] | null }) {
+  const gallery: readonly SiteSectionGalleryImage[] = images ?? SHEIKHDOM_IMAGES;
   return (
     <div className="grid gap-6 sm:grid-cols-2">
-      {SHEIKHDOM_IMAGES.map((image) => (
+      {gallery.map((image, index) => (
         <figure
-          key={image.src}
+          key={`${image.src}-${index}`}
           className="overflow-hidden rounded-2xl border border-brass/20 bg-ink shadow-glow-sm"
         >
           <a

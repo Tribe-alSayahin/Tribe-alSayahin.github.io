@@ -361,6 +361,7 @@ export type Database = {
       }
       site_sections: {
         Row: {
+          gallery_images: Json | null
           created_at: string
           description: string
           id: string
@@ -374,6 +375,7 @@ export type Database = {
           updated_by: string | null
         }
         Insert: {
+          gallery_images?: Json | null
           created_at?: string
           description: string
           id?: string
@@ -387,6 +389,7 @@ export type Database = {
           updated_by?: string | null
         }
         Update: {
+          gallery_images?: Json | null
           created_at?: string
           description?: string
           id?: string

@@ -12,6 +12,8 @@ interface AdminImageUploaderProps {
   folder: SiteSectionKey | 'posts';
   onChange: (url: string) => void;
   onError?: (message: string) => void;
+  onUploadingChange?: (uploading: boolean) => void;
+  inputLabel?: string;
 }
 
 export function AdminImageUploader({
@@ -20,6 +22,8 @@ export function AdminImageUploader({
   folder,
   onChange,
   onError,
+  onUploadingChange,
+  inputLabel = 'اختيار صورة من الجهاز',
 }: AdminImageUploaderProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -32,17 +36,24 @@ export function AdminImageUploader({
 
     setUploadError('');
     setIsUploading(true);
-    const result = await uploadSiteImage(folder, file);
-    setIsUploading(false);
-
-    if (result.error || !result.publicUrl) {
-      const message = result.error?.message ?? 'تعذر رفع الصورة.';
+    onUploadingChange?.(true);
+    try {
+      const result = await uploadSiteImage(folder, file);
+      if (result.error || !result.publicUrl) {
+        const message = result.error?.message ?? 'تعذر رفع الصورة.';
+        setUploadError(message);
+        onError?.(message);
+        return;
+      }
+      onChange(result.publicUrl);
+    } catch {
+      const message = 'تعذر رفع الصورة. حاول مرة أخرى.';
       setUploadError(message);
       onError?.(message);
-      return;
+    } finally {
+      setIsUploading(false);
+      onUploadingChange?.(false);
     }
-
-    onChange(result.publicUrl);
   };
 
   return (
@@ -75,7 +86,7 @@ export function AdminImageUploader({
         accept="image/jpeg,image/png,image/webp"
         onChange={(event) => void handleFile(event)}
         className="sr-only"
-        aria-label="اختيار صورة من الجهاز"
+        aria-label={inputLabel}
       />
 
       <div className="flex flex-wrap gap-2">
